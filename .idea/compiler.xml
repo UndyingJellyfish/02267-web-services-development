@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="fastmoney-06" />
         <module name="project-src" />
+        <module name="02267-web-services-development" />
       </profile>
     </annotationProcessing>
   </component>
