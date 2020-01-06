@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class JUnitTesting {
+public class JUnitTest {
 
     @Nested
     @DisplayName("Sample nested tests")
