@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Starting build"
 
-mvn fastmoney-06
+mvn package
 
 echo "Build done"
