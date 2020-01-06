@@ -32,9 +32,9 @@ public class JUnitTest {
     }
 
 
-    @Test
+    /*@Test
     @DisplayName("Fail for Jenkins")
     void failTest(){
         fail("Trying to fail");
-    }
+    }*/
 }
