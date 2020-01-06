@@ -1,9 +1,8 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class JUnitTesting {
 
@@ -32,4 +31,10 @@ public class JUnitTesting {
         assertEquals(25, Math.pow(5,2),0.00001);
     }
 
+
+    @Test
+    @DisplayName("Fail for Jenkins")
+    void failTest(){
+        fail("Trying to fail");
+    }
 }
