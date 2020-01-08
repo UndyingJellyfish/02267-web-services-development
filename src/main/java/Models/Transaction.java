@@ -7,13 +7,12 @@ import java.util.Date;
 public class Transaction {
 
     private Date transactionDate;
-    private Account creditor;
-    private Account debtor;
+    private Account creditor; // To
+    private Account debtor; // From
     private Double amount;
     private Token token;
 
     public Transaction(Account creditor, Account debtor, Double amount, Token token, Date transactionDate){
-
         this.creditor = creditor;
         this.debtor = debtor;
         this.amount = amount;
@@ -23,7 +22,6 @@ public class Transaction {
 
     public Transaction(Account creditor, Account debtor, Double amount, Token token){
         Date transactionDate = new Date();
-
         this.creditor = creditor;
         this.debtor = debtor;
         this.amount = amount;
