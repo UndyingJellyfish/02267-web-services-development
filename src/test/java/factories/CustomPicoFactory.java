@@ -2,6 +2,7 @@ package factories;
 
 import io.cucumber.core.backend.ObjectFactory;
 import io.cucumber.picocontainer.PicoFactory;
+import main.InMemoryDatastore;
 import main.TokenManager;
 
 public class CustomPicoFactory implements ObjectFactory {
@@ -10,6 +11,7 @@ public class CustomPicoFactory implements ObjectFactory {
 
     public CustomPicoFactory(){
 
+        delegate.addClass(InMemoryDatastore.class);
         delegate.addClass(TokenManager.class);
     }
 

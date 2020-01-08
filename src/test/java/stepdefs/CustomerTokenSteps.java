@@ -11,6 +11,7 @@ import io.cucumber.java.en.When;
 import main.ITokenManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -18,6 +19,7 @@ public class CustomerTokenSteps {
 
     private final ITokenManager tokenManager;
     private Customer customer;
+    private List<Token> tokenList;
 
     public CustomerTokenSteps(ITokenManager tokenManager){
         this.tokenManager = tokenManager;
@@ -35,12 +37,15 @@ public class CustomerTokenSteps {
 
     @When("The user requests a {int} of tokens")
     public void theUserRequestsANumberOfTokens(int arg0) {
-        tokenManager.RequestTokens(this.customer, arg0);
+
+        tokenList = tokenManager.RequestTokens(this.customer, arg0);
     }
 
     @Then("The user receives {int} tokens")
     public void theUserReceivesNumberTokens(int arg0) {
-        assertEquals(arg0, this.tokenManager.GetTokens(this.customer).size());
+        List<Token> tokenList = this.tokenManager.GetTokens(this.customer);
+        assertEquals(arg0,tokenList.size());
+        assertEquals(this.tokenList, tokenList);
     }
 
     @And("The user has {int} unused token")
