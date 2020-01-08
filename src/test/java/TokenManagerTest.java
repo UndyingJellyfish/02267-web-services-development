@@ -1,7 +1,4 @@
-import main.IDatastore;
-import main.ITokenManager;
-import main.InMemoryDatastore;
-import main.TokenManager;
+import main.*;
 import models.Customer;
 import models.Token;
 import org.junit.Before;
@@ -19,8 +16,7 @@ public class TokenManagerTest {
 
     @Before
     public void Setup(){
-        IDatastore store = new InMemoryDatastore();
-        tokenManager = new TokenManager(store);
+        tokenManager = new TokenManager(new InMemoryDatastore());
     }
 
     @Test
@@ -62,7 +58,6 @@ public class TokenManagerTest {
         List<Token> afterTokens = tokenManager.GetTokens(bob);
         assertEquals(beforeTokens.size(), afterTokens.size());
     }
-
 
 
 }

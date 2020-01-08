@@ -9,29 +9,46 @@ import java.util.List;
 import java.util.UUID;
 
 public class TokenManager implements ITokenManager {
-    private IDatastore datastore;
-    public TokenManager(IDatastore datastore){
+
+    private ITokenDatastore datastore;
+
+    public TokenManager(ITokenDatastore datastore){
         this.datastore = datastore;
     }
 
     public List<Token> RequestTokens(Customer customer, int quantity) {
+
         if(quantity > 5  || quantity < 1){
             throw new IllegalArgumentException("Quantity must be [1,5]");
         }
-        List<Token> tokens = new ArrayList<>();
-        for(int i = 0; i<quantity;i++){
-            Token token = new Token(customer);
+
+        // Probably move check for any active tokens to other method.
+        if(datastore.getTokens(customer).stream().anyMatch(t -> !t.isUsed())){
+            throw new IllegalArgumentException("Customer has active tokens");
         }
+
+        List<Token> tokens = new ArrayList<>();
+
+        for(int i = 0; i < quantity; i++){
+            Token token = new Token(customer);
+            tokens.add(token);
+        }
+
         return this.datastore.assignTokens(customer, tokens);
     }
-
-
 
     public List<Token> GetTokens(Customer customer) {
         return this.datastore.getTokens(customer);
     }
 
+    // To not cause compiler errors.
+    @Override
     public boolean UseToken(UUID tokenId) {
+        return false;
+    }
+
+    // Accidentally implemented this without making tests.
+    /*public boolean UseToken(UUID tokenId) {
         try {
             Token token = this.datastore.getToken(tokenId);
             token.setUsed(true);
@@ -41,5 +58,5 @@ public class TokenManager implements ITokenManager {
         }
 
         return true;
-    }
+    }*/
 }
