@@ -10,8 +10,8 @@
 
 ## Contributors
 * s164424 - Alexander Østergaard (Github: Vulthil)
-* s164434 - Jens Kornbeck (Github: )
-* s - Jacob Bruun (Github: )
-* s - Emil Damsbo (Github: )
-* s - Daniel Lauritsen (Github: )
-* s - Asger Møberg (Github: )
+* s164434 - Jens Kornbeck (Github: Zornwal)
+* s164410 - Jacob Bruun (Github: Jaxe1234)
+* s164395 - Emil Damsbo (Github: UndyingJellyfish)
+* s164398 - Daniel Lauritsen (Github: Montigan)
+* s164407 - Asger Møberg (Github: Amoee)
