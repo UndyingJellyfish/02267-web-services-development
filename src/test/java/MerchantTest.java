@@ -1,5 +1,4 @@
-import Models.Customer;
-import Models.Merchant;
+import models.Merchant;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

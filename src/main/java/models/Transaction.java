@@ -1,6 +1,4 @@
-package Models;
-
-import io.cucumber.java.eo.Do;
+package models;
 
 import java.util.Date;
 

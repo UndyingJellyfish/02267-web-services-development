@@ -1,4 +1,4 @@
-package Models;
+package models;
 
 import java.util.Date;
 import java.util.UUID;
@@ -7,8 +7,10 @@ public class Token {
     private UUID tokenId;
     private boolean used;
     private Date useDate = null;
+    private Customer customer;
 
-    public Token(){
+    public Token(Customer customer){
+        this.customer = customer;
         this.tokenId = UUID.randomUUID();
     }
 
@@ -30,5 +32,9 @@ public class Token {
 
     public void setUseDate(Date useDate) {
         this.useDate = useDate;
+    }
+
+    public Customer getCustomer() {
+        return customer;
     }
 }
