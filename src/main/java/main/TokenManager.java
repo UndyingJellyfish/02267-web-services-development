@@ -3,24 +3,43 @@ package main;
 import models.Customer;
 import models.Token;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 public class TokenManager implements ITokenManager {
+    private IDatastore datastore;
+    public TokenManager(IDatastore datastore){
+        this.datastore = datastore;
+    }
 
     public List<Token> RequestTokens(Customer customer, int quantity) {
-        return null;
+        if(quantity > 5  || quantity < 1){
+            throw new IllegalArgumentException("Quantity must be [1,5]");
+        }
+        List<Token> tokens = new ArrayList<>();
+        for(int i = 0; i<quantity;i++){
+            Token token = new Token(customer);
+        }
+        return this.datastore.assignTokens(customer, tokens);
     }
 
-    public Token RequestToken(Customer customer) {
-        return null;
-    }
+
 
     public List<Token> GetTokens(Customer customer) {
-        return null;
+        return this.datastore.getTokens(customer);
     }
 
     public boolean UseToken(UUID tokenId) {
-        return false;
+        try {
+            Token token = this.datastore.getToken(tokenId);
+            token.setUsed(true);
+            token.setUseDate(new Date());
+        }catch(Exception e){
+            throw new IllegalArgumentException();
+        }
+
+        return true;
     }
 }

@@ -1,4 +1,6 @@
+import main.IDatastore;
 import main.ITokenManager;
+import main.InMemoryDatastore;
 import main.TokenManager;
 import models.Customer;
 import models.Token;
@@ -17,22 +19,12 @@ public class TokenManagerTest {
 
     @Before
     public void Setup(){
-        tokenManager = new TokenManager();
+        IDatastore store = new InMemoryDatastore();
+        tokenManager = new TokenManager(store);
     }
 
     @Test
-    public void RequestSingleToken(){
-
-        List<Token> beforeTokens = tokenManager.GetTokens(bob);
-        tokenManager.RequestToken(bob);
-        List<Token> afterTokens = tokenManager.GetTokens(bob);
-        assertEquals(0, beforeTokens.size());
-        assertEquals(1, afterTokens.size());
-
-    }
-
-    @Test
-    public void RequestMultipleTokens(){
+    public void RequestTokens(){
         List<Token> beforeTokens = tokenManager.GetTokens(bob);
         tokenManager.RequestTokens(bob,2);
         List<Token> afterTokens = tokenManager.GetTokens(bob);
@@ -41,7 +33,7 @@ public class TokenManagerTest {
     }
 
     @Test
-    public void RequestZeroTokens(){
+    public void RequestNoTokens(){
         List<Token> beforeTokens = tokenManager.GetTokens(bob);
         try{
             tokenManager.RequestTokens(bob,0);
@@ -51,18 +43,26 @@ public class TokenManagerTest {
     }
 
     @Test
-    public void RequestMoreThanFiveTokens(){
-
+    public void RequestTooManyTokens(){
+        List<Token> beforeTokens = tokenManager.GetTokens(bob);
+        try{
+            tokenManager.RequestTokens(bob,6);
+        }catch(IllegalArgumentException e){        }
+        List<Token> afterTokens = tokenManager.GetTokens(bob);
+        assertEquals(beforeTokens.size(), afterTokens.size());
     }
 
     @Test
     public void RequestTokensWhenOverLimit(){
-
+        tokenManager.RequestTokens(bob,2); // Any qty over 1
+        List<Token> beforeTokens = tokenManager.GetTokens(bob);
+        try{
+            tokenManager.RequestTokens(bob,1);
+        }catch(IllegalArgumentException e){        }
+        List<Token> afterTokens = tokenManager.GetTokens(bob);
+        assertEquals(beforeTokens.size(), afterTokens.size());
     }
 
 
-    @Test
-    public void trueTest(){
-        assertTrue(true);
-    }
+
 }
