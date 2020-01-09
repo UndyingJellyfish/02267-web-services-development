@@ -37,7 +37,7 @@ public class CustomerTokenSteps {
         assertTrue(tokenManager.GetTokens(customer).stream().allMatch(Token::isUsed));
     }
 
-    @When("The user requests a {int} of tokens")
+    @When("The user requests {int} of tokens")
     public void theUserRequestsANumberOfTokens(int arg0) {
         tokenList = tokenManager.RequestTokens(this.customer, arg0);
     }
@@ -55,10 +55,10 @@ public class CustomerTokenSteps {
         assertEquals(arg0, tokenManager.GetTokens(customer).stream().filter(t ->!t.isUsed()).count());
     }
 
-    @When("The user requests {int} tokens")
+    /*@When("The user requests {int} tokens")
     public void theUserRequestsTokens(int arg0) {
         tokenManager.RequestTokens(this.customer, arg0);
-    }
+    }*/
 
     @Then("The user has {int} unused tokens")
     public void theUserHasUnusedTokens(int arg0) {
@@ -73,8 +73,8 @@ public class CustomerTokenSteps {
     }
 
     private IllegalArgumentException excp = null;
-    @When("The user requests {int} additional tokens")
-    public void theUserRequestsAdditionalTokens(int arg0) {
+    @When("The user requests {int} tokens")
+    public void theUserRequestsTokens(int arg0) {
         try{
             tokenManager.RequestTokens(customer,arg0);
             fail();
@@ -87,5 +87,14 @@ public class CustomerTokenSteps {
     public void itShouldFail() {
         assertNotNull(excp);
     }
+
+    @And("the user has {int} unused tokens")
+    public void theUserHasNumberUnusedTokens(int arg0) {
+        if(arg0 > 0){
+            List<Token> out = tokenManager.RequestTokens(customer,arg0);
+            assertEquals(arg0, out.size());
+        }
+    }
+
 
 }
