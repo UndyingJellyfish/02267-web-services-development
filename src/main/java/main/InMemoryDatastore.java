@@ -8,8 +8,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore {
-    private List<Account> accounts = new ArrayList<Account>();
-    private List<Token> tokens = new ArrayList<Token>();
+    private List<Account> accounts = new ArrayList<>();
+    private List<Token> tokens = new ArrayList<>();
 
     @Override
     public Customer getCustomer(UUID customerId) {
@@ -32,8 +32,8 @@ public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore {
 
     @Override
     public List<Token> assignTokens(Customer customer, List<Token> tokens) {
-        List<UUID> newIds = tokens.stream().map(t -> t.getTokenId()).collect(Collectors.toList());
-        List<UUID> existingIds = this.tokens.stream().map(t -> t.getTokenId()).collect(Collectors.toList());
+        List<UUID> newIds = tokens.stream().map(Token::getTokenId).collect(Collectors.toList());
+        List<UUID> existingIds = this.tokens.stream().map(Token::getTokenId).collect(Collectors.toList());
 
         if(hasSharedIds(newIds, existingIds)){
             throw new IllegalArgumentException("Token with identical id exists");
@@ -59,7 +59,7 @@ public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore {
     // Extract me somewhere!
     private boolean hasDuplicateIds(List<UUID> list){
         Set<UUID> set = new HashSet<>();
-        return list.stream().filter(x -> !set.add(x)).count() > 0;
+        return list.stream().anyMatch(x -> !set.add(x));
     }
 
 }
