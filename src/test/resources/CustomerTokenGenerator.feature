@@ -23,6 +23,6 @@ Feature: Customer Token Generator Feature
 
   Scenario: Request tokens when having more than 1 tokens
     Given A registered user
-    And The user has 2 unused tokens
-    When The user requests 1 of tokens
+    And The user already has 2 unused tokens
+    When The user requests 1 additional tokens
     Then It should fail

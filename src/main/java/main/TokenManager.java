@@ -23,7 +23,7 @@ public class TokenManager implements ITokenManager {
         }
 
         // Probably move check for any active tokens to other method.
-        if(datastore.getTokens(customer).stream().anyMatch(t -> !t.isUsed())){
+        if(datastore.getTokens(customer).stream().filter(t -> !t.isUsed()).count() > 1){
             throw new IllegalArgumentException("Customer has active tokens");
         }
 
