@@ -1,16 +1,13 @@
 package stepdefs;
 
-import main.TokenManager;
 import models.Customer;
 import models.Token;
-import cucumber.api.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import main.ITokenManager;
+import Interfaces.ITokenManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
