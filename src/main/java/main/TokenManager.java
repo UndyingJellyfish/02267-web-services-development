@@ -41,14 +41,7 @@ public class TokenManager implements ITokenManager {
         return this.datastore.getTokens(customer);
     }
 
-    // To not cause compiler errors.
-    @Override
     public boolean UseToken(UUID tokenId) {
-        return false;
-    }
-
-    // Accidentally implemented this without making tests.
-    /*public boolean UseToken(UUID tokenId) {
         try {
             Token token = this.datastore.getToken(tokenId);
             token.setUsed(true);
@@ -58,5 +51,5 @@ public class TokenManager implements ITokenManager {
         }
 
         return true;
-    }*/
+    }
 }
