@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -54,9 +55,35 @@ public class TokenManagerTest {
         List<Token> beforeTokens = tokenManager.GetTokens(bob);
         try{
             tokenManager.RequestTokens(bob,1);
+            fail();
         }catch(IllegalArgumentException e){        }
         List<Token> afterTokens = tokenManager.GetTokens(bob);
         assertEquals(beforeTokens.size(), afterTokens.size());
+    }
+
+    @Test
+    public void UseExistingToken(){
+        List<Token> beforeTokens = tokenManager.RequestTokens(bob, 1);
+        try{
+            tokenManager.UseToken(beforeTokens.get(0).getTokenId());
+        } catch (IllegalArgumentException e){
+            fail();
+        }
+        List<Token> afterTokens = tokenManager.GetTokens(bob);
+        assertEquals(1, afterTokens.size());
+        boolean isUsed = afterTokens.get(0).isUsed();
+        assertTrue(isUsed);
+    }
+
+    @Test
+    public void UseNotExistingToken(){
+        UUID id = UUID.randomUUID();
+        try{
+            tokenManager.UseToken(id);
+            fail();
+        } catch (IllegalArgumentException e){
+            //Success
+        }
     }
 
 
