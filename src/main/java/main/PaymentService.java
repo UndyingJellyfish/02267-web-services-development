@@ -25,8 +25,7 @@ public class PaymentService {
     }
 
     public Transaction pay(UUID tokenId, UUID merchantId, BigDecimal amount) {
-        // Disallow transfers of 0 or less money.
-        if(amount.compareTo(new BigDecimal(0)) <= 0){
+        if(!isGreaterThanZero(amount)){
             throw new IllegalArgumentException();
         }
         Token token = tokenManager.GetToken(tokenId);
@@ -35,5 +34,9 @@ public class PaymentService {
         tokenManager.UseToken(tokenId);
         bank.transferMoney(customer, merchant, amount);
         return new Transaction(merchant, customer, amount, token);
+    }
+
+    private boolean isGreaterThanZero(BigDecimal amount) {
+        return amount.compareTo(new BigDecimal(0)) > 0;
     }
 }
