@@ -20,3 +20,9 @@ Feature: Customer Token Generator Feature
     And The user has 1 unused token
     When The user requests 2 tokens
     Then The user has 3 unused tokens
+
+  Scenario: Request tokens when having more than 1 tokens
+    Given A registered user
+    And The user has 2 unused tokens
+    When The user requests 1 of tokens
+    Then It should fail

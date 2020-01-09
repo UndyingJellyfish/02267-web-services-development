@@ -32,12 +32,11 @@ public class CustomerTokenSteps {
 
     @And("The user has spent all tokens")
     public void theUserHasSpentAllTokens() {
-
+        throw new PendingException();
     }
 
     @When("The user requests a {int} of tokens")
     public void theUserRequestsANumberOfTokens(int arg0) {
-
         tokenList = tokenManager.RequestTokens(this.customer, arg0);
     }
 
@@ -64,4 +63,13 @@ public class CustomerTokenSteps {
     }
 
 
+    @Then("It should fail")
+    public void itShouldFail() {
+        throw new PendingException();
+    }
+
+    @When("The user requests {int} of tokens")
+    public void theUserRequestsOfTokens(int arg0) {
+        throw new PendingException();
+    }
 }
