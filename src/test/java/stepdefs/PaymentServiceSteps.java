@@ -11,11 +11,13 @@ import models.Merchant;
 import models.Token;
 import models.Transaction;
 
+import java.math.BigDecimal;
+
 import static org.junit.Assert.*;
 
 public class PaymentServiceSteps {
     private Merchant merchant;
-    private double amount;
+    private BigDecimal amount;
     private ITokenManager tokenManager;
     private Token token;
     private PaymentService paymentService;
@@ -36,7 +38,7 @@ public class PaymentServiceSteps {
         accountDatastore.addAccount(merchant);
         accountDatastore.addAccount(customer);
         token = tokenManager.RequestToken(customer);
-        amount = 100.0;
+        amount = new BigDecimal(100.0);
     }
 
     @When("The merchant initiates the transaction")
@@ -48,7 +50,7 @@ public class PaymentServiceSteps {
     public void theTransactionShouldGoThrough() {
         assertEquals(customer, transaction.getDebtor());
         assertEquals(merchant, transaction.getCreditor());
-        assertEquals(amount, transaction.getAmount(), 0.0001);
+        assertEquals(amount, transaction.getAmount());
         assertTrue(token.isUsed());
     }
 }

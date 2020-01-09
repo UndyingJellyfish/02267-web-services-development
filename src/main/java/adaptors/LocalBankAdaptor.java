@@ -5,6 +5,8 @@ import dtu.ws.fastmoney.Bank;
 import models.Customer;
 import models.Merchant;
 
+import java.math.BigDecimal;
+
 public class LocalBankAdaptor implements IBank {
     private Bank bank;
 
@@ -12,7 +14,9 @@ public class LocalBankAdaptor implements IBank {
         this.bank = new Bank();
     }
 
+
     @Override
-    public void transferMoney(Customer customer, Merchant merchant, double amount) {
+    public void transferMoney(Customer customer, Merchant merchant, BigDecimal amount) {
+
     }
 }

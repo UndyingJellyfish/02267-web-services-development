@@ -10,6 +10,7 @@ import models.Merchant;
 import models.Token;
 import models.Transaction;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class PaymentService {
@@ -23,7 +24,11 @@ public class PaymentService {
         this.bank = bank;
     }
 
-    public Transaction pay(UUID tokenId, UUID merchantId, double amount) {
+    public Transaction pay(UUID tokenId, UUID merchantId, BigDecimal amount) {
+        // Disallow transfers of 0 or less money.
+        if(amount.compareTo(new BigDecimal(0)) <= 0){
+            throw new IllegalArgumentException();
+        }
         Token token = tokenManager.GetToken(tokenId);
         Merchant merchant = accountDatastore.getMerchant(merchantId);
         Customer customer = token.getCustomer();
