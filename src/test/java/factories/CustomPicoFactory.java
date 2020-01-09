@@ -1,8 +1,10 @@
 package factories;
 
+import adaptors.LocalBankAdaptor;
 import io.cucumber.core.backend.ObjectFactory;
 import io.cucumber.picocontainer.PicoFactory;
 import main.InMemoryDatastore;
+import main.PaymentService;
 import main.TokenManager;
 
 public class CustomPicoFactory implements ObjectFactory {
@@ -13,6 +15,8 @@ public class CustomPicoFactory implements ObjectFactory {
 
         delegate.addClass(InMemoryDatastore.class);
         delegate.addClass(TokenManager.class);
+        delegate.addClass(PaymentService.class);
+        delegate.addClass(LocalBankAdaptor.class);
     }
 
 

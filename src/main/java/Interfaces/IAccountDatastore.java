@@ -1,7 +1,8 @@
-package main;
+package Interfaces;
 
 import models.Account;
 import models.Customer;
+import models.Merchant;
 import models.Token;
 
 import java.util.List;
@@ -11,4 +12,5 @@ public interface IAccountDatastore {
     public Customer getCustomer(UUID customerId);
     public Account addAccount(Account account);
 
+    Merchant getMerchant(UUID merchantId);
 }

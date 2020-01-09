@@ -9,7 +9,10 @@ import java.util.UUID;
 public interface ITokenManager {
     List<Token> RequestTokens(Customer customer, int quantity);
     List<Token> GetTokens(Customer customer);
-    boolean UseToken(UUID tokenId);
+    void UseToken(UUID tokenId);
 
 
+    Token RequestToken(Customer customer);
+
+    Token GetToken(UUID tokenId);
 }

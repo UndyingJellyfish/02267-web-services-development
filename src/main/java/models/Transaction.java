@@ -7,10 +7,10 @@ public class Transaction {
     private Date transactionDate;
     private Account creditor; // To
     private Account debtor; // From
-    private Double amount;
+    private double amount;
     private Token token;
 
-    public Transaction(Account creditor, Account debtor, Double amount, Token token, Date transactionDate){
+    public Transaction(Account creditor, Account debtor, double amount, Token token, Date transactionDate){
         this.creditor = creditor;
         this.debtor = debtor;
         this.amount = amount;
@@ -18,7 +18,7 @@ public class Transaction {
         this.transactionDate = transactionDate;
     }
 
-    public Transaction(Account creditor, Account debtor, Double amount, Token token){
+    public Transaction(Account creditor, Account debtor, double amount, Token token){
         Date transactionDate = new Date();
         this.creditor = creditor;
         this.debtor = debtor;
@@ -44,7 +44,7 @@ public class Transaction {
     }
 
 
-    public Double getAmount() {
+    public double getAmount() {
         return amount;
     }
 

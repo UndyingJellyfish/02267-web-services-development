@@ -4,6 +4,7 @@ import Interfaces.IAccountDatastore;
 import Interfaces.ITokenDatastore;
 import models.Account;
 import models.Customer;
+import models.Merchant;
 import models.Token;
 
 import java.util.*;
@@ -19,6 +20,11 @@ public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore {
     }
 
     @Override
+    public Merchant getMerchant(UUID merchantId) {
+        return (Merchant) accounts.stream().filter(a -> a instanceof Merchant && a.getAccountId().equals(merchantId)).findFirst().orElse(null);
+    }
+
+    @Override
     public Account addAccount(Account account) {
         if(accounts.stream().anyMatch(a -> a.getAccountId().equals(account.getAccountId()))){
             throw new IllegalArgumentException("The value is already in the list.");
@@ -26,6 +32,8 @@ public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore {
         accounts.add(account);
         return account;
     }
+
+
 
     @Override
     public List<Token> getTokens(Customer customer){

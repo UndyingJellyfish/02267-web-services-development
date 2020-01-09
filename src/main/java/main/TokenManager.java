@@ -43,7 +43,7 @@ public class TokenManager implements ITokenManager {
         return this.datastore.getTokens(customer);
     }
 
-    public boolean UseToken(UUID tokenId) {
+    public void UseToken(UUID tokenId) {
         try {
             Token token = this.datastore.getToken(tokenId);
             token.setUsed(true);
@@ -52,6 +52,15 @@ public class TokenManager implements ITokenManager {
             throw new IllegalArgumentException();
         }
 
-        return true;
+    }
+
+    @Override
+    public Token RequestToken(Customer customer) {
+        return RequestTokens(customer, 1).get(0);
+    }
+
+    @Override
+    public Token GetToken(UUID tokenId) {
+        return this.datastore.getToken(tokenId);
     }
 }
