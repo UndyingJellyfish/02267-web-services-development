@@ -50,7 +50,7 @@ public class TransactionHistorySteps {
             Token token = tokens.get(i);
             BigDecimal amount = new BigDecimal( i == 0 ? 1 : i * 5);
             try {
-                this.expecetedTransactions.add(paymentService.pay(token.getTokenId(),this.merchant.getAccountId(), amount));
+                this.expecetedTransactions.add(paymentService.transfer(token.getTokenId(),this.merchant.getAccountId(), amount, ""));
             } catch (TokenException e) {
                 e.printStackTrace();
             }

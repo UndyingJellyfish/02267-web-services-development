@@ -41,7 +41,7 @@ public class PaymentServiceSteps {
     @When("The merchant initiates the transaction")
     public void theMerchantInitiatesTheTransaction() {
         try {
-            transaction = paymentService.pay(token.getTokenId(), merchant.getAccountId(), amount);
+            transaction = paymentService.transfer(token.getTokenId(), merchant.getAccountId(), amount,"");
         } catch (Exception e) {
             fail();
         }
@@ -59,7 +59,7 @@ public class PaymentServiceSteps {
     @When("The merchant initiates the invalid transaction")
     public void theMerchantInitiatesTheInvalidTransaction() {
         try{
-            paymentService.pay(token.getTokenId(), merchant.getAccountId(), amount);
+            paymentService.transfer(token.getTokenId(), merchant.getAccountId(), amount,"");
         } catch (Exception e){
             exception = e;
         }
@@ -130,7 +130,7 @@ public class PaymentServiceSteps {
         token = tokenManager.RequestToken(customer);
         amount = new BigDecimal(150.0);
         try {
-            transaction = paymentService.pay(token.getTokenId(), merchant.getAccountId(), amount);
+            transaction = paymentService.transfer(token.getTokenId(), merchant.getAccountId(), amount,"");
         } catch (TokenException e) {
             e.printStackTrace();
         }

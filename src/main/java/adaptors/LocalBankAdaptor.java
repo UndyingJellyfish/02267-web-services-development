@@ -16,7 +16,7 @@ public class LocalBankAdaptor implements IBank {
 
 
     @Override
-    public void transferMoney(Customer customer, Merchant merchant, BigDecimal amount) {
+    public void transferMoney(Customer customer, Merchant merchant, BigDecimal amount, String description) {
 
     }
 }

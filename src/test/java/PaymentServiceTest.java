@@ -36,7 +36,7 @@ public class PaymentServiceTest {
     public void negativeTransferAmount(){
 
         try{
-            service.pay(token.getTokenId(), merchant.getAccountId(), new BigDecimal(-23));
+            service.transfer(token.getTokenId(), merchant.getAccountId(), new BigDecimal(-23),"");
             fail();
         }
         catch(Exception e){

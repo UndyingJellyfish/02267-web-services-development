@@ -22,11 +22,11 @@ public class PaymentService {
         this.bank = bank;
     }
 
-    public Transaction pay(UUID tokenId, UUID merchantId, BigDecimal amount) throws TokenException {
-        return this.pay(tokenId, merchantId, amount, false);
+    public Transaction transfer(UUID tokenId, UUID merchantId, BigDecimal amount, String description) throws TokenException {
+        return this.transfer(tokenId, merchantId, amount, false, description);
     }
 
-    public Transaction pay(UUID tokenId, UUID merchantId, BigDecimal amount, boolean isRefund) throws TokenException {
+    public Transaction transfer(UUID tokenId, UUID merchantId, BigDecimal amount, boolean isRefund, String description) throws TokenException {
         if(!isGreaterThanZero(amount)){
             throw new IllegalArgumentException();
         }
@@ -34,7 +34,7 @@ public class PaymentService {
         Merchant merchant = accountDatastore.getMerchant(merchantId);
         Customer customer = token.getCustomer();
         tokenManager.UseToken(tokenId);
-        bank.transferMoney(customer, merchant, amount);
+        bank.transferMoney(customer, merchant, amount, "");
         Transaction transaction = new Transaction(merchant, customer, amount, token, isRefund);
         transactionDatastore.AddTransaction(transaction);
         return transaction;
@@ -49,11 +49,10 @@ public class PaymentService {
         Transaction oldTransaction, newTransaction;
         try {
             oldTransaction = transactionDatastore.GetTransactionByTokenId(tokenId);
-            newTransaction = this.pay(newToken.getTokenId(), merchantId, oldTransaction.getAmount(), true);
+            newTransaction = this.transfer(newToken.getTokenId(), merchantId, oldTransaction.getAmount(), true,"Refund");
         } catch (Exception e) {
             return false;
         }
-        bank.transferMoney(accountDatastore.getCustomer(customerId),accountDatastore.getMerchant(merchantId),newTransaction.getAmount());
         return true;
     }
 
