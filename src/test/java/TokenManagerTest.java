@@ -1,5 +1,7 @@
-import exceptions.TokenException;
 import interfaces.ITokenManager;
+import exceptions.InvalidTokenException;
+import exceptions.TokenException;
+import exceptions.UsedTokenException;
 import main.*;
 import models.Customer;
 import models.Token;
@@ -84,7 +86,7 @@ public class TokenManagerTest {
             tokenManager.UseToken(id);
             fail();
         } catch (TokenException e){
-            //Success
+            assertTrue(e instanceof  InvalidTokenException);
         }
     }
 
