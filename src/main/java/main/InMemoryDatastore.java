@@ -1,18 +1,17 @@
 package main;
 
-import Interfaces.IAccountDatastore;
-import Interfaces.ITokenDatastore;
-import models.Account;
-import models.Customer;
-import models.Merchant;
-import models.Token;
+import interfaces.IAccountDatastore;
+import interfaces.ITokenDatastore;
+import interfaces.ITransactionDatastore;
+import models.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore {
+public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore, ITransactionDatastore {
     private List<Account> accounts = new ArrayList<>();
     private List<Token> tokens = new ArrayList<>();
+    private List<Transaction> transactions = new ArrayList<>();
 
     @Override
     public Customer getCustomer(UUID customerId) {
@@ -72,4 +71,16 @@ public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore {
         return list.stream().anyMatch(x -> !set.add(x));
     }
 
+    @Override
+    public Transaction GetTransactionByTokenId(UUID tokenId) {
+        return this.transactions.stream().filter(t -> t.getToken().getTokenId().equals(tokenId)).findFirst().orElseThrow(IllegalArgumentException::new);
+    }
+
+    @Override
+    public void AddTransaction(Transaction transaction) {
+        if(transactions.stream().anyMatch(t -> t.getToken().getTokenId().equals(transaction.getToken().getTokenId()))){
+            throw new IllegalArgumentException("The value is already in the list.");
+        }
+        this.transactions.add(transaction);
+    }
 }

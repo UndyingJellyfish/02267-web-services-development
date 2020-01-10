@@ -8,6 +8,11 @@ Feature: Payment Service Tests
       When The merchant initiates the transaction
       Then The transaction should go through
 
+    Scenario: Refunding a transaction
+      Given A transaction
+      When The customer asks for a refund
+      Then The transaction should be refunded
+
 
 
 

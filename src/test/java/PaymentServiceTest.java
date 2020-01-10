@@ -14,17 +14,18 @@ import static org.junit.Assert.*;
 
 public class PaymentServiceTest {
 
-    PaymentService service;
-    Customer customer;
-    Merchant merchant;
-    Token token;
+    private PaymentService service;
+    private Customer customer;
+    private Merchant merchant;
+    private Token token;
+
     @Before
     public void setup(){
         customer = new Customer("yoink");
         merchant = new Merchant("doink");
         InMemoryDatastore store = new InMemoryDatastore();
         TokenManager tokenManager = new TokenManager(store);
-        service = new PaymentService(tokenManager, store , new LocalBankAdaptor());
+        service = new PaymentService(tokenManager, store, store, new LocalBankAdaptor());
         store.addAccount(customer);
         store.addAccount(merchant);
         token = tokenManager.RequestToken(customer);

@@ -2,6 +2,7 @@ package models;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
 public class Transaction {
 
@@ -10,6 +11,7 @@ public class Transaction {
     private Account debtor; // From
     private BigDecimal amount;
     private Token token;
+    private boolean isRefund = false;
 
     public Transaction(Account creditor, Account debtor, BigDecimal amount, Token token, Date transactionDate){
         this.creditor = creditor;
@@ -20,13 +22,13 @@ public class Transaction {
     }
 
     public Transaction(Account creditor, Account debtor, BigDecimal amount, Token token){
-        Date transactionDate = new Date();
-        this.creditor = creditor;
-        this.debtor = debtor;
-        this.amount = amount;
-        this.token = token;
-        this.transactionDate = transactionDate;
+        this(creditor,debtor,amount,token, new Date());
+    }
 
+    public Transaction(Account creditor, Account debtor, BigDecimal amount, Token token, boolean isRefund){
+        // A refund always happens today, right now
+        this(creditor,debtor,amount,token);
+        this.isRefund = isRefund;
     }
 
     /*No setters, values should be set in constructor*/
@@ -53,5 +55,7 @@ public class Transaction {
     public Token getToken() {
         return token;
     }
+
+    public boolean isRefund() { return isRefund; }
 
 }

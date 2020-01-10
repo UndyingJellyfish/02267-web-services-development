@@ -1,7 +1,7 @@
 package main;
 
-import Interfaces.ITokenDatastore;
-import Interfaces.ITokenManager;
+import interfaces.ITokenDatastore;
+import interfaces.ITokenManager;
 import models.Customer;
 import models.Token;
 

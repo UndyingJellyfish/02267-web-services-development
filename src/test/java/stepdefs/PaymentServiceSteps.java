@@ -1,7 +1,7 @@
 package stepdefs;
 
-import Interfaces.IAccountDatastore;
-import Interfaces.ITokenManager;
+import interfaces.IAccountDatastore;
+import interfaces.ITokenManager;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -24,6 +24,7 @@ public class PaymentServiceSteps {
     private Transaction transaction;
     private Customer customer;
     private IAccountDatastore accountDatastore;
+    private boolean refundSuccessful;
 
     public PaymentServiceSteps(ITokenManager tokenManager, PaymentService paymentService, IAccountDatastore accountDatastore) {
         this.tokenManager = tokenManager;
@@ -51,6 +52,29 @@ public class PaymentServiceSteps {
         assertEquals(customer, transaction.getDebtor());
         assertEquals(merchant, transaction.getCreditor());
         assertEquals(amount, transaction.getAmount());
+        assertTrue(token.isUsed());
+    }
+
+    @Given("A transaction and a registered customer")
+    public void aTransactionAndACustomer() {
+        merchant = new Merchant("Jens");
+        customer = new Customer("Jacob");
+        accountDatastore.addAccount(merchant);
+        accountDatastore.addAccount(customer);
+        token = tokenManager.RequestToken(customer);
+        amount = new BigDecimal(150.0);
+        transaction = paymentService.pay(token.getTokenId(), merchant.getAccountId(), amount);
+    }
+
+    @When("The customer asks for a refund")
+    public void theCustomerAsksForRefund() {
+        refundSuccessful = paymentService.refund(customer.getAccountId(),merchant.getAccountId(),token.getTokenId());
+    }
+
+    @Then("The transaction should be refunded")
+    public void theTransactionShouldBeRefunded() {
+        assertEquals(token.getCustomer().getAccountId(),customer.getAccountId());
+        assertTrue(refundSuccessful);
         assertTrue(token.isUsed());
     }
 }

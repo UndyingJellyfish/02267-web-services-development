@@ -1,4 +1,4 @@
-import Interfaces.ITokenManager;
+import interfaces.ITokenManager;
 import main.*;
 import models.Customer;
 import models.Token;

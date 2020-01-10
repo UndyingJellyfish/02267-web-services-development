@@ -1,6 +1,6 @@
 package adaptors;
 
-import Interfaces.IBank;
+import interfaces.IBank;
 import dtu.ws.fastmoney.Bank;
 import models.Customer;
 import models.Merchant;
