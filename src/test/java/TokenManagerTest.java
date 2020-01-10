@@ -1,3 +1,4 @@
+import exceptions.TokenException;
 import interfaces.ITokenManager;
 import main.*;
 import models.Customer;
@@ -63,11 +64,11 @@ public class TokenManagerTest {
     }
 
     @Test
-    public void UseExistingToken(){
+    public void UseExistingToken() {
         List<Token> beforeTokens = tokenManager.RequestTokens(bob, 1);
         try{
             tokenManager.UseToken(beforeTokens.get(0).getTokenId());
-        } catch (IllegalArgumentException e){
+        } catch (TokenException e){
             fail();
         }
         List<Token> afterTokens = tokenManager.GetTokens(bob);
@@ -77,12 +78,12 @@ public class TokenManagerTest {
     }
 
     @Test
-    public void UseNotExistingToken(){
+    public void UseNotExistingToken() {
         UUID id = UUID.randomUUID();
         try{
             tokenManager.UseToken(id);
             fail();
-        } catch (IllegalArgumentException e){
+        } catch (TokenException e){
             //Success
         }
     }

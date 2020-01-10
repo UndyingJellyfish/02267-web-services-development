@@ -1,5 +1,6 @@
 package stepdefs;
 
+import exceptions.TokenException;
 import interfaces.IAccountDatastore;
 import interfaces.ITokenManager;
 import io.cucumber.java.en.Given;
@@ -44,7 +45,11 @@ public class PaymentServiceSteps {
 
     @When("The merchant initiates the transaction")
     public void theMerchantInitiatesTheTransaction() {
-        transaction = paymentService.pay(token.getTokenId(), merchant.getAccountId(), amount);
+        try {
+            transaction = paymentService.pay(token.getTokenId(), merchant.getAccountId(), amount);
+        } catch (TokenException e) {
+            e.printStackTrace();
+        }
     }
 
     @Then("The transaction should go through")
@@ -63,7 +68,11 @@ public class PaymentServiceSteps {
         accountDatastore.addAccount(customer);
         token = tokenManager.RequestToken(customer);
         amount = new BigDecimal(150.0);
-        transaction = paymentService.pay(token.getTokenId(), merchant.getAccountId(), amount);
+        try {
+            transaction = paymentService.pay(token.getTokenId(), merchant.getAccountId(), amount);
+        } catch (TokenException e) {
+            e.printStackTrace();
+        }
     }
 
     @When("The customer asks for a refund")

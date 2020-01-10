@@ -4,11 +4,8 @@ import interfaces.IAccountDatastore;
 import interfaces.IBank;
 import interfaces.ITokenManager;
 import interfaces.ITransactionDatastore;
-import models.Customer;
-import models.Merchant;
-import models.Token;
-import models.Transaction;
-
+import exceptions.TokenException;
+import models.*;
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -25,11 +22,11 @@ public class PaymentService {
         this.bank = bank;
     }
 
-    public Transaction pay(UUID tokenId, UUID merchantId, BigDecimal amount) {
+    public Transaction pay(UUID tokenId, UUID merchantId, BigDecimal amount) throws TokenException {
         return this.pay(tokenId, merchantId, amount, false);
     }
 
-    public Transaction pay(UUID tokenId, UUID merchantId, BigDecimal amount, boolean isRefund) {
+    public Transaction pay(UUID tokenId, UUID merchantId, BigDecimal amount, boolean isRefund) throws TokenException {
         if(!isGreaterThanZero(amount)){
             throw new IllegalArgumentException();
         }
@@ -49,13 +46,13 @@ public class PaymentService {
 
     public boolean refund(UUID customerId, UUID merchantId, UUID tokenId) {
         Token newToken = tokenManager.RequestToken(accountDatastore.getCustomer(customerId));
-        Transaction oldTransaction;
+        Transaction oldTransaction, newTransaction;
         try {
             oldTransaction = transactionDatastore.GetTransactionByTokenId(tokenId);
+            newTransaction = this.pay(newToken.getTokenId(), merchantId, oldTransaction.getAmount(), true);
         } catch (Exception e) {
             return false;
         }
-        Transaction newTransaction = this.pay(newToken.getTokenId(), merchantId, oldTransaction.getAmount(), true);
         bank.transferMoney(accountDatastore.getCustomer(customerId),accountDatastore.getMerchant(merchantId),newTransaction.getAmount());
         return true;
     }

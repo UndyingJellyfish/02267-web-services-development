@@ -12,8 +12,14 @@ public class Transaction {
     private BigDecimal amount;
     private Token token;
     private boolean isRefund = false;
+    private UUID transactionId;
+
+    private Transaction(){
+        this.transactionId = UUID.randomUUID();
+    }
 
     public Transaction(Account creditor, Account debtor, BigDecimal amount, Token token, Date transactionDate){
+        this();
         this.creditor = creditor;
         this.debtor = debtor;
         this.amount = amount;
@@ -27,7 +33,7 @@ public class Transaction {
 
     public Transaction(Account creditor, Account debtor, BigDecimal amount, Token token, boolean isRefund){
         // A refund always happens today, right now
-        this(creditor,debtor,amount,token);
+        this(creditor, debtor, amount, token, new Date());
         this.isRefund = isRefund;
     }
 
@@ -58,4 +64,7 @@ public class Transaction {
 
     public boolean isRefund() { return isRefund; }
 
+    public UUID getTransactionId() {
+        return this.transactionId;
+    }
 }

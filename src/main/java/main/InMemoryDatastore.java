@@ -3,8 +3,8 @@ package main;
 import interfaces.IAccountDatastore;
 import interfaces.ITokenDatastore;
 import interfaces.ITransactionDatastore;
+import exceptions.InvalidTokenException;
 import models.*;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,8 +32,6 @@ public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore, IT
         return account;
     }
 
-
-
     @Override
     public List<Token> getTokens(Customer customer){
         return this.tokens.stream().filter(t -> t.getCustomer().equals(customer)).collect(Collectors.toList());
@@ -55,8 +53,8 @@ public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore, IT
     }
 
     @Override
-    public Token getToken(UUID tokenId) {
-        return this.tokens.stream().filter(t -> t.getTokenId().equals(tokenId)).findFirst().orElseThrow(IllegalArgumentException::new);
+    public Token getToken(UUID tokenId) throws InvalidTokenException {
+        return this.tokens.stream().filter(t -> t.getTokenId().equals(tokenId)).findFirst().orElseThrow(InvalidTokenException::new);
     }
 
 
