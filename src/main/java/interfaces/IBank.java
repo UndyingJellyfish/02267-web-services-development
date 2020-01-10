@@ -7,5 +7,5 @@ import java.math.BigDecimal;
 
 public interface IBank {
 
-    void transferMoney(Customer customer, Merchant merchant, BigDecimal amount);
+    void transferMoney(Customer customer, Merchant merchant, BigDecimal amount, String description);
 }

@@ -6,9 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="02267-web-services-development" />
         <module name="fastmoney-06" />
         <module name="project-src" />
+        <module name="02267-web-services-development" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
