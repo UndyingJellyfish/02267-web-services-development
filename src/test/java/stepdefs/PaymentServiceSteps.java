@@ -16,7 +16,6 @@ import models.Token;
 import models.Transaction;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import static org.junit.Assert.*;
 
@@ -29,7 +28,7 @@ public class PaymentServiceSteps {
     private Transaction transaction;
     private Customer customer;
     private IAccountDatastore accountDatastore;
-    private TokenException tokenException;
+    private Exception exception;
 
     public PaymentServiceSteps(ITokenManager tokenManager, PaymentService paymentService, IAccountDatastore accountDatastore) {
         this.tokenManager = tokenManager;
@@ -42,7 +41,7 @@ public class PaymentServiceSteps {
     public void theMerchantInitiatesTheTransaction() {
         try {
             transaction = paymentService.pay(token.getTokenId(), merchant.getAccountId(), amount);
-        } catch (TokenException e) {
+        } catch (Exception e) {
             fail();
         }
     }
@@ -60,15 +59,15 @@ public class PaymentServiceSteps {
     public void theMerchantInitiatesTheInvalidTransaction() {
         try{
             paymentService.pay(token.getTokenId(), merchant.getAccountId(), amount);
-        } catch (TokenException e){
-            tokenException = e;
+        } catch (Exception e){
+            exception = e;
         }
     }
 
     @Then("The transaction should fail")
     public void theTransactionShouldFail() {
-        assertNotNull(tokenException);
-        assertTrue(tokenException instanceof InvalidTokenException);
+        assertNotNull(exception);
+        assertTrue(exception instanceof InvalidTokenException);
     }
 
 
@@ -108,6 +107,16 @@ public class PaymentServiceSteps {
 
     @Then("The transaction should fail and inform that the token is used")
     public void theTransactionShouldFailAndInformThatTheTokenIsUsed() {
-        assertTrue(tokenException instanceof UsedTokenException);
+        assertTrue(exception instanceof UsedTokenException);
+    }
+
+    @And("An invalid {int}")
+    public void anInvalidAmount(int arg0) {
+        amount = new BigDecimal(arg0);
+    }
+
+    @Then("The transaction should fail and inform that the amount is invalid")
+    public void theTransactionShouldFailAndInformThatTheAmountIsInvalid() {
+        assertTrue(exception instanceof IllegalArgumentException);
     }
 }

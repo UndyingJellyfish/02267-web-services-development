@@ -1,8 +1,6 @@
 Feature: Payment Service Tests
 
   Background: Payment Service test cases
-
-
     Scenario: Creating a transaction
       Given A merchant
       And A valid token
@@ -23,6 +21,17 @@ Feature: Payment Service Tests
       And A positive amount
       When The merchant initiates the invalid transaction
       Then The transaction should fail and inform that the token is used
+
+  Scenario Outline: Creating an invalid transaction with an invalid amount
+     Given A merchant
+     And A token that has already been used
+     And An invalid <amount>
+     When The merchant initiates the invalid transaction
+     Then The transaction should fail and inform that the amount is invalid
+    Examples:
+      | amount |
+    | 0       |
+    |    -23     |
 
 
 
