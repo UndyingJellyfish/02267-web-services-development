@@ -1,6 +1,7 @@
 package Interfaces;
 
 import exceptions.InvalidTokenException;
+import exceptions.TokenException;
 import models.Customer;
 import models.Token;
 
@@ -10,7 +11,7 @@ import java.util.UUID;
 public interface ITokenManager {
     List<Token> RequestTokens(Customer customer, int quantity);
     List<Token> GetTokens(Customer customer);
-    void UseToken(UUID tokenId) throws InvalidTokenException;
+    void UseToken(UUID tokenId) throws TokenException;
 
 
     Token RequestToken(Customer customer);

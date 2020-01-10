@@ -3,6 +3,9 @@ package stepdefs;
 import Interfaces.IAccountDatastore;
 import Interfaces.ITokenManager;
 import exceptions.InvalidTokenException;
+import exceptions.TokenException;
+import exceptions.UsedTokenException;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -13,6 +16,7 @@ import models.Token;
 import models.Transaction;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import static org.junit.Assert.*;
 
@@ -25,7 +29,7 @@ public class PaymentServiceSteps {
     private Transaction transaction;
     private Customer customer;
     private IAccountDatastore accountDatastore;
-    private InvalidTokenException invalidTokenException;
+    private TokenException tokenException;
 
     public PaymentServiceSteps(ITokenManager tokenManager, PaymentService paymentService, IAccountDatastore accountDatastore) {
         this.tokenManager = tokenManager;
@@ -33,21 +37,12 @@ public class PaymentServiceSteps {
         this.accountDatastore = accountDatastore;
     }
 
-    @Given("A merchant, a valid token and a positive amount")
-    public void aMerchantAValidTokenAndAPositiveAmount() {
-        merchant = new Merchant("Alice");
-        customer = new Customer("Bob");
-        accountDatastore.addAccount(merchant);
-        accountDatastore.addAccount(customer);
-        token = tokenManager.RequestToken(customer);
-        amount = new BigDecimal(100.0);
-    }
 
     @When("The merchant initiates the transaction")
     public void theMerchantInitiatesTheTransaction() {
         try {
             transaction = paymentService.pay(token.getTokenId(), merchant.getAccountId(), amount);
-        } catch (InvalidTokenException e) {
+        } catch (TokenException e) {
             fail();
         }
     }
@@ -60,27 +55,59 @@ public class PaymentServiceSteps {
         assertTrue(token.isUsed());
     }
 
-    @Given("A merchant, a token which does not exist and a positive amount")
-    public void aMerchantATokenWhichDoesNotExistAndAPositiveAmount() {
-        merchant = new Merchant("Alice");
-        customer = new Customer("Bob");
-        accountDatastore.addAccount(merchant);
-        accountDatastore.addAccount(customer);
-        token = new Token(null);
-        amount = new BigDecimal("100");
-    }
 
     @When("The merchant initiates the invalid transaction")
     public void theMerchantInitiatesTheInvalidTransaction() {
         try{
             paymentService.pay(token.getTokenId(), merchant.getAccountId(), amount);
-        } catch (InvalidTokenException e){
-            invalidTokenException = e;
+        } catch (TokenException e){
+            tokenException = e;
         }
     }
 
     @Then("The transaction should fail")
     public void theTransactionShouldFail() {
-        assertNotNull(invalidTokenException);
+        assertNotNull(tokenException);
+        assertTrue(tokenException instanceof InvalidTokenException);
+    }
+
+
+    @Given("A merchant")
+    public void aMerchant() {
+        merchant = new Merchant("Alice");
+        accountDatastore.addAccount(merchant);
+
+    }
+
+    @And("A valid token")
+    public void aValidToken() {
+        customer = new Customer("Bob");
+        accountDatastore.addAccount(customer);
+        token = tokenManager.RequestToken(customer);
+    }
+
+    @And("A positive amount")
+    public void aPositiveAmount() {
+        amount = new BigDecimal("100");
+    }
+
+    @And("A token that doesn't exist")
+    public void aTokenThatDoesnTExist() {
+        token = new Token(null);
+    }
+
+    @And("A token that has already been used")
+    public void aTokenThatHasAlreadyBeenUsed() {
+        token = tokenManager.RequestToken(customer);
+        try {
+            tokenManager.UseToken(token.getTokenId());
+        } catch (TokenException e) {
+            fail();
+        }
+    }
+
+    @Then("The transaction should fail and inform that the token is used")
+    public void theTransactionShouldFailAndInformThatTheTokenIsUsed() {
+        assertTrue(tokenException instanceof UsedTokenException);
     }
 }
