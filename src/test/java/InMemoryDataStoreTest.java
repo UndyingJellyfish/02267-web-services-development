@@ -1,3 +1,4 @@
+import exceptions.InvalidTokenException;
 import main.InMemoryDatastore;
 import models.Account;
 import models.Customer;
@@ -60,7 +61,12 @@ public class InMemoryDataStoreTest {
         Customer customer = new Customer("bob");
         Token token = new Token(customer);
         datastore.assignTokens(customer,new ArrayList<Token>(){{add(token);}});
-        Token found = datastore.getToken(token.getTokenId());
+        Token found = null;
+        try {
+            found = datastore.getToken(token.getTokenId());
+        } catch (InvalidTokenException e) {
+            fail();
+        }
         assertEquals(found, token);
 
     }
@@ -72,7 +78,7 @@ public class InMemoryDataStoreTest {
         try{
             Token found = datastore.getToken(UUID.randomUUID());
             fail();
-        }catch(IllegalArgumentException e){ }
+        }catch(InvalidTokenException e){ }
 
     }
 

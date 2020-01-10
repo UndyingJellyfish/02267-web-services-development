@@ -2,6 +2,7 @@ package main;
 
 import Interfaces.IAccountDatastore;
 import Interfaces.ITokenDatastore;
+import exceptions.InvalidTokenException;
 import models.Account;
 import models.Customer;
 import models.Merchant;
@@ -56,8 +57,8 @@ public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore {
     }
 
     @Override
-    public Token getToken(UUID tokenId) {
-        return this.tokens.stream().filter(t -> t.getTokenId().equals(tokenId)).findFirst().orElseThrow(IllegalArgumentException::new);
+    public Token getToken(UUID tokenId) throws InvalidTokenException {
+        return this.tokens.stream().filter(t -> t.getTokenId().equals(tokenId)).findFirst().orElseThrow(InvalidTokenException::new);
     }
 
 

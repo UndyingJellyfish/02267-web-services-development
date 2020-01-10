@@ -4,6 +4,7 @@ import Interfaces.IAccountDatastore;
 import Interfaces.IBank;
 import Interfaces.ITokenManager;
 import dtu.ws.fastmoney.Bank;
+import exceptions.InvalidTokenException;
 import exceptions.PayException;
 import models.Customer;
 import models.Merchant;
@@ -24,7 +25,7 @@ public class PaymentService {
         this.bank = bank;
     }
 
-    public Transaction pay(UUID tokenId, UUID merchantId, BigDecimal amount) {
+    public Transaction pay(UUID tokenId, UUID merchantId, BigDecimal amount) throws InvalidTokenException {
         if(!isGreaterThanZero(amount)){
             throw new IllegalArgumentException();
         }

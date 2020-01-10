@@ -2,6 +2,7 @@ package stepdefs;
 
 import Interfaces.IAccountDatastore;
 import Interfaces.ITokenManager;
+import exceptions.InvalidTokenException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -24,6 +25,7 @@ public class PaymentServiceSteps {
     private Transaction transaction;
     private Customer customer;
     private IAccountDatastore accountDatastore;
+    private InvalidTokenException invalidTokenException;
 
     public PaymentServiceSteps(ITokenManager tokenManager, PaymentService paymentService, IAccountDatastore accountDatastore) {
         this.tokenManager = tokenManager;
@@ -43,7 +45,11 @@ public class PaymentServiceSteps {
 
     @When("The merchant initiates the transaction")
     public void theMerchantInitiatesTheTransaction() {
-        transaction = paymentService.pay(token.getTokenId(), merchant.getAccountId(), amount);
+        try {
+            transaction = paymentService.pay(token.getTokenId(), merchant.getAccountId(), amount);
+        } catch (InvalidTokenException e) {
+            fail();
+        }
     }
 
     @Then("The transaction should go through")
@@ -52,5 +58,29 @@ public class PaymentServiceSteps {
         assertEquals(merchant, transaction.getCreditor());
         assertEquals(amount, transaction.getAmount());
         assertTrue(token.isUsed());
+    }
+
+    @Given("A merchant, a token which does not exist and a positive amount")
+    public void aMerchantATokenWhichDoesNotExistAndAPositiveAmount() {
+        merchant = new Merchant("Alice");
+        customer = new Customer("Bob");
+        accountDatastore.addAccount(merchant);
+        accountDatastore.addAccount(customer);
+        token = new Token(null);
+        amount = new BigDecimal("100");
+    }
+
+    @When("The merchant initiates the invalid transaction")
+    public void theMerchantInitiatesTheInvalidTransaction() {
+        try{
+            paymentService.pay(token.getTokenId(), merchant.getAccountId(), amount);
+        } catch (InvalidTokenException e){
+            invalidTokenException = e;
+        }
+    }
+
+    @Then("The transaction should fail")
+    public void theTransactionShouldFail() {
+        assertNotNull(invalidTokenException);
     }
 }

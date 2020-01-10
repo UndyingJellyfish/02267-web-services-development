@@ -1,5 +1,6 @@
 package Interfaces;
 
+import exceptions.InvalidTokenException;
 import models.Customer;
 import models.Token;
 
@@ -10,5 +11,5 @@ public interface ITokenDatastore {
 
     public List<Token> getTokens(Customer customer);
     public List<Token> assignTokens(Customer customer, List<Token> tokens);
-    public Token getToken(UUID tokenId);
+    public Token getToken(UUID tokenId) throws InvalidTokenException;
 }

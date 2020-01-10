@@ -2,6 +2,7 @@ package main;
 
 import Interfaces.ITokenDatastore;
 import Interfaces.ITokenManager;
+import exceptions.InvalidTokenException;
 import models.Customer;
 import models.Token;
 
@@ -43,13 +44,13 @@ public class TokenManager implements ITokenManager {
         return this.datastore.getTokens(customer);
     }
 
-    public void UseToken(UUID tokenId) {
+    public void UseToken(UUID tokenId) throws InvalidTokenException {
         try {
             Token token = this.datastore.getToken(tokenId);
             token.setUsed(true);
             token.setUseDate(new Date());
         }catch(Exception e){
-            throw new IllegalArgumentException();
+            throw new InvalidTokenException();
         }
 
     }
@@ -60,7 +61,7 @@ public class TokenManager implements ITokenManager {
     }
 
     @Override
-    public Token GetToken(UUID tokenId) {
-        return this.datastore.getToken(tokenId);
+    public Token GetToken(UUID tokenId) throws InvalidTokenException {
+        return  this.datastore.getToken(tokenId);
     }
 }

@@ -1,4 +1,6 @@
 import Interfaces.ITokenManager;
+import exceptions.InvalidTokenException;
+import exceptions.TokenException;
 import main.*;
 import models.Customer;
 import models.Token;
@@ -67,7 +69,7 @@ public class TokenManagerTest {
         List<Token> beforeTokens = tokenManager.RequestTokens(bob, 1);
         try{
             tokenManager.UseToken(beforeTokens.get(0).getTokenId());
-        } catch (IllegalArgumentException e){
+        } catch (TokenException e){
             fail();
         }
         List<Token> afterTokens = tokenManager.GetTokens(bob);
@@ -82,7 +84,7 @@ public class TokenManagerTest {
         try{
             tokenManager.UseToken(id);
             fail();
-        } catch (IllegalArgumentException e){
+        } catch (InvalidTokenException e){
             //Success
         }
     }
