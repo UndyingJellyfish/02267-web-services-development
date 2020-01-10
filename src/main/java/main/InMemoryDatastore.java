@@ -5,13 +5,6 @@ import interfaces.ITokenDatastore;
 import interfaces.ITransactionDatastore;
 import exceptions.InvalidTokenException;
 import models.*;
-import Interfaces.IAccountDatastore;
-import Interfaces.ITokenDatastore;
-import exceptions.InvalidTokenException;
-import models.Account;
-import models.Customer;
-import models.Merchant;
-import models.Token;
 
 import java.util.*;
 import java.util.stream.Collectors;

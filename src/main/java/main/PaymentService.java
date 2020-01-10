@@ -1,17 +1,5 @@
 package main;
 
-import Interfaces.IAccountDatastore;
-import Interfaces.IBank;
-import Interfaces.ITokenManager;
-import dtu.ws.fastmoney.Bank;
-import exceptions.InvalidTokenException;
-import exceptions.PayException;
-import exceptions.TokenException;
-import models.Customer;
-import models.Merchant;
-import models.Token;
-import models.Transaction;
-
 import interfaces.IAccountDatastore;
 import interfaces.IBank;
 import interfaces.ITokenManager;

@@ -1,7 +1,6 @@
 import interfaces.ITokenManager;
 import exceptions.InvalidTokenException;
 import exceptions.TokenException;
-import exceptions.UsedTokenException;
 import main.*;
 import models.Customer;
 import models.Token;

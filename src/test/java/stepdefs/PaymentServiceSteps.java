@@ -1,9 +1,9 @@
 package stepdefs;
 
+import exceptions.InvalidTokenException;
 import exceptions.TokenException;
 import interfaces.IAccountDatastore;
 import interfaces.ITokenManager;
-import exceptions.TokenException;
 import exceptions.UsedTokenException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -121,8 +121,8 @@ public class PaymentServiceSteps {
         assertTrue(exception instanceof IllegalArgumentException);
     }
 
-    @Given("A transaction and a registered customer")
-    public void aTransactionAndACustomer() {
+    @Given("A transaction")
+    public void aTransaction() {
         merchant = new Merchant("Jens");
         customer = new Customer("Jacob");
         accountDatastore.addAccount(merchant);
