@@ -1,8 +1,10 @@
 package stepdefs;
 
+import interfaces.IAccountDatastore;
 import interfaces.ITokenManager;
 import cucumber.api.PendingException;
 import exceptions.TokenException;
+import interfaces.ITransactionDatastore;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -23,21 +25,25 @@ public class TransactionHistorySteps {
 
     private final ITokenManager tokenManager;
     private final PaymentService paymentService;
-    //private final ITransactionDataStore transactionDataStore;
+    private final ITransactionDatastore transactionDataStore;
+    private final IAccountDatastore accountDatastore;
     private Customer customer;
     private Merchant merchant;
     private List<Transaction> expecetedTransactions;
 
-    public TransactionHistorySteps(ITokenManager tokenManager, PaymentService paymentService){//, ITransactionDataStore transactionDataStore){
+    public TransactionHistorySteps(ITokenManager tokenManager, PaymentService paymentService, ITransactionDatastore transactionDataStore, IAccountDatastore accountDatastore){
         this.tokenManager = tokenManager;
         this.paymentService = paymentService;
-        //this.transactionDataStore = transactionDataStore;
+        this.transactionDataStore = transactionDataStore;
+        this.accountDatastore = accountDatastore;
     }
 
     @Given("A Customer with a transaction history")
     public void aCustomerWithATransactionHistory() {
         this.customer = new Customer("Test Customer");
         this.merchant = new Merchant("Test Merchant");
+        accountDatastore.addAccount(customer);
+        accountDatastore.addAccount(merchant);
         this.expecetedTransactions = new ArrayList<>();
         List<Token> tokens =  tokenManager.RequestTokens(this.customer, 5);
         for(int i = 0; i < tokens.size(); i++){
@@ -55,8 +61,7 @@ public class TransactionHistorySteps {
 
     @When("The Customer requests the transaction history")
     public void theCustomerRequestsTheTransactionHistory() {
-        throw new PendingException();
-        //this.transactions = this.transactionDataStore.getTransactions(this.customer);
+        this.transactions = this.transactionDataStore.getTransactions(this.customer);
     }
 
     @Then("The Customer receives the transaction history")

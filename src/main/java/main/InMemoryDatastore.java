@@ -82,4 +82,12 @@ public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore, IT
         }
         this.transactions.add(transaction);
     }
+
+    @Override
+    public List<Transaction> getTransactions(Account account) {
+        return this.transactions.stream().filter(t -> t.getCreditor().getAccountId().equals(account.getAccountId()) ||
+                t.getDebtor().getAccountId().equals(account.getAccountId())
+        ).collect(Collectors.toList());
+
+    }
 }
