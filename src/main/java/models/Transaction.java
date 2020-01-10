@@ -2,6 +2,7 @@ package models;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
 public class Transaction {
 
@@ -10,8 +11,14 @@ public class Transaction {
     private Account debtor; // From
     private BigDecimal amount;
     private Token token;
+    private UUID transactionId;
+
+    private Transaction(){
+        this.transactionId = UUID.randomUUID();
+    }
 
     public Transaction(Account creditor, Account debtor, BigDecimal amount, Token token, Date transactionDate){
+        this();
         this.creditor = creditor;
         this.debtor = debtor;
         this.amount = amount;
@@ -20,13 +27,7 @@ public class Transaction {
     }
 
     public Transaction(Account creditor, Account debtor, BigDecimal amount, Token token){
-        Date transactionDate = new Date();
-        this.creditor = creditor;
-        this.debtor = debtor;
-        this.amount = amount;
-        this.token = token;
-        this.transactionDate = transactionDate;
-
+        this(creditor, debtor, amount, token, new Date());
     }
 
     /*No setters, values should be set in constructor*/
@@ -54,4 +55,7 @@ public class Transaction {
         return token;
     }
 
+    public UUID getTransactionId() {
+        return this.transactionId;
+    }
 }
