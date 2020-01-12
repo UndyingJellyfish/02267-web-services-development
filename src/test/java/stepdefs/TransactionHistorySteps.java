@@ -81,7 +81,6 @@ public class TransactionHistorySteps {
         assertNotNull(transactions);
         assertEquals(expecetedTransactions.size(), transactions.size());
         for(Transaction transaction : transactions){
-
             Transaction expectedTransaction = this.expecetedTransactions.stream().filter(t -> t.getTransactionId().equals(transaction.getTransactionId())).findFirst().orElse(null);
             if(expectedTransaction == null){
                 fail();
