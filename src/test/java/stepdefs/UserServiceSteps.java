@@ -5,6 +5,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import main.UserService;
 import models.Customer;
+import models.Merchant;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -13,6 +14,9 @@ public class UserServiceSteps {
     private String customerName;
     private UserService userService;
     private Customer customer;
+    private String merchantName;
+    private Merchant merchant;
+
 
     public UserServiceSteps(UserService userService) {
         this.userService = userService;
@@ -32,5 +36,21 @@ public class UserServiceSteps {
     public void theCustomerShouldBeSignedUp() {
         assertNotNull(customer);
         assertEquals(customerName, customer.getName());
+    }
+
+    @Given("The name of a merchant")
+    public void theNameOfAMerchant() {
+        merchantName = "Khajit";
+    }
+
+    @When("The merchant signs up")
+    public void theMerchantSignsUp() {
+        merchant = userService.SignUpMerchant(merchantName);
+    }
+
+    @Then("The merchant should be signed up")
+    public void theMerchantShouldBeSignedUp() {
+        assertNotNull(merchant);
+        assertEquals(merchantName, merchant.getName());
     }
 }
