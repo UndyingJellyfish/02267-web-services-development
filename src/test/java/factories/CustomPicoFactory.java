@@ -16,8 +16,6 @@ public class CustomPicoFactory implements ObjectFactory {
 
         delegate.addClass(InMemoryDatastore.class);
         delegate.addClass(TokenManager.class);
-        delegate.addClass(PaymentService.class);
-        delegate.addClass(LocalBankAdaptor.class);
         delegate.addClass(Transaction.class);
     }
 

@@ -1,6 +1,8 @@
 package stepdefs;
 
+import dtu.ws.fastmoney.BankServiceException;
 import interfaces.IAccountDatastore;
+import interfaces.IBank;
 import interfaces.ITokenManager;
 import cucumber.api.PendingException;
 import exceptions.TokenException;
@@ -19,6 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 
 public class TransactionHistorySteps {
@@ -30,10 +35,12 @@ public class TransactionHistorySteps {
     private Customer customer;
     private Merchant merchant;
     private List<Transaction> expecetedTransactions;
+    private IBank bank;
 
-    public TransactionHistorySteps(ITokenManager tokenManager, PaymentService paymentService, ITransactionDatastore transactionDataStore, IAccountDatastore accountDatastore){
+    public TransactionHistorySteps(ITokenManager tokenManager, ITransactionDatastore transactionDataStore, IAccountDatastore accountDatastore){
+        this.bank = mock(IBank.class);
         this.tokenManager = tokenManager;
-        this.paymentService = paymentService;
+        this.paymentService = new PaymentService(tokenManager, accountDatastore, transactionDataStore, bank);
         this.transactionDataStore = transactionDataStore;
         this.accountDatastore = accountDatastore;
     }
@@ -51,7 +58,12 @@ public class TransactionHistorySteps {
             BigDecimal amount = new BigDecimal( i == 0 ? 1 : i * 5);
             try {
                 this.expecetedTransactions.add(paymentService.transfer(token.getTokenId(),this.merchant.getAccountId(), amount, ""));
-            } catch (TokenException e) {
+                verify(bank, times(1)).transferMoney(
+                        argThat( c -> c.getAccountId().equals(token.getCustomer().getAccountId())),
+                        argThat(m -> m.getAccountId().equals(merchant.getAccountId())),
+                        eq(amount),
+                        eq(""));
+            } catch (TokenException | BankServiceException e) {
                 e.printStackTrace();
             }
         }

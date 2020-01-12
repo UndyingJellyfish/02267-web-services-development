@@ -1,5 +1,6 @@
 package stepdefs;
 
+import dtu.ws.fastmoney.BankServiceException;
 import exceptions.InvalidTokenException;
 import exceptions.TokenException;
 import interfaces.IAccountDatastore;
@@ -71,7 +72,7 @@ public class PaymentServiceSteps {
 
 
     @When("The merchant initiates the invalid transaction")
-    public void theMerchantInitiatesTheInvalidTransaction() {
+    public void theMerchantInitiatesTheInvalidTransaction() throws BankServiceException {
         try{
             paymentService.transfer(token.getTokenId(), merchant.getAccountId(), amount,"");
         } catch (Exception e){
@@ -151,7 +152,7 @@ public class PaymentServiceSteps {
                     argThat(m -> m.getAccountId().equals(merchant.getAccountId())),
                     eq(amount),
                     eq(""));
-        } catch (TokenException e) {
+        } catch (TokenException | BankServiceException e) {
             e.printStackTrace();
         }
     }

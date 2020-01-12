@@ -1,5 +1,6 @@
 package adaptors;
 
+import dtu.ws.fastmoney.BankServiceException;
 import interfaces.IBank;
 import dtu.ws.fastmoney.Bank;
 import models.Customer;
@@ -16,7 +17,12 @@ public class LocalBankAdaptor implements IBank {
 
 
     @Override
-    public void transferMoney(Customer customer, Merchant merchant, BigDecimal amount, String description) {
+    public void transferMoney(Customer customer, Merchant merchant, BigDecimal amount, String description) throws BankServiceException {
+        this.bank.transferMoneyFromTo(
+                customer.getAccountId().toString(),
+                merchant.getAccountId().toString(),
+                amount,
+                description);
 
     }
 }
