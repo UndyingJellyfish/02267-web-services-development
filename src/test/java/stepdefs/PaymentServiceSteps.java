@@ -2,7 +2,6 @@ package stepdefs;
 
 import exceptions.InvalidTokenException;
 import exceptions.TokenException;
-import factories.LambdaMatcher;
 import interfaces.IAccountDatastore;
 import interfaces.IBank;
 import interfaces.ITokenManager;
@@ -53,8 +52,8 @@ public class PaymentServiceSteps {
         try {
             transaction = paymentService.transfer(token.getTokenId(), merchant.getAccountId(), amount,"");
             verify(bank, times(1)).transferMoney(
-                    argThat(new LambdaMatcher<>(c -> c.getAccountId().equals(token.getCustomer().getAccountId()))),
-                    argThat(new LambdaMatcher<>(m -> m.getAccountId().equals(merchant.getAccountId()))),
+                    argThat( c -> c.getAccountId().equals(token.getCustomer().getAccountId())),
+                    argThat(m -> m.getAccountId().equals(merchant.getAccountId())),
                     eq(amount),
                     eq(""));
         } catch (Exception e) {
@@ -147,7 +146,11 @@ public class PaymentServiceSteps {
         amount = new BigDecimal(150.0);
         try {
             transaction = paymentService.transfer(token.getTokenId(), merchant.getAccountId(), amount,"");
-            verify(bank, times(1)).transferMoney(any(), any(), any(), any());
+            verify(bank, times(1)).transferMoney(
+                    argThat(c -> c.getAccountId().equals(token.getCustomer().getAccountId())),
+                    argThat(m -> m.getAccountId().equals(merchant.getAccountId())),
+                    eq(amount),
+                    eq(""));
         } catch (TokenException e) {
             e.printStackTrace();
         }
