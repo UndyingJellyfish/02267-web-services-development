@@ -2,9 +2,12 @@ package stepdefs;
 
 import exceptions.InvalidTokenException;
 import exceptions.TokenException;
+import factories.LambdaMatcher;
 import interfaces.IAccountDatastore;
+import interfaces.IBank;
 import interfaces.ITokenManager;
 import exceptions.UsedTokenException;
+import interfaces.ITransactionDatastore;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -18,8 +21,10 @@ import models.Transaction;
 import java.math.BigDecimal;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class PaymentServiceSteps {
+    private final ITransactionDatastore transactionDatastore;
     private Merchant merchant;
     private BigDecimal amount;
     private ITokenManager tokenManager;
@@ -31,10 +36,15 @@ public class PaymentServiceSteps {
     private boolean refundSuccessful;
     private Exception exception;
 
-    public PaymentServiceSteps(ITokenManager tokenManager, PaymentService paymentService, IAccountDatastore accountDatastore) {
+    private IBank bank;
+
+    public PaymentServiceSteps(ITokenManager tokenManager, IAccountDatastore accountDatastore, ITransactionDatastore transactionDatastore) {
+
+        this.bank = mock(IBank.class);
+        this.transactionDatastore = transactionDatastore;
         this.tokenManager = tokenManager;
-        this.paymentService = paymentService;
         this.accountDatastore = accountDatastore;
+        this.paymentService = new PaymentService(this.tokenManager, this.accountDatastore,this.transactionDatastore, this.bank);
     }
 
 
@@ -42,6 +52,11 @@ public class PaymentServiceSteps {
     public void theMerchantInitiatesTheTransaction() {
         try {
             transaction = paymentService.transfer(token.getTokenId(), merchant.getAccountId(), amount,"");
+            verify(bank, times(1)).transferMoney(
+                    argThat(new LambdaMatcher<>(c -> c.getAccountId().equals(token.getCustomer().getAccountId()))),
+                    argThat(new LambdaMatcher<>(m -> m.getAccountId().equals(merchant.getAccountId()))),
+                    eq(amount),
+                    eq(""));
         } catch (Exception e) {
             fail();
         }
@@ -61,6 +76,7 @@ public class PaymentServiceSteps {
         try{
             paymentService.transfer(token.getTokenId(), merchant.getAccountId(), amount,"");
         } catch (Exception e){
+            verify(bank, never()).transferMoney(any(), any(), any(), any());
             exception = e;
         }
     }
@@ -131,6 +147,7 @@ public class PaymentServiceSteps {
         amount = new BigDecimal(150.0);
         try {
             transaction = paymentService.transfer(token.getTokenId(), merchant.getAccountId(), amount,"");
+            verify(bank, times(1)).transferMoney(any(), any(), any(), any());
         } catch (TokenException e) {
             e.printStackTrace();
         }
