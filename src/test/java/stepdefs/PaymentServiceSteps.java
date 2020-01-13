@@ -1,6 +1,7 @@
 package stepdefs;
 
 import dtu.ws.fastmoney.BankServiceException_Exception;
+import main.exceptions.DuplicateEntryException;
 import main.exceptions.InvalidTokenException;
 import main.exceptions.TokenException;
 import main.interfaces.IAccountDatastore;
@@ -13,10 +14,10 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import main.services.PaymentService;
-import models.Customer;
-import models.Merchant;
-import models.Token;
-import models.Transaction;
+import main.models.Customer;
+import main.models.Merchant;
+import main.models.Token;
+import main.models.Transaction;
 
 import java.math.BigDecimal;
 
@@ -90,14 +91,22 @@ public class PaymentServiceSteps {
     @Given("A merchant")
     public void aMerchant() {
         merchant = new Merchant("Alice");
-        accountDatastore.addAccount(merchant);
+        try {
+            accountDatastore.addAccount(merchant);
+        } catch (DuplicateEntryException e) {
+            fail();
+        }
 
     }
 
     @And("A valid token")
     public void aValidToken() {
-        customer = new Customer("Bob");
-        accountDatastore.addAccount(customer);
+        customer = new Customer("Bob","123");
+        try {
+            accountDatastore.addAccount(customer);
+        } catch (DuplicateEntryException e) {
+            fail();
+        }
         token = tokenManager.RequestToken(customer);
     }
 
@@ -138,10 +147,16 @@ public class PaymentServiceSteps {
 
     @Given("A transaction")
     public void aTransaction() {
+        String cpr = "123";
         merchant = new Merchant("Jens");
-        customer = new Customer("Jacob");
-        accountDatastore.addAccount(merchant);
-        accountDatastore.addAccount(customer);
+        customer = new Customer("Jacob",cpr);
+        try{
+            accountDatastore.addAccount(merchant);
+            accountDatastore.addAccount(customer);
+        }catch(Exception e){
+            fail();
+        }
+
         token = tokenManager.RequestToken(customer);
         amount = new BigDecimal("150.0");
         try {

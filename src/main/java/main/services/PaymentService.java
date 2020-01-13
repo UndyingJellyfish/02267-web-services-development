@@ -6,7 +6,7 @@ import main.interfaces.IBank;
 import main.interfaces.ITokenManager;
 import main.interfaces.ITransactionDatastore;
 import main.exceptions.TokenException;
-import models.*;
+import main.models.*;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

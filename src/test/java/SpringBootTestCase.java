@@ -1,7 +1,7 @@
 
 import gherkin.deps.com.google.gson.Gson;
 import main.Program;
-import main.controllers.PaymentController;
+import main.controllers.TransferController;
 import main.exceptions.InvalidTokenException;
 import main.exceptions.TokenException;
 import main.services.PaymentService;
@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = PaymentController.class)
+@WebMvcTest(controllers = TransferController.class)
 @ContextConfiguration( classes = Program.class)
 //@SpringBootTest(classes = Program.class)
 public class SpringBootTestCase {
@@ -42,13 +42,13 @@ public class SpringBootTestCase {
 
         when(paymentService.transfer(any(), any(), any(), any())).thenThrow(new InvalidTokenException());
 
-        PaymentController.TransactionDto s = new PaymentController.TransactionDto();
+        TransferController.TransactionDto s = new TransferController.TransactionDto();
         s.setAmount(new BigDecimal(10));
         s.setMerchantId(UUID.randomUUID());
         s.setTokenId(UUID.randomUUID());
         s.setDescription("");
 
-        mvc.perform(post("/payment")
+        mvc.perform(post("/payment/transfer")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(s)))
             .andExpect(status().isBadRequest());

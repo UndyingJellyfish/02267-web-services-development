@@ -1,7 +1,7 @@
 package stepdefs;
 
-import models.Customer;
-import models.Token;
+import main.models.Customer;
+import main.models.Token;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -25,7 +25,7 @@ public class CustomerTokenSteps {
     @Given("A registered user")
     public void aRegisteredUser() {
 
-        this.customer = new Customer("test");
+        this.customer = new Customer("test","123");
     }
 
     @And("The user has spent all tokens")

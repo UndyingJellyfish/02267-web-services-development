@@ -1,24 +1,24 @@
 package stepdefs;
 
+import main.exceptions.DuplicateEntryException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import main.services.UserService;
-import models.Customer;
-import models.Merchant;
+import main.services.AccountService;
+import main.models.Customer;
+import main.models.Merchant;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class UserServiceSteps {
     private String customerName;
-    private UserService userService;
+    private AccountService userService;
     private Customer customer;
     private String merchantName;
     private Merchant merchant;
 
 
-    public UserServiceSteps(UserService userService) {
+    public UserServiceSteps(AccountService userService) {
         this.userService = userService;
     }
 
@@ -29,7 +29,11 @@ public class UserServiceSteps {
 
     @When("The customer signs up")
     public void theCustomerSignsUp() {
-        customer = userService.addAccount(new Customer(customerName));
+        try {
+            customer = userService.addAccount(new Customer(customerName,"lol jeg er cpr"));
+        } catch (DuplicateEntryException e) {
+            fail();
+        }
     }
 
     @Then("The customer should be signed up")
@@ -45,7 +49,11 @@ public class UserServiceSteps {
 
     @When("The merchant signs up")
     public void theMerchantSignsUp() {
-        merchant = userService.addAccount(new Merchant(merchantName));
+        try {
+            merchant = userService.addAccount(new Merchant(merchantName));
+        } catch (DuplicateEntryException e) {
+            fail();
+        }
     }
 
     @Then("The merchant should be signed up")

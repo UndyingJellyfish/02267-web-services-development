@@ -1,8 +1,8 @@
 package main.interfaces;
 
 import dtu.ws.fastmoney.BankServiceException_Exception;
-import models.Customer;
-import models.Merchant;
+import main.models.Customer;
+import main.models.Merchant;
 
 import java.math.BigDecimal;
 

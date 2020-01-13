@@ -4,8 +4,8 @@ import dtu.ws.fastmoney.BankService;
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import dtu.ws.fastmoney.BankServiceService;
 import main.interfaces.IBank;
-import models.Customer;
-import models.Merchant;
+import main.models.Customer;
+import main.models.Merchant;
 
 import javax.xml.ws.Service;
 import java.math.BigDecimal;

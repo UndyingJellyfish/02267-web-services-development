@@ -3,8 +3,8 @@ import main.exceptions.InvalidTokenException;
 import main.exceptions.TokenException;
 import main.services.InMemoryDatastore;
 import main.services.TokenManager;
-import models.Customer;
-import models.Token;
+import main.models.Customer;
+import main.models.Token;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 public class TokenManagerTest {
 
     private ITokenManager tokenManager;
-    private Customer bob = new Customer("Bob");
+    private Customer bob = new Customer("Bob","123");
 
     @Before
     public void Setup(){

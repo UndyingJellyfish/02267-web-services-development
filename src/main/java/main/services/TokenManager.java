@@ -5,8 +5,8 @@ import main.interfaces.ITokenManager;
 import main.exceptions.InvalidTokenException;
 import main.exceptions.TokenException;
 import main.exceptions.UsedTokenException;
-import models.Customer;
-import models.Token;
+import main.models.Customer;
+import main.models.Token;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

@@ -1,14 +1,15 @@
 package main.interfaces;
 
-import models.Account;
-import models.Customer;
-import models.Merchant;
+import main.exceptions.DuplicateEntryException;
+import main.models.Account;
+import main.models.Customer;
+import main.models.Merchant;
 
 import java.util.UUID;
 
 public interface IAccountDatastore {
     Customer getCustomer(UUID customerId);
-    <T extends Account> T addAccount(T account);
+    <T extends Account> T addAccount(T account) throws DuplicateEntryException;
 
     Merchant getMerchant(UUID merchantId);
 }

@@ -1,10 +1,11 @@
+import main.exceptions.DuplicateEntryException;
 import main.interfaces.IBank;
 import main.services.InMemoryDatastore;
 import main.services.PaymentService;
 import main.services.TokenManager;
-import models.Customer;
-import models.Merchant;
-import models.Token;
+import main.models.Customer;
+import main.models.Merchant;
+import main.models.Token;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,13 +24,21 @@ public class PaymentServiceTest {
 
     @Before
     public void setup(){
-        customer = new Customer("yoink");
+        customer = new Customer("yoink","1");
         merchant = new Merchant("doink");
         InMemoryDatastore store = new InMemoryDatastore();
         TokenManager tokenManager = new TokenManager(store);
         service = new PaymentService(tokenManager, store, store, bank);
-        store.addAccount(customer);
-        store.addAccount(merchant);
+        try {
+            store.addAccount(customer);
+        } catch (DuplicateEntryException e) {
+            fail();
+        }
+        try {
+            store.addAccount(merchant);
+        } catch (DuplicateEntryException e) {
+            fail();
+        }
         token = tokenManager.RequestToken(customer);
     }
 

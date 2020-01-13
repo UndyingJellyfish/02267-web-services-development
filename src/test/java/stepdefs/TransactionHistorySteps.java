@@ -1,6 +1,7 @@
 package stepdefs;
 
 import dtu.ws.fastmoney.BankServiceException_Exception;
+import main.exceptions.DuplicateEntryException;
 import main.interfaces.IAccountDatastore;
 import main.interfaces.IBank;
 import main.interfaces.ITokenManager;
@@ -11,10 +12,10 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import main.services.PaymentService;
-import models.Customer;
-import models.Merchant;
-import models.Token;
-import models.Transaction;
+import main.models.Customer;
+import main.models.Merchant;
+import main.models.Token;
+import main.models.Transaction;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -47,10 +48,14 @@ public class TransactionHistorySteps {
 
     @Given("A Customer with a transaction history")
     public void aCustomerWithATransactionHistory() {
-        this.customer = new Customer("Test Customer");
+        this.customer = new Customer("Test Customer","123");
         this.merchant = new Merchant("Test Merchant");
-        accountDatastore.addAccount(customer);
-        accountDatastore.addAccount(merchant);
+        try {
+            accountDatastore.addAccount(customer);
+            accountDatastore.addAccount(merchant);
+        } catch (DuplicateEntryException e) {
+            fail();
+        }
         this.expecetedTransactions = new ArrayList<>();
         List<Token> tokens =  tokenManager.RequestTokens(this.customer, 5);
         for(int i = 0; i < tokens.size(); i++){
