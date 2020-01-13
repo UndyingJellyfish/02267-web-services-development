@@ -1,4 +1,4 @@
-package models;
+package main.models;
 
 public class Customer extends Account {
 

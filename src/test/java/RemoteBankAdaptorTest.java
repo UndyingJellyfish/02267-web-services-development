@@ -1,7 +1,7 @@
-import adaptors.RemoteBankAdaptor;
+import main.adaptors.RemoteBankAdaptor;
 import dtu.ws.fastmoney.BankServiceException_Exception;
-import models.Customer;
-import models.Merchant;
+import main.models.Customer;
+import main.models.Merchant;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
