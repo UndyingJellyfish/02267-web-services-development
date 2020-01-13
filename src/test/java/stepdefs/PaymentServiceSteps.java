@@ -144,7 +144,7 @@ public class PaymentServiceSteps {
         accountDatastore.addAccount(merchant);
         accountDatastore.addAccount(customer);
         token = tokenManager.RequestToken(customer);
-        amount = new BigDecimal(150.0);
+        amount = new BigDecimal("150.0");
         try {
             transaction = paymentService.transfer(token.getTokenId(), merchant.getAccountId(), amount,"");
             verify(bank, times(1)).transferMoney(
