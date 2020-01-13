@@ -38,7 +38,7 @@ public class SpringBootTestCase {
     private PaymentService paymentService;
 
     @Test
-    public void testtest() throws Exception {
+    public void testTransferControllerReturnBadRequest() throws Exception {
 
         when(paymentService.transfer(any(), any(), any(), any())).thenThrow(new InvalidTokenException());
 
