@@ -1,6 +1,6 @@
 package interfaces;
 
-import adaptors.dtu.ws.fastmoney.BankServiceException_Exception;
+import dtu.ws.fastmoney.BankServiceException_Exception;
 import models.Customer;
 import models.Merchant;
 

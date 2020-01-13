@@ -1,5 +1,5 @@
 
-package adaptors.dtu.ws.fastmoney;
+package dtu.ws.fastmoney;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -7,12 +7,12 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for transferMoneyFromToResponse complex type.
+ * <p>Java class for getAccounts complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="transferMoneyFromToResponse">
+ * &lt;complexType name="getAccounts">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -25,8 +25,8 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "transferMoneyFromToResponse")
-public class TransferMoneyFromToResponse {
+@XmlType(name = "getAccounts")
+public class GetAccounts {
 
 
 }

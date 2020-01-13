@@ -1,5 +1,5 @@
 
-package adaptors.dtu.ws.fastmoney;
+package dtu.ws.fastmoney;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;

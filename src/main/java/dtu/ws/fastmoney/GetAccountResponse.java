@@ -1,5 +1,5 @@
 
-package adaptors.dtu.ws.fastmoney;
+package dtu.ws.fastmoney;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -8,12 +8,12 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for getAccountByCprNumberResponse complex type.
+ * <p>Java class for getAccountResponse complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="getAccountByCprNumberResponse">
+ * &lt;complexType name="getAccountResponse">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -27,10 +27,10 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "getAccountByCprNumberResponse", propOrder = {
+@XmlType(name = "getAccountResponse", propOrder = {
     "_return"
 })
-public class GetAccountByCprNumberResponse {
+public class GetAccountResponse {
 
     @XmlElement(name = "return")
     protected Account _return;

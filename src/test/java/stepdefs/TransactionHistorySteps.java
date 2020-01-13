@@ -1,6 +1,6 @@
 package stepdefs;
 
-import adaptors.dtu.ws.fastmoney.BankServiceException_Exception;
+import dtu.ws.fastmoney.BankServiceException_Exception;
 import interfaces.IAccountDatastore;
 import interfaces.IBank;
 import interfaces.ITokenManager;
