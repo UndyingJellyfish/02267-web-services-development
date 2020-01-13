@@ -29,7 +29,7 @@ public class UserServiceSteps {
 
     @When("The customer signs up")
     public void theCustomerSignsUp() {
-        customer = userService.SignUpCustomer(customerName);
+        customer = userService.addAccount(new Customer(customerName));
     }
 
     @Then("The customer should be signed up")
@@ -45,7 +45,7 @@ public class UserServiceSteps {
 
     @When("The merchant signs up")
     public void theMerchantSignsUp() {
-        merchant = userService.SignUpMerchant(merchantName);
+        merchant = userService.addAccount(new Merchant(merchantName));
     }
 
     @Then("The merchant should be signed up")

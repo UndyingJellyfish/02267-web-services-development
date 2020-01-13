@@ -12,17 +12,9 @@ public class UserService {
         this.accountDatastore = accountDatastore;
     }
 
-    private <T extends Account> T addAccount(T account){
+    public <T extends Account> T addAccount(T account){
         return this.accountDatastore.addAccount(account);
     }
 
-    public Customer SignUpCustomer(String customerName) {
-        Customer customer = new Customer(customerName);
-        return addAccount(customer);
-    }
 
-    public Merchant SignUpMerchant(String merchantName) {
-        Merchant merchant = new Merchant(merchantName);
-        return addAccount(merchant);
-    }
 }
