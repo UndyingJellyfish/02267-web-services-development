@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface IAccountDatastore {
     Customer getCustomer(UUID customerId);
-    Account addAccount(Account account);
+    <T extends Account> T addAccount(T account);
 
     Merchant getMerchant(UUID merchantId);
 }

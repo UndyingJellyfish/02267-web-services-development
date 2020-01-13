@@ -25,7 +25,7 @@ public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore, IT
     }
 
     @Override
-    public Account addAccount(Account account) {
+    public <T extends Account> T addAccount(T account) {
         if(accounts.stream().anyMatch(a -> a.getAccountId().equals(account.getAccountId()))){
             throw new IllegalArgumentException("The value is already in the list.");
         }
