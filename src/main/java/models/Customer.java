@@ -5,7 +5,12 @@ import java.util.List;
 
 public class Customer extends Account {
 
-    public Customer(String name){
+    public final String cpr;
+    public Customer(String name, String cpr){
         super(name);
+        if(cpr == null || cpr.isEmpty()){
+            throw new IllegalArgumentException("cpr must be not null");
+        }
+        this.cpr = cpr;
     }
 }

@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 public class TokenManagerTest {
 
     private ITokenManager tokenManager;
-    private Customer bob = new Customer("Bob");
+    private Customer bob = new Customer("Bob","123");
 
     @Before
     public void Setup(){

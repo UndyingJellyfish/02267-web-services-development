@@ -17,8 +17,8 @@ public class Program {
     }
 
     @Bean
-    public UserService userService(InMemoryDatastore datastore){
-        return new UserService(datastore);
+    public AccountService userService(InMemoryDatastore datastore){
+        return new AccountService(datastore);
     }
 
     @Bean
