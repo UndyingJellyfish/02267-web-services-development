@@ -5,38 +5,72 @@ import exceptions.TokenException;
 import interfaces.ITokenManager;
 import main.PaymentService;
 import main.UserService;
-import models.Customer;
-import models.Merchant;
-import models.Token;
-import models.Transaction;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/payment")
 public class PaymentController {
 
     private final PaymentService paymentService;
-    private final ITokenManager tokenManager;
-    private final UserService userService;
 
 
-    public PaymentController(PaymentService paymentService, ITokenManager tokenManager, UserService userService){
+    public PaymentController(PaymentService paymentService){
         this.paymentService = paymentService;
-        this.tokenManager = tokenManager;
-        this.userService = userService;
     }
 
-    @GetMapping
-    public Transaction pay() throws TokenException, BankServiceException_Exception {
-        Customer customer = userService.addAccount(new Customer("TestCustomer"));
-        List<Token> tokens = this.tokenManager.RequestTokens(customer, 5);
-        Merchant merchant = userService.addAccount(new Merchant("TestMerchant"));
-        return paymentService.transfer(tokens.get(0).getTokenId(),merchant.getAccountId(), new BigDecimal(10), "");
+    public static class TransactionDto {
+        public TransactionDto(){}
+        private UUID tokenId;
+        private UUID merchantId;
+        private BigDecimal amount;
+        private String description;
+
+        public UUID getTokenId() {
+            return tokenId;
+        }
+
+        public void setTokenId(UUID tokenId) {
+            this.tokenId = tokenId;
+        }
+
+        public UUID getMerchantId() {
+            return merchantId;
+        }
+
+        public void setMerchantId(UUID merchantId) {
+            this.merchantId = merchantId;
+        }
+
+        public BigDecimal getAmount() {
+            return amount;
+        }
+
+        public void setAmount(BigDecimal amount) {
+            this.amount = amount;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+    }
+
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.OK)
+    public void TransferMoney(@RequestBody TransactionDto transaction){
+        try {
+            paymentService.transfer(transaction.tokenId, transaction.merchantId, transaction.amount, transaction.description);
+        } catch (TokenException | BankServiceException_Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
 }

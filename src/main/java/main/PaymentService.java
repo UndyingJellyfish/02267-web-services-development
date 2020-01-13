@@ -45,16 +45,13 @@ public class PaymentService {
         return amount.compareTo(new BigDecimal(0)) > 0;
     }
 
-    public boolean refund(UUID customerId, UUID merchantId, UUID tokenId) {
+    public void refund(UUID customerId, UUID merchantId, UUID tokenId) throws TokenException, BankServiceException_Exception {
         Token newToken = tokenManager.RequestToken(accountDatastore.getCustomer(customerId));
         Transaction oldTransaction, newTransaction;
-        try {
-            oldTransaction = transactionDatastore.GetTransactionByTokenId(tokenId);
-            newTransaction = this.transfer(newToken.getTokenId(), merchantId, oldTransaction.getAmount(), true,"Refund");
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
+
+        oldTransaction = transactionDatastore.GetTransactionByTokenId(tokenId);
+        this.transfer(newToken.getTokenId(), merchantId, oldTransaction.getAmount(), true,"Refund");
+
     }
 
 }

@@ -33,7 +33,6 @@ public class PaymentServiceSteps {
     private Transaction transaction;
     private Customer customer;
     private IAccountDatastore accountDatastore;
-    private boolean refundSuccessful;
     private Exception exception;
 
     private IBank bank;
@@ -156,16 +155,18 @@ public class PaymentServiceSteps {
             e.printStackTrace();
         }
     }
-
     @When("The customer asks for a refund")
     public void theCustomerAsksForRefund() {
-        refundSuccessful = paymentService.refund(customer.getAccountId(),merchant.getAccountId(),token.getTokenId());
+        try {
+            paymentService.refund(customer.getAccountId(),merchant.getAccountId(),token.getTokenId());
+        } catch (Exception e) {
+            fail();
+        }
     }
 
     @Then("The transaction should be refunded")
     public void theTransactionShouldBeRefunded() {
         assertEquals(token.getCustomer().getAccountId(),customer.getAccountId());
-        assertTrue(refundSuccessful);
         assertTrue(token.isUsed());
     }
 }
