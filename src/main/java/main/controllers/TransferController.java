@@ -11,12 +11,12 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/payment")
-public class PaymentController {
+public class TransferController {
 
     private final PaymentService paymentService;
 
 
-    public PaymentController(PaymentService paymentService){
+    public TransferController(PaymentService paymentService){
         this.paymentService = paymentService;
     }
 
@@ -24,6 +24,7 @@ public class PaymentController {
         public TransactionDto(){}
         private UUID tokenId;
         private UUID merchantId;
+        private UUID customerId;
         private BigDecimal amount;
         private String description;
 
@@ -58,10 +59,14 @@ public class PaymentController {
         public void setDescription(String description) {
             this.description = description;
         }
+
+        public void setCustomerId(UUID customerId) {
+            this.customerId = customerId;
+        }
     }
 
 
-    @PostMapping
+    @PostMapping("/transfer")
     @ResponseStatus(HttpStatus.OK)
     public void TransferMoney(@RequestBody TransactionDto transaction){
         try {
@@ -70,5 +75,16 @@ public class PaymentController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
+    @PostMapping("/refund")
+    @ResponseStatus(HttpStatus.OK)
+    public void RefundTransaction(@RequestBody TransactionDto transaction){
+        try {
+            paymentService.refund(transaction.customerId, transaction.merchantId, transaction.tokenId);
+        } catch (TokenException | BankServiceException_Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
+
 
 }
