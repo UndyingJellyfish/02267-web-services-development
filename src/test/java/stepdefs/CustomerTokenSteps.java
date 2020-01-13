@@ -25,7 +25,7 @@ public class CustomerTokenSteps {
     @Given("A registered user")
     public void aRegisteredUser() {
 
-        this.customer = new Customer("test");
+        this.customer = new Customer("test","123");
     }
 
     @And("The user has spent all tokens")

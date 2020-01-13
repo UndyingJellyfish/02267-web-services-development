@@ -1,10 +1,12 @@
 package main;
 
+import exceptions.DuplicateEntryException;
 import interfaces.IAccountDatastore;
 import interfaces.ITokenDatastore;
 import interfaces.ITransactionDatastore;
 import exceptions.InvalidTokenException;
 import models.*;
+import org.springframework.dao.DuplicateKeyException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,9 +27,10 @@ public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore, IT
     }
 
     @Override
-    public <T extends Account> T addAccount(T account) {
-        if(accounts.stream().anyMatch(a -> a.getAccountId().equals(account.getAccountId()))){
-            throw new IllegalArgumentException("The value is already in the list.");
+    public <T extends Account> T addAccount(T account) throws DuplicateEntryException {
+        if(accounts.stream().anyMatch(a -> a.getAccountId().equals(account.getAccountId())
+                || (account instanceof Customer && a instanceof Customer) && ((Customer) a).cpr.equals(((Customer) account).cpr))){
+            throw new DuplicateEntryException();
         }
         accounts.add(account);
         return account;

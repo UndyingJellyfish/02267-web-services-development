@@ -1,3 +1,4 @@
+import exceptions.DuplicateEntryException;
 import interfaces.IBank;
 import main.InMemoryDatastore;
 import main.PaymentService;
@@ -23,13 +24,21 @@ public class PaymentServiceTest {
 
     @Before
     public void setup(){
-        customer = new Customer("yoink");
+        customer = new Customer("yoink","1");
         merchant = new Merchant("doink");
         InMemoryDatastore store = new InMemoryDatastore();
         TokenManager tokenManager = new TokenManager(store);
         service = new PaymentService(tokenManager, store, store, bank);
-        store.addAccount(customer);
-        store.addAccount(merchant);
+        try {
+            store.addAccount(customer);
+        } catch (DuplicateEntryException e) {
+            fail();
+        }
+        try {
+            store.addAccount(merchant);
+        } catch (DuplicateEntryException e) {
+            fail();
+        }
         token = tokenManager.RequestToken(customer);
     }
 

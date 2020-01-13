@@ -1,6 +1,7 @@
 package stepdefs;
 
 import dtu.ws.fastmoney.BankServiceException_Exception;
+import exceptions.DuplicateEntryException;
 import interfaces.IAccountDatastore;
 import interfaces.IBank;
 import interfaces.ITokenManager;
@@ -47,10 +48,14 @@ public class TransactionHistorySteps {
 
     @Given("A Customer with a transaction history")
     public void aCustomerWithATransactionHistory() {
-        this.customer = new Customer("Test Customer");
+        this.customer = new Customer("Test Customer","123");
         this.merchant = new Merchant("Test Merchant");
-        accountDatastore.addAccount(customer);
-        accountDatastore.addAccount(merchant);
+        try {
+            accountDatastore.addAccount(customer);
+            accountDatastore.addAccount(merchant);
+        } catch (DuplicateEntryException e) {
+            fail();
+        }
         this.expecetedTransactions = new ArrayList<>();
         List<Token> tokens =  tokenManager.RequestTokens(this.customer, 5);
         for(int i = 0; i < tokens.size(); i++){

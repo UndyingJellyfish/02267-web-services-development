@@ -4,7 +4,7 @@ import io.cucumber.core.backend.ObjectFactory;
 import io.cucumber.picocontainer.PicoFactory;
 import main.InMemoryDatastore;
 import main.TokenManager;
-import main.UserService;
+import main.AccountService;
 import models.Transaction;
 
 public class CustomPicoFactory implements ObjectFactory {
@@ -16,7 +16,7 @@ public class CustomPicoFactory implements ObjectFactory {
         delegate.addClass(InMemoryDatastore.class);
         delegate.addClass(TokenManager.class);
         delegate.addClass(Transaction.class);
-        delegate.addClass(UserService.class);
+        delegate.addClass(AccountService.class);
     }
 
 
