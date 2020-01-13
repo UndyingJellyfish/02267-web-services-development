@@ -1,4 +1,4 @@
-package main.adaptors;
+package main.bank;
 
 import dtu.ws.fastmoney.BankService;
 import dtu.ws.fastmoney.BankServiceException_Exception;

@@ -1,4 +1,4 @@
-import main.adaptors.RemoteBankAdaptor;
+import main.bank.RemoteBankAdaptor;
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import main.models.Customer;
 import main.models.Merchant;
