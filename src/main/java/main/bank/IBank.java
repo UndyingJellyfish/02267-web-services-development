@@ -1,4 +1,4 @@
-package main.interfaces;
+package main.bank;
 
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import main.models.Account;

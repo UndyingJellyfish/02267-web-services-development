@@ -1,7 +1,6 @@
-package main.services;
+package main.tokens;
 
-import main.interfaces.ITokenDatastore;
-import main.interfaces.ITokenManager;
+import main.dataAccess.ITokenDatastore;
 import main.exceptions.InvalidTokenException;
 import main.exceptions.TokenException;
 import main.exceptions.UsedTokenException;

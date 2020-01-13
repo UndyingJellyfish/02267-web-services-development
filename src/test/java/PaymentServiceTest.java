@@ -1,8 +1,8 @@
 import main.exceptions.DuplicateEntryException;
-import main.interfaces.IBank;
-import main.services.InMemoryDatastore;
-import main.services.PaymentService;
-import main.services.TokenManager;
+import main.bank.IBank;
+import main.dataAccess.InMemoryDatastore;
+import main.transfers.PaymentService;
+import main.tokens.TokenManager;
 import main.models.Customer;
 import main.models.Merchant;
 import main.models.Token;

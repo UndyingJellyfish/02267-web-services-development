@@ -1,4 +1,4 @@
-package main.interfaces;
+package main.dataAccess;
 
 import main.exceptions.DuplicateEntryException;
 import main.models.Account;

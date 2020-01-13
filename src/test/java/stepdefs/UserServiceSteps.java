@@ -4,7 +4,7 @@ import main.exceptions.DuplicateEntryException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import main.services.AccountService;
+import main.accounts.AccountService;
 import main.models.Customer;
 import main.models.Merchant;
 

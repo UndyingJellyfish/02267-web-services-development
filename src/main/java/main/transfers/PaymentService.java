@@ -1,10 +1,10 @@
-package main.services;
+package main.transfers;
 
 import dtu.ws.fastmoney.BankServiceException_Exception;
-import main.interfaces.IAccountDatastore;
-import main.interfaces.IBank;
-import main.interfaces.ITokenManager;
-import main.interfaces.ITransactionDatastore;
+import main.dataAccess.IAccountDatastore;
+import main.bank.IBank;
+import main.tokens.ITokenManager;
+import main.dataAccess.ITransactionDatastore;
 import main.exceptions.TokenException;
 import main.models.*;
 import org.springframework.stereotype.Service;

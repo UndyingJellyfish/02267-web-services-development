@@ -1,9 +1,9 @@
-package main.services;
+package main.dataAccess;
 
-import main.interfaces.IAccountDatastore;
+import main.dataAccess.IAccountDatastore;
 import main.exceptions.DuplicateEntryException;
-import main.interfaces.ITokenDatastore;
-import main.interfaces.ITransactionDatastore;
+import main.dataAccess.ITokenDatastore;
+import main.dataAccess.ITransactionDatastore;
 import main.exceptions.InvalidTokenException;
 import main.models.*;
 import org.springframework.stereotype.Service;

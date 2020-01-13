@@ -1,7 +1,7 @@
-package main.services;
+package main.accounts;
 
 import main.exceptions.DuplicateEntryException;
-import main.interfaces.IAccountDatastore;
+import main.dataAccess.IAccountDatastore;
 import main.models.Account;
 import org.springframework.stereotype.Service;
 

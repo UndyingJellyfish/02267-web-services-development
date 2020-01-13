@@ -1,8 +1,8 @@
-import main.interfaces.ITokenManager;
+import main.tokens.ITokenManager;
 import main.exceptions.InvalidTokenException;
 import main.exceptions.TokenException;
-import main.services.InMemoryDatastore;
-import main.services.TokenManager;
+import main.dataAccess.InMemoryDatastore;
+import main.tokens.TokenManager;
 import main.models.Customer;
 import main.models.Token;
 import org.junit.Before;

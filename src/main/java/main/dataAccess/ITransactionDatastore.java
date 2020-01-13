@@ -1,4 +1,4 @@
-package main.interfaces;
+package main.dataAccess;
 
 import main.models.Account;
 import main.models.Transaction;

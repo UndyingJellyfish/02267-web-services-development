@@ -1,4 +1,4 @@
-package main.interfaces;
+package main.tokens;
 
 import main.exceptions.InvalidTokenException;
 import main.exceptions.TokenException;

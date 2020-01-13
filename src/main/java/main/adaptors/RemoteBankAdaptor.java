@@ -4,7 +4,7 @@ import dtu.ws.fastmoney.BankService;
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import dtu.ws.fastmoney.BankServiceService;
 import dtu.ws.fastmoney.User;
-import main.interfaces.IBank;
+import main.bank.IBank;
 import main.models.Account;
 import main.models.Customer;
 import main.models.Merchant;

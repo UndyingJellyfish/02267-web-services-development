@@ -1,7 +1,6 @@
-package main.controllers;
+package main.accounts;
 
 import main.exceptions.DuplicateEntryException;
-import main.services.AccountService;
 import main.models.Customer;
 import main.models.Merchant;
 import org.springframework.http.HttpStatus;
