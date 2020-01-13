@@ -90,7 +90,7 @@ public class PaymentServiceSteps {
 
     @Given("A merchant")
     public void aMerchant() {
-        merchant = new Merchant("Alice");
+        merchant = new Merchant("Alice", "123");
         try {
             accountDatastore.addAccount(merchant);
         } catch (DuplicateEntryException e) {
@@ -148,7 +148,7 @@ public class PaymentServiceSteps {
     @Given("A transaction")
     public void aTransaction() {
         String cpr = "123";
-        merchant = new Merchant("Jens");
+        merchant = new Merchant("Jens","12345678");
         customer = new Customer("Jacob",cpr);
         try{
             accountDatastore.addAccount(merchant);

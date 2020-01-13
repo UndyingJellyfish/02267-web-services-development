@@ -50,7 +50,7 @@ public class UserServiceSteps {
     @When("The merchant signs up")
     public void theMerchantSignsUp() {
         try {
-            merchant = userService.addAccount(new Merchant(merchantName));
+            merchant = userService.addAccount(new Merchant(merchantName, "123"));
         } catch (DuplicateEntryException e) {
             fail();
         }

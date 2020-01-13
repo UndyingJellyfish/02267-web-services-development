@@ -52,7 +52,7 @@ public class AccountController {
     @ResponseStatus(HttpStatus.OK)
     public void signupMerchant(@RequestBody SignupDto merchant){
         try {
-            accountService.addAccount(new Merchant(merchant.name));
+            accountService.addAccount(new Merchant(merchant.name,"123"));
         } catch (DuplicateEntryException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Duplicate key from random UUID generation");
         }

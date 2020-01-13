@@ -49,7 +49,7 @@ public class TransactionHistorySteps {
     @Given("A Customer with a transaction history")
     public void aCustomerWithATransactionHistory() {
         this.customer = new Customer("Test Customer","123");
-        this.merchant = new Merchant("Test Merchant");
+        this.merchant = new Merchant("Test Merchant", "123");
         try {
             accountDatastore.addAccount(customer);
             accountDatastore.addAccount(merchant);

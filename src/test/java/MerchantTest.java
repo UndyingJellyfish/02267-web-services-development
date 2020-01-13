@@ -11,7 +11,7 @@ public class MerchantTest {
         // Arrange
         String name = "This is a name";
         // Act
-        Merchant merch = new Merchant(name);
+        Merchant merch = new Merchant(name, "12345678");
         // Assert
         assertEquals(name, merch.getName());
     }
@@ -22,7 +22,7 @@ public class MerchantTest {
         String name = null;
         // Act
         try {
-            Merchant merch = new Merchant(name);
+            Merchant merch = new Merchant(name, "12345678");
             fail();
 
         }catch(IllegalArgumentException e){
@@ -36,7 +36,7 @@ public class MerchantTest {
         String name = "";
         // Act
         try {
-            Merchant merch = new Merchant(name);
+            Merchant merch = new Merchant(name,"12345678");
             fail();
 
         }catch(IllegalArgumentException e){

@@ -1,16 +1,25 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Customer extends Account {
 
-    public final String cpr;
+    private String cpr;
+
     public Customer(String name, String cpr){
         super(name);
-        if(cpr == null || cpr.isEmpty()){
-            throw new IllegalArgumentException("cpr must be not null");
+        setCpr(cpr);
+    }
+
+    public String getCpr() {
+        return cpr;
+    }
+
+    private void setCpr(String cpr) {
+        // TODO: Enforce stricter cpr format
+        if (cpr == null || cpr.isEmpty()) {
+        //if (cpr.length() == 10 || cpr.contains("-") && cpr.length() == 11) {
+            throw new IllegalArgumentException("Provided cpr did not suffice cpr format ");
         }
+
         this.cpr = cpr;
     }
 }

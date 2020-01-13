@@ -24,8 +24,8 @@ public class PaymentServiceTest {
 
     @Before
     public void setup(){
-        customer = new Customer("yoink","1");
-        merchant = new Merchant("doink");
+        customer = new Customer("yoink","12345678");
+        merchant = new Merchant("doink", "12345678");
         InMemoryDatastore store = new InMemoryDatastore();
         TokenManager tokenManager = new TokenManager(store);
         service = new PaymentService(tokenManager, store, store, bank);
