@@ -8,6 +8,8 @@ public abstract class Account {
 
     private String name;
     private UUID accountId;
+    private String cpr;
+    private String bankAccountId;
 
     private List<Transaction> transactions = new ArrayList<>();
 
@@ -37,4 +39,24 @@ public abstract class Account {
         return accountId;
     }
 
+    public String getCpr() {
+        return cpr;
+    }
+
+    public void setCpr(String cpr) {
+        // TODO: Enforce stricter cpr format
+        if (cpr.length() == 10 || cpr.contains("-") && cpr.length() == 11) {
+            throw new IllegalArgumentException("provided cpr did not suffice cpr format ");
+        }
+
+        this.cpr = cpr;
+    }
+
+    public String getBankAccountId() {
+        return bankAccountId;
+    }
+
+    public void setBankAccountId(String bankAccountId) {
+        this.bankAccountId = bankAccountId;
+    }
 }
