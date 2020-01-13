@@ -1,9 +1,9 @@
-package interfaces;
+package main.interfaces;
 
-import exceptions.DuplicateEntryException;
-import models.Account;
-import models.Customer;
-import models.Merchant;
+import main.exceptions.DuplicateEntryException;
+import main.models.Account;
+import main.models.Customer;
+import main.models.Merchant;
 
 import java.util.UUID;
 

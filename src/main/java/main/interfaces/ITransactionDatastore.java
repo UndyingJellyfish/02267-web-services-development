@@ -1,8 +1,7 @@
-package interfaces;
+package main.interfaces;
 
-import models.Account;
-import models.Customer;
-import models.Transaction;
+import main.models.Account;
+import main.models.Transaction;
 
 import java.util.List;
 import java.util.UUID;

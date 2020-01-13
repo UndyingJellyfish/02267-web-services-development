@@ -1,9 +1,10 @@
-import interfaces.ITokenManager;
-import exceptions.InvalidTokenException;
-import exceptions.TokenException;
-import main.*;
-import models.Customer;
-import models.Token;
+import main.interfaces.ITokenManager;
+import main.exceptions.InvalidTokenException;
+import main.exceptions.TokenException;
+import main.services.InMemoryDatastore;
+import main.services.TokenManager;
+import main.models.Customer;
+import main.models.Token;
 import org.junit.Before;
 import org.junit.Test;
 

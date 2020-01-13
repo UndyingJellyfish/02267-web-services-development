@@ -1,4 +1,4 @@
-import models.Customer;
+import main.models.Customer;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

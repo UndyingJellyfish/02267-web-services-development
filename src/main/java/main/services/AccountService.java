@@ -1,11 +1,11 @@
-package main;
+package main.services;
 
-import exceptions.DuplicateEntryException;
-import interfaces.IAccountDatastore;
-import models.Account;
-import models.Customer;
-import models.Merchant;
+import main.exceptions.DuplicateEntryException;
+import main.interfaces.IAccountDatastore;
+import main.models.Account;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AccountService {
     private IAccountDatastore accountDatastore;
 

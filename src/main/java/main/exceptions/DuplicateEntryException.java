@@ -1,4 +1,4 @@
-package exceptions;
+package main.exceptions;
 
 public class DuplicateEntryException extends Exception{
     private static String defaultErrorString = "Item with that key already exists in collection";

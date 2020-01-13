@@ -1,4 +1,4 @@
-package exceptions;
+package main.exceptions;
 
 public class InvalidTokenException extends TokenException{
     private static String defaultErrorString = "Token does not exist.";

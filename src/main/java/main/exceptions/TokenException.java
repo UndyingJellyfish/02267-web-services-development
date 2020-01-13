@@ -1,4 +1,4 @@
-package exceptions;
+package main.exceptions;
 
 public abstract class TokenException extends Exception {
     private static String defaultErrorString = "Generic token exception.";

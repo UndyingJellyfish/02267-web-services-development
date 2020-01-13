@@ -1,8 +1,8 @@
-package interfaces;
+package main.interfaces;
 
-import exceptions.InvalidTokenException;
-import models.Customer;
-import models.Token;
+import main.exceptions.InvalidTokenException;
+import main.models.Customer;
+import main.models.Token;
 
 import java.util.List;
 import java.util.UUID;

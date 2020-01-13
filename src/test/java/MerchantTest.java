@@ -1,4 +1,4 @@
-import models.Merchant;
+import main.models.Merchant;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

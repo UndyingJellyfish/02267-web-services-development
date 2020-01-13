@@ -1,21 +1,21 @@
 package stepdefs;
 
 import dtu.ws.fastmoney.BankServiceException_Exception;
-import exceptions.DuplicateEntryException;
-import interfaces.IAccountDatastore;
-import interfaces.IBank;
-import interfaces.ITokenManager;
+import main.exceptions.DuplicateEntryException;
+import main.interfaces.IAccountDatastore;
+import main.interfaces.IBank;
+import main.interfaces.ITokenManager;
 import cucumber.api.PendingException;
-import exceptions.TokenException;
-import interfaces.ITransactionDatastore;
+import main.exceptions.TokenException;
+import main.interfaces.ITransactionDatastore;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import main.PaymentService;
-import models.Customer;
-import models.Merchant;
-import models.Token;
-import models.Transaction;
+import main.services.PaymentService;
+import main.models.Customer;
+import main.models.Merchant;
+import main.models.Token;
+import main.models.Transaction;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

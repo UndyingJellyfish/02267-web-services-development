@@ -1,11 +1,9 @@
 package main.controllers;
 
-import dtu.ws.fastmoney.BankServiceException_Exception;
-import exceptions.DuplicateEntryException;
-import exceptions.TokenException;
-import main.AccountService;
-import models.Customer;
-import models.Merchant;
+import main.exceptions.DuplicateEntryException;
+import main.services.AccountService;
+import main.models.Customer;
+import main.models.Merchant;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;

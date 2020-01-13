@@ -1,11 +1,11 @@
-import exceptions.DuplicateEntryException;
-import interfaces.IBank;
-import main.InMemoryDatastore;
-import main.PaymentService;
-import main.TokenManager;
-import models.Customer;
-import models.Merchant;
-import models.Token;
+import main.exceptions.DuplicateEntryException;
+import main.interfaces.IBank;
+import main.services.InMemoryDatastore;
+import main.services.PaymentService;
+import main.services.TokenManager;
+import main.models.Customer;
+import main.models.Merchant;
+import main.models.Token;
 import org.junit.Before;
 import org.junit.Test;
 

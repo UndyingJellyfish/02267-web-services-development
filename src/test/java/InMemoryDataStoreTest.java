@@ -1,9 +1,9 @@
-import exceptions.DuplicateEntryException;
-import exceptions.TokenException;
-import main.InMemoryDatastore;
-import models.Account;
-import models.Customer;
-import models.Token;
+import main.exceptions.TokenException;
+import main.exceptions.DuplicateEntryException;
+import main.services.InMemoryDatastore;
+import main.models.Account;
+import main.models.Customer;
+import main.models.Token;
 import org.junit.Before;
 import org.junit.Test;
 

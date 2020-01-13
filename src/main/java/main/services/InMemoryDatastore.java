@@ -1,16 +1,17 @@
-package main;
+package main.services;
 
-import exceptions.DuplicateEntryException;
-import interfaces.IAccountDatastore;
-import interfaces.ITokenDatastore;
-import interfaces.ITransactionDatastore;
-import exceptions.InvalidTokenException;
-import models.*;
-import org.springframework.dao.DuplicateKeyException;
+import main.interfaces.IAccountDatastore;
+import main.exceptions.DuplicateEntryException;
+import main.interfaces.ITokenDatastore;
+import main.interfaces.ITransactionDatastore;
+import main.exceptions.InvalidTokenException;
+import main.models.*;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Service
 public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore, ITransactionDatastore {
     private List<Account> accounts = new ArrayList<>();
     private List<Token> tokens = new ArrayList<>();

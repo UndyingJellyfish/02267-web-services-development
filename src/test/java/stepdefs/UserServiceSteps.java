@@ -1,12 +1,12 @@
 package stepdefs;
 
-import exceptions.DuplicateEntryException;
+import main.exceptions.DuplicateEntryException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import main.AccountService;
-import models.Customer;
-import models.Merchant;
+import main.services.AccountService;
+import main.models.Customer;
+import main.models.Merchant;
 
 import static org.junit.Assert.*;
 

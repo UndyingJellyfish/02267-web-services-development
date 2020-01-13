@@ -1,18 +1,20 @@
-package main;
+package main.services;
 
-import interfaces.ITokenDatastore;
-import interfaces.ITokenManager;
-import exceptions.InvalidTokenException;
-import exceptions.TokenException;
-import exceptions.UsedTokenException;
-import models.Customer;
-import models.Token;
+import main.interfaces.ITokenDatastore;
+import main.interfaces.ITokenManager;
+import main.exceptions.InvalidTokenException;
+import main.exceptions.TokenException;
+import main.exceptions.UsedTokenException;
+import main.models.Customer;
+import main.models.Token;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class TokenManager implements ITokenManager {
 
     private ITokenDatastore datastore;
