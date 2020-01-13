@@ -1,10 +1,8 @@
 package factories;
 
-import adaptors.LocalBankAdaptor;
 import io.cucumber.core.backend.ObjectFactory;
 import io.cucumber.picocontainer.PicoFactory;
 import main.InMemoryDatastore;
-import main.PaymentService;
 import main.TokenManager;
 import main.UserService;
 import models.Transaction;

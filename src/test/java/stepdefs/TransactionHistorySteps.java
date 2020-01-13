@@ -1,6 +1,6 @@
 package stepdefs;
 
-import dtu.ws.fastmoney.BankServiceException;
+import adaptors.dtu.ws.fastmoney.BankServiceException_Exception;
 import interfaces.IAccountDatastore;
 import interfaces.IBank;
 import interfaces.ITokenManager;
@@ -63,7 +63,7 @@ public class TransactionHistorySteps {
                         argThat(m -> m.getAccountId().equals(merchant.getAccountId())),
                         eq(amount),
                         eq(""));
-            } catch (TokenException | BankServiceException e) {
+            } catch (TokenException | BankServiceException_Exception e) {
                 e.printStackTrace();
             }
         }
