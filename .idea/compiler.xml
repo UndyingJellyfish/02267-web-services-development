@@ -15,4 +15,9 @@
       <module name="02267-web-services-development" target="1.8" />
     </bytecodeTargetLevel>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="fastmoney-06" options="-parameters" />
+    </option>
+  </component>
 </project>
