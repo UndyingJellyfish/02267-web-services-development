@@ -1,6 +1,7 @@
 package main;
 
-import dtu.ws.fastmoney.BankServiceException;
+import adaptors.dtu.ws.fastmoney.BankServiceException;
+import adaptors.dtu.ws.fastmoney.BankServiceException_Exception;
 import interfaces.IAccountDatastore;
 import interfaces.IBank;
 import interfaces.ITokenManager;
@@ -23,11 +24,11 @@ public class PaymentService {
         this.bank = bank;
     }
 
-    public Transaction transfer(UUID tokenId, UUID merchantId, BigDecimal amount, String description) throws TokenException, BankServiceException {
+    public Transaction transfer(UUID tokenId, UUID merchantId, BigDecimal amount, String description) throws TokenException, BankServiceException_Exception {
         return this.transfer(tokenId, merchantId, amount, false, description);
     }
 
-    public Transaction transfer(UUID tokenId, UUID merchantId, BigDecimal amount, boolean isRefund, String description) throws TokenException, BankServiceException {
+    public Transaction transfer(UUID tokenId, UUID merchantId, BigDecimal amount, boolean isRefund, String description) throws TokenException, BankServiceException_Exception {
         if(!isGreaterThanZero(amount)){
             throw new IllegalArgumentException();
         }

@@ -1,4 +1,4 @@
-import adaptors.LocalBankAdaptor;
+import interfaces.IBank;
 import main.InMemoryDatastore;
 import main.PaymentService;
 import main.TokenManager;
@@ -11,6 +11,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 public class PaymentServiceTest {
 
@@ -18,6 +19,7 @@ public class PaymentServiceTest {
     private Customer customer;
     private Merchant merchant;
     private Token token;
+    private IBank  bank = mock(IBank.class);
 
     @Before
     public void setup(){
@@ -25,7 +27,7 @@ public class PaymentServiceTest {
         merchant = new Merchant("doink");
         InMemoryDatastore store = new InMemoryDatastore();
         TokenManager tokenManager = new TokenManager(store);
-        service = new PaymentService(tokenManager, store, store, new LocalBankAdaptor());
+        service = new PaymentService(tokenManager, store, store, bank);
         store.addAccount(customer);
         store.addAccount(merchant);
         token = tokenManager.RequestToken(customer);
