@@ -1,4 +1,4 @@
-package interfaces;
+package main.interfaces;
 
 import models.Account;
 import models.Customer;

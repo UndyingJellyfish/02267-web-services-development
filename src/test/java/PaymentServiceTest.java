@@ -1,7 +1,7 @@
-import interfaces.IBank;
-import main.InMemoryDatastore;
-import main.PaymentService;
-import main.TokenManager;
+import main.interfaces.IBank;
+import main.services.InMemoryDatastore;
+import main.services.PaymentService;
+import main.services.TokenManager;
 import models.Customer;
 import models.Merchant;
 import models.Token;

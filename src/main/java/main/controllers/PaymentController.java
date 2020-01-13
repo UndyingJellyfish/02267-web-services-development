@@ -1,10 +1,8 @@
 package main.controllers;
 
 import dtu.ws.fastmoney.BankServiceException_Exception;
-import exceptions.TokenException;
-import interfaces.ITokenManager;
-import main.PaymentService;
-import main.UserService;
+import main.exceptions.TokenException;
+import main.services.PaymentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;

@@ -1,5 +1,5 @@
-import exceptions.TokenException;
-import main.InMemoryDatastore;
+import main.exceptions.TokenException;
+import main.services.InMemoryDatastore;
 import models.Account;
 import models.Customer;
 import models.Token;

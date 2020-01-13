@@ -3,7 +3,7 @@ package stepdefs;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import main.UserService;
+import main.services.UserService;
 import models.Customer;
 import models.Merchant;
 

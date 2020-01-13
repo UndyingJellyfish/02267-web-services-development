@@ -1,6 +1,6 @@
-package interfaces;
+package main.interfaces;
 
-import exceptions.InvalidTokenException;
+import main.exceptions.InvalidTokenException;
 import models.Customer;
 import models.Token;
 

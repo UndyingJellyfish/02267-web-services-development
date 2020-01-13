@@ -1,15 +1,18 @@
-package main;
+package main.services;
 
 import dtu.ws.fastmoney.BankServiceException_Exception;
-import interfaces.IAccountDatastore;
-import interfaces.IBank;
-import interfaces.ITokenManager;
-import interfaces.ITransactionDatastore;
-import exceptions.TokenException;
+import main.interfaces.IAccountDatastore;
+import main.interfaces.IBank;
+import main.interfaces.ITokenManager;
+import main.interfaces.ITransactionDatastore;
+import main.exceptions.TokenException;
 import models.*;
+import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
+@Service
 public class PaymentService {
     private ITokenManager tokenManager;
     private IAccountDatastore accountDatastore;

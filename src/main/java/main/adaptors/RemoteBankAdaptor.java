@@ -1,15 +1,16 @@
-package adaptors;
+package main.adaptors;
 
 import dtu.ws.fastmoney.BankService;
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import dtu.ws.fastmoney.BankServiceService;
-import interfaces.IBank;
+import main.interfaces.IBank;
 import models.Customer;
 import models.Merchant;
 
 import javax.xml.ws.Service;
 import java.math.BigDecimal;
 
+@org.springframework.stereotype.Service
 public class RemoteBankAdaptor implements IBank {
 
     private Service bankServiceService;

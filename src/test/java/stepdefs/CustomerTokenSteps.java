@@ -6,7 +6,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import interfaces.ITokenManager;
+import main.interfaces.ITokenManager;
 
 import java.util.List;
 

@@ -2,9 +2,9 @@ package factories;
 
 import io.cucumber.core.backend.ObjectFactory;
 import io.cucumber.picocontainer.PicoFactory;
-import main.InMemoryDatastore;
-import main.TokenManager;
-import main.UserService;
+import main.services.InMemoryDatastore;
+import main.services.TokenManager;
+import main.services.UserService;
 import models.Transaction;
 
 public class CustomPicoFactory implements ObjectFactory {

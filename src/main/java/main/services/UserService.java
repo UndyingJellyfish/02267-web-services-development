@@ -1,10 +1,10 @@
-package main;
+package main.services;
 
-import interfaces.IAccountDatastore;
+import main.interfaces.IAccountDatastore;
 import models.Account;
-import models.Customer;
-import models.Merchant;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserService {
     private IAccountDatastore accountDatastore;
 
