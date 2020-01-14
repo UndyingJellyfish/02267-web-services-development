@@ -27,7 +27,7 @@ public class PaymentServiceTest {
         customer = new Customer("yoink","12345678");
         merchant = new Merchant("doink", "12345678");
         InMemoryDatastore store = new InMemoryDatastore();
-        TokenManager tokenManager = new TokenManager(store);
+        TokenManager tokenManager = new TokenManager(store,store);
         service = new PaymentService(tokenManager, store, store, bank);
         try {
             store.addAccount(customer);

@@ -6,7 +6,7 @@ import main.models.Account;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AccountService {
+public class  AccountService {
     private IAccountDatastore accountDatastore;
 
     public AccountService(IAccountDatastore accountDatastore) {

@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ITokenManager {
-    List<Token> RequestTokens(Customer customer, int quantity);
-    List<Token> GetTokens(Customer customer);
+    List<Token> RequestTokens(UUID customer, int quantity);
+    List<Token> GetTokens(UUID customer);
     void UseToken(UUID tokenId) throws TokenException;
 
 

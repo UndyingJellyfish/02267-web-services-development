@@ -1,5 +1,6 @@
 package main.tokens;
 
+import main.dataAccess.IAccountDatastore;
 import main.dataAccess.ITokenDatastore;
 import main.exceptions.InvalidTokenException;
 import main.exceptions.TokenException;
@@ -17,12 +18,16 @@ import java.util.UUID;
 public class TokenManager implements ITokenManager {
 
     private ITokenDatastore datastore;
+    private IAccountDatastore accountDatastore;
 
-    public TokenManager(ITokenDatastore datastore){
+    public TokenManager(ITokenDatastore datastore, IAccountDatastore accountDatastore){
         this.datastore = datastore;
+        this.accountDatastore = accountDatastore;
     }
 
-    public List<Token> RequestTokens(Customer customer, int quantity) {
+    public List<Token> RequestTokens(UUID customerId, int quantity) {
+
+        Customer customer = accountDatastore.getCustomer(customerId);
 
         if(quantity > 5  || quantity < 1){
             throw new IllegalArgumentException("Quantity must be [1,5]");
@@ -43,8 +48,8 @@ public class TokenManager implements ITokenManager {
         return this.datastore.assignTokens(customer, tokens);
     }
 
-    public List<Token> GetTokens(Customer customer) {
-        return this.datastore.getTokens(customer);
+    public List<Token> GetTokens(UUID customerId) {
+        return this.datastore.getTokens(accountDatastore.getCustomer(customerId));
     }
 
     public void UseToken(UUID tokenId) throws TokenException {
@@ -60,7 +65,7 @@ public class TokenManager implements ITokenManager {
 
     @Override
     public Token RequestToken(Customer customer) {
-        return RequestTokens(customer, 1).get(0);
+        return RequestTokens(customer.getAccountId(), 1).get(0);
     }
 
     @Override

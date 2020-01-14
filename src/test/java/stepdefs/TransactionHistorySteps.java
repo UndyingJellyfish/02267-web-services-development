@@ -59,7 +59,7 @@ public class TransactionHistorySteps {
             fail();
         }
         this.expecetedTransactions = new ArrayList<>();
-        List<Token> tokens =  tokenManager.RequestTokens(this.customer, 5);
+        List<Token> tokens =  tokenManager.RequestTokens(this.customer.getAccountId(), 5);
         for(int i = 0; i < tokens.size(); i++){
             Token token = tokens.get(i);
             BigDecimal amount = new BigDecimal( i == 0 ? 1 : i * 5);

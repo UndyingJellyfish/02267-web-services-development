@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/signup")
 public class AccountController {
@@ -18,26 +20,7 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    public static class SignupDto{
-        private String name;
-        private String cpr;
 
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getCpr() {
-            return cpr;
-        }
-
-        public void setCpr(String cpr) {
-            this.cpr = cpr;
-        }
-    }
 
     @PutMapping(value={"/merchant","/customer"})
     @ResponseStatus(HttpStatus.OK)
@@ -47,9 +30,9 @@ public class AccountController {
 
     @PostMapping("/merchant")
     @ResponseStatus(HttpStatus.OK)
-    public void signupMerchant(@RequestBody SignupDto merchant){
+    public UUID signupMerchant(@RequestBody SignupDto merchant){
         try {
-            accountService.addAccount(new Merchant(merchant.name,"123"));
+            return accountService.addAccount(new Merchant(merchant.getName(),"123")).getAccountId();
         } catch (DuplicateEntryException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Duplicate key from random UUID generation");
         }
@@ -57,9 +40,9 @@ public class AccountController {
 
     @PostMapping("/customer")
     @ResponseStatus(HttpStatus.OK)
-    public void signupCustomer(@RequestBody SignupDto customer){
+    public UUID signupCustomer(@RequestBody SignupDto customer){
         try {
-            accountService.addAccount( new Customer(customer.name,customer.cpr));
+            return accountService.addAccount( new Customer(customer.getName(),customer.getCpr())).getAccountId();
         } catch (DuplicateEntryException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
