@@ -5,6 +5,7 @@ import main.dataAccess.InMemoryDatastore;
 import main.exceptions.DuplicateEntryException;
 import main.dataAccess.IAccountDatastore;
 import main.bank.IBank;
+import main.exceptions.EntryNotFoundException;
 import main.reporting.ReportingController;
 import main.reporting.ReportingService;
 import main.tokens.ITokenManager;
@@ -61,7 +62,12 @@ public class TransactionHistorySteps {
             fail();
         }
         this.expecetedTransactions = new ArrayList<>();
-        List<Token> tokens =  tokenManagers.RequestTokens(this.customer.getAccountId(), 5);
+        List<Token> tokens = null;
+        try {
+            tokens = tokenManagers.RequestTokens(this.customer.getAccountId(), 5);
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
         for(int i = 0; i < tokens.size(); i++){
             Token token = tokens.get(i);
             BigDecimal amount = new BigDecimal( i == 0 ? 1 : i * 5);
@@ -72,7 +78,7 @@ public class TransactionHistorySteps {
                         argThat(m -> m.getAccountId().equals(merchant.getAccountId())),
                         eq(amount),
                         eq(""));
-            } catch (TokenException | BankServiceException_Exception e) {
+            } catch (TokenException | BankServiceException_Exception | EntryNotFoundException e) {
                 fail();
             }
         }
@@ -114,7 +120,12 @@ public class TransactionHistorySteps {
             fail();
         }
         this.expecetedTransactions = new ArrayList<>();
-        List<Token> tokens =  tokenManagers.RequestTokens(this.customer.getAccountId(), 5);
+        List<Token> tokens = null;
+        try {
+            tokens = tokenManagers.RequestTokens(this.customer.getAccountId(), 5);
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
         for(int i = 0; i < tokens.size(); i++){
             Token token = tokens.get(i);
             BigDecimal amount = new BigDecimal( i == 0 ? 1 : i * 5);
@@ -125,8 +136,8 @@ public class TransactionHistorySteps {
                         argThat(m -> m.getAccountId().equals(merchant.getAccountId())),
                         eq(amount),
                         eq(""));
-            } catch (TokenException | BankServiceException_Exception e) {
-                e.printStackTrace();
+            } catch (TokenException |EntryNotFoundException| BankServiceException_Exception e) {
+                fail();
             }
         }
     }

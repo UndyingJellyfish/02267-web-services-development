@@ -4,6 +4,7 @@ import main.dataAccess.IAccountDatastore;
 import main.exceptions.DuplicateEntryException;
 import main.dataAccess.ITokenDatastore;
 import main.dataAccess.ITransactionDatastore;
+import main.exceptions.EntryNotFoundException;
 import main.exceptions.InvalidTokenException;
 import main.models.*;
 import org.springframework.stereotype.Service;
@@ -18,18 +19,18 @@ public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore, IT
     private List<Transaction> transactions = new ArrayList<>();
 
     @Override
-    public Customer getCustomer(UUID customerId) {
-        return (Customer)accounts.stream().filter(a -> a instanceof Customer && a.getAccountId().equals(customerId)).findFirst().orElse(null);
+    public Customer getCustomer(UUID customerId) throws EntryNotFoundException {
+        return (Customer)accounts.stream().filter(a -> a instanceof Customer && a.getAccountId().equals(customerId)).findFirst().orElseThrow(EntryNotFoundException::new);
     }
 
     @Override
-    public Merchant getMerchant(UUID merchantId) {
-        return (Merchant) accounts.stream().filter(a -> a instanceof Merchant && a.getAccountId().equals(merchantId)).findFirst().orElse(null);
+    public Merchant getMerchant(UUID merchantId) throws EntryNotFoundException {
+        return (Merchant) accounts.stream().filter(a -> a instanceof Merchant && a.getAccountId().equals(merchantId)).findFirst().orElseThrow(EntryNotFoundException::new);
     }
 
     @Override
-    public Account getAccount(UUID accountId) {
-        return accounts.stream().filter(a -> a.getAccountId().equals(accountId)).findFirst().orElse(null);
+    public Account getAccount(UUID accountId) throws EntryNotFoundException {
+        return accounts.stream().filter(a -> a.getAccountId().equals(accountId)).findFirst().orElseThrow(EntryNotFoundException::new);
     }
 
     @Override

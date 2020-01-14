@@ -1,6 +1,7 @@
 package main.transfers;
 
 import dtu.ws.fastmoney.BankServiceException_Exception;
+import main.exceptions.EntryNotFoundException;
 import main.exceptions.TokenException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class PaymentController {
     public void TransferMoney(@RequestBody TransactionDto transaction){
         try {
             paymentService.transfer(transaction.getTokenId(), transaction.getMerchantId(), transaction.getAmount(), transaction.getDescription());
-        } catch (TokenException | IllegalArgumentException | BankServiceException_Exception e) {
+        } catch (TokenException | IllegalArgumentException |EntryNotFoundException| BankServiceException_Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
@@ -35,7 +36,7 @@ public class PaymentController {
     public void RefundTransaction(@RequestBody TransactionDto transaction){
         try {
             paymentService.refund(transaction.getCustomerId(), transaction.getMerchantId(), transaction.getTokenId());
-        } catch (TokenException |IllegalArgumentException| BankServiceException_Exception e) {
+        } catch (TokenException |IllegalArgumentException| EntryNotFoundException | BankServiceException_Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }

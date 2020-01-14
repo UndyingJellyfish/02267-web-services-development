@@ -1,4 +1,5 @@
 import main.dataAccess.IAccountDatastore;
+import main.exceptions.EntryNotFoundException;
 import main.exceptions.TokenException;
 import main.exceptions.DuplicateEntryException;
 import main.dataAccess.InMemoryDatastore;
@@ -75,15 +76,24 @@ public class InMemoryDataStoreTest {
         } catch (DuplicateEntryException e) {
             fail();
         }
-        Account found = datastore.getCustomer(acc.getAccountId());
+        Account found = null;
+        try {
+            found = datastore.getCustomer(acc.getAccountId());
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
         assertEquals(acc, found);
 
     }
 
     @Test
     public void getNonExistingCustomer(){
-        Customer cust = datastore.getCustomer(UUID.randomUUID());
-        assertNull(cust);
+        try {
+             datastore.getCustomer(UUID.randomUUID());
+            fail();
+        } catch (EntryNotFoundException e) {
+            //success
+        }
     }
 
     @Test
@@ -180,7 +190,12 @@ public class InMemoryDataStoreTest {
             fail();
         }
 
-        Account account = datastore.getAccount(customer.getAccountId());
+        Account account = null;
+        try {
+            account = datastore.getAccount(customer.getAccountId());
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
 
         assertEquals(customer.getAccountId(), account.getAccountId());
     }

@@ -2,6 +2,7 @@ package main.tokens;
 
 import main.dataAccess.IAccountDatastore;
 import main.dataAccess.ITokenDatastore;
+import main.exceptions.EntryNotFoundException;
 import main.exceptions.InvalidTokenException;
 import main.exceptions.TokenException;
 import main.exceptions.UsedTokenException;
@@ -25,7 +26,7 @@ public class TokenManager implements ITokenManager {
         this.accountDatastore = accountDatastore;
     }
 
-    public List<Token> RequestTokens(UUID customerId, int quantity) {
+    public List<Token> RequestTokens(UUID customerId, int quantity) throws EntryNotFoundException {
 
         Customer customer = accountDatastore.getCustomer(customerId);
 
@@ -48,7 +49,7 @@ public class TokenManager implements ITokenManager {
         return this.datastore.assignTokens(customer, tokens);
     }
 
-    public List<Token> GetTokens(UUID customerId) {
+    public List<Token> GetTokens(UUID customerId) throws EntryNotFoundException {
         return this.datastore.getTokens(accountDatastore.getCustomer(customerId));
     }
 
@@ -64,7 +65,7 @@ public class TokenManager implements ITokenManager {
     }
 
     @Override
-    public Token RequestToken(Customer customer) {
+    public Token RequestToken(Customer customer) throws EntryNotFoundException {
         return RequestTokens(customer.getAccountId(), 1).get(0);
     }
 

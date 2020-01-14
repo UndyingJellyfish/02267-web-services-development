@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+@org.springframework.stereotype.Service
 public class RemoteBankAdaptor implements IBank {
 
     private Service bankServiceService;

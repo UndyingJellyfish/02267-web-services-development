@@ -8,6 +8,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import main.accounts.AccountService;
+import main.exceptions.EntryNotFoundException;
 import main.models.Customer;
 import main.models.Merchant;
 import org.springframework.web.server.ResponseStatusException;
@@ -50,7 +51,12 @@ public class UserServiceSteps {
     @Then("The customer should be signed up")
     public void theCustomerShouldBeSignedUp() {
         assertNotNull(customerId);
-        Customer customer = accountStore.getCustomer(customerId);
+        Customer customer = null;
+        try {
+            customer = accountStore.getCustomer(customerId);
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
         assertNotNull(customer);
         assertEquals(customer.getName(),customerName);
     }
@@ -75,7 +81,12 @@ public class UserServiceSteps {
     @Then("The merchant should be signed up")
     public void theMerchantShouldBeSignedUp() {
         assertNotNull(merchantId);
-        Merchant merchant = accountStore.getMerchant(merchantId);
+        Merchant merchant = null;
+        try {
+            merchant = accountStore.getMerchant(merchantId);
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
         assertNotNull(merchant);
         assertEquals(merchant.getName(),merchantName);
     }

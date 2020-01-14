@@ -3,6 +3,7 @@ package stepdefs;
 import main.accounts.AccountController;
 import main.accounts.SignupDto;
 import main.dataAccess.IAccountDatastore;
+import main.exceptions.EntryNotFoundException;
 import main.models.Customer;
 import main.models.Token;
 import io.cucumber.java.en.And;
@@ -40,13 +41,21 @@ public class CustomerTokenSteps {
         dto.setName("bob");
         dto.setCpr("123");
         UUID custId = accountController.signupCustomer(dto);
-        this.customer = accountDatastore.getCustomer(custId);
+        try {
+            this.customer = accountDatastore.getCustomer(custId);
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
     }
 
     @And("The user has spent all tokens")
     public void theUserHasSpentAllTokens() {
 
-        assertTrue(tokenManager.GetTokens(customer.getAccountId()).stream().allMatch(Token::isUsed));
+        try {
+            assertTrue(tokenManager.GetTokens(customer.getAccountId()).stream().allMatch(Token::isUsed));
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
     }
 
     @When("The user requests {int} of tokens")
@@ -59,29 +68,50 @@ public class CustomerTokenSteps {
 
     @Then("The user receives {int} tokens")
     public void theUserReceivesNumberTokens(int arg0) {
-        List<Token> tokenList = this.tokenManager.GetTokens(this.customer.getAccountId());
+        List<Token> tokenList = null;
+        try {
+            tokenList = this.tokenManager.GetTokens(this.customer.getAccountId());
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
         assertEquals(arg0,tokenList.size());
         assertEquals(this.tokenList, tokenList);
     }
 
     @And("The user has {int} unused token")
     public void theUserHasUnusedToken(int arg0) {
-        tokenManager.RequestTokens(customer.getAccountId(),arg0);
-        assertEquals(arg0, tokenManager.GetTokens(customer.getAccountId()).stream().filter(t ->!t.isUsed()).count());
+        try {
+            tokenManager.RequestTokens(customer.getAccountId(),arg0);
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
+        try {
+            assertEquals(arg0, tokenManager.GetTokens(customer.getAccountId()).stream().filter(t ->!t.isUsed()).count());
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
     }
 
 
 
     @Then("The user has {int} unused tokens")
     public void theUserHasUnusedTokens(int arg0) {
-        assertEquals(arg0, tokenManager.GetTokens(customer.getAccountId()).stream().filter(t ->!t.isUsed()).count());
+        try {
+            assertEquals(arg0, tokenManager.GetTokens(customer.getAccountId()).stream().filter(t ->!t.isUsed()).count());
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
     }
 
 
 
     @And("The user already has {int} unused tokens")
     public void theUserAlreadyHasUnusedTokens(int arg0) {
-        tokenManager.RequestTokens(customer.getAccountId(),arg0);
+        try {
+            tokenManager.RequestTokens(customer.getAccountId(),arg0);
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
     }
 
     private IllegalArgumentException excp = null;
@@ -106,7 +136,12 @@ public class CustomerTokenSteps {
     @And("the user has {int} unused tokens")
     public void theUserHasNumberUnusedTokens(int arg0) {
         if(arg0 > 0){
-            List<Token> out = tokenManager.RequestTokens(customer.getAccountId(),arg0);
+            List<Token> out = null;
+            try {
+                out = tokenManager.RequestTokens(customer.getAccountId(),arg0);
+            } catch (EntryNotFoundException e) {
+                fail();
+            }
             assertEquals(arg0, out.size());
         }
     }

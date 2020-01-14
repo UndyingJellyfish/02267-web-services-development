@@ -1,8 +1,10 @@
 package main.tokens;
 
+import main.exceptions.EntryNotFoundException;
 import main.models.Token;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -22,6 +24,10 @@ public class TokenController {
     @PostMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<Token> requestTokens(@RequestBody RequestTokenDto dto) {
-        return tokenManager.RequestTokens(dto.getCustomerId(),dto.getAmount() );
+        try {
+            return tokenManager.RequestTokens(dto.getCustomerId(),dto.getAmount() );
+        } catch (EntryNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
+        }
     }
 }

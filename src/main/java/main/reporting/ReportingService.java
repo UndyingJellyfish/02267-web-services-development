@@ -2,6 +2,7 @@ package main.reporting;
 
 import main.dataAccess.IAccountDatastore;
 import main.dataAccess.ITransactionDatastore;
+import main.exceptions.EntryNotFoundException;
 import main.models.Account;
 import main.models.Merchant;
 import main.models.Transaction;
@@ -21,7 +22,7 @@ public class ReportingService {
         this.accountDatastore = accountDatastore;
     }
 
-    public List<Transaction> getTransactionHistory(UUID id) {
+    public List<Transaction> getTransactionHistory(UUID id) throws EntryNotFoundException {
         Account account = accountDatastore.getAccount(id);
         List<Transaction> transactions = transactionDatastore.getTransactions(account);
         if(account instanceof Merchant){

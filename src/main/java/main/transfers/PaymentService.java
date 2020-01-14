@@ -3,6 +3,7 @@ package main.transfers;
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import main.dataAccess.IAccountDatastore;
 import main.bank.IBank;
+import main.exceptions.EntryNotFoundException;
 import main.tokens.ITokenManager;
 import main.dataAccess.ITransactionDatastore;
 import main.exceptions.TokenException;
@@ -26,11 +27,11 @@ public class PaymentService {
         this.bank = bank;
     }
 
-    public Transaction transfer(UUID tokenId, UUID merchantId, BigDecimal amount, String description) throws TokenException, BankServiceException_Exception {
+    public Transaction transfer(UUID tokenId, UUID merchantId, BigDecimal amount, String description) throws TokenException, BankServiceException_Exception, EntryNotFoundException {
         return this.transfer(tokenId, merchantId, amount, false, description);
     }
 
-    public Transaction transfer(UUID tokenId, UUID merchantId, BigDecimal amount, boolean isRefund, String description) throws TokenException, BankServiceException_Exception {
+    public Transaction transfer(UUID tokenId, UUID merchantId, BigDecimal amount, boolean isRefund, String description) throws TokenException, BankServiceException_Exception, EntryNotFoundException {
         if(!isGreaterThanZero(amount)){
             throw new IllegalArgumentException();
         }
@@ -48,7 +49,7 @@ public class PaymentService {
         return amount.compareTo(new BigDecimal(0)) > 0;
     }
 
-    public void refund(UUID customerId, UUID merchantId, UUID tokenId) throws TokenException, BankServiceException_Exception {
+    public void refund(UUID customerId, UUID merchantId, UUID tokenId) throws TokenException, BankServiceException_Exception, EntryNotFoundException {
         Token newToken = tokenManager.RequestToken(accountDatastore.getCustomer(customerId));
         Transaction oldTransaction, newTransaction;
 

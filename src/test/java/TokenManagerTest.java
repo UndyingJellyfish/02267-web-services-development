@@ -1,4 +1,5 @@
 import main.exceptions.DuplicateEntryException;
+import main.exceptions.EntryNotFoundException;
 import main.models.Account;
 import main.tokens.ITokenManager;
 import main.exceptions.InvalidTokenException;
@@ -36,57 +37,87 @@ public class TokenManagerTest {
 
     @Test
     public void RequestTokens(){
-        List<Token> beforeTokens = tokenManager.GetTokens(custId);
-        tokenManager.RequestTokens(custId,2);
-        List<Token> afterTokens = tokenManager.GetTokens(custId);
-        assertEquals(0, beforeTokens.size());
-        assertEquals(2, afterTokens.size());
+
+        List<Token> beforeTokens = null;
+        try {
+            beforeTokens = tokenManager.GetTokens(custId);
+            tokenManager.RequestTokens(custId,2);
+            List<Token> afterTokens = tokenManager.GetTokens(custId);
+            assertEquals(0, beforeTokens.size());
+            assertEquals(2, afterTokens.size());
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
+
     }
 
     @Test
     public void RequestNoTokens(){
-        List<Token> beforeTokens = tokenManager.GetTokens(custId);
-        try{
-            tokenManager.RequestTokens(custId,0);
-        }catch(IllegalArgumentException e){        }
-        List<Token> afterTokens = tokenManager.GetTokens(custId);
-        assertEquals(beforeTokens.size(), afterTokens.size());
+        List<Token> beforeTokens = null;
+        try {
+            beforeTokens = tokenManager.GetTokens(custId);
+            try{
+                tokenManager.RequestTokens(custId,0);
+            }catch(IllegalArgumentException e){        }
+            List<Token> afterTokens = tokenManager.GetTokens(custId);
+            assertEquals(beforeTokens.size(), afterTokens.size());
+        } catch (EntryNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test
     public void RequestTooManyTokens(){
-        List<Token> beforeTokens = tokenManager.GetTokens(custId);
-        try{
-            tokenManager.RequestTokens(custId,6);
-        }catch(IllegalArgumentException e){        }
-        List<Token> afterTokens = tokenManager.GetTokens(custId);
-        assertEquals(beforeTokens.size(), afterTokens.size());
+        List<Token> beforeTokens = null;
+        try {
+            beforeTokens = tokenManager.GetTokens(custId);
+            try{
+                tokenManager.RequestTokens(custId,6);
+            }catch(IllegalArgumentException e){        }
+            List<Token> afterTokens = tokenManager.GetTokens(custId);
+            assertEquals(beforeTokens.size(), afterTokens.size());
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
+
     }
 
     @Test
     public void RequestTokensWhenOverLimit(){
-        tokenManager.RequestTokens(custId,2); // Any qty over 1
-        List<Token> beforeTokens = tokenManager.GetTokens(custId);
-        try{
-            tokenManager.RequestTokens(custId,1);
+        try {
+            tokenManager.RequestTokens(custId,2); // Any qty over 1
+            List<Token> beforeTokens = tokenManager.GetTokens(custId);
+            try{
+                tokenManager.RequestTokens(custId,1);
+                fail();
+            }catch(IllegalArgumentException e){        }
+            List<Token> afterTokens = tokenManager.GetTokens(custId);
+            assertEquals(beforeTokens.size(), afterTokens.size());
+        } catch (EntryNotFoundException e) {
             fail();
-        }catch(IllegalArgumentException e){        }
-        List<Token> afterTokens = tokenManager.GetTokens(custId);
-        assertEquals(beforeTokens.size(), afterTokens.size());
+        }
+
     }
 
     @Test
     public void UseExistingToken() {
-        List<Token> beforeTokens = tokenManager.RequestTokens(custId, 1);
-        try{
-            tokenManager.UseToken(beforeTokens.get(0).getTokenId());
-        } catch (TokenException e){
+        List<Token> beforeTokens = null;
+        try {
+            beforeTokens = tokenManager.RequestTokens(custId, 1);
+            try{
+                tokenManager.UseToken(beforeTokens.get(0).getTokenId());
+            } catch (TokenException e){
+                fail();
+            }
+            List<Token> afterTokens = tokenManager.GetTokens(custId);
+            assertEquals(1, afterTokens.size());
+            boolean isUsed = afterTokens.get(0).isUsed();
+            assertTrue(isUsed);
+        } catch (EntryNotFoundException e) {
             fail();
         }
-        List<Token> afterTokens = tokenManager.GetTokens(custId);
-        assertEquals(1, afterTokens.size());
-        boolean isUsed = afterTokens.get(0).isUsed();
-        assertTrue(isUsed);
+
     }
 
     @Test

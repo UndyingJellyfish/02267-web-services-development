@@ -1,6 +1,7 @@
 import main.exceptions.DuplicateEntryException;
 import main.bank.IBank;
 import main.dataAccess.InMemoryDatastore;
+import main.exceptions.EntryNotFoundException;
 import main.transfers.PaymentService;
 import main.tokens.TokenManager;
 import main.models.Customer;
@@ -39,7 +40,11 @@ public class PaymentServiceTest {
         } catch (DuplicateEntryException e) {
             fail();
         }
-        token = tokenManager.RequestToken(customer);
+        try {
+            token = tokenManager.RequestToken(customer);
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
     }
 
     private Exception excp;

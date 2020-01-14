@@ -22,7 +22,7 @@ public class ReportingController {
     }
 
 
-    @GetMapping("/{UUID}")
+    @GetMapping("/{accountId}")
     @ResponseStatus(HttpStatus.OK)
     public List<Transaction> getHistory(@PathVariable UUID accountId){
         try{
