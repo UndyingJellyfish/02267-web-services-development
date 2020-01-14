@@ -71,7 +71,7 @@ public class TransactionHistorySteps {
                         eq(amount),
                         eq(""));
             } catch (TokenException | BankServiceException_Exception e) {
-                e.printStackTrace();
+                fail();
             }
         }
     }
@@ -103,16 +103,52 @@ public class TransactionHistorySteps {
 
     @Given("A Merchant with a transaction history")
     public void aMerchantWithATransactionHistory() {
-        throw new PendingException();
+        this.customer = new Customer("Test Customer","123");
+        this.merchant = new Merchant("Test Merchant", "123");
+        try {
+            accountDatastore.addAccount(customer);
+            accountDatastore.addAccount(merchant);
+        } catch (DuplicateEntryException e) {
+            fail();
+        }
+        this.expecetedTransactions = new ArrayList<>();
+        List<Token> tokens =  tokenManager.RequestTokens(this.customer, 5);
+        for(int i = 0; i < tokens.size(); i++){
+            Token token = tokens.get(i);
+            BigDecimal amount = new BigDecimal( i == 0 ? 1 : i * 5);
+            try {
+                this.expecetedTransactions.add(paymentService.transfer(token.getTokenId(),this.merchant.getAccountId(), amount, ""));
+                verify(bank, times(1)).transferMoney(
+                        argThat( c -> c.getAccountId().equals(token.getCustomer().getAccountId())),
+                        argThat(m -> m.getAccountId().equals(merchant.getAccountId())),
+                        eq(amount),
+                        eq(""));
+            } catch (TokenException | BankServiceException_Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @When("The Merchant requests the transaction history")
     public void theMerchantRequestsTheTransactionHistory() {
-        throw new PendingException();
+        this.transactions = this.reportingService.getTransactionHistory(this.merchant.getAccountId());
     }
 
     @Then("The Merchant receives the transaction history without customer names")
     public void theMerchantReceivesTheTransactionHistoryWithoutCustomerNames() {
-        throw new PendingException();
+        assertNotNull(transactions);
+        assertEquals(expecetedTransactions.size(), transactions.size());
+        for(Transaction transaction : transactions){
+            Transaction expectedTransaction = this.expecetedTransactions.stream().filter(t -> t.getTransactionId().equals(transaction.getTransactionId())).findFirst().orElse(null);
+            if(expectedTransaction == null){
+                fail();
+            }
+            assertNull(transaction.getDebtor());
+            assertEquals(expectedTransaction.getCreditor().getAccountId(), transaction.getCreditor().getAccountId());
+
+            assertEquals(expectedTransaction.getToken().getTokenId(), transaction.getToken().getTokenId());
+            assertEquals(expectedTransaction.getAmount(), transaction.getAmount());
+            assertEquals(expectedTransaction.getTransactionDate(), transaction.getTransactionDate());
+        }
     }
 }

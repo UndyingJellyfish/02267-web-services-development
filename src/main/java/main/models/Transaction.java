@@ -67,4 +67,8 @@ public class Transaction {
     public UUID getTransactionId() {
         return this.transactionId;
     }
+
+    public void anonymize() {
+        this.debtor = null;
+    }
 }
