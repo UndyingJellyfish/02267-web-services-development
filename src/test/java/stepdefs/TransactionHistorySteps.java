@@ -4,6 +4,7 @@ import dtu.ws.fastmoney.BankServiceException_Exception;
 import main.exceptions.DuplicateEntryException;
 import main.dataAccess.IAccountDatastore;
 import main.bank.IBank;
+import main.reporting.ReportingService;
 import main.tokens.ITokenManager;
 import cucumber.api.PendingException;
 import main.exceptions.TokenException;
@@ -31,18 +32,19 @@ public class TransactionHistorySteps {
 
     private final ITokenManager tokenManager;
     private final PaymentService paymentService;
-    private final ITransactionDatastore transactionDataStore;
     private final IAccountDatastore accountDatastore;
     private Customer customer;
     private Merchant merchant;
     private List<Transaction> expecetedTransactions;
     private IBank bank;
+    private ReportingService reportingService;
 
-    public TransactionHistorySteps(ITokenManager tokenManager, ITransactionDatastore transactionDataStore, IAccountDatastore accountDatastore){
+
+    public TransactionHistorySteps(ITokenManager tokenManager, ITransactionDatastore transactionDataStore, IAccountDatastore accountDatastore, ReportingService reportingService){
+        this.reportingService = reportingService;
         this.bank = mock(IBank.class);
         this.tokenManager = tokenManager;
         this.paymentService = new PaymentService(tokenManager, accountDatastore, transactionDataStore, bank);
-        this.transactionDataStore = transactionDataStore;
         this.accountDatastore = accountDatastore;
     }
 
@@ -78,7 +80,7 @@ public class TransactionHistorySteps {
 
     @When("The Customer requests the transaction history")
     public void theCustomerRequestsTheTransactionHistory() {
-        this.transactions = this.transactionDataStore.getTransactions(this.customer);
+        this.transactions = this.reportingService.getTransactionHistory(this.customer.getAccountId());
     }
 
     @Then("The Customer receives the transaction history")

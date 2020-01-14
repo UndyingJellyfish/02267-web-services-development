@@ -12,4 +12,6 @@ public interface IAccountDatastore {
     <T extends Account> T addAccount(T account) throws DuplicateEntryException;
 
     Merchant getMerchant(UUID merchantId);
+
+    Account getAccount(UUID accountId);
 }

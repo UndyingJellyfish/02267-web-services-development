@@ -28,6 +28,11 @@ public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore, IT
     }
 
     @Override
+    public Account getAccount(UUID accountId) {
+        return accounts.stream().filter(a -> a.getAccountId().equals(accountId)).findFirst().orElse(null);
+    }
+
+    @Override
     public <T extends Account> T addAccount(T account) throws DuplicateEntryException {
         if(accounts.stream().anyMatch(a -> a.getAccountId().equals(account.getAccountId())
                 || (account instanceof Customer && a instanceof Customer) && ((Customer) a).getCpr().equals(((Customer) account).getCpr()))){

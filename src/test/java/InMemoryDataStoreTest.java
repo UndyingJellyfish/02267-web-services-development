@@ -1,3 +1,4 @@
+import main.dataAccess.IAccountDatastore;
 import main.exceptions.TokenException;
 import main.exceptions.DuplicateEntryException;
 import main.dataAccess.InMemoryDatastore;
@@ -168,6 +169,20 @@ public class InMemoryDataStoreTest {
 
         assertThat(afterTokens, is(beforeTokens));
         assertEquals(0, afterTokens.size());
+    }
+
+    @Test
+    public void GetAccount(){
+        Customer customer = new Customer("Bob", "12345");
+        try {
+            datastore.addAccount(customer);
+        } catch (DuplicateEntryException e) {
+            fail();
+        }
+
+        Account account = datastore.getAccount(customer.getAccountId());
+
+        assertEquals(customer.getAccountId(), account.getAccountId());
     }
 
 }
