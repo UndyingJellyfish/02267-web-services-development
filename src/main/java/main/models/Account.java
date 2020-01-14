@@ -21,10 +21,6 @@ public abstract class Account {
         this.accountId = UUID.randomUUID();
     }
 
-    public List<Transaction> getTransactions(){
-        return this.transactions;
-    }
-
     public String getName() {
         return name;
     }

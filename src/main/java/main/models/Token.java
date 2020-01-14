@@ -26,14 +26,6 @@ public class Token {
         this.used = used;
     }
 
-    public Date getUseDate() {
-        return useDate;
-    }
-
-    public void setUseDate(Date useDate) {
-        this.useDate = useDate;
-    }
-
     public Customer getCustomer() {
         return customer;
     }

@@ -59,9 +59,6 @@ public class TokenManager implements ITokenManager {
             throw new UsedTokenException();
         }
         token.setUsed(true);
-        token.setUseDate(new Date());
-
-
     }
 
     @Override
