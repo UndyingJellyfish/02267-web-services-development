@@ -1,9 +1,11 @@
 package stepdefs;
 
 import dtu.ws.fastmoney.BankServiceException_Exception;
+import main.dataAccess.InMemoryDatastore;
 import main.exceptions.DuplicateEntryException;
 import main.dataAccess.IAccountDatastore;
 import main.bank.IBank;
+import main.reporting.ReportingController;
 import main.reporting.ReportingService;
 import main.tokens.ITokenManager;
 import cucumber.api.PendingException;
@@ -30,22 +32,22 @@ import static org.mockito.Mockito.*;
 
 public class TransactionHistorySteps {
 
-    private final ITokenManager tokenManager;
+    private final ITokenManager tokenManagers;
     private final PaymentService paymentService;
-    private final IAccountDatastore accountDatastore;
     private Customer customer;
     private Merchant merchant;
     private List<Transaction> expecetedTransactions;
     private IBank bank;
-    private ReportingService reportingService;
+    private ReportingController reportingController;
+    private InMemoryDatastore store;
 
 
-    public TransactionHistorySteps(ITokenManager tokenManager, ITransactionDatastore transactionDataStore, IAccountDatastore accountDatastore, ReportingService reportingService){
-        this.reportingService = reportingService;
+    public TransactionHistorySteps(ITokenManager tokenManager, InMemoryDatastore store, ReportingController reportingController){
+        this.store = store;
+        this.reportingController = reportingController;
         this.bank = mock(IBank.class);
-        this.tokenManager = tokenManager;
-        this.paymentService = new PaymentService(tokenManager, accountDatastore, transactionDataStore, bank);
-        this.accountDatastore = accountDatastore;
+        this.tokenManagers = tokenManager;
+        this.paymentService = new PaymentService(tokenManager, store, store, bank);
     }
 
     @Given("A Customer with a transaction history")
@@ -53,13 +55,13 @@ public class TransactionHistorySteps {
         this.customer = new Customer("Test Customer","123");
         this.merchant = new Merchant("Test Merchant", "123");
         try {
-            accountDatastore.addAccount(customer);
-            accountDatastore.addAccount(merchant);
+            store.addAccount(customer);
+            store.addAccount(merchant);
         } catch (DuplicateEntryException e) {
             fail();
         }
         this.expecetedTransactions = new ArrayList<>();
-        List<Token> tokens =  tokenManager.RequestTokens(this.customer.getAccountId(), 5);
+        List<Token> tokens =  tokenManagers.RequestTokens(this.customer.getAccountId(), 5);
         for(int i = 0; i < tokens.size(); i++){
             Token token = tokens.get(i);
             BigDecimal amount = new BigDecimal( i == 0 ? 1 : i * 5);
@@ -80,7 +82,7 @@ public class TransactionHistorySteps {
 
     @When("The Customer requests the transaction history")
     public void theCustomerRequestsTheTransactionHistory() {
-        this.transactions = this.reportingService.getTransactionHistory(this.customer.getAccountId());
+        this.transactions = reportingController.getHistory(this.customer.getAccountId());
     }
 
     @Then("The Customer receives the transaction history")
@@ -106,13 +108,13 @@ public class TransactionHistorySteps {
         this.customer = new Customer("Test Customer","123");
         this.merchant = new Merchant("Test Merchant", "123");
         try {
-            accountDatastore.addAccount(customer);
-            accountDatastore.addAccount(merchant);
+            store.addAccount(customer);
+            store.addAccount(merchant);
         } catch (DuplicateEntryException e) {
             fail();
         }
         this.expecetedTransactions = new ArrayList<>();
-        List<Token> tokens =  tokenManager.RequestTokens(this.customer, 5);
+        List<Token> tokens =  tokenManagers.RequestTokens(this.customer.getAccountId(), 5);
         for(int i = 0; i < tokens.size(); i++){
             Token token = tokens.get(i);
             BigDecimal amount = new BigDecimal( i == 0 ? 1 : i * 5);
@@ -131,7 +133,7 @@ public class TransactionHistorySteps {
 
     @When("The Merchant requests the transaction history")
     public void theMerchantRequestsTheTransactionHistory() {
-        this.transactions = this.reportingService.getTransactionHistory(this.merchant.getAccountId());
+        this.transactions = reportingController.getHistory(this.merchant.getAccountId());
     }
 
     @Then("The Merchant receives the transaction history without customer names")

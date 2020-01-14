@@ -55,7 +55,6 @@ public class CustomerTokenSteps {
         dto.setAmount(arg0);
         dto.setCustomerId(this.customer.getAccountId());
         tokenList = tokenController.requestTokens(dto);
-        //tokenList = tokenManager.RequestTokens(this.customer, arg0);
     }
 
     @Then("The user receives {int} tokens")

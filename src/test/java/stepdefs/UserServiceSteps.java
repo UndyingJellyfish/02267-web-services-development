@@ -1,5 +1,8 @@
 package stepdefs;
 
+import main.accounts.AccountController;
+import main.accounts.SignupDto;
+import main.dataAccess.IAccountDatastore;
 import main.exceptions.DuplicateEntryException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -7,19 +10,24 @@ import io.cucumber.java.en.When;
 import main.accounts.AccountService;
 import main.models.Customer;
 import main.models.Merchant;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
 public class UserServiceSteps {
     private String customerName;
-    private AccountService userService;
-    private Customer customer;
+    private AccountController accountController;
+    private IAccountDatastore accountStore;
+    private UUID customerId;
     private String merchantName;
-    private Merchant merchant;
+    private UUID merchantId;
 
 
-    public UserServiceSteps(AccountService userService) {
-        this.userService = userService;
+    public UserServiceSteps(AccountController accountController, IAccountDatastore accountStore) {
+        this.accountController = accountController;
+        this.accountStore = accountStore;
     }
 
     @Given("The name of a customer")
@@ -30,16 +38,21 @@ public class UserServiceSteps {
     @When("The customer signs up")
     public void theCustomerSignsUp() {
         try {
-            customer = userService.addAccount(new Customer(customerName,"lol jeg er cpr"));
-        } catch (DuplicateEntryException e) {
+            SignupDto dto = new SignupDto();
+            dto.setCpr("lol jg er cpr");
+            dto.setName(customerName);
+            customerId = accountController.signupCustomer(dto);
+        } catch (ResponseStatusException e) {
             fail();
         }
     }
 
     @Then("The customer should be signed up")
     public void theCustomerShouldBeSignedUp() {
+        assertNotNull(customerId);
+        Customer customer = accountStore.getCustomer(customerId);
         assertNotNull(customer);
-        assertEquals(customerName, customer.getName());
+        assertEquals(customer.getName(),customerName);
     }
 
     @Given("The name of a merchant")
@@ -50,15 +63,20 @@ public class UserServiceSteps {
     @When("The merchant signs up")
     public void theMerchantSignsUp() {
         try {
-            merchant = userService.addAccount(new Merchant(merchantName, "123"));
-        } catch (DuplicateEntryException e) {
+            SignupDto dto = new SignupDto();
+            dto.setName(merchantName);
+            dto.setCpr("123");
+            merchantId = accountController.signupMerchant(dto);
+        } catch (ResponseStatusException e) {
             fail();
         }
     }
 
     @Then("The merchant should be signed up")
     public void theMerchantShouldBeSignedUp() {
+        assertNotNull(merchantId);
+        Merchant merchant = accountStore.getMerchant(merchantId);
         assertNotNull(merchant);
-        assertEquals(merchantName, merchant.getName());
+        assertEquals(merchant.getName(),merchantName);
     }
 }

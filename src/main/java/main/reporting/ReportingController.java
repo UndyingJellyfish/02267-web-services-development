@@ -1,4 +1,4 @@
-package main.controllers;
+package main.reporting;
 import main.exceptions.TokenException;
 import main.models.Transaction;
 import main.reporting.ReportingService;
@@ -24,7 +24,7 @@ public class ReportingController {
 
     @GetMapping("/{UUID}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Transaction> merchantHistory(@PathVariable UUID accountId){
+    public List<Transaction> getHistory(@PathVariable UUID accountId){
         try{
             return reportingService.getTransactionHistory(accountId);
         }catch(Exception e){
