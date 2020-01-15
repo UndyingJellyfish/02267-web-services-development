@@ -34,7 +34,7 @@ public class TokenManager implements ITokenManager {
         }
 
         // Probably move check for any active tokens to other method.
-        if(datastore.getTokens(customer).stream().filter(t -> !t.isUsed()).count() > 1){
+        if(datastore.getTokens(customer.getAccountId()).stream().filter(t -> !t.isUsed()).count() > 1){
             throw new IllegalArgumentException("Customer has active tokens");
         }
 
@@ -48,8 +48,8 @@ public class TokenManager implements ITokenManager {
         return this.datastore.assignTokens(customer, tokens);
     }
 
-    public List<Token> GetTokens(UUID customerId) throws EntryNotFoundException {
-        return this.datastore.getTokens(accountDatastore.getCustomer(customerId));
+    public List<Token> GetTokens(UUID customerId) {
+        return this.datastore.getTokens(customerId);
     }
 
     public void UseToken(UUID tokenId) throws TokenException {
@@ -68,5 +68,10 @@ public class TokenManager implements ITokenManager {
     @Override
     public Token GetToken(UUID tokenId) throws InvalidTokenException {
         return  this.datastore.getToken(tokenId);
+    }
+
+    @Override
+    public void retireAll(UUID customerId) {
+        this.GetTokens(customerId).forEach(t -> t.setUsed(true));
     }
 }

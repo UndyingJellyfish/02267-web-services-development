@@ -18,4 +18,6 @@ public interface ITokenManager {
     Token RequestToken(Customer customer) throws EntryNotFoundException;
 
     Token GetToken(UUID tokenId) throws InvalidTokenException;
+
+    void retireAll(UUID accountId);
 }

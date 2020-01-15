@@ -131,7 +131,7 @@ public class InMemoryDataStoreTest {
         Customer customer = new Customer("bob","123");
         List<Token> tokens =  new ArrayList<Token>(){{add(new Token(customer)); add(new Token(customer));}};
         datastore.assignTokens(customer,tokens);
-        List<Token> foundTokens = datastore.getTokens(customer);
+        List<Token> foundTokens = datastore.getTokens(customer.getAccountId());
         Assert.assertThat(foundTokens, is(tokens));
     }
 
@@ -157,7 +157,7 @@ public class InMemoryDataStoreTest {
 
         }catch(IllegalArgumentException e){}
 
-        List<Token> afterTokens = datastore.getTokens(customer);
+        List<Token> afterTokens = datastore.getTokens(customer.getAccountId());
         Assert.assertThat(afterTokens, is(tokens));
         Assert.assertEquals(1, afterTokens.size());
     }
@@ -169,7 +169,7 @@ public class InMemoryDataStoreTest {
         Customer customer = new Customer("bob","123");
         Token token = new Token(customer);
 
-        List<Token> beforeTokens = datastore.getTokens(customer);
+        List<Token> beforeTokens = datastore.getTokens(customer.getAccountId());
         List<Token> tokens =  new ArrayList<Token>(){{add(token); add(token);}};
 
         try{
@@ -177,7 +177,7 @@ public class InMemoryDataStoreTest {
             Assert.fail();
         }catch(IllegalArgumentException e){}
 
-        List<Token> afterTokens = datastore.getTokens(customer);
+        List<Token> afterTokens = datastore.getTokens(customer.getAccountId());
 
         Assert.assertThat(afterTokens, is(beforeTokens));
         Assert.assertEquals(0, afterTokens.size());
