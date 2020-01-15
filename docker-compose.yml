@@ -1,0 +1,7 @@
+version: '3.7'
+
+services:
+  dtupay:
+    build: /application
+    ports:
+      - "8181:8080"
