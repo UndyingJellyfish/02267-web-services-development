@@ -1,8 +1,11 @@
 package com.example.webservices.application.stepdefs;
 
+import com.example.webservices.application.InMemoryDataStoreTest;
 import com.example.webservices.application.accounts.AccountController;
 import com.example.webservices.application.accounts.SignupDto;
 import com.example.webservices.application.dataAccess.IAccountDatastore;
+import com.example.webservices.application.dataAccess.InMemoryDatastore;
+import com.example.webservices.library.models.Token;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -11,6 +14,7 @@ import com.example.webservices.library.models.Customer;
 import com.example.webservices.library.models.Merchant;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -19,14 +23,16 @@ public class UserServiceSteps {
     private String customerName;
     private AccountController accountController;
     private IAccountDatastore accountStore;
+    private InMemoryDatastore store;
     private UUID customerId;
     private String merchantName;
     private UUID merchantId;
 
 
-    public UserServiceSteps(AccountController accountController, IAccountDatastore accountStore) {
+    public UserServiceSteps(AccountController accountController, IAccountDatastore accountStore, InMemoryDatastore store ) {
         this.accountController = accountController;
         this.accountStore = accountStore;
+        this.store = store;
     }
 
     @Given("The name of a customer")
@@ -88,4 +94,53 @@ public class UserServiceSteps {
         assertNotNull(merchant);
         assertEquals(merchant.getName(),merchantName);
     }
+
+    @Given("An account")
+    public void anAccount() {
+        try {
+            SignupDto dto = new SignupDto();
+            dto.setCpr("123");
+            dto.setName("oldname");
+            customerId = accountController.signupCustomer(dto);
+        } catch (ResponseStatusException e) {
+            fail();
+        }
+    }
+
+    @When("The user requests a name change")
+    public void theUserRequestsANameChange() {
+        try {
+            accountController.changeName(customerId, "newName");
+            customerName =  accountStore.getAccount(customerId).getName();
+        } catch (ResponseStatusException | EntryNotFoundException e) {
+            fail();
+        }
+    }
+
+    @Then("The name should be changed")
+    public void theNameShouldBeChanged() {
+        assertEquals("newName",customerName);
+    }
+
+    @When("The user requests to be deleted")
+    public void theUserRequestsToBeDeleted() {
+        try {
+            accountController.delete(customerId);
+        } catch (ResponseStatusException e) {
+            fail();
+        }
+    }
+
+    @Then("The user should be deleted, and unused tokens should be removed")
+    public void theUserShouldBeDeletedAndUnusedTokensShouldBeRemoved() {
+        List<Token> tokens =  store.getTokens(customerId);
+        try {
+            accountStore.getAccount(customerId);
+            fail();
+        } catch (EntryNotFoundException e) {
+            // entry not found = entry deleted
+            assertEquals(0, tokens.stream().filter(t -> !t.isUsed()).count());
+        }
+    }
+
 }

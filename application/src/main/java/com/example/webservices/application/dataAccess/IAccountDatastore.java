@@ -15,4 +15,6 @@ public interface IAccountDatastore {
     Merchant getMerchant(UUID merchantId) throws EntryNotFoundException;
 
     Account getAccount(UUID accountId) throws EntryNotFoundException;
+
+    void deleteAccount(UUID accountId) throws EntryNotFoundException;
 }

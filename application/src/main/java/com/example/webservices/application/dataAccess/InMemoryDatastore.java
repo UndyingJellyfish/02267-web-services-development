@@ -31,6 +31,13 @@ public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore, IT
     }
 
     @Override
+    public void deleteAccount(UUID accountId) throws EntryNotFoundException {
+            Account acc = this.getAccount(accountId);
+            this.accounts.remove(acc);
+
+    }
+
+    @Override
     public <T extends Account> T addAccount(T account) throws DuplicateEntryException {
         if(accounts.stream().anyMatch(a -> a.getAccountId().equals(account.getAccountId())
                 || (account instanceof Customer && a instanceof Customer) && ((Customer) a).getCpr().equals(((Customer) account).getCpr()))){
@@ -41,9 +48,10 @@ public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore, IT
     }
 
     @Override
-    public List<Token> getTokens(Customer customer){
-        return this.tokens.stream().filter(t -> t.getCustomer().equals(customer)).collect(Collectors.toList());
+    public List<Token> getTokens(UUID customerId){
+        return this.tokens.stream().filter(t -> t.getCustomer().getAccountId().equals(customerId)).collect(Collectors.toList());
     }
+
 
     @Override
     public List<Token> assignTokens(Customer customer, List<Token> tokens) {
@@ -64,6 +72,8 @@ public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore, IT
     public Token getToken(UUID tokenId) throws InvalidTokenException {
         return this.tokens.stream().filter(t -> t.getTokenId().equals(tokenId)).findFirst().orElseThrow(InvalidTokenException::new);
     }
+
+
 
 
     // Extract me somewhere!
@@ -97,4 +107,6 @@ public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore, IT
         ).collect(Collectors.toList());
 
     }
+
+
 }
