@@ -1,5 +1,6 @@
 package com.example.webservices.application.stepdefs;
 
+import com.example.webservices.application.exceptions.TokenQuantityException;
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import com.example.webservices.application.dataAccess.InMemoryDatastore;
 import com.example.webservices.application.exceptions.DuplicateEntryException;
@@ -61,7 +62,7 @@ public class TransactionHistorySteps {
         List<Token> tokens = null;
         try {
             tokens = tokenManagers.RequestTokens(this.customer.getAccountId(), 5);
-        } catch (EntryNotFoundException e) {
+        } catch (EntryNotFoundException | TokenQuantityException e) {
             fail();
         }
         for(int i = 0; i < tokens.size(); i++){
@@ -119,7 +120,7 @@ public class TransactionHistorySteps {
         List<Token> tokens = null;
         try {
             tokens = tokenManagers.RequestTokens(this.customer.getAccountId(), 5);
-        } catch (EntryNotFoundException e) {
+        } catch (EntryNotFoundException | TokenQuantityException e) {
             fail();
         }
         for(int i = 0; i < tokens.size(); i++){

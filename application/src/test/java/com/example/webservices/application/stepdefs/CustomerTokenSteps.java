@@ -4,6 +4,7 @@ import com.example.webservices.application.accounts.AccountController;
 import com.example.webservices.application.accounts.SignupDto;
 import com.example.webservices.application.dataAccess.IAccountDatastore;
 import com.example.webservices.application.exceptions.EntryNotFoundException;
+import com.example.webservices.application.exceptions.TokenQuantityException;
 import com.example.webservices.library.models.Customer;
 import com.example.webservices.library.models.Token;
 import io.cucumber.java.en.And;
@@ -13,7 +14,9 @@ import io.cucumber.java.en.When;
 import com.example.webservices.application.tokens.ITokenManager;
 import com.example.webservices.application.tokens.TokenController;
 import com.example.webservices.application.tokens.RequestTokenDto;
+import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.constraints.AssertTrue;
 import java.util.List;
 import java.util.UUID;
 
@@ -82,7 +85,7 @@ public class CustomerTokenSteps {
     public void theUserHasUnusedToken(int arg0) {
         try {
             tokenManager.RequestTokens(customer.getAccountId(),arg0);
-        } catch (EntryNotFoundException e) {
+        } catch (EntryNotFoundException | TokenQuantityException e) {
             fail();
         }
         try {
@@ -109,12 +112,12 @@ public class CustomerTokenSteps {
     public void theUserAlreadyHasUnusedTokens(int arg0) {
         try {
             tokenManager.RequestTokens(customer.getAccountId(),arg0);
-        } catch (EntryNotFoundException e) {
+        } catch (EntryNotFoundException | TokenQuantityException e) {
             fail();
         }
     }
 
-    private IllegalArgumentException excp = null;
+    private ResponseStatusException excp = null;
     @When("The user requests {int} tokens")
     public void theUserRequestsTokens(int arg0) {
         try{
@@ -123,7 +126,7 @@ public class CustomerTokenSteps {
             dto.setCustomerId(this.customer.getAccountId());
             tokenController.requestTokens(dto);
             fail();
-        }catch(IllegalArgumentException e){
+        }catch(ResponseStatusException e){
             excp = e;
         }
     }
@@ -139,7 +142,7 @@ public class CustomerTokenSteps {
             List<Token> out = null;
             try {
                 out = tokenManager.RequestTokens(customer.getAccountId(),arg0);
-            } catch (EntryNotFoundException e) {
+            } catch (EntryNotFoundException | TokenQuantityException e) {
                 fail();
             }
             assertEquals(arg0, out.size());
@@ -147,4 +150,16 @@ public class CustomerTokenSteps {
     }
 
 
+
+
+    @When("The user queries his tokens")
+    public void theUserQueriesHisTokens() {
+        this.tokenList = tokenController.getTokens(customer.getAccountId());
+    }
+
+    @Then("He should get his tokens")
+    public void heShouldGetHisTokens() {
+        assertEquals(2, this.tokenList.stream().filter(t -> !t.isUsed()).count());
+        assertTrue(this.tokenList.size() >= 2);
+    }
 }

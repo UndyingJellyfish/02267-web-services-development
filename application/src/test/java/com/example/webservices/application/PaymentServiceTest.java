@@ -4,6 +4,7 @@ import com.example.webservices.application.exceptions.DuplicateEntryException;
 import com.example.webservices.application.bank.IBank;
 import com.example.webservices.application.dataAccess.InMemoryDatastore;
 import com.example.webservices.application.exceptions.EntryNotFoundException;
+import com.example.webservices.application.exceptions.TokenQuantityException;
 import com.example.webservices.application.transfers.PaymentService;
 import com.example.webservices.application.tokens.TokenManager;
 import com.example.webservices.library.models.Customer;
@@ -44,7 +45,7 @@ public class PaymentServiceTest {
         }
         try {
             token = tokenManager.RequestToken(customer);
-        } catch (EntryNotFoundException e) {
+        } catch (EntryNotFoundException | TokenQuantityException e) {
             Assert.fail();
         }
     }
