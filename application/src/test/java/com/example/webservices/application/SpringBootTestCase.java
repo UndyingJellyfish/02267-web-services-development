@@ -5,10 +5,12 @@ import com.example.webservices.application.transfers.PaymentController;
 import com.example.webservices.application.exceptions.InvalidTokenException;
 import com.example.webservices.application.transfers.PaymentService;
 import com.example.webservices.application.transfers.TransactionDto;
+import io.cucumber.java.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -24,13 +26,14 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RunWith(SpringRunner.class)
+//@RunWith(SpringRunner.class)
 //@WebMvcTest(controllers = PaymentController.class)
-@ContextConfiguration( classes = Application.class)
-//@SpringBootTest(classes = Application.class)
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@ContextConfiguration( classes = Application.class, loader = SpringBootContextLoader.class)
 public class SpringBootTestCase {
 
-    @Test
+    @Before
     public void SpringTest(){
         
     }

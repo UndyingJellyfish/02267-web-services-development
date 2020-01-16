@@ -1,10 +1,12 @@
 package com.example.webservices.application.stepdefs;
 
+import com.example.webservices.application.exceptions.EntryNotFoundException;
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import com.example.webservices.application.accounts.AccountController;
 import com.example.webservices.application.accounts.SignupDto;
 import com.example.webservices.application.dataAccess.InMemoryDatastore;
 import com.example.webservices.application.bank.IBank;
+import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -47,12 +49,17 @@ public class PaymentServiceSteps {
         this.tokenController = tokenController;
     }
 
+    @After
+    public void tearDown(){
+        this.store.flush();
+    }
+
 
     @When("The merchant initiates the transaction")
     public void theMerchantInitiatesTheTransaction() {
 
         try {
-            TransactionDto dto = new TransactionDto();
+            TransactionDto dto = TransactionDto.Create();
             dto.setAmount(amount);
             dto.setTokenId(token.getTokenId());
             dto.setMerchantId(merchantId);
@@ -84,7 +91,7 @@ public class PaymentServiceSteps {
         String invalidDesc = "12312oi3j4to3j4gp24ijgip24utgi24noi4untg";
         this.bank = mock(IBank.class);
         try{
-            TransactionDto dto = new TransactionDto();
+            TransactionDto dto = TransactionDto.Create();
             dto.setAmount(amount);
             dto.setTokenId(token.getTokenId());
             dto.setMerchantId(merchantId);
@@ -159,8 +166,8 @@ public class PaymentServiceSteps {
         dto2.setCustomerId(custId);
         token = tokenController.requestTokens(dto2).stream().findFirst().orElseThrow(RuntimeException::new);
         try {
-            TransactionDto dto3 = new TransactionDto();
-            dto3.setDescription("dræb mig");
+            TransactionDto dto3 = TransactionDto.Create();
+            dto3.setDescription("Something");
             dto3.setMerchantId(this.merchantId);
             dto3.setAmount(amount);
             dto3.setTokenId(token.getTokenId());
@@ -210,7 +217,7 @@ public class PaymentServiceSteps {
         token = tokenController.requestTokens(dto3).stream().findFirst().orElseThrow(RuntimeException::new);
         amount = new BigDecimal("150.0");
         try {
-            TransactionDto dto4 = new TransactionDto();
+            TransactionDto dto4 = TransactionDto.Create();
             dto4.setAmount(amount);
             dto4.setMerchantId(merchantId);
             dto4.setCustomerId(customerId);
@@ -227,7 +234,7 @@ public class PaymentServiceSteps {
     @When("The customer asks for a refund")
     public void theCustomerAsksForRefund() {
         try {
-            TransactionDto dto = new TransactionDto();
+            TransactionDto dto = TransactionDto.Create();
             dto.setCustomerId(customerId);
             dto.setMerchantId(merchantId);
             dto.setTokenId(token.getTokenId());

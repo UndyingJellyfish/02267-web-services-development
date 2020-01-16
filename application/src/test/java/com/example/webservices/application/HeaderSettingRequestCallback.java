@@ -1,3 +1,4 @@
+/*
 package com.example.webservices.application;
 
 import org.springframework.http.HttpHeaders;
@@ -30,4 +31,4 @@ public class HeaderSettingRequestCallback implements RequestCallback {
             request.getBody().write(body.getBytes());
         }
     }
-}
+}*/

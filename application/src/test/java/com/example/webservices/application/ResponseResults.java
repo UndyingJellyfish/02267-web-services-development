@@ -1,8 +1,10 @@
+/*
 package com.example.webservices.application;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.lang.reflect.Type;
 
 import gherkin.deps.com.google.gson.Gson;
 import org.apache.commons.io.IOUtils;
@@ -27,4 +29,7 @@ public class ResponseResults {
     public <T> T getBody(Class<T> type) {
         return new Gson().fromJson(body, type);
     }
-}
+    public <T> T getBody(Type type){
+        return new Gson().fromJson(body, type);
+    }
+}*/

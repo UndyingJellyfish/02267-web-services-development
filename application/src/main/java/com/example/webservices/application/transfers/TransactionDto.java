@@ -1,15 +1,42 @@
 package com.example.webservices.application.transfers;
 
+import com.example.webservices.library.models.Account;
+import com.example.webservices.library.models.Customer;
+import com.example.webservices.library.models.Transaction;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
 public class TransactionDto {
-    public TransactionDto(){}
+    private UUID transactionId;
+
+    //public TransactionDto(){}
     private UUID tokenId;
     private UUID merchantId;
     private UUID customerId;
     private BigDecimal amount;
     private String description;
+
+    private TransactionDto() {
+        transactionId = UUID.randomUUID();
+    }
+
+    public static TransactionDto Create() {
+        return new TransactionDto();
+    }
+
+    public TransactionDto(Transaction transaction) {
+        transactionId = transaction.getTransactionId();
+        tokenId = transaction.getToken().getTokenId();
+        merchantId = transaction.getCreditor().getAccountId();
+        Account debtor = transaction.getDebtor();
+        if (debtor != null) {
+            customerId = debtor.getAccountId();
+        }
+        amount = transaction.getAmount();
+        description = null; // TODO: Why the fuck is there not a description in the transaction object but there is in the DTO???
+        // TODO: Where the FUCK is transaction date???
+    }
 
     public UUID getTokenId() {
         return tokenId;
@@ -49,5 +76,9 @@ public class TransactionDto {
 
     public UUID getCustomerId() {
         return customerId;
+    }
+
+    public UUID getTransactionId() {
+        return transactionId;
     }
 }

@@ -3,10 +3,12 @@ package com.example.webservices.application.stepdefs;
 import com.example.webservices.application.accounts.AccountController;
 import com.example.webservices.application.accounts.SignupDto;
 import com.example.webservices.application.dataAccess.IAccountDatastore;
+import com.example.webservices.application.dataAccess.InMemoryDatastore;
 import com.example.webservices.application.exceptions.EntryNotFoundException;
 import com.example.webservices.application.exceptions.TokenQuantityException;
 import com.example.webservices.library.models.Customer;
 import com.example.webservices.library.models.Token;
+import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -36,6 +38,10 @@ public class CustomerTokenSteps {
         this.accountController = accountController;
         this.accountDatastore = accountDatastore;
         this.tokenController = tokenController;
+    }
+    @After
+    public void tearDown(){
+        ((InMemoryDatastore)this.accountDatastore).flush();
     }
 
     @Given("A registered user")

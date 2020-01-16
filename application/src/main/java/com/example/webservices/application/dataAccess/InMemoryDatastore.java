@@ -15,6 +15,12 @@ public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore, IT
     private List<Token> tokens = new ArrayList<>();
     private List<Transaction> transactions = new ArrayList<>();
 
+    public void flush(){
+        accounts = new ArrayList<>();
+        tokens = new ArrayList<>();
+        transactions = new ArrayList<>();
+    }
+
     @Override
     public Customer getCustomer(UUID customerId) throws EntryNotFoundException {
         return (Customer)accounts.stream().filter(a -> a instanceof Customer && a.getAccountId().equals(customerId)).findFirst().orElseThrow(EntryNotFoundException::new);

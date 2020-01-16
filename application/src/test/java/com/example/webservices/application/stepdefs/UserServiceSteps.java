@@ -1,6 +1,4 @@
 package com.example.webservices.application.stepdefs;
-
-import com.example.webservices.application.SpringIntegrationTest;
 import com.example.webservices.application.accounts.AccountController;
 import com.example.webservices.application.accounts.ChangeNameDto;
 import com.example.webservices.application.accounts.SignupDto;
@@ -14,39 +12,32 @@ import io.cucumber.java.en.When;
 import com.example.webservices.application.exceptions.EntryNotFoundException;
 import com.example.webservices.library.models.Customer;
 import com.example.webservices.library.models.Merchant;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
 
-public class UserServiceSteps extends SpringIntegrationTest {
+public class UserServiceSteps extends AbstractSteps {
     private String customerName;
-    private AccountController accountController;
     private InMemoryDatastore store;
     private UUID customerId;
     private String merchantName;
     private UUID merchantId;
 
 
-    public UserServiceSteps(AccountController accountController, InMemoryDatastore inMemoryDatastore) {
-        this.accountController = accountController;
+    public UserServiceSteps(InMemoryDatastore inMemoryDatastore) {
         this.store = inMemoryDatastore;
     }
 
     @After
     public void tearDown(){
-        try {
-            this.store.deleteAccount(customerId);
-        } catch (EntryNotFoundException ignored) {
-
-        }
-        try {
-            this.store.deleteAccount(merchantId);
-        } catch (EntryNotFoundException ignored) {
-
-        }
+        this.store.flush();
     }
 
     @Given("The name of a customer")
@@ -60,9 +51,10 @@ public class UserServiceSteps extends SpringIntegrationTest {
             SignupDto dto = new SignupDto();
             dto.setCpr("lol jg er cpr");
             dto.setName(customerName);
-            executePost("/account/customer",dto);
-            assertNotNull(latestResponse);
-            customerId = latestResponse.getBody(UUID.class);
+            testContext().setPayload(dto);
+            executePost("/account/customer");
+            assertNotNull(testContext().getResponse());
+            customerId = getBody(UUID.class);
         } catch (ResponseStatusException e) {
             fail();
         }
@@ -92,8 +84,9 @@ public class UserServiceSteps extends SpringIntegrationTest {
             SignupDto dto = new SignupDto();
             dto.setName(merchantName);
             dto.setCpr("123");
-            executePost("/account/merchant",dto);
-            merchantId = latestResponse.getBody(UUID.class);
+            testContext().setPayload(dto);
+            executePost("/account/merchant");
+            merchantId = getBody(UUID.class);
         } catch (ResponseStatusException e) {
             fail();
         }
@@ -118,8 +111,9 @@ public class UserServiceSteps extends SpringIntegrationTest {
             SignupDto dto = new SignupDto();
             dto.setCpr("1234");
             dto.setName("oldname");
-            executePost("/account/customer",dto);
-            customerId = latestResponse.getBody(UUID.class);
+            testContext().setPayload(dto);
+            executePost("/account/customer");
+            customerId = getBody(UUID.class);
         } catch (ResponseStatusException e) {
             fail();
         }
@@ -130,8 +124,9 @@ public class UserServiceSteps extends SpringIntegrationTest {
         try {
             ChangeNameDto changeNameDto = new ChangeNameDto();
             changeNameDto.setNewName("newName");
-            executePut("/account/" + customerId.toString(), changeNameDto);
-            assertNotNull(latestResponse);
+            testContext().setPayload(changeNameDto);
+            executePut("/account/{accountId}", new HashMap<String,String>(){{put("accountId", customerId.toString());}});
+            assertNotNull(testContext().getResponse());
             customerName =  store.getAccount(customerId).getName();
         } catch (ResponseStatusException | EntryNotFoundException e) {
             fail();
