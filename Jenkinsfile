@@ -1,12 +1,33 @@
 pipeline {
   agent any
   stages {
-    stage('build') {
+    stage('Build') {
       steps {
-        sh '''#!/bin/bash
-set -e
-bash build_and_run.sh'''
+        dir('./application'){
+          sh '''
+          set -e
+
+          mvn clean package
+          docker-compose -f ../docker-compose.yml application build
+
+          '''
+        }
       }
+    }
+    stage{'Test'}{
+        steps{
+            dir('./systemTests'){
+                sh '''
+                set -e
+                mvn test
+                '''
+            }
+        }
+    }
+    stage{'Deploy'}{
+        steps{
+            sh 'docker-compose -f docker-compose.yml up -d'
+        }
     }
 
   }
