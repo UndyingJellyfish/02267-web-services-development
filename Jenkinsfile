@@ -4,11 +4,11 @@ pipeline {
     stage('Build') {
       steps {
 
-        sh 'build_and_test.sh application'
-        sh 'build_and_test.sh payments'
-        sh 'build_and_test.sh tokens'
-        sh 'build_and_test.sh accounts'
-        sh 'build_and_test.sh transactions'
+        sh './build_and_test.sh application'
+        sh './build_and_test.sh payments'
+        sh './build_and_test.sh tokens'
+        sh './build_and_test.sh accounts'
+        sh './build_and_test.sh transactions'
 
       }
     }
