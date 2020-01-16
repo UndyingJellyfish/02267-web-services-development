@@ -1,0 +1,13 @@
+com.example.webservices.application
+com.example.webservices.application.accounts
+com.example.webservices.application.bank
+com.example.webservices.application.dataAccess
+com.example.webservices.application.exceptions
+com.example.webservices.application.factories
+com.example.webservices.application.reporting
+com.example.webservices.application.stepdefs
+com.example.webservices.application.tokens
+com.example.webservices.application.transfers
+com.example.webservices.library
+com.example.webservices.library.models
+dtu.ws.fastmoney
