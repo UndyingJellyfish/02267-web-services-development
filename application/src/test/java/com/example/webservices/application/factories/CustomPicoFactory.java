@@ -1,3 +1,4 @@
+/*
 package com.example.webservices.application.factories;
 
 import io.cucumber.core.backend.ObjectFactory;
@@ -42,3 +43,4 @@ public class CustomPicoFactory implements ObjectFactory {
         return delegate.getInstance(glueClass);
     }
 }
+*/

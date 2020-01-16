@@ -1,4 +1,4 @@
-package com.example.webservices.application;
+package com.example.webservices.application.junit;
 
 import com.example.webservices.application.exceptions.DuplicateEntryException;
 import com.example.webservices.application.bank.IBank;

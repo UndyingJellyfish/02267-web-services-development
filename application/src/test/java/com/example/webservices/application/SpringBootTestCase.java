@@ -9,10 +9,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
@@ -23,12 +25,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = PaymentController.class)
+//@WebMvcTest(controllers = PaymentController.class)
 @ContextConfiguration( classes = Application.class)
-//@SpringBootTest(classes = Program.class)
+//@SpringBootTest(classes = Application.class)
 public class SpringBootTestCase {
 
-    @Autowired
+    @Test
+    public void SpringTest(){
+        
+    }
+/*
+
+@Autowired
     private MockMvc mvc;
 
     @MockBean
@@ -51,5 +59,7 @@ public class SpringBootTestCase {
             .andExpect(status().isBadRequest());
 
     }
+
+*/
 
 }

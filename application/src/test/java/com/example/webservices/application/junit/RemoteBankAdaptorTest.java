@@ -1,4 +1,4 @@
-package com.example.webservices.application;
+package com.example.webservices.application.junit;
 
 import com.example.webservices.application.bank.RemoteBankAdaptor;
 import dtu.ws.fastmoney.BankServiceException_Exception;

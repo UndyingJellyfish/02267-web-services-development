@@ -8,5 +8,5 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = {"src/test/resources"}
 )
-public class CucumberTestCase {
+public class CucumberTestCase extends SpringIntegrationTest {
 }

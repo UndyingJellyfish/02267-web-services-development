@@ -1,4 +1,4 @@
-package com.example.webservices.application;
+package com.example.webservices.application.junit;
 
 import com.example.webservices.library.models.Customer;
 import org.junit.Assert;

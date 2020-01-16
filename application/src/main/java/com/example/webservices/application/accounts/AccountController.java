@@ -25,9 +25,9 @@ public class AccountController {
 
     @PutMapping(value={"/{accountId}"})
     @ResponseStatus(HttpStatus.OK)
-    public void changeName(UUID accountId, @RequestBody String newName){
+    public void changeName(@PathVariable UUID accountId, @RequestBody ChangeNameDto newName){
         try {
-            accountService.changeName(accountId, newName);
+            accountService.changeName(accountId, newName.getNewName());
         } catch (EntryNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 
@@ -56,7 +56,7 @@ public class AccountController {
 
     @DeleteMapping(value={"/{accountId}"})
     @ResponseStatus(HttpStatus.OK)
-    public void delete(UUID accountId){
+    public void delete(@PathVariable UUID accountId){
         try {
             accountService.delete(accountId);
         } catch (EntryNotFoundException e) {

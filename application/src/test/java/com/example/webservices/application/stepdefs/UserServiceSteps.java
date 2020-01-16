@@ -1,11 +1,13 @@
 package com.example.webservices.application.stepdefs;
 
-import com.example.webservices.application.InMemoryDataStoreTest;
+import com.example.webservices.application.SpringIntegrationTest;
 import com.example.webservices.application.accounts.AccountController;
+import com.example.webservices.application.accounts.ChangeNameDto;
 import com.example.webservices.application.accounts.SignupDto;
 import com.example.webservices.application.dataAccess.IAccountDatastore;
 import com.example.webservices.application.dataAccess.InMemoryDatastore;
 import com.example.webservices.library.models.Token;
+import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -19,20 +21,32 @@ import java.util.UUID;
 
 import static org.junit.Assert.*;
 
-public class UserServiceSteps {
+public class UserServiceSteps extends SpringIntegrationTest {
     private String customerName;
     private AccountController accountController;
-    private IAccountDatastore accountStore;
     private InMemoryDatastore store;
     private UUID customerId;
     private String merchantName;
     private UUID merchantId;
 
 
-    public UserServiceSteps(AccountController accountController, IAccountDatastore accountStore, InMemoryDatastore store ) {
+    public UserServiceSteps(AccountController accountController, InMemoryDatastore inMemoryDatastore) {
         this.accountController = accountController;
-        this.accountStore = accountStore;
-        this.store = store;
+        this.store = inMemoryDatastore;
+    }
+
+    @After
+    public void tearDown(){
+        try {
+            this.store.deleteAccount(customerId);
+        } catch (EntryNotFoundException ignored) {
+
+        }
+        try {
+            this.store.deleteAccount(merchantId);
+        } catch (EntryNotFoundException ignored) {
+
+        }
     }
 
     @Given("The name of a customer")
@@ -46,7 +60,9 @@ public class UserServiceSteps {
             SignupDto dto = new SignupDto();
             dto.setCpr("lol jg er cpr");
             dto.setName(customerName);
-            customerId = accountController.signupCustomer(dto);
+            executePost("/account/customer",dto);
+            assertNotNull(latestResponse);
+            customerId = latestResponse.getBody(UUID.class);
         } catch (ResponseStatusException e) {
             fail();
         }
@@ -57,7 +73,7 @@ public class UserServiceSteps {
         assertNotNull(customerId);
         Customer customer = null;
         try {
-            customer = accountStore.getCustomer(customerId);
+            customer = store.getCustomer(customerId);
         } catch (EntryNotFoundException e) {
             fail();
         }
@@ -76,7 +92,8 @@ public class UserServiceSteps {
             SignupDto dto = new SignupDto();
             dto.setName(merchantName);
             dto.setCpr("123");
-            merchantId = accountController.signupMerchant(dto);
+            executePost("/account/merchant",dto);
+            merchantId = latestResponse.getBody(UUID.class);
         } catch (ResponseStatusException e) {
             fail();
         }
@@ -87,7 +104,7 @@ public class UserServiceSteps {
         assertNotNull(merchantId);
         Merchant merchant = null;
         try {
-            merchant = accountStore.getMerchant(merchantId);
+            merchant = store.getMerchant(merchantId);
         } catch (EntryNotFoundException e) {
             fail();
         }
@@ -99,9 +116,10 @@ public class UserServiceSteps {
     public void anAccount() {
         try {
             SignupDto dto = new SignupDto();
-            dto.setCpr("123");
+            dto.setCpr("1234");
             dto.setName("oldname");
-            customerId = accountController.signupCustomer(dto);
+            executePost("/account/customer",dto);
+            customerId = latestResponse.getBody(UUID.class);
         } catch (ResponseStatusException e) {
             fail();
         }
@@ -110,8 +128,11 @@ public class UserServiceSteps {
     @When("The user requests a name change")
     public void theUserRequestsANameChange() {
         try {
-            accountController.changeName(customerId, "newName");
-            customerName =  accountStore.getAccount(customerId).getName();
+            ChangeNameDto changeNameDto = new ChangeNameDto();
+            changeNameDto.setNewName("newName");
+            executePut("/account/" + customerId.toString(), changeNameDto);
+            assertNotNull(latestResponse);
+            customerName =  store.getAccount(customerId).getName();
         } catch (ResponseStatusException | EntryNotFoundException e) {
             fail();
         }
@@ -125,7 +146,7 @@ public class UserServiceSteps {
     @When("The user requests to be deleted")
     public void theUserRequestsToBeDeleted() {
         try {
-            accountController.delete(customerId);
+            executeDelete("/account/"+customerId.toString());
         } catch (ResponseStatusException e) {
             fail();
         }
@@ -135,7 +156,7 @@ public class UserServiceSteps {
     public void theUserShouldBeDeletedAndUnusedTokensShouldBeRemoved() {
         List<Token> tokens =  store.getTokens(customerId);
         try {
-            accountStore.getAccount(customerId);
+            store.getAccount(customerId);
             fail();
         } catch (EntryNotFoundException e) {
             // entry not found = entry deleted
