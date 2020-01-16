@@ -35,9 +35,9 @@ public class TokenController {
         }
     }
 
-    @GetMapping()
+    @GetMapping("/{customerId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Token> getTokens(@RequestBody UUID customerId) {
+    public List<Token> getTokens(@PathVariable UUID customerId) {
             return tokenManager.GetTokens(customerId);
     }
 }
