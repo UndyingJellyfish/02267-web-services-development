@@ -8,7 +8,7 @@ pipeline {
           set -e
 
           mvn clean package
-          docker-compose -f ../docker-compose.yml build application
+          docker-compose -f ../docker-compose.yml build dtupay
 
           '''
         }
