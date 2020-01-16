@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="webservices-application" />
         <module name="library" />
+        <module name="project-src" />
+        <module name="webservices-application" />
         <module name="webservices-library" />
         <module name="application" />
-        <module name="project-src" />
       </profile>
     </annotationProcessing>
   </component>
