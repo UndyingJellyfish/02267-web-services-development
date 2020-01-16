@@ -3,6 +3,7 @@ package com.example.webservices.application.accounts;
 public class SignupDto{
     private String name;
     private String cpr;
+    private String bankAccountId;
     //public SignupDto(){}
     public String getName() {
         return name;
@@ -18,5 +19,13 @@ public class SignupDto{
 
     public void setCpr(String cpr) {
         this.cpr = cpr;
+    }
+
+    public String getBankAccountId() {
+        return bankAccountId;
+    }
+
+    public void setBankAccountId(String accountId) {
+        this.bankAccountId = accountId;
     }
 }

@@ -94,8 +94,8 @@ public class InMemoryDatastore implements IAccountDatastore, ITokenDatastore, IT
     }
 
     @Override
-    public Transaction GetTransactionByTokenId(UUID tokenId) {
-        return this.transactions.stream().filter(t -> t.getToken().getTokenId().equals(tokenId)).findFirst().orElseThrow(IllegalArgumentException::new);
+    public Transaction GetTransactionByTokenId(UUID tokenId) throws EntryNotFoundException {
+        return this.transactions.stream().filter(t -> t.getToken().getTokenId().equals(tokenId)).findFirst().orElseThrow(EntryNotFoundException::new);
     }
 
     @Override

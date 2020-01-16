@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -67,19 +68,19 @@ public class TransactionHistorySteps extends AbstractSteps {
             fail();
         }
         this.expectedTransactions = new ArrayList<>();
-        List<Token> tokens = null;
+        List<UUID> tokens = null;
         try {
             tokens = tokenManagers.RequestTokens(this.customer.getAccountId(), 5);
         } catch (EntryNotFoundException | TokenQuantityException e) {
             fail();
         }
         for(int i = 0; i < tokens.size(); i++){
-            Token token = tokens.get(i);
+            UUID token = tokens.get(i);
             BigDecimal amount = new BigDecimal( i == 0 ? 1 : i * 5);
             try {
-                this.expectedTransactions.add(paymentService.transfer(token.getTokenId(),this.merchant.getAccountId(), amount, ""));
+                this.expectedTransactions.add(paymentService.transfer(token,this.merchant.getAccountId(), amount, ""));
                 verify(bank, times(1)).transferMoney(
-                        argThat( c -> c.getAccountId().equals(token.getCustomer().getAccountId())),
+                        argThat(c -> c.getAccountId().equals(customer.getAccountId())),
                         argThat(m -> m.getAccountId().equals(merchant.getAccountId())),
                         eq(amount),
                         eq(""));
@@ -130,19 +131,19 @@ public class TransactionHistorySteps extends AbstractSteps {
             fail();
         }
         this.expectedTransactions = new ArrayList<>();
-        List<Token> tokens = null;
+        List<UUID> tokens = null;
         try {
             tokens = tokenManagers.RequestTokens(this.customer.getAccountId(), 5);
         } catch (EntryNotFoundException | TokenQuantityException e) {
             fail();
         }
         for(int i = 0; i < tokens.size(); i++){
-            Token token = tokens.get(i);
+            UUID token = tokens.get(i);
             BigDecimal amount = new BigDecimal( i == 0 ? 1 : i * 5);
             try {
-                this.expectedTransactions.add(paymentService.transfer(token.getTokenId(),this.merchant.getAccountId(), amount, ""));
+                this.expectedTransactions.add(paymentService.transfer(token, this.merchant.getAccountId(), amount, ""));
                 verify(bank, times(1)).transferMoney(
-                        argThat( c -> c.getAccountId().equals(token.getCustomer().getAccountId())),
+                        argThat( c -> c.getAccountId().equals(customer.getAccountId())),
                         argThat(m -> m.getAccountId().equals(merchant.getAccountId())),
                         eq(amount),
                         eq(""));

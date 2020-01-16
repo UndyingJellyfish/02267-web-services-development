@@ -1,51 +1,42 @@
 package com.example.webservices.application.stepdefs;
 
+import com.example.webservices.application.exceptions.EntryNotFoundException;
+import com.example.webservices.application.models.*;
 import dtu.ws.fastmoney.BankServiceException_Exception;
-import com.example.webservices.application.accounts.AccountController;
 import com.example.webservices.application.accounts.SignupDto;
 import com.example.webservices.application.dataAccess.InMemoryDatastore;
 import com.example.webservices.application.bank.IBank;
+import gherkin.deps.com.google.gson.reflect.TypeToken;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import com.example.webservices.application.tokens.RequestTokenDto;
-import com.example.webservices.application.tokens.TokenController;
-import com.example.webservices.application.models.Token;
-import com.example.webservices.application.models.Transaction;
-import com.example.webservices.application.tokens.TokenManager;
-import com.example.webservices.application.transfers.PaymentService;
-import com.example.webservices.application.transfers.PaymentController;
 import com.example.webservices.application.transfers.TransactionDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class PaymentServiceSteps {
-    private final AccountController accountController;
+public class PaymentServiceSteps extends AbstractSteps {
     private InMemoryDatastore store;
-    private final PaymentController paymentController;
     private UUID merchantId;
     private BigDecimal amount;
-    private TokenController tokenController;
-    private Token token;
+    private UUID tokenId;
     private Transaction transaction;
     private UUID customerId;
-    private Exception exception;
-
     private IBank bank;
 
-    public PaymentServiceSteps(TokenController tokenController, AccountController accountController, InMemoryDatastore store) {
-        this.accountController = accountController;
+    public PaymentServiceSteps(InMemoryDatastore store, IBank bank) {
         this.store = store;
-        this.bank = mock(IBank.class);
-        this.paymentController = new PaymentController(new PaymentService(new TokenManager(store,store),store,store,this.bank));
-        this.tokenController = tokenController;
+        this.bank = bank;
     }
 
     @After
@@ -58,19 +49,21 @@ public class PaymentServiceSteps {
     public void theMerchantInitiatesTheTransaction() {
 
         try {
+            String description = "Transfer";
             TransactionDto dto = TransactionDto.Create();
             dto.setAmount(amount);
-            dto.setTokenId(token.getTokenId());
+            dto.setTokenId(tokenId);
             dto.setMerchantId(merchantId);
-            dto.setDescription("");
-            paymentController.TransferMoney(dto);
+            dto.setDescription(description);
+            testContext().setPayload(dto);
+            executePost("/payment/transfer");
+            transaction = store.GetTransactionByTokenId(tokenId);
             verify(bank, times(1)).transferMoney(
-                    argThat( c -> c.getAccountId().equals(token.getCustomer().getAccountId())),
+                    argThat(c -> c.getAccountId().equals(customerId)),
                     argThat(m -> m.getAccountId().equals(merchantId)),
-                    eq(amount),
-                    eq(""));
-            transaction = store.GetTransactionByTokenId(token.getTokenId());
-
+                    eq(amount), eq(description)
+                );
+            reset(bank);
         } catch (Exception e) {
             fail();
         }
@@ -81,7 +74,6 @@ public class PaymentServiceSteps {
         assertEquals(customerId, transaction.getDebtor().getAccountId());
         assertEquals(merchantId, transaction.getCreditor().getAccountId());
         assertEquals(amount, transaction.getAmount());
-        assertTrue(token.isUsed());
     }
 
 
@@ -89,34 +81,59 @@ public class PaymentServiceSteps {
     public void theMerchantInitiatesTheInvalidTransaction() throws BankServiceException_Exception {
         String invalidDesc = "12312oi3j4to3j4gp24ijgip24utgi24noi4untg";
         this.bank = mock(IBank.class);
-        try{
             TransactionDto dto = TransactionDto.Create();
             dto.setAmount(amount);
-            dto.setTokenId(token.getTokenId());
+            dto.setTokenId(tokenId);
             dto.setMerchantId(merchantId);
             dto.setDescription(invalidDesc);
-            paymentController.TransferMoney(dto);
-            transaction = store.GetTransactionByTokenId(token.getTokenId());
-        } catch (ResponseStatusException e){
-            verify(bank, never()).transferMoney(any(), any(), any(), any());
-            exception = e;
+            testContext().setPayload(dto);
+            executePost("/payment/transfer");
+        try {
+            transaction = store.GetTransactionByTokenId(tokenId);
+        } catch (EntryNotFoundException ignored) {
         }
+            verify(bank, never()).transferMoney(any(), any(), any(), any());
+            reset(bank);
     }
 
     @Then("The transaction should fail")
     public void theTransactionShouldFail() {
-        assertNotNull(exception);
-        assertTrue(exception instanceof ResponseStatusException);
+        assertEquals(HttpStatus.BAD_REQUEST.value(), testContext().getResponse().statusCode());
     }
+
+/*    private String createBankAccountCustomer(SignupDto signupDto){
+        Account account = new Customer(signupDto.getName(), signupDto.getCpr(), signupDto.getBankAccountId());
+        try {
+            return this.bank.addAccount(account);
+        } catch (BankServiceException_Exception | ClassNotFoundException e) {
+            fail();
+        }
+        return "";
+    }
+
+    private String createBankAccountMerchant(SignupDto signupDto){
+        Account account = new Merchant(signupDto.getName(), signupDto.getCpr(), signupDto.getBankAccountId());
+        try {
+            return this.bank.addAccount(account);
+        } catch (BankServiceException_Exception | ClassNotFoundException e) {
+            fail();
+        }
+        return "";
+    }*/
+
+
 
 
     @Given("A merchant")
     public void aMerchant() {
+
         SignupDto dto = new SignupDto();
         dto.setName("Alice");
         dto.setCpr("123");
         try {
-            merchantId = accountController.signupMerchant(dto);
+            testContext().setPayload(dto);
+            executePost("/account/merchant");
+            merchantId = getBody(UUID.class);
         } catch (ResponseStatusException e) {
             fail();
         }
@@ -129,14 +146,21 @@ public class PaymentServiceSteps {
         dto.setName("Bob");
         dto.setCpr("123");
         try {
-           customerId = accountController.signupCustomer(dto);
+            testContext().setPayload(dto);
+            executePost("/account/customer");
+           customerId = getBody(UUID.class);
         } catch (ResponseStatusException e) {
             fail();
         }
         RequestTokenDto dto2 = new RequestTokenDto();
         dto2.setAmount(1);
         dto2.setCustomerId(customerId);
-        token = tokenController.requestTokens(dto2).stream().findFirst().orElseThrow(RuntimeException::new);
+        testContext().setPayload(dto2);
+        executePost("/tokens");
+        tokenId = ((ArrayList<UUID>)getBody(new TypeToken<List<UUID>>(){}.getType()))
+                .stream()
+                .findFirst()
+                .orElseThrow(RuntimeException::new);
     }
 
     @And("A positive amount")
@@ -146,7 +170,7 @@ public class PaymentServiceSteps {
 
     @And("A token that doesn't exist")
     public void aTokenThatDoesnTExist() {
-        token = new Token(null);
+        tokenId = null;
     }
 
     @And("A token that has already been used")
@@ -154,23 +178,31 @@ public class PaymentServiceSteps {
         SignupDto dto = new SignupDto();
         dto.setName("Bob");
         dto.setCpr("123");
-        UUID custId = null;
         try {
-            custId = accountController.signupCustomer(dto);
+            testContext().setPayload(dto);
+            executePost("/account/customer");
+            customerId = getBody(UUID.class);
         } catch (ResponseStatusException e) {
             fail();
         }
         RequestTokenDto dto2 = new RequestTokenDto();
         dto2.setAmount(1);
-        dto2.setCustomerId(custId);
-        token = tokenController.requestTokens(dto2).stream().findFirst().orElseThrow(RuntimeException::new);
+        dto2.setCustomerId(customerId);
+        testContext().setPayload(dto2);
+        executePost("/tokens");
+        tokenId = ((ArrayList<UUID>)getBody(new TypeToken<List<UUID>>(){}.getType()))
+                .stream()
+                .findFirst()
+                .orElseThrow(RuntimeException::new);
         try {
             TransactionDto dto3 = TransactionDto.Create();
             dto3.setDescription("Something");
             dto3.setMerchantId(this.merchantId);
             dto3.setAmount(amount);
-            dto3.setTokenId(token.getTokenId());
-            paymentController.TransferMoney(dto3);
+            dto3.setTokenId(tokenId);
+            testContext().setPayload(dto3);
+            executePost("/payment/transfer");
+            reset(bank);
         } catch (ResponseStatusException e) {
                 fail();
         }
@@ -178,7 +210,7 @@ public class PaymentServiceSteps {
 
     @Then("The transaction should fail and inform that the token is used")
     public void theTransactionShouldFailAndInformThatTheTokenIsUsed() {
-        assertTrue(exception instanceof ResponseStatusException);
+        assertEquals(HttpStatus.BAD_REQUEST.value(),testContext().getResponse().statusCode());
     }
 
     @And("An invalid {int}")
@@ -188,7 +220,7 @@ public class PaymentServiceSteps {
 
     @Then("The transaction should fail and inform that the amount is invalid")
     public void theTransactionShouldFailAndInformThatTheAmountIsInvalid() {
-        assertTrue(exception instanceof ResponseStatusException);
+        assertEquals(HttpStatus.BAD_REQUEST.value(),testContext().getResponse().statusCode());
     }
 
     @Given("A transaction")
@@ -204,8 +236,12 @@ public class PaymentServiceSteps {
         dto2.setCpr("12345678");
 
         try{
-            customerId = accountController.signupCustomer(dto);
-            merchantId = accountController.signupMerchant(dto2);
+            testContext().setPayload(dto);
+            executePost("/account/customer");
+            customerId = getBody(UUID.class);
+            testContext().setPayload(dto2);
+            executePost("/account/merchant");
+            merchantId = getBody(UUID.class);
         }catch(Exception e){
             fail();
         }
@@ -213,7 +249,13 @@ public class PaymentServiceSteps {
         RequestTokenDto dto3 = new RequestTokenDto();
         dto3.setCustomerId(customerId);
         dto3.setAmount(1);
-        token = tokenController.requestTokens(dto3).stream().findFirst().orElseThrow(RuntimeException::new);
+        testContext().setPayload(dto3);
+        executePost("/tokens");
+        tokenId = ((ArrayList<UUID>)getBody(new TypeToken<List<UUID>>(){}.getType()))
+                .stream()
+                .findFirst()
+                .orElseThrow(RuntimeException::new);
+
         amount = new BigDecimal("150.0");
         try {
             TransactionDto dto4 = TransactionDto.Create();
@@ -221,10 +263,12 @@ public class PaymentServiceSteps {
             dto4.setMerchantId(merchantId);
             dto4.setCustomerId(customerId);
             dto4.setDescription("");
-            dto4.setTokenId(token.getTokenId());
-            paymentController.TransferMoney(dto4);
+            dto4.setTokenId(tokenId);
+            testContext().setPayload(dto4);
+            executePost("/payment/transfer");
             verify(bank, times(1)).transferMoney(
                     any(),any(),any(),any());
+            reset(bank);
         } catch (BankServiceException_Exception e) {
             fail();
         }
@@ -236,8 +280,9 @@ public class PaymentServiceSteps {
             TransactionDto dto = TransactionDto.Create();
             dto.setCustomerId(customerId);
             dto.setMerchantId(merchantId);
-            dto.setTokenId(token.getTokenId());
-            paymentController.RefundTransaction(dto);
+            dto.setTokenId(tokenId);
+            testContext().setPayload(dto);
+            executePost("/payment/transfer");
         } catch (Exception e) {
             fail();
         }
@@ -245,7 +290,6 @@ public class PaymentServiceSteps {
 
     @Then("The transaction should be refunded")
     public void theTransactionShouldBeRefunded() {
-        assertEquals(token.getCustomer().getAccountId(), customerId);
-        assertTrue(token.isUsed());
+
     }
 }
