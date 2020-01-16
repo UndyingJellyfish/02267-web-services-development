@@ -14,9 +14,9 @@ pipeline {
         }
       }
     }
-    stage{'Test'}{
+    stage('Test'){
         steps{
-            dir('./systemTests'){
+            dir('./'){
                 sh '''
                 set -e
                 mvn test
@@ -24,7 +24,7 @@ pipeline {
             }
         }
     }
-    stage{'Deploy'}{
+    stage('Deploy'){
         steps{
             sh 'docker-compose -f docker-compose.yml up -d'
         }
