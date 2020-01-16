@@ -12,16 +12,16 @@ pipeline {
 
       }
     }
-    stage('Test'){
+    /*stage('Test'){
         steps{
-            dir('./'){
+            dir('./system-tests'){
                 sh '''
                 set -e
                 mvn test
                 '''
             }
         }
-    }
+    }*/
     stage('Deploy'){
         steps{
             sh 'docker-compose -f docker-compose.yml up -d'
