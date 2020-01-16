@@ -3,7 +3,7 @@ package com.example.webservices.application.dataAccess;
 import com.example.webservices.application.exceptions.DuplicateEntryException;
 import com.example.webservices.application.exceptions.EntryNotFoundException;
 import com.example.webservices.application.exceptions.InvalidTokenException;
-import com.example.webservices.library.models.*;
+import com.example.webservices.application.models.*;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

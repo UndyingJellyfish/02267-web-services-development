@@ -1,4 +1,4 @@
-package com.example.webservices.library.models;
+package com.example.webservices.application.models;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.example.webservices.application.junit;
 
-import com.example.webservices.library.models.Merchant;
+import com.example.webservices.application.models.Merchant;
 import org.junit.Assert;
 import org.junit.Test;
 

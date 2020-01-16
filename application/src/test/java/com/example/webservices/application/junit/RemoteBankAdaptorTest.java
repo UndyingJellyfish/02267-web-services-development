@@ -2,8 +2,8 @@ package com.example.webservices.application.junit;
 
 import com.example.webservices.application.bank.RemoteBankAdaptor;
 import dtu.ws.fastmoney.BankServiceException_Exception;
-import com.example.webservices.library.models.Customer;
-import com.example.webservices.library.models.Merchant;
+import com.example.webservices.application.models.Customer;
+import com.example.webservices.application.models.Merchant;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

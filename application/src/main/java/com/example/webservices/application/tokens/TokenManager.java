@@ -3,8 +3,8 @@ package com.example.webservices.application.tokens;
 import com.example.webservices.application.dataAccess.IAccountDatastore;
 import com.example.webservices.application.dataAccess.ITokenDatastore;
 import com.example.webservices.application.exceptions.*;
-import com.example.webservices.library.models.Customer;
-import com.example.webservices.library.models.Token;
+import com.example.webservices.application.models.Customer;
+import com.example.webservices.application.models.Token;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

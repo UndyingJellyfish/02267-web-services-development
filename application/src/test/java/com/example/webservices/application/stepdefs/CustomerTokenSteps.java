@@ -6,8 +6,8 @@ import com.example.webservices.application.dataAccess.IAccountDatastore;
 import com.example.webservices.application.dataAccess.InMemoryDatastore;
 import com.example.webservices.application.exceptions.EntryNotFoundException;
 import com.example.webservices.application.exceptions.TokenQuantityException;
-import com.example.webservices.library.models.Customer;
-import com.example.webservices.library.models.Token;
+import com.example.webservices.application.models.Customer;
+import com.example.webservices.application.models.Token;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -18,7 +18,6 @@ import com.example.webservices.application.tokens.TokenController;
 import com.example.webservices.application.tokens.RequestTokenDto;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.constraints.AssertTrue;
 import java.util.List;
 import java.util.UUID;
 

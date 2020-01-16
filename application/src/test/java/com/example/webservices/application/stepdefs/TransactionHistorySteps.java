@@ -15,10 +15,10 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import com.example.webservices.application.transfers.PaymentService;
-import com.example.webservices.library.models.Customer;
-import com.example.webservices.library.models.Merchant;
-import com.example.webservices.library.models.Token;
-import com.example.webservices.library.models.Transaction;
+import com.example.webservices.application.models.Customer;
+import com.example.webservices.application.models.Merchant;
+import com.example.webservices.application.models.Token;
+import com.example.webservices.application.models.Transaction;
 import org.junit.After;
 
 import java.math.BigDecimal;

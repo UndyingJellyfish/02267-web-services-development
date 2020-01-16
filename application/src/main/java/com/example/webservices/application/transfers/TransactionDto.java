@@ -1,8 +1,7 @@
 package com.example.webservices.application.transfers;
 
-import com.example.webservices.library.models.Account;
-import com.example.webservices.library.models.Customer;
-import com.example.webservices.library.models.Transaction;
+import com.example.webservices.application.models.Account;
+import com.example.webservices.application.models.Transaction;
 
 import java.math.BigDecimal;
 import java.util.UUID;

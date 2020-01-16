@@ -4,7 +4,7 @@ import com.example.webservices.application.exceptions.DuplicateEntryException;
 import com.example.webservices.application.dataAccess.IAccountDatastore;
 import com.example.webservices.application.exceptions.EntryNotFoundException;
 import com.example.webservices.application.tokens.ITokenManager;
-import com.example.webservices.library.models.Account;
+import com.example.webservices.application.models.Account;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;

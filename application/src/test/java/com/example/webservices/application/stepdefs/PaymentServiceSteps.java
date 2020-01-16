@@ -1,6 +1,5 @@
 package com.example.webservices.application.stepdefs;
 
-import com.example.webservices.application.exceptions.EntryNotFoundException;
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import com.example.webservices.application.accounts.AccountController;
 import com.example.webservices.application.accounts.SignupDto;
@@ -13,8 +12,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import com.example.webservices.application.tokens.RequestTokenDto;
 import com.example.webservices.application.tokens.TokenController;
-import com.example.webservices.library.models.Token;
-import com.example.webservices.library.models.Transaction;
+import com.example.webservices.application.models.Token;
+import com.example.webservices.application.models.Transaction;
 import com.example.webservices.application.tokens.TokenManager;
 import com.example.webservices.application.transfers.PaymentService;
 import com.example.webservices.application.transfers.PaymentController;

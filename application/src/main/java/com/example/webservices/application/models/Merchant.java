@@ -1,4 +1,4 @@
-package com.example.webservices.library.models;
+package com.example.webservices.application.models;
 
 public class Merchant extends Account {
 

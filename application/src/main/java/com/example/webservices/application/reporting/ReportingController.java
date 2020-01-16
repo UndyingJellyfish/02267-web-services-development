@@ -1,6 +1,6 @@
 package com.example.webservices.application.reporting;
 import com.example.webservices.application.transfers.TransactionDto;
-import com.example.webservices.library.models.Transaction;
+import com.example.webservices.application.models.Transaction;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;

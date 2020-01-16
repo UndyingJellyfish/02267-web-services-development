@@ -1,8 +1,8 @@
 package com.example.webservices.application.dataAccess;
 
 import com.example.webservices.application.exceptions.InvalidTokenException;
-import com.example.webservices.library.models.Customer;
-import com.example.webservices.library.models.Token;
+import com.example.webservices.application.models.Customer;
+import com.example.webservices.application.models.Token;
 
 import java.util.List;
 import java.util.UUID;

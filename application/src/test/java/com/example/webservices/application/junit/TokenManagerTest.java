@@ -1,12 +1,12 @@
 package com.example.webservices.application.junit;
 
 import com.example.webservices.application.exceptions.*;
-import com.example.webservices.library.models.Account;
+import com.example.webservices.application.models.Account;
 import com.example.webservices.application.tokens.ITokenManager;
 import com.example.webservices.application.dataAccess.InMemoryDatastore;
 import com.example.webservices.application.tokens.TokenManager;
-import com.example.webservices.library.models.Customer;
-import com.example.webservices.library.models.Token;
+import com.example.webservices.application.models.Customer;
+import com.example.webservices.application.models.Token;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

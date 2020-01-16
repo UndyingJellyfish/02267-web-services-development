@@ -1,20 +1,15 @@
 package com.example.webservices.application.stepdefs;
-import com.example.webservices.application.accounts.AccountController;
 import com.example.webservices.application.accounts.ChangeNameDto;
 import com.example.webservices.application.accounts.SignupDto;
-import com.example.webservices.application.dataAccess.IAccountDatastore;
 import com.example.webservices.application.dataAccess.InMemoryDatastore;
-import com.example.webservices.library.models.Token;
+import com.example.webservices.application.models.Token;
 import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import com.example.webservices.application.exceptions.EntryNotFoundException;
-import com.example.webservices.library.models.Customer;
-import com.example.webservices.library.models.Merchant;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
+import com.example.webservices.application.models.Customer;
+import com.example.webservices.application.models.Merchant;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;

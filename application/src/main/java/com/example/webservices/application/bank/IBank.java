@@ -1,9 +1,9 @@
 package com.example.webservices.application.bank;
 
 import dtu.ws.fastmoney.BankServiceException_Exception;
-import com.example.webservices.library.models.Account;
-import com.example.webservices.library.models.Customer;
-import com.example.webservices.library.models.Merchant;
+import com.example.webservices.application.models.Account;
+import com.example.webservices.application.models.Customer;
+import com.example.webservices.application.models.Merchant;
 
 import java.math.BigDecimal;
 

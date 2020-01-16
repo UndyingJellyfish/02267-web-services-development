@@ -1,9 +1,9 @@
 package com.example.webservices.application.transfers;
 
-import com.example.webservices.library.models.Customer;
-import com.example.webservices.library.models.Merchant;
-import com.example.webservices.library.models.Token;
-import com.example.webservices.library.models.Transaction;
+import com.example.webservices.application.models.Customer;
+import com.example.webservices.application.models.Merchant;
+import com.example.webservices.application.models.Token;
+import com.example.webservices.application.models.Transaction;
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import com.example.webservices.application.dataAccess.IAccountDatastore;
 import com.example.webservices.application.bank.IBank;

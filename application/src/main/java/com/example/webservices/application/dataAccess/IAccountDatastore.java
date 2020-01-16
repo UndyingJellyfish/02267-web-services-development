@@ -2,9 +2,9 @@ package com.example.webservices.application.dataAccess;
 
 import com.example.webservices.application.exceptions.DuplicateEntryException;
 import com.example.webservices.application.exceptions.EntryNotFoundException;
-import com.example.webservices.library.models.Account;
-import com.example.webservices.library.models.Customer;
-import com.example.webservices.library.models.Merchant;
+import com.example.webservices.application.models.Account;
+import com.example.webservices.application.models.Customer;
+import com.example.webservices.application.models.Merchant;
 
 import java.util.UUID;
 

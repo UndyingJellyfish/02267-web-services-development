@@ -3,9 +3,9 @@ package com.example.webservices.application.reporting;
 import com.example.webservices.application.dataAccess.IAccountDatastore;
 import com.example.webservices.application.dataAccess.ITransactionDatastore;
 import com.example.webservices.application.exceptions.EntryNotFoundException;
-import com.example.webservices.library.models.Account;
-import com.example.webservices.library.models.Merchant;
-import com.example.webservices.library.models.Transaction;
+import com.example.webservices.application.models.Account;
+import com.example.webservices.application.models.Merchant;
+import com.example.webservices.application.models.Transaction;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

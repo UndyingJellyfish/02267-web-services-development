@@ -1,7 +1,7 @@
 package com.example.webservices.application.dataAccess;
 
-import com.example.webservices.library.models.Account;
-import com.example.webservices.library.models.Transaction;
+import com.example.webservices.application.models.Account;
+import com.example.webservices.application.models.Transaction;
 
 import java.util.List;
 import java.util.UUID;
