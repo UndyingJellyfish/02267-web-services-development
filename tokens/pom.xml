@@ -8,10 +8,10 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>webservices-application</artifactId>
+    <artifactId>webservices-tokens</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>application</name>
-    <description>Application</description>
+    <name>tokens</name>
+    <description>Tokens</description>
 
     <properties>
         <java.version>1.8</java.version>

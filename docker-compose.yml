@@ -1,7 +1,15 @@
 version: '3.3'
 
 services:
-  dtupay:
+  application:
     build: ./application
     ports:
       - "8181:8080"
+  payments:
+    build: ./payments
+  transactions:
+    build: ./transactions
+  tokens:
+    build: ./tokens
+  accounts:
+    build: ./accounts

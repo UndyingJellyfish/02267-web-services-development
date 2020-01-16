@@ -12,8 +12,11 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/library/pom.xml" />
         <option value="$PROJECT_DIR$/application/pom.xml" />
+        <option value="$PROJECT_DIR$/accounts/pom.xml" />
+        <option value="$PROJECT_DIR$/transactions/pom.xml" />
+        <option value="$PROJECT_DIR$/tokens/pom.xml" />
+        <option value="$PROJECT_DIR$/payments/pom.xml" />
       </list>
     </option>
   </component>
