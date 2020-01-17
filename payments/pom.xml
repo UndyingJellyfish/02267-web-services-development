@@ -9,7 +9,6 @@
     </parent>
     <groupId>com.example</groupId>
     <artifactId>webservices-payments</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>payments</name>
     <description>Payments</description>
 

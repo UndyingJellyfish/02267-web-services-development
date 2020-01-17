@@ -4,6 +4,10 @@ pipeline {
     stage('Build') {
       steps {
 
+        // Library should build first, there's no Dockerfile for it, since it is shared
+        sh 'bash build_and_test.sh library'
+
+
         sh 'bash build_and_test.sh application'
         sh 'bash build_and_test.sh payments'
         sh 'bash build_and_test.sh tokens'

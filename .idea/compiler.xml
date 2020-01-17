@@ -8,24 +8,22 @@
         <outputRelativeToContentRoot value="true" />
         <module name="webservices-application" />
         <module name="accounts" />
+        <module name="project-src" />
         <module name="payments" />
-        <module name="transactions" />
+        <module name="library" />
         <module name="webservices-library" />
         <module name="tokens" />
         <module name="application" />
-        <module name="project-src" />
+        <module name="transactions" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="library" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="02267-web-services-development" options="-parameters" />
       <module name="accounts" options="-parameters" />
       <module name="application" options="-parameters" />
-      <module name="fastmoney-06" options="-parameters" />
+      <module name="fastmoney-06" options="" />
       <module name="library" options="-parameters" />
       <module name="payments" options="-parameters" />
       <module name="tokens" options="-parameters" />

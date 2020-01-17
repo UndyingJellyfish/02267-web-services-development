@@ -14,6 +14,7 @@
     <artifactId>fastmoney-06</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>fastmoney-06</name>
+    <description>Root</description>
     <packaging>pom</packaging>
 
     <modules>
@@ -22,12 +23,24 @@
         <module>transactions</module>
         <module>tokens</module>
         <module>payments</module>
+        <module>library</module>
     </modules>
 
     <properties>
         <cucumber.version>4.8.0</cucumber.version>
         <java.version>1.8</java.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.example</groupId>
+                <artifactId>webservices-library</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-junit -->

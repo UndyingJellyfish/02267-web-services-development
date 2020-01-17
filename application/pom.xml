@@ -9,7 +9,6 @@
     </parent>
     <groupId>com.example</groupId>
     <artifactId>webservices-application</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>application</name>
     <description>Application</description>
 
