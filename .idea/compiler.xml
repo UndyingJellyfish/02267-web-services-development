@@ -8,17 +8,17 @@
         <outputRelativeToContentRoot value="true" />
         <module name="webservices-tokens" />
         <module name="webservices-application" />
+        <module name="transactions" />
         <module name="accounts" />
-        <module name="project-src" />
+        <module name="tokens" />
         <module name="payments" />
-        <module name="webservices-library" />
-        <module name="webservices-transactions" />
         <module name="webservices-accounts" />
+        <module name="library" />
         <module name="webservices-library" />
         <module name="webservices-payments" />
-        <module name="tokens" />
+        <module name="webservices-transactions" />
         <module name="application" />
-        <module name="transactions" />
+        <module name="project-src" />
       </profile>
     </annotationProcessing>
   </component>
@@ -28,6 +28,7 @@
       <module name="accounts" options="-parameters" />
       <module name="application" options="-parameters" />
       <module name="fastmoney-06" options="" />
+      <module name="library" options="-parameters" />
       <module name="payments" options="-parameters" />
       <module name="tokens" options="-parameters" />
       <module name="transactions" options="-parameters" />
