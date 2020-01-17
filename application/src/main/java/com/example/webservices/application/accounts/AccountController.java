@@ -21,11 +21,11 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @PutMapping(value={"/{accountId}"})
+    @PutMapping()
     @ResponseStatus(HttpStatus.OK)
-    public void changeName(@PathVariable UUID accountId, @RequestBody ChangeNameDto newName){
+    public void changeName(@RequestBody ChangeNameDto newName){
         try {
-            accountService.changeName(accountId, newName.getNewName());
+            accountService.changeName(newName);
         } catch (EntryNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
@@ -35,7 +35,7 @@ public class AccountController {
     @ResponseStatus(HttpStatus.OK)
     public UUID signupMerchant(@RequestBody SignupDto merchant){
         try {
-            return accountService.addAccount(new Merchant(merchant.getName(), merchant.getIdentifier(), merchant.getBankAccountId())).getAccountId();
+            return accountService.addMerchant(merchant).getAccountId();
         } catch (DuplicateEntryException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
@@ -45,7 +45,7 @@ public class AccountController {
     @ResponseStatus(HttpStatus.OK)
     public UUID signupCustomer(@RequestBody SignupDto customer){
         try {
-            return accountService.addAccount( new Customer(customer.getName(), customer.getIdentifier(), customer.getBankAccountId())).getAccountId();
+            return accountService.addCustomer(customer).getAccountId();
         } catch (DuplicateEntryException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }

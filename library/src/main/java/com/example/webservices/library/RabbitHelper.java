@@ -1,5 +1,6 @@
 package com.example.webservices.library;
 
+import com.example.webservices.library.dataTransferObjects.ResponseObject;
 import gherkin.deps.com.google.gson.Gson;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +22,10 @@ public class RabbitHelper {
     }
 
     protected <T> String success(T response){
-        return toJson(new ResponseEntity<>(response, HttpStatus.OK));
+        return toJson(new ResponseObject(HttpStatus.OK, toJson(response)));
     }
     protected <T> String failure(T response){
-        return toJson(new ResponseEntity<>(response, HttpStatus.BAD_REQUEST));
+        return toJson(new ResponseObject(HttpStatus.BAD_REQUEST, toJson(response)));
     }
 
 }

@@ -8,6 +8,8 @@ import com.example.webservices.accounts.models.Merchant;
 import com.example.webservices.library.RabbitMQBaseClass;
 import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.dataTransferObjects.AccountType;
+import com.example.webservices.library.dataTransferObjects.ChangeNameDto;
+import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
@@ -25,15 +27,36 @@ public class  AccountService implements IAccountService {
         this.tokenManager = tokenManager;
     }
 
-    public <T extends Account> T addAccount(T account) throws DuplicateEntryException
-    {
-        return this.accountDatastore.addAccount(account);
+    @Override
+    public void changeName(ChangeNameDto changeNameDto) throws EntryNotFoundException {
+        this.accountDatastore.getAccount(changeNameDto.getAccountId()).setName(changeNameDto.getNewName());
     }
 
-
-    public void changeName(UUID accountId, String newName) throws EntryNotFoundException {
-        this.accountDatastore.getAccount(accountId).setName(newName);
+    private AccountDto addAccount(SignupDto signupDto, AccountType type) throws DuplicateEntryException {
+        Account account;
+        if(type == AccountType.CUSTOMER){
+            account = new Customer(signupDto.getName(), signupDto.getIdentifier(), signupDto.getBankAccountId());
+        }
+        else if(type == AccountType.MERCHANT){
+            account = new Merchant(signupDto.getName(), signupDto.getIdentifier(), signupDto.getBankAccountId());
+        }
+        else {
+            throw new DuplicateEntryException();
+        }
+        account = this.accountDatastore.addAccount(account);
+        return new AccountDto(account.getAccountId(), account.getName(), account.getBankAccountId(), account.getIdentifier(), type);
     }
+
+    @Override
+    public AccountDto addCustomer(SignupDto signupDto) throws DuplicateEntryException {
+        return addAccount(signupDto, AccountType.CUSTOMER);
+    }
+
+    @Override
+    public AccountDto addMerchant(SignupDto signupDto) throws DuplicateEntryException {
+        return addAccount(signupDto, AccountType.MERCHANT);
+    }
+
 
     public void delete(UUID accountId) throws EntryNotFoundException {
         this.accountDatastore.deleteAccount(accountId);
@@ -42,19 +65,18 @@ public class  AccountService implements IAccountService {
 
     @Override
     public AccountDto getCustomer(UUID customerId) throws EntryNotFoundException {
-        Customer cust = accountDatastore.getCustomer(customerId);
-        return new AccountDto(cust.getAccountId(), cust.getName(), cust.getBankAccountId(), cust.getCpr(), AccountType.CUSTOMER);
+        return getAccount(customerId);
     }
 
     @Override
     public AccountDto getAccount(UUID id) throws EntryNotFoundException {
         Account acc = accountDatastore.getAccount(id);
-        return new AccountDto(acc.getAccountId(), acc.getName(),acc.getBankAccountId(), acc.getIdentifier(), AccountType.NONE);
+        AccountType type = acc instanceof Merchant ? AccountType.MERCHANT : acc instanceof Customer ? AccountType.CUSTOMER : AccountType.NONE;
+        return new AccountDto(acc.getAccountId(), acc.getName(),acc.getBankAccountId(), acc.getIdentifier(), type);
     }
 
     @Override
     public AccountDto getMerchant(UUID merchantId) throws EntryNotFoundException {
-        Merchant merch = accountDatastore.getMerchant(merchantId);
-        return new AccountDto(merch.getAccountId(), merch.getName(), merch.getBankAccountId(), merch.getCvr(), AccountType.MERCHANT);
+        return getAccount(merchantId);
     }
 }

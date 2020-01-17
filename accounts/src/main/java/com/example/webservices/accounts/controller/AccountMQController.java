@@ -9,6 +9,7 @@ import com.example.webservices.library.RabbitMQBaseClass;
 import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.dataTransferObjects.AccountType;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
+import com.example.webservices.library.interfaces.IAccountService;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -21,22 +22,20 @@ public class AccountMQController extends RabbitHelper {
     private static final String QUEUE_CUSTOMER_GET = "account.get.customer";
     private static final String QUEUE_MERCHANT_GET = "account.get.merchant";
 
-    private final IAccountDatastore accountDatastore;
+    private final IAccountService accountService;
 
-    public AccountMQController(IAccountDatastore accountDatastore) {
+    public AccountMQController(IAccountService accountService) {
         super();
-        this.accountDatastore = accountDatastore;
+        this.accountService = accountService;
     }
 
     @RabbitListener(queues = QUEUE_ACCOUNT_GET)
     public String getAccount(String jsonString){
-        UUID accountId = fromJson(jsonString, UUID.class);
-
-        Account account;
         try {
-            account = this.accountDatastore.getAccount(accountId);
+            UUID accountId = fromJson(jsonString, UUID.class);
+            AccountDto account = this.accountService.getAccount(accountId);
 
-            return success(createDto(account));
+            return success(account);
 
         } catch (EntryNotFoundException e) {
             return failure(e.getMessage());
