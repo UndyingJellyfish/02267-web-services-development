@@ -15,9 +15,9 @@ public class BankServiceException_Exception
     private BankServiceException faultInfo;
 
     /**
-     * 
-     * @param faultInfo
-     * @param message
+     * {@inheritDoc}
+     * @param message Exception message
+     * @param faultInfo 
      */
     public BankServiceException_Exception(String message, BankServiceException faultInfo) {
         super(message);
@@ -26,9 +26,10 @@ public class BankServiceException_Exception
 
     /**
      * 
+     * {@inheritDoc}
+     * @param message Exception message
      * @param faultInfo
-     * @param cause
-     * @param message
+     * @param cause Underlying issue
      */
     public BankServiceException_Exception(String message, BankServiceException faultInfo, Throwable cause) {
         super(message, cause);

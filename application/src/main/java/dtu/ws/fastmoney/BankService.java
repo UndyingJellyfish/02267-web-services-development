@@ -20,10 +20,10 @@ public interface BankService {
 
     /**
      * 
-     * @param accountId
+     * @param accountId id of the account
      * @return
      *     returns dtu.ws.fastmoney.Account
-     * @throws BankServiceException_Exception
+     * @throws BankServiceException_Exception Is thrown if an account could not be found
      */
     @WebMethod
     @WebResult(targetNamespace = "")
@@ -37,10 +37,10 @@ public interface BankService {
 
     /**
      * 
-     * @param cpr
+     * @param cpr identifying CPR of the account
      * @return
      *     returns dtu.ws.fastmoney.Account
-     * @throws BankServiceException_Exception
+     * @throws BankServiceException_Exception Is thrown if an account could not be found
      */
     @WebMethod
     @WebResult(targetNamespace = "")
@@ -53,12 +53,12 @@ public interface BankService {
     ;
 
     /**
-     * 
-     * @param balance
-     * @param user
+     *
+     * @param user the user to create
+     * @param balance balance accredited to the new user
      * @return
      *     returns java.lang.String
-     * @throws BankServiceException_Exception
+     * @throws BankServiceException_Exception Is thrown if the account could not be created
      */
     @WebMethod
     @WebResult(targetNamespace = "")
@@ -74,8 +74,8 @@ public interface BankService {
 
     /**
      * 
-     * @param accountId
-     * @throws BankServiceException_Exception
+     * @param accountId id of the account
+     * @throws BankServiceException_Exception Is thrown if an account could not be found
      */
     @WebMethod
     @RequestWrapper(localName = "retireAccount", targetNamespace = "http://fastmoney.ws.dtu/", className = "dtu.ws.fastmoney.RetireAccount")
@@ -99,11 +99,11 @@ public interface BankService {
 
     /**
      * 
-     * @param amount
-     * @param debtor
-     * @param description
-     * @param creditor
-     * @throws BankServiceException_Exception
+     * @param amount amount to transfer
+     * @param creditor recipient of money
+     * @param debtor sender of money
+     * @param description the description to show in bank information
+     * @throws BankServiceException_Exception Is thrown if the transfer could not be completed
      */
     @WebMethod
     @RequestWrapper(localName = "transferMoneyFromTo", targetNamespace = "http://fastmoney.ws.dtu/", className = "dtu.ws.fastmoney.TransferMoneyFromTo")

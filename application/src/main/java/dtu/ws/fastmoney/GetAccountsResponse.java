@@ -37,7 +37,7 @@ public class GetAccountsResponse {
      * Objects of the following type(s) are allowed in the list
      * {@link AccountInfo }
      * 
-     * 
+     * @return List of accounts in response
      */
     public List<AccountInfo> getReturn() {
         if (_return == null) {

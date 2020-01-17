@@ -92,7 +92,7 @@ public class Account {
      * Objects of the following type(s) are allowed in the list
      * {@link Transaction }
      * 
-     * 
+     * @return all transactions of the account
      */
     public List<Transaction> getTransactions() {
         if (transactions == null) {

@@ -31,7 +31,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetAccountByCprNumberResponse }
+     * @return Create an instance of {@link GetAccountByCprNumberResponse }
      * 
      */
     public GetAccountByCprNumberResponse createGetAccountByCprNumberResponse() {
@@ -39,7 +39,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetAccountsResponse }
+     * @return Create an instance of {@link GetAccountsResponse }
      * 
      */
     public GetAccountsResponse createGetAccountsResponse() {
@@ -47,7 +47,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetAccountByCprNumber }
+     * @return Create an instance of {@link GetAccountByCprNumber }
      * 
      */
     public GetAccountByCprNumber createGetAccountByCprNumber() {
@@ -55,7 +55,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetAccounts }
+     * @return Create an instance of {@link GetAccounts }
      * 
      */
     public GetAccounts createGetAccounts() {
@@ -63,7 +63,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link TransferMoneyFromTo }
+     * @return Create an instance of {@link TransferMoneyFromTo }
      * 
      */
     public TransferMoneyFromTo createTransferMoneyFromTo() {
@@ -71,7 +71,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link TransferMoneyFromToResponse }
+     * @return Create an instance of {@link TransferMoneyFromToResponse }
      * 
      */
     public TransferMoneyFromToResponse createTransferMoneyFromToResponse() {
@@ -79,7 +79,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link CreateAccountWithBalanceResponse }
+     * @return Create an instance of {@link CreateAccountWithBalanceResponse }
      * 
      */
     public CreateAccountWithBalanceResponse createCreateAccountWithBalanceResponse() {
@@ -87,7 +87,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link BankServiceException }
+     * @return Create an instance of {@link BankServiceException }
      * 
      */
     public BankServiceException createBankServiceException() {
@@ -95,7 +95,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link RetireAccountResponse }
+     * @return Create an instance of {@link RetireAccountResponse }
      * 
      */
     public RetireAccountResponse createRetireAccountResponse() {
@@ -103,7 +103,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetAccount }
+     * @return Create an instance of {@link GetAccount }
      * 
      */
     public GetAccount createGetAccount() {
@@ -111,7 +111,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link RetireAccount }
+     * @return Create an instance of {@link RetireAccount }
      * 
      */
     public RetireAccount createRetireAccount() {
@@ -119,7 +119,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetAccountResponse }
+     * @return Create an instance of {@link GetAccountResponse }
      * 
      */
     public GetAccountResponse createGetAccountResponse() {
@@ -127,7 +127,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link CreateAccountWithBalance }
+     * @return Create an instance of {@link CreateAccountWithBalance }
      * 
      */
     public CreateAccountWithBalance createCreateAccountWithBalance() {
@@ -135,7 +135,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link AccountInfo }
+     * @return Create an instance of {@link AccountInfo }
      * 
      */
     public AccountInfo createAccountInfo() {
@@ -143,7 +143,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link User }
+     * @return Create an instance of {@link User }
      * 
      */
     public User createUser() {
@@ -151,7 +151,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Account }
+     * @return Create an instance of {@link Account }
      * 
      */
     public Account createAccount() {
@@ -159,7 +159,7 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Transaction }
+     * @return Create an instance of {@link Transaction }
      * 
      */
     public Transaction createTransaction() {
@@ -167,7 +167,8 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link RetireAccountResponse }{@code >}}
+     * @param value the {@link RetireAccountResponse} to convert to {@link JAXBElement}
+     * @return Create an instance of {@link JAXBElement }{@code <}{@link RetireAccountResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://fastmoney.ws.dtu/", name = "retireAccountResponse")
@@ -176,7 +177,8 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetAccount }{@code >}}
+     * @param value the {@link GetAccount} to convert to {@link JAXBElement}
+     * @return Create an instance of {@link JAXBElement }{@code <}{@link GetAccount }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://fastmoney.ws.dtu/", name = "getAccount")
@@ -185,7 +187,8 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link BankServiceException }{@code >}}
+     * @param value the {@link BankServiceException} to convert to {@link JAXBElement}
+     * @return Create an instance of {@link JAXBElement }{@code <}{@link BankServiceException }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://fastmoney.ws.dtu/", name = "BankServiceException")
@@ -194,7 +197,8 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link CreateAccountWithBalanceResponse }{@code >}}
+     * @param value the {@link CreateAccountWithBalanceResponse} to convert to {@link JAXBElement}
+     * @return Create an instance of {@link JAXBElement }{@code <}{@link CreateAccountWithBalanceResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://fastmoney.ws.dtu/", name = "createAccountWithBalanceResponse")
@@ -203,7 +207,8 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetAccountResponse }{@code >}}
+     * @param value the {@link GetAccountsResponse} to convert to {@link JAXBElement}
+     * @return Create an instance of {@link JAXBElement }{@code <}{@link GetAccountResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://fastmoney.ws.dtu/", name = "getAccountResponse")
@@ -212,7 +217,8 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link CreateAccountWithBalance }{@code >}}
+     * @param value the {@link CreateAccountWithBalance} to convert to {@link JAXBElement}
+     * @return Create an instance of {@link JAXBElement }{@code <}{@link CreateAccountWithBalance }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://fastmoney.ws.dtu/", name = "createAccountWithBalance")
@@ -221,7 +227,8 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link RetireAccount }{@code >}}
+     * @param value the {@link RetireAccount} to convert to {@link JAXBElement}
+     * @return Create an instance of {@link JAXBElement }{@code <}{@link RetireAccount }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://fastmoney.ws.dtu/", name = "retireAccount")
@@ -230,7 +237,8 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetAccountsResponse }{@code >}}
+     * @param value the {@link GetAccountResponse} to convert to {@link JAXBElement}
+     * @return Create an instance of {@link JAXBElement }{@code <}{@link GetAccountsResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://fastmoney.ws.dtu/", name = "getAccountsResponse")
@@ -239,7 +247,8 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetAccountByCprNumber }{@code >}}
+     * @param value the {@link GetAccountByCprNumber} to convert to {@link JAXBElement}
+     * @return Create an instance of {@link JAXBElement }{@code <}{@link GetAccountByCprNumber }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://fastmoney.ws.dtu/", name = "getAccountByCprNumber")
@@ -248,7 +257,8 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetAccountByCprNumberResponse }{@code >}}
+     * @param value the {@link GetAccountByCprNumberResponse} to convert to {@link JAXBElement}
+     * @return Create an instance of {@link JAXBElement }{@code <}{@link GetAccountByCprNumberResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://fastmoney.ws.dtu/", name = "getAccountByCprNumberResponse")
@@ -257,7 +267,8 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GetAccounts }{@code >}}
+     * @param value the {@link GetAccounts} to convert to {@link JAXBElement}
+     * @return Create an instance of {@link JAXBElement }{@code <}{@link GetAccounts }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://fastmoney.ws.dtu/", name = "getAccounts")
@@ -266,7 +277,8 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link TransferMoneyFromTo }{@code >}}
+     * @param value the {@link TransferMoneyFromTo} to convert to {@link JAXBElement}
+     * @return Create an instance of {@link JAXBElement }{@code <}{@link TransferMoneyFromTo }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://fastmoney.ws.dtu/", name = "transferMoneyFromTo")
@@ -275,7 +287,8 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link TransferMoneyFromToResponse }{@code >}}
+     * @param value the {@link GetAccount} to convert to {@link JAXBElement}
+     * @return Create an instance of {@link JAXBElement }{@code <}{@link TransferMoneyFromToResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://fastmoney.ws.dtu/", name = "transferMoneyFromToResponse")
