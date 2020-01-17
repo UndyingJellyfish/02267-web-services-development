@@ -10,6 +10,17 @@ Feature: Test for user service
     When The merchant signs up
     Then The merchant should be signed up
 
+  Scenario: A customer should be able to sign up
+    Given The name of a customer
+    And A bank account number
+    When The customer signs up
+    Then The customer should be signed up
+
+  Scenario: A customer should be able to sign up
+    Given The name of a merchant
+    And A bank account number
+    When The merchant signs up
+    Then The merchant should be signed up
 
   Scenario: An account should be able to change their name
     Given An account

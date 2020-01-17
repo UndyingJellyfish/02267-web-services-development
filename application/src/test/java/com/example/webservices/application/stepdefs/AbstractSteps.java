@@ -160,7 +160,7 @@ public class AbstractSteps {
     }
 
     protected void executeGet(String apiPath) {
-        executeGet(apiPath, null, null);
+        executeGet(apiPath, null);
     }
 
     protected void executeGet(String apiPath, Map<String, String> pathParams) {

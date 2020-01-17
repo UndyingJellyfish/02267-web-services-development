@@ -4,6 +4,7 @@ import com.example.webservices.application.accounts.SignupDto;
 import com.example.webservices.application.dataAccess.InMemoryDatastore;
 import com.example.webservices.application.models.Token;
 import io.cucumber.java.After;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -24,7 +25,7 @@ public class UserServiceSteps extends AbstractSteps {
     private UUID customerId;
     private String merchantName;
     private UUID merchantId;
-
+    private String bankAccountId;
 
     public UserServiceSteps(InMemoryDatastore inMemoryDatastore) {
         this.store = inMemoryDatastore;
@@ -44,8 +45,9 @@ public class UserServiceSteps extends AbstractSteps {
     public void theCustomerSignsUp() {
         try {
             SignupDto dto = new SignupDto();
-            dto.setCpr("lol jg er cpr");
+            dto.setIdentifier("lol jg er cpr");
             dto.setName(customerName);
+            dto.setBankAccountId(bankAccountId);
             testContext().setPayload(dto);
             executePost("/account/customer");
             assertNotNull(testContext().getResponse());
@@ -66,6 +68,7 @@ public class UserServiceSteps extends AbstractSteps {
         }
         assertNotNull(customer);
         assertEquals(customer.getName(),customerName);
+        assertEquals(customer.getBankAccountId(),bankAccountId);
     }
 
     @Given("The name of a merchant")
@@ -78,7 +81,8 @@ public class UserServiceSteps extends AbstractSteps {
         try {
             SignupDto dto = new SignupDto();
             dto.setName(merchantName);
-            dto.setCpr("123");
+            dto.setIdentifier("123");
+            dto.setBankAccountId(bankAccountId);
             testContext().setPayload(dto);
             executePost("/account/merchant");
             merchantId = getBody(UUID.class);
@@ -98,13 +102,14 @@ public class UserServiceSteps extends AbstractSteps {
         }
         assertNotNull(merchant);
         assertEquals(merchant.getName(),merchantName);
+        assertEquals(merchant.getBankAccountId(),bankAccountId);
     }
 
     @Given("An account")
     public void anAccount() {
         try {
             SignupDto dto = new SignupDto();
-            dto.setCpr("1234");
+            dto.setIdentifier("1234");
             dto.setName("oldname");
             testContext().setPayload(dto);
             executePost("/account/customer");
@@ -154,4 +159,8 @@ public class UserServiceSteps extends AbstractSteps {
         }
     }
 
+    @And("A bank account number")
+    public void aBankAccountNumber() {
+        bankAccountId = UUID.randomUUID().toString();
+    }
 }

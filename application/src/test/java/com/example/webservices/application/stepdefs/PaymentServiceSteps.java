@@ -129,7 +129,7 @@ public class PaymentServiceSteps extends AbstractSteps {
 
         SignupDto dto = new SignupDto();
         dto.setName("Alice");
-        dto.setCpr("123");
+        dto.setIdentifier("123");
         try {
             testContext().setPayload(dto);
             executePost("/account/merchant");
@@ -144,7 +144,7 @@ public class PaymentServiceSteps extends AbstractSteps {
     public void aValidToken() {
         SignupDto dto = new SignupDto();
         dto.setName("Bob");
-        dto.setCpr("123");
+        dto.setIdentifier("123");
         try {
             testContext().setPayload(dto);
             executePost("/account/customer");
@@ -177,7 +177,7 @@ public class PaymentServiceSteps extends AbstractSteps {
     public void aTokenThatHasAlreadyBeenUsed() {
         SignupDto dto = new SignupDto();
         dto.setName("Bob");
-        dto.setCpr("123");
+        dto.setIdentifier("123");
         try {
             testContext().setPayload(dto);
             executePost("/account/customer");
@@ -229,11 +229,11 @@ public class PaymentServiceSteps extends AbstractSteps {
         //this.bank = mock(IBank.class);
         SignupDto dto = new SignupDto();
         dto.setName("Bob");
-        dto.setCpr("123");
+        dto.setIdentifier("123");
 
         SignupDto dto2 = new SignupDto();
         dto2.setName("jens");
-        dto2.setCpr("12345678");
+        dto2.setIdentifier("12345678");
 
         try{
             testContext().setPayload(dto);

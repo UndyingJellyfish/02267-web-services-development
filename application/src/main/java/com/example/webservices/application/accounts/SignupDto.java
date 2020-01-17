@@ -2,7 +2,7 @@ package com.example.webservices.application.accounts;
 
 public class SignupDto{
     private String name;
-    private String cpr;
+    private String identifier;
     private String bankAccountId;
     //public SignupDto(){}
     public String getName() {
@@ -13,12 +13,12 @@ public class SignupDto{
         this.name = name;
     }
 
-    public String getCpr() {
-        return cpr;
+    public String getIdentifier() {
+        return identifier;
     }
 
-    public void setCpr(String cpr) {
-        this.cpr = cpr;
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public String getBankAccountId() {

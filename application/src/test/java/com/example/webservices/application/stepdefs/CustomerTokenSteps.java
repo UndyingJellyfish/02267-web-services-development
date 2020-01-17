@@ -4,9 +4,7 @@ import com.example.webservices.application.accounts.SignupDto;
 import com.example.webservices.application.dataAccess.IAccountDatastore;
 import com.example.webservices.application.dataAccess.InMemoryDatastore;
 import com.example.webservices.application.exceptions.EntryNotFoundException;
-import com.example.webservices.application.exceptions.TokenQuantityException;
 import com.example.webservices.application.models.Customer;
-import com.example.webservices.application.models.Token;
 import com.example.webservices.application.tokens.TokenDto;
 import gherkin.deps.com.google.gson.reflect.TypeToken;
 import io.cucumber.java.After;
@@ -18,12 +16,10 @@ import com.example.webservices.application.tokens.RequestTokenDto;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -47,7 +43,7 @@ public class CustomerTokenSteps extends AbstractSteps {
     public void aRegisteredUser() {
         SignupDto dto = new SignupDto();
         dto.setName("bob");
-        dto.setCpr("123");
+        dto.setIdentifier("123");
         dto.setBankAccountId(UUID.randomUUID().toString());
         testContext().setPayload(dto);
         executePost("/account/customer");
