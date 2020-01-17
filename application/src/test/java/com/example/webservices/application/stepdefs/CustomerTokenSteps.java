@@ -6,6 +6,9 @@ import com.example.webservices.application.dataAccess.InMemoryDatastore;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.application.accounts.Customer;
 import com.example.webservices.library.dataTransferObjects.TokenDto;
+import com.example.webservices.application.exceptions.EntryNotFoundException;
+import com.example.webservices.application.models.Customer;
+import com.example.webservices.application.tokens.TokenDto;
 import gherkin.deps.com.google.gson.reflect.TypeToken;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
@@ -43,7 +46,7 @@ public class CustomerTokenSteps extends AbstractSteps {
     public void aRegisteredUser() {
         SignupDto dto = new SignupDto();
         dto.setName("bob");
-        dto.setCpr("123");
+        dto.setIdentifier("123");
         dto.setBankAccountId(UUID.randomUUID().toString());
         testContext().setPayload(dto);
         executePost("/account/customer");
