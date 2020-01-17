@@ -4,6 +4,7 @@ import com.example.webservices.application.exceptions.*;
 import com.example.webservices.application.models.Account;
 import com.example.webservices.application.tokens.ITokenManager;
 import com.example.webservices.application.dataAccess.InMemoryDatastore;
+import com.example.webservices.application.tokens.TokenDto;
 import com.example.webservices.application.tokens.TokenManager;
 import com.example.webservices.application.models.Customer;
 import com.example.webservices.application.models.Token;
@@ -36,11 +37,11 @@ public class TokenManagerTest {
     @Test
     public void RequestTokens(){
 
-        List<Token> beforeTokens = null;
+        List<TokenDto> beforeTokens = null;
         try {
             beforeTokens = tokenManager.GetTokens(custId);
             tokenManager.RequestTokens(custId,2);
-            List<Token> afterTokens = tokenManager.GetTokens(custId);
+            List<TokenDto> afterTokens = tokenManager.GetTokens(custId);
             Assert.assertEquals(0, beforeTokens.size());
             Assert.assertEquals(2, afterTokens.size());
         } catch (EntryNotFoundException | TokenQuantityException e) {
@@ -51,13 +52,13 @@ public class TokenManagerTest {
 
     @Test
     public void RequestNoTokens(){
-        List<Token> beforeTokens = null;
+        List<TokenDto> beforeTokens = null;
         try {
             beforeTokens = tokenManager.GetTokens(custId);
             try{
                 tokenManager.RequestTokens(custId,0);
             }catch(TokenQuantityException ignored){        }
-            List<Token> afterTokens = tokenManager.GetTokens(custId);
+            List<TokenDto> afterTokens = tokenManager.GetTokens(custId);
             Assert.assertEquals(beforeTokens.size(), afterTokens.size());
         } catch (EntryNotFoundException e) {
             Assert.fail();
@@ -67,13 +68,13 @@ public class TokenManagerTest {
 
     @Test
     public void RequestTooManyTokens(){
-        List<Token> beforeTokens = null;
+        List<TokenDto> beforeTokens = null;
         try {
             beforeTokens = tokenManager.GetTokens(custId);
             try{
                 tokenManager.RequestTokens(custId,6);
             }catch(TokenQuantityException ignored){        }
-            List<Token> afterTokens = tokenManager.GetTokens(custId);
+            List<TokenDto> afterTokens = tokenManager.GetTokens(custId);
             Assert.assertEquals(beforeTokens.size(), afterTokens.size());
         } catch (EntryNotFoundException e) {
             Assert.fail();
@@ -85,12 +86,12 @@ public class TokenManagerTest {
     public void RequestTokensWhenOverLimit(){
         try {
             tokenManager.RequestTokens(custId,2); // Any qty over 1
-            List<Token> beforeTokens = tokenManager.GetTokens(custId);
+            List<TokenDto> beforeTokens = tokenManager.GetTokens(custId);
             try{
                 tokenManager.RequestTokens(custId,1);
                 Assert.fail();
             }catch(TokenQuantityException ignored){        }
-            List<Token> afterTokens = tokenManager.GetTokens(custId);
+            List<TokenDto> afterTokens = tokenManager.GetTokens(custId);
             Assert.assertEquals(beforeTokens.size(), afterTokens.size());
         } catch (EntryNotFoundException | TokenQuantityException e) {
             Assert.fail();
@@ -100,15 +101,15 @@ public class TokenManagerTest {
 
     @Test
     public void UseExistingToken() {
-        List<Token> beforeTokens = null;
+        List<UUID> beforeTokens = null;
         try {
             beforeTokens = tokenManager.RequestTokens(custId, 1);
             try{
-                tokenManager.UseToken(beforeTokens.get(0).getTokenId());
+                tokenManager.UseToken(beforeTokens.get(0));
             } catch (TokenException e){
                 Assert.fail();
             }
-            List<Token> afterTokens = tokenManager.GetTokens(custId);
+            List<TokenDto> afterTokens = tokenManager.GetTokens(custId);
             Assert.assertEquals(1, afterTokens.size());
             boolean isUsed = afterTokens.get(0).isUsed();
             Assert.assertTrue(isUsed);

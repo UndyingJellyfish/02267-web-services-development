@@ -1,12 +1,19 @@
 package com.example.webservices.application.models;
 
+import java.util.UUID;
+
 public class Customer extends Account {
 
     private String cpr;
 
-    public Customer(String name, String cpr){
+    public Customer(String name, String cpr) {
+        this(name, cpr, null);
+    }
+
+    public Customer(String name, String cpr, String bankAccountId){
         super(name);
         setCpr(cpr);
+        setBankAccountId(bankAccountId);
     }
 
     public String getCpr() {

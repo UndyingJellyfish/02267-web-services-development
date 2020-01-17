@@ -53,11 +53,11 @@ public class PaymentService {
     }
 
     public void refund(UUID customerId, UUID merchantId, UUID tokenId) throws TokenException, BankServiceException_Exception, EntryNotFoundException {
-        Token newToken = tokenManager.RequestToken(accountDatastore.getCustomer(customerId));
-        Transaction oldTransaction, newTransaction;
+        UUID newToken = tokenManager.RequestToken(accountDatastore.getCustomer(customerId));
+        Transaction oldTransaction;
 
         oldTransaction = transactionDatastore.GetTransactionByTokenId(tokenId);
-        this.transfer(newToken.getTokenId(), merchantId, oldTransaction.getAmount(), true,"Refund");
+        this.transfer(newToken, merchantId, oldTransaction.getAmount(), true,"Refund");
 
     }
 

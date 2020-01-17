@@ -4,9 +4,14 @@ public class Merchant extends Account {
 
     private String cvr;
 
-    public Merchant(String name, String cvr){
+    public Merchant(String name, String cvr) {
+        this(name, cvr, null);
+    }
+
+    public Merchant(String name, String cvr, String bankAccountId){
         super(name);
         setCvr(cvr);
+        setBankAccountId(bankAccountId);
     }
 
     public String getCvr() {

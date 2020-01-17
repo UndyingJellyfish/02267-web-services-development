@@ -1,6 +1,5 @@
 package com.example.webservices.application.stepdefs;
 
-import com.example.webservices.application.accounts.AccountController;
 import com.example.webservices.application.accounts.SignupDto;
 import com.example.webservices.application.dataAccess.IAccountDatastore;
 import com.example.webservices.application.dataAccess.InMemoryDatastore;
@@ -8,35 +7,36 @@ import com.example.webservices.application.exceptions.EntryNotFoundException;
 import com.example.webservices.application.exceptions.TokenQuantityException;
 import com.example.webservices.application.models.Customer;
 import com.example.webservices.application.models.Token;
+import com.example.webservices.application.tokens.TokenDto;
+import gherkin.deps.com.google.gson.reflect.TypeToken;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import com.example.webservices.application.tokens.ITokenManager;
-import com.example.webservices.application.tokens.TokenController;
 import com.example.webservices.application.tokens.RequestTokenDto;
+import io.restassured.response.Response;
+import io.restassured.response.ResponseBody;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
-public class CustomerTokenSteps {
+public class CustomerTokenSteps extends AbstractSteps {
 
-    private final ITokenManager tokenManager;
-    private AccountController accountController;
-    private IAccountDatastore accountDatastore;
-    private TokenController tokenController;
     private Customer customer;
-    private List<Token> tokenList;
+    private List<UUID> tokenIdList;
+    private IAccountDatastore accountDatastore;
+    private List<TokenDto> tokenList;
 
-    public CustomerTokenSteps(ITokenManager tokenManager, AccountController accountController, IAccountDatastore accountDatastore, TokenController tokenController){
-        this.tokenManager = tokenManager;
-        this.accountController = accountController;
+    public CustomerTokenSteps(IAccountDatastore accountDatastore){
+
         this.accountDatastore = accountDatastore;
-        this.tokenController = tokenController;
     }
     @After
     public void tearDown(){
@@ -48,9 +48,12 @@ public class CustomerTokenSteps {
         SignupDto dto = new SignupDto();
         dto.setName("bob");
         dto.setCpr("123");
-        UUID custId = accountController.signupCustomer(dto);
+        dto.setBankAccountId(UUID.randomUUID().toString());
+        testContext().setPayload(dto);
+        executePost("/account/customer");
+        UUID customerId = getBody(UUID.class);
         try {
-            this.customer = accountDatastore.getCustomer(custId);
+            this.customer = accountDatastore.getCustomer(customerId);
         } catch (EntryNotFoundException e) {
             fail();
         }
@@ -59,11 +62,9 @@ public class CustomerTokenSteps {
     @And("The user has spent all tokens")
     public void theUserHasSpentAllTokens() {
 
-        try {
-            assertTrue(tokenManager.GetTokens(customer.getAccountId()).stream().allMatch(Token::isUsed));
-        } catch (EntryNotFoundException e) {
-            fail();
-        }
+        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId",customer.getAccountId().toString());}});
+        List<TokenDto> tokens = getBody(new TypeToken<List<TokenDto>>(){}.getType());
+        assertTrue(tokens.stream().allMatch(TokenDto::isUsed));
     }
 
     @When("The user requests {int} of tokens")
@@ -71,85 +72,101 @@ public class CustomerTokenSteps {
         RequestTokenDto dto = new RequestTokenDto();
         dto.setAmount(arg0);
         dto.setCustomerId(this.customer.getAccountId());
-        tokenList = tokenController.requestTokens(dto);
+        testContext().setPayload(dto);
+        executePost("/tokens");
+        tokenIdList = getBody(new TypeToken<List<UUID>>(){}.getType());
     }
 
     @Then("The user receives {int} tokens")
     public void theUserReceivesNumberTokens(int arg0) {
-        List<Token> tokenList = null;
-        try {
-            tokenList = this.tokenManager.GetTokens(this.customer.getAccountId());
-        } catch (EntryNotFoundException e) {
+        List<TokenDto> tokenList = null;
+        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId", customer.getAccountId().toString());}});
+        if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
             fail();
         }
+        tokenList = getBody(new TypeToken<List<TokenDto>>(){}.getType());
         assertEquals(arg0,tokenList.size());
-        assertEquals(this.tokenList, tokenList);
     }
 
     @And("The user has {int} unused token")
     public void theUserHasUnusedToken(int arg0) {
-        try {
-            tokenManager.RequestTokens(customer.getAccountId(),arg0);
-        } catch (EntryNotFoundException | TokenQuantityException e) {
+        RequestTokenDto dto = new RequestTokenDto();
+        dto.setAmount(arg0);
+        dto.setCustomerId(customer.getAccountId());
+        testContext().setPayload(dto);
+        executePost("/tokens");
+        Response response = testContext().getResponse();
+        ResponseBody body = response.getBody();
+        String message = body.prettyPrint();
+        if(response.getStatusCode() != HttpStatus.OK.value()){
             fail();
         }
-        try {
-            assertEquals(arg0, tokenManager.GetTokens(customer.getAccountId()).stream().filter(t ->!t.isUsed()).count());
-        } catch (EntryNotFoundException e) {
+        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId", customer.getAccountId().toString());}});
+        if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
             fail();
         }
+        List<TokenDto> tokens = getBody(new TypeToken<List<TokenDto>>(){}.getType());
+        assertEquals(arg0, tokens.stream().filter(t ->!t.isUsed()).count());
     }
 
 
 
     @Then("The user has {int} unused tokens")
     public void theUserHasUnusedTokens(int arg0) {
-        try {
-            assertEquals(arg0, tokenManager.GetTokens(customer.getAccountId()).stream().filter(t ->!t.isUsed()).count());
-        } catch (EntryNotFoundException e) {
+        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId", customer.getAccountId().toString());}});
+        if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
             fail();
         }
+        List<TokenDto> tokens = getBody(new TypeToken<List<TokenDto>>(){}.getType());
+        assertEquals(arg0, tokens.stream().filter(t ->!t.isUsed()).count());
     }
 
 
 
     @And("The user already has {int} unused tokens")
     public void theUserAlreadyHasUnusedTokens(int arg0) {
-        try {
-            tokenManager.RequestTokens(customer.getAccountId(),arg0);
-        } catch (EntryNotFoundException | TokenQuantityException e) {
+        RequestTokenDto dto = new RequestTokenDto();
+        dto.setCustomerId(customer.getAccountId());
+        dto.setAmount(arg0);
+        testContext().setPayload(dto);
+        executePost("/tokens");
+        if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
             fail();
         }
     }
 
-    private ResponseStatusException excp = null;
+    private int excp = -1;
     @When("The user requests {int} tokens")
     public void theUserRequestsTokens(int arg0) {
-        try{
             RequestTokenDto dto = new RequestTokenDto();
             dto.setAmount(arg0);
             dto.setCustomerId(this.customer.getAccountId());
-            tokenController.requestTokens(dto);
-            fail();
-        }catch(ResponseStatusException e){
-            excp = e;
-        }
+            testContext().setPayload(dto);
+            executePost("/tokens");
+            if(testContext().getResponse().statusCode() == HttpStatus.OK.value()){
+                fail();
+            }
+            excp = testContext().getResponse().statusCode();
     }
 
     @Then("It should fail")
     public void itShouldFail() {
-        assertNotNull(excp);
+        assertNotEquals(HttpStatus.OK, excp);
     }
 
     @And("the user has {int} unused tokens")
     public void theUserHasNumberUnusedTokens(int arg0) {
         if(arg0 > 0){
-            List<Token> out = null;
-            try {
-                out = tokenManager.RequestTokens(customer.getAccountId(),arg0);
-            } catch (EntryNotFoundException | TokenQuantityException e) {
+            List<UUID> out = null;
+            RequestTokenDto dto = new RequestTokenDto();
+            dto.setCustomerId(customer.getAccountId());
+            dto.setAmount(arg0);
+            testContext().setPayload(dto);
+            executePost("/tokens");
+            if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
                 fail();
             }
+            out = getBody(new TypeToken<List<UUID>>(){}.getType());
             assertEquals(arg0, out.size());
         }
     }
@@ -159,7 +176,11 @@ public class CustomerTokenSteps {
 
     @When("The user queries his tokens")
     public void theUserQueriesHisTokens() {
-        this.tokenList = tokenController.getTokens(customer.getAccountId());
+        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId", customer.getAccountId().toString());}});
+        if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
+            fail();
+        }
+        this.tokenList = getBody(new TypeToken<List<TokenDto>>(){}.getType());
     }
 
     @Then("He should get his tokens")

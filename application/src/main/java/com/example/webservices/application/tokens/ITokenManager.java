@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ITokenManager {
-    List<Token> RequestTokens(UUID customer, int quantity) throws TokenQuantityException, EntryNotFoundException;
-    List<Token> GetTokens(UUID customer) throws EntryNotFoundException;
+    List<UUID> RequestTokens(UUID customer, int quantity) throws TokenQuantityException, EntryNotFoundException;
+    List<TokenDto> GetTokens(UUID customer) throws EntryNotFoundException;
     void UseToken(UUID tokenId) throws TokenException;
 
 
-    Token RequestToken(Customer customer) throws EntryNotFoundException, TokenQuantityException;
+    UUID RequestToken(Customer customer) throws EntryNotFoundException, TokenQuantityException;
 
     Token GetToken(UUID tokenId) throws InvalidTokenException;
 

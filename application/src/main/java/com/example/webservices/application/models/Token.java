@@ -9,6 +9,8 @@ public class Token {
     private Date useDate = null;
     private Customer customer;
 
+    public Token() {}
+
     public Token(Customer customer){
         this.customer = customer;
         this.tokenId = UUID.randomUUID();

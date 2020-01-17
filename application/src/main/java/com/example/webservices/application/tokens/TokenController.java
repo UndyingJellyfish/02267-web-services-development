@@ -25,9 +25,9 @@ public class TokenController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.OK)
-    public List<Token> requestTokens(@RequestBody RequestTokenDto dto) {
+    public List<UUID> requestTokens(@RequestBody RequestTokenDto dto) {
         try {
-            return tokenManager.RequestTokens(dto.getCustomerId(),dto.getAmount() );
+            return tokenManager.RequestTokens(dto.getCustomerId(),dto.getAmount());
         } catch (EntryNotFoundException e ) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
         }catch(TokenQuantityException e){
@@ -37,7 +37,7 @@ public class TokenController {
 
     @GetMapping("/{customerId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Token> getTokens(@PathVariable UUID customerId) {
+    public List<TokenDto> getTokens(@PathVariable UUID customerId) {
             return tokenManager.GetTokens(customerId);
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class TokenManager implements ITokenManager {
@@ -22,7 +23,7 @@ public class TokenManager implements ITokenManager {
         this.accountDatastore = accountDatastore;
     }
 
-    public List<Token> RequestTokens(UUID customerId, int quantity) throws TokenQuantityException, EntryNotFoundException {
+    public List<UUID> RequestTokens(UUID customerId, int quantity) throws TokenQuantityException, EntryNotFoundException {
 
         Customer customer = accountDatastore.getCustomer(customerId);
 
@@ -42,11 +43,12 @@ public class TokenManager implements ITokenManager {
             tokens.add(token);
         }
 
-        return this.datastore.assignTokens(customer, tokens);
+        tokens = this.datastore.assignTokens(customer, tokens);
+        return tokens.stream().map(Token::getTokenId).collect(Collectors.toList());
     }
 
-    public List<Token> GetTokens(UUID customerId) {
-        return this.datastore.getTokens(customerId);
+    public List<TokenDto> GetTokens(UUID customerId) {
+        return this.datastore.getTokens(customerId).stream().map(t -> new TokenDto(t.getTokenId(), t.isUsed())).collect(Collectors.toList());
     }
 
     public void UseToken(UUID tokenId) throws TokenException {
@@ -58,7 +60,7 @@ public class TokenManager implements ITokenManager {
     }
 
     @Override
-    public Token RequestToken(Customer customer) throws EntryNotFoundException, TokenQuantityException {
+    public UUID RequestToken(Customer customer) throws EntryNotFoundException, TokenQuantityException {
         return RequestTokens(customer.getAccountId(), 1).get(0);
     }
 
