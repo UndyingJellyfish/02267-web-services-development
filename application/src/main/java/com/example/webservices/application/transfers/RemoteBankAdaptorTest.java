@@ -1,35 +1,39 @@
-package com.example.webservices.application.junit;
+package com.example.webservices.application.transfers;
 
 import com.example.webservices.application.bank.RemoteBankAdaptor;
+import com.example.webservices.library.dataTransferObjects.AccountDto;
+import com.example.webservices.library.dataTransferObjects.AccountType;
+import com.example.webservices.library.exceptions.BankException;
 import dtu.ws.fastmoney.BankServiceException_Exception;
-import com.example.webservices.application.accounts.Customer;
-import com.example.webservices.application.accounts.Merchant;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public class RemoteBankAdaptorTest {
 
     private static final BigDecimal startingBalance = new BigDecimal("100.");
 
     private RemoteBankAdaptor bank;
-    private Customer customer;
-    private Merchant merchant;
+    private AccountDto customerDto;
+    private AccountDto merchantDto;
 
     @Before
     public void Setup() {
         bank = new RemoteBankAdaptor();
-        customer = new Customer("Bob Bobby", "1234567002");
-        merchant = new Merchant("Alice's Flowers", "12312312");
+
+        customerDto = new AccountDto(UUID.randomUUID(),"Bob Bobby", "010101-0101", AccountType.CUSTOMER);
+        merchantDto = new AccountDto(UUID.randomUUID(),"Bob Bobby", "020202-0202", AccountType.MERCHANT);
+
         try {
-            String customerAccountId = bank.addAccount(customer, startingBalance);
-            customer.setBankAccountId(customerAccountId);
-            String merchantAccountId = bank.addAccount(merchant, startingBalance);
-            merchant.setBankAccountId(merchantAccountId);
-        } catch (BankServiceException_Exception | ClassNotFoundException e) {
+            String customerAccountId = bank.addAccount(customerDto);
+            customerDto.setBankAccountId(customerAccountId);
+            String merchantAccountId = bank.addAccount(merchantDto);
+            merchantDto.setBankAccountId(merchantAccountId);
+        } catch (BankException | ClassNotFoundException e) {
             Assert.fail();
         }
     }
@@ -37,37 +41,39 @@ public class RemoteBankAdaptorTest {
     @After
     public void teardown() {
         try {
-            bank.retireAccount(customer);
-            bank.retireAccount(merchant);
-        } catch (BankServiceException_Exception e) {
+            bank.retireAccount(customerDto);
+            bank.retireAccount(merchantDto);
+        } catch (BankException e) {
             Assert.fail();
         }
     }
 
-    private void CheckBalance(Customer customer, BigDecimal customerBalance, Merchant merchant, BigDecimal merchantBalance) {
+    private void CheckBalance(AccountDto customer, BigDecimal customerBalance, AccountDto merchant, BigDecimal merchantBalance) {
         try {
             BigDecimal currentBalance = bank.getBalance(customer);
             Assert.assertEquals(customerBalance, currentBalance);
             currentBalance = bank.getBalance(merchant);
             Assert.assertEquals(merchantBalance, currentBalance);
-        } catch (BankServiceException_Exception e) {
+        } catch (BankException e) {
             Assert.fail();
         }
     }
 
     @Test
     public void TestBalanceWasSetup() {
-        CheckBalance(customer, startingBalance, merchant, startingBalance);
+
+        // TODO this won't work as there is no public method for setting starting balance currently
+        CheckBalance(customerDto, startingBalance, merchantDto, startingBalance);
     }
 
     @Test
     public void TestTransfer() {
         BigDecimal amount = new BigDecimal("50.0");
         try {
-            CheckBalance(customer, startingBalance, merchant, startingBalance);
-            bank.transferMoney(customer, merchant, amount, "Test transfer");
-            CheckBalance(customer, startingBalance.subtract(amount), merchant, startingBalance.add(amount));
-        } catch (BankServiceException_Exception e) {
+            CheckBalance(customerDto, startingBalance, merchantDto, startingBalance);
+            bank.transferMoney(customerDto, merchantDto, amount, "Test transfer");
+            CheckBalance(customerDto, startingBalance.subtract(amount), merchantDto, startingBalance.add(amount));
+        } catch (BankException e) {
             Assert.fail();
         }
     }

@@ -1,14 +1,11 @@
 package com.example.webservices.application.stepdefs;
 
+import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.application.accounts.IAccountDatastore;
-import com.example.webservices.application.dataAccess.InMemoryDatastore;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
-import com.example.webservices.application.accounts.Customer;
 import com.example.webservices.library.dataTransferObjects.TokenDto;
-import com.example.webservices.application.exceptions.EntryNotFoundException;
-import com.example.webservices.application.models.Customer;
-import com.example.webservices.application.tokens.TokenDto;
+import com.example.webservices.library.interfaces.IAccountService;
 import gherkin.deps.com.google.gson.reflect.TypeToken;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
@@ -28,31 +25,23 @@ import static org.junit.Assert.*;
 
 public class CustomerTokenSteps extends AbstractSteps {
 
-    private Customer customer;
+    private AccountDto customer;
+    private IAccountService accountService;
     private List<UUID> tokenIdList;
-    private IAccountDatastore accountDatastore;
     private List<TokenDto> tokenList;
 
-    public CustomerTokenSteps(IAccountDatastore accountDatastore){
-
-        this.accountDatastore = accountDatastore;
-    }
-    @After
-    public void tearDown(){
-        ((InMemoryDatastore)this.accountDatastore).flush();
+    public CustomerTokenSteps(IAccountService accountService){
+        this.accountService = accountService;
     }
 
     @Given("A registered user")
     public void aRegisteredUser() {
-        SignupDto dto = new SignupDto();
-        dto.setName("bob");
-        dto.setIdentifier("123");
-        dto.setBankAccountId(UUID.randomUUID().toString());
+        SignupDto dto = new SignupDto("bob", "123", UUID.randomUUID().toString());
         testContext().setPayload(dto);
         executePost("/account/customer");
         UUID customerId = getBody(UUID.class);
         try {
-            this.customer = accountDatastore.getCustomer(customerId);
+            this.customer = accountService.getCustomer(customerId);
         } catch (EntryNotFoundException e) {
             fail();
         }

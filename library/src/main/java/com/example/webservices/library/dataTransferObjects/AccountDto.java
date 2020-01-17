@@ -9,6 +9,10 @@ public class AccountDto {
     private String identifier;
     private AccountType type;
 
+    public AccountDto(UUID accountId, String name, String identifier, AccountType type) {
+        this(accountId, name, "", identifier, type);
+    }
+
     public AccountDto(UUID accountId, String name, String bankAccountId, String identifier, AccountType type) {
         this.accountId = accountId;
         this.name = name;

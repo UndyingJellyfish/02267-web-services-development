@@ -38,7 +38,7 @@ public class AccountController {
     @ResponseStatus(HttpStatus.OK)
     public UUID signupMerchant(@RequestBody SignupDto merchant){
         try {
-            return accountService.addAccount(new Merchant(merchant.getName(), merchant.getIdentifier(), merchant.getBankAccountId())).getAccountId();
+            return accountService.addMerchant(merchant).getAccountId();
         } catch (DuplicateEntryException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
@@ -48,7 +48,7 @@ public class AccountController {
     @ResponseStatus(HttpStatus.OK)
     public UUID signupCustomer(@RequestBody SignupDto customer){
         try {
-            return accountService.addAccount( new Customer(customer.getName(), customer.getIdentifier(), customer.getBankAccountId())).getAccountId();
+            return accountService.addCustomer(customer).getAccountId();
         } catch (DuplicateEntryException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }

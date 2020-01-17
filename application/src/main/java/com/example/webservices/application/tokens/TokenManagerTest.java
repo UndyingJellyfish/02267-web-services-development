@@ -1,35 +1,40 @@
-package com.example.webservices.application.junit;
+package com.example.webservices.application.tokens;
 
-import com.example.webservices.library.exceptions.*;
-import com.example.webservices.application.accounts.Account;
-import com.example.webservices.library.interfaces.ITokenManager;
-import com.example.webservices.application.dataAccess.InMemoryDatastore;
+import com.example.webservices.library.dataTransferObjects.AccountDto;
+import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.dataTransferObjects.TokenDto;
-import com.example.webservices.application.tokens.TokenManager;
-import com.example.webservices.application.accounts.Customer;
-import org.junit.Assert;
+import com.example.webservices.library.exceptions.*;
+import com.example.webservices.library.interfaces.IAccountService;
+import com.example.webservices.library.interfaces.ITokenManager;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.UUID;
 
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+
 
 public class TokenManagerTest {
 
     private ITokenManager tokenManager;
-    private UUID custId;
+    private IAccountService accountService = mock(IAccountService.class);
+    private UUID customerId;
+
+    public TokenManagerTest(ITokenManager tokenManager) {
+        this.tokenManager = tokenManager;
+    }
 
     @Before
-    public void Setup(){
-        InMemoryDatastore store = new InMemoryDatastore();
-        tokenManager = new TokenManager(store,store);
-        Account cust = new Customer("Bob","123");
-        custId = cust.getAccountId();
+    public void Setup() {
+        SignupDto dto = new SignupDto("Bob","123", UUID.randomUUID().toString());
+
         try {
-            store.addAccount(cust);
+            AccountDto accDto = accountService.addCustomer(dto);
+            customerId = accDto.getAccountId();
         } catch (DuplicateEntryException e) {
-            Assert.fail();
+            fail();
         }
     }
 
@@ -38,13 +43,13 @@ public class TokenManagerTest {
 
         List<TokenDto> beforeTokens = null;
         try {
-            beforeTokens = tokenManager.GetTokens(custId);
-            tokenManager.RequestTokens(custId,2);
-            List<TokenDto> afterTokens = tokenManager.GetTokens(custId);
-            Assert.assertEquals(0, beforeTokens.size());
-            Assert.assertEquals(2, afterTokens.size());
+            beforeTokens = tokenManager.GetTokens(customerId);
+            tokenManager.RequestTokens(customerId,2);
+            List<TokenDto> afterTokens = tokenManager.GetTokens(customerId);
+            assertEquals(0, beforeTokens.size());
+            assertEquals(2, afterTokens.size());
         } catch (EntryNotFoundException | TokenQuantityException e) {
-            Assert.fail();
+            fail();
         }
 
     }
@@ -53,14 +58,14 @@ public class TokenManagerTest {
     public void RequestNoTokens(){
         List<TokenDto> beforeTokens = null;
         try {
-            beforeTokens = tokenManager.GetTokens(custId);
+            beforeTokens = tokenManager.GetTokens(customerId);
             try{
-                tokenManager.RequestTokens(custId,0);
+                tokenManager.RequestTokens(customerId,0);
             }catch(TokenQuantityException ignored){        }
-            List<TokenDto> afterTokens = tokenManager.GetTokens(custId);
-            Assert.assertEquals(beforeTokens.size(), afterTokens.size());
+            List<TokenDto> afterTokens = tokenManager.GetTokens(customerId);
+            assertEquals(beforeTokens.size(), afterTokens.size());
         } catch (EntryNotFoundException e) {
-            Assert.fail();
+            fail();
         }
 
     }
@@ -69,14 +74,14 @@ public class TokenManagerTest {
     public void RequestTooManyTokens(){
         List<TokenDto> beforeTokens = null;
         try {
-            beforeTokens = tokenManager.GetTokens(custId);
+            beforeTokens = tokenManager.GetTokens(customerId);
             try{
-                tokenManager.RequestTokens(custId,6);
+                tokenManager.RequestTokens(customerId,6);
             }catch(TokenQuantityException ignored){        }
-            List<TokenDto> afterTokens = tokenManager.GetTokens(custId);
-            Assert.assertEquals(beforeTokens.size(), afterTokens.size());
+            List<TokenDto> afterTokens = tokenManager.GetTokens(customerId);
+            assertEquals(beforeTokens.size(), afterTokens.size());
         } catch (EntryNotFoundException e) {
-            Assert.fail();
+            fail();
         }
 
     }
@@ -84,16 +89,16 @@ public class TokenManagerTest {
     @Test
     public void RequestTokensWhenOverLimit(){
         try {
-            tokenManager.RequestTokens(custId,2); // Any qty over 1
-            List<TokenDto> beforeTokens = tokenManager.GetTokens(custId);
+            tokenManager.RequestTokens(customerId,2); // Any qty over 1
+            List<TokenDto> beforeTokens = tokenManager.GetTokens(customerId);
             try{
-                tokenManager.RequestTokens(custId,1);
-                Assert.fail();
+                tokenManager.RequestTokens(customerId,1);
+                fail();
             }catch(TokenQuantityException ignored){        }
-            List<TokenDto> afterTokens = tokenManager.GetTokens(custId);
-            Assert.assertEquals(beforeTokens.size(), afterTokens.size());
+            List<TokenDto> afterTokens = tokenManager.GetTokens(customerId);
+            assertEquals(beforeTokens.size(), afterTokens.size());
         } catch (EntryNotFoundException | TokenQuantityException e) {
-            Assert.fail();
+            fail();
         }
 
     }
@@ -102,18 +107,18 @@ public class TokenManagerTest {
     public void UseExistingToken() {
         List<UUID> beforeTokens = null;
         try {
-            beforeTokens = tokenManager.RequestTokens(custId, 1);
+            beforeTokens = tokenManager.RequestTokens(customerId, 1);
             try{
                 tokenManager.UseToken(beforeTokens.get(0));
             } catch (TokenException e){
-                Assert.fail();
+                fail();
             }
-            List<TokenDto> afterTokens = tokenManager.GetTokens(custId);
-            Assert.assertEquals(1, afterTokens.size());
+            List<TokenDto> afterTokens = tokenManager.GetTokens(customerId);
+            assertEquals(1, afterTokens.size());
             boolean isUsed = afterTokens.get(0).isUsed();
-            Assert.assertTrue(isUsed);
+            assertTrue(isUsed);
         } catch (EntryNotFoundException | TokenQuantityException e) {
-            Assert.fail();
+            fail();
         }
 
     }
@@ -123,9 +128,9 @@ public class TokenManagerTest {
         UUID id = UUID.randomUUID();
         try{
             tokenManager.UseToken(id);
-            Assert.fail();
+            fail();
         } catch (TokenException e){
-            Assert.assertTrue(e instanceof  InvalidTokenException);
+            assertTrue(e instanceof  InvalidTokenException);
         }
     }
 

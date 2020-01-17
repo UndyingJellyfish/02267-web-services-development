@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Service
-public class PaymentService {
+public class PaymentService implements IPaymentService {
     private ITokenManager tokenManager;
     private IAccountService accountService;
     private ITransactionService transactionService;
@@ -26,10 +26,12 @@ public class PaymentService {
         this.bank = bank;
     }
 
+    @Override
     public TransactionDto transfer(UUID tokenId, UUID merchantId, BigDecimal amount, String description) throws EntryNotFoundException, TokenException, BankException {
         return this.transfer(tokenId, merchantId, amount, false, description);
     }
 
+    @Override
     public TransactionDto transfer(UUID tokenId, UUID merchantId, BigDecimal amount, boolean isRefund, String description) throws EntryNotFoundException, TokenException, BankException {
         if(!isGreaterThanZero(amount)){
             throw new IllegalArgumentException();
@@ -48,6 +50,7 @@ public class PaymentService {
         return amount.compareTo(new BigDecimal(0)) > 0;
     }
 
+    @Override
     public void refund(UUID customerId, UUID merchantId, UUID tokenId) throws TokenException, BankException, EntryNotFoundException {
         UUID newToken = tokenManager.RequestToken(customerId);
         TransactionDto oldTransaction;

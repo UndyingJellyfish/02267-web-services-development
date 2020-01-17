@@ -7,26 +7,26 @@ public class TransactionDto {
     private UUID transactionId;
 
     private UUID tokenId;
-    private UUID merchantId;
-    private UUID customerId;
+    private UUID creditor;
+    private UUID debtor;
     private BigDecimal amount;
     private String description;
     private boolean isRefund;
 
-    public TransactionDto(UUID tokenId, UUID merchantId, UUID customerId, BigDecimal amount, String description, boolean isRefund) {
+    public TransactionDto(UUID tokenId, UUID creditor, UUID debtor, BigDecimal amount, String description, boolean isRefund) {
         this.tokenId = tokenId;
-        this.merchantId = merchantId;
-        this.customerId = customerId;
+        this.creditor = creditor;
+        this.debtor = debtor;
         this.amount = amount;
         this.description = description;
         this.isRefund = isRefund;
     }
 
-    public TransactionDto(UUID transactionId, UUID tokenId, UUID merchantId, UUID customerId, BigDecimal amount, String description, boolean isRefund) {
+    public TransactionDto(UUID transactionId, UUID tokenId, UUID creditor, UUID debtor, BigDecimal amount, String description, boolean isRefund) {
         this.transactionId = transactionId;
         this.tokenId = tokenId;
-        this.merchantId = merchantId;
-        this.customerId = customerId;
+        this.creditor = creditor;
+        this.debtor = debtor;
         this.amount = amount;
         this.description = description;
         this.isRefund = isRefund;
@@ -63,12 +63,12 @@ public class TransactionDto {
         this.tokenId = tokenId;
     }
 
-    public UUID getMerchantId() {
-        return merchantId;
+    public UUID getCreditorId() {
+        return creditor;
     }
 
-    public void setMerchantId(UUID merchantId) {
-        this.merchantId = merchantId;
+    public void setCreditor(UUID creditor) {
+        this.creditor = creditor;
     }
 
     public BigDecimal getAmount() {
@@ -87,12 +87,12 @@ public class TransactionDto {
         this.description = description;
     }
 
-    public void setCustomerId(UUID customerId) {
-        this.customerId = customerId;
+    public void setDebtor(UUID debtor) {
+        this.debtor = debtor;
     }
 
-    public UUID getCustomerId() {
-        return customerId;
+    public UUID getDebtorId() {
+        return debtor;
     }
 
     public UUID getTransactionId() {

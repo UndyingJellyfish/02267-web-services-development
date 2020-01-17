@@ -38,34 +38,16 @@ public class RemoteBankAdaptor implements IBank {
     public String addAccount(AccountDto account) throws BankException, ClassNotFoundException {
         return addAccount(account, BigDecimal.ZERO);
     }
-
-    public String addAccount(AccountDto account, BigDecimal balance) throws BankException, ClassNotFoundException {
-        try{
-            if (account.getType() == AccountType.CUSTOMER) {
-                return addAccountCustomer(account, balance);
-            } else if (account.getType() == AccountType.MERCHANT) {
-                return addAccountMerchant(account, balance);
-            }
-        }catch(BankServiceException_Exception e){
-            throw new BankException(e.getMessage());
-        }
-        throw new ClassNotFoundException();
-    }
-
-    private String addAccountCustomer(AccountDto customer, BigDecimal balance) throws BankServiceException_Exception {
-        return addAccountCommon(customer, customer.getIdentifier(), balance);
-    }
-
-    private String addAccountMerchant(AccountDto merchant, BigDecimal balance) throws BankServiceException_Exception {
-        return addAccountCommon(merchant, merchant.getIdentifier(), balance);
-    }
-
-    private String addAccountCommon(AccountDto account, String cpr, BigDecimal balance) throws BankServiceException_Exception {
+    private String addAccount(AccountDto account, BigDecimal balance) throws BankException{
         BankService bankService = bankServiceService.getPort(BankService.class);
         User user = new User();
         setupUserName(account.getName(), user);
-        user.setCprNumber(cpr);
-        return bankService.createAccountWithBalance(user, balance);
+        user.setCprNumber(account.getIdentifier());
+        try {
+            return bankService.createAccountWithBalance(user, balance);
+        } catch (BankServiceException_Exception e) {
+            throw new BankException(e.getMessage());
+        }
     }
 
     @Override

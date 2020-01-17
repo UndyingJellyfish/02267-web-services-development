@@ -2,6 +2,7 @@ package com.example.webservices.application.accounts;
 
 import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.dataTransferObjects.AccountType;
+import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
@@ -19,16 +20,29 @@ class  AccountService implements IAccountService {
         this.tokenManager = tokenManager;
     }
 
-    public <T extends Account> T addAccount(T account) throws DuplicateEntryException
-    {
-        return this.accountDatastore.addAccount(account);
+
+    @Override
+    public AccountDto addCustomer(SignupDto signupDto) throws DuplicateEntryException {
+        Customer customer = new Customer(signupDto.getName(),signupDto.getIdentifier(),signupDto.getBankAccountId());
+        Account account = this.accountDatastore.addAccount(customer);
+        AccountDto dto = new AccountDto(account.getAccountId(), account.getName(), account.getBankAccountId(), account.getIdentifier(), AccountType.CUSTOMER);
+        return dto;
     }
 
+    @Override
+    public AccountDto addMerchant(SignupDto signupDto) throws DuplicateEntryException {
+        Merchant merchant = new Merchant(signupDto.getName(),signupDto.getIdentifier(),signupDto.getBankAccountId());
+        Account account = this.accountDatastore.addAccount(merchant);
+        AccountDto dto = new AccountDto(account.getAccountId(), account.getName(), account.getBankAccountId(), account.getIdentifier(), AccountType.CUSTOMER);
+        return dto;
+    }
 
+    @Override
     public void changeName(UUID accountId, String newName) throws EntryNotFoundException {
         this.accountDatastore.getAccount(accountId).setName(newName);
     }
 
+    @Override
     public void delete(UUID accountId) throws EntryNotFoundException {
         this.accountDatastore.deleteAccount(accountId);
         this.tokenManager.retireAll(accountId);

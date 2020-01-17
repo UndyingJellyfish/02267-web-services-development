@@ -1,14 +1,14 @@
-package com.example.webservices.application.junit;
+package com.example.webservices.application.transfers;
 
+import com.example.webservices.library.dataTransferObjects.AccountDto;
+import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
-import com.example.webservices.library.interfaces.IBank;
-import com.example.webservices.application.dataAccess.InMemoryDatastore;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.exceptions.TokenQuantityException;
-import com.example.webservices.payments.transfers.PaymentService;
-import com.example.webservices.application.tokens.TokenManager;
-import com.example.webservices.application.accounts.Customer;
-import com.example.webservices.application.accounts.Merchant;
+import com.example.webservices.library.interfaces.IAccountService;
+import com.example.webservices.library.interfaces.IBank;
+import com.example.webservices.library.interfaces.IPaymentService;
+import com.example.webservices.library.interfaces.ITokenManager;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,36 +16,37 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
 public class PaymentServiceTest {
 
-    private PaymentService service;
-    private Merchant merchant;
+    private IPaymentService service;
+    private AccountDto merchant;
+    private AccountDto customer;
     private UUID tokenId;
     private IBank bank = mock(IBank.class);
+    private IAccountService accountService = mock(IAccountService.class);
+    private ITokenManager tokenManager = mock(ITokenManager.class);
+
+    public PaymentServiceTest(IPaymentService paymentService){
+        this.service = paymentService;
+    }
 
     @Before
     public void setup(){
-        Customer customer = new Customer("yoink", "12345678");
-        merchant = new Merchant("doink", "12345678");
-        InMemoryDatastore store = new InMemoryDatastore();
-        TokenManager tokenManager = new TokenManager(store,store);
-        service = new PaymentService(tokenManager, store, store, bank);
+        SignupDto customer = new SignupDto("yoink", "12345678", UUID.randomUUID().toString());
+        SignupDto merchant = new SignupDto("doink", "12345678", UUID.randomUUID().toString());
         try {
-            store.addAccount(customer);
+            this.customer = accountService.addCustomer(customer);
+            this.merchant = accountService.addCustomer(merchant);
         } catch (DuplicateEntryException e) {
-            Assert.fail();
+            fail();
         }
         try {
-            store.addAccount(merchant);
-        } catch (DuplicateEntryException e) {
-            Assert.fail();
-        }
-        try {
-            tokenId = tokenManager.RequestToken(customer);
+            this.tokenId = tokenManager.RequestToken(this.customer.getAccountId());
         } catch (EntryNotFoundException | TokenQuantityException e) {
-            Assert.fail();
+            fail();
         }
     }
 
@@ -55,7 +56,7 @@ public class PaymentServiceTest {
 
         try{
             service.transfer(tokenId, merchant.getAccountId(), new BigDecimal(-23),"");
-            Assert.fail();
+            fail();
         }
         catch(Exception e){
             exception = e;

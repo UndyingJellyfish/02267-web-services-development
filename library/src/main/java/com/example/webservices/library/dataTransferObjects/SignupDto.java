@@ -4,7 +4,11 @@ public class SignupDto{
     private String name;
     private String identifier;
     private String bankAccountId;
-    //public SignupDto(){}
+    public SignupDto(String name, String identifier, String bankAccountId){
+        this.name = name;
+        this.identifier = identifier;
+        this.bankAccountId = bankAccountId;
+    }
     public String getName() {
         return name;
     }

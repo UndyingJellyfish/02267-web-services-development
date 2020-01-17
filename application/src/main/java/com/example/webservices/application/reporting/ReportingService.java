@@ -2,8 +2,8 @@ package com.example.webservices.application.reporting;
 
 import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
-import com.example.webservices.library.interfaces.IAccountService;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
+import com.example.webservices.library.interfaces.IAccountService;
 import com.example.webservices.library.interfaces.ITransactionService;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ import java.util.UUID;
     }
 
     private void Anonymize(TransactionDto transaction) {
-        transaction.setCustomerId(null);
+        transaction.setDebtor(null);
     }
 
     public List<TransactionDto> getTransactionHistory(UUID id) throws EntryNotFoundException {

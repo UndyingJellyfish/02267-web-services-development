@@ -1,16 +1,16 @@
 package com.example.webservices.application.stepdefs;
+import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.dataTransferObjects.ChangeNameDto;
 import com.example.webservices.library.dataTransferObjects.SignupDto;
-import com.example.webservices.application.dataAccess.InMemoryDatastore;
-import com.example.webservices.application.tokens.Token;
+import com.example.webservices.library.dataTransferObjects.TokenDto;
+import com.example.webservices.library.interfaces.IAccountService;
+import com.example.webservices.library.interfaces.ITokenManager;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
-import com.example.webservices.application.accounts.Customer;
-import com.example.webservices.application.accounts.Merchant;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
@@ -21,19 +21,20 @@ import static org.junit.Assert.*;
 
 public class UserServiceSteps extends AbstractSteps {
     private String customerName;
-    private InMemoryDatastore store;
+    private IAccountService accountService;
+    private ITokenManager tokenManager;
     private UUID customerId;
     private String merchantName;
     private UUID merchantId;
     private String bankAccountId;
 
-    public UserServiceSteps(InMemoryDatastore inMemoryDatastore) {
-        this.store = inMemoryDatastore;
+    public UserServiceSteps(IAccountService accountService, ITokenManager tokenManager) {
+        this.accountService = accountService;
+        this.tokenManager = tokenManager;
     }
 
     @After
     public void tearDown(){
-        this.store.flush();
     }
 
     @Given("The name of a customer")
@@ -44,10 +45,7 @@ public class UserServiceSteps extends AbstractSteps {
     @When("The customer signs up")
     public void theCustomerSignsUp() {
         try {
-            SignupDto dto = new SignupDto();
-            dto.setIdentifier("lol jg er cpr");
-            dto.setName(customerName);
-            dto.setBankAccountId(bankAccountId);
+            SignupDto dto = new SignupDto(customerName, "12345678", bankAccountId);
             testContext().setPayload(dto);
             executePost("/account/customer");
             assertNotNull(testContext().getResponse());
@@ -60,9 +58,9 @@ public class UserServiceSteps extends AbstractSteps {
     @Then("The customer should be signed up")
     public void theCustomerShouldBeSignedUp() {
         assertNotNull(customerId);
-        Customer customer = null;
+        AccountDto customer = null;
         try {
-            customer = store.getCustomer(customerId);
+            customer = accountService.getCustomer(customerId);
         } catch (EntryNotFoundException e) {
             fail();
         }
@@ -79,10 +77,7 @@ public class UserServiceSteps extends AbstractSteps {
     @When("The merchant signs up")
     public void theMerchantSignsUp() {
         try {
-            SignupDto dto = new SignupDto();
-            dto.setName(merchantName);
-            dto.setIdentifier("123");
-            dto.setBankAccountId(bankAccountId);
+            SignupDto dto = new SignupDto(merchantName, "1234", bankAccountId);
             testContext().setPayload(dto);
             executePost("/account/merchant");
             merchantId = getBody(UUID.class);
@@ -94,9 +89,9 @@ public class UserServiceSteps extends AbstractSteps {
     @Then("The merchant should be signed up")
     public void theMerchantShouldBeSignedUp() {
         assertNotNull(merchantId);
-        Merchant merchant = null;
+        AccountDto merchant = null;
         try {
-            merchant = store.getMerchant(merchantId);
+            merchant = accountService.getMerchant(merchantId);
         } catch (EntryNotFoundException e) {
             fail();
         }
@@ -108,9 +103,7 @@ public class UserServiceSteps extends AbstractSteps {
     @Given("An account")
     public void anAccount() {
         try {
-            SignupDto dto = new SignupDto();
-            dto.setIdentifier("1234");
-            dto.setName("oldname");
+            SignupDto dto = new SignupDto("oldname", "123", UUID.randomUUID().toString());
             testContext().setPayload(dto);
             executePost("/account/customer");
             customerId = getBody(UUID.class);
@@ -127,7 +120,7 @@ public class UserServiceSteps extends AbstractSteps {
             testContext().setPayload(changeNameDto);
             executePut("/account/{accountId}", new HashMap<String,String>(){{put("accountId", customerId.toString());}});
             assertNotNull(testContext().getResponse());
-            customerName =  store.getAccount(customerId).getName();
+            customerName = accountService.getAccount(customerId).getName();
         } catch (ResponseStatusException | EntryNotFoundException e) {
             fail();
         }
@@ -149,9 +142,9 @@ public class UserServiceSteps extends AbstractSteps {
 
     @Then("The user should be deleted, and unused tokens should be removed")
     public void theUserShouldBeDeletedAndUnusedTokensShouldBeRemoved() {
-        List<Token> tokens =  store.getTokens(customerId);
+        List<TokenDto> tokens = null; // TODO: FIX tokenManager.getTokens(customerId);
         try {
-            store.getAccount(customerId);
+            accountService.getAccount(customerId);
             fail();
         } catch (EntryNotFoundException e) {
             // entry not found = entry deleted
