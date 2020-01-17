@@ -13,3 +13,9 @@ services:
     build: ./tokens
   accounts:
     build: ./accounts
+  rabbitmq:
+    image: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: "alex"
+      RABBITMQ_DEFAULT_PASS: "alex"
+

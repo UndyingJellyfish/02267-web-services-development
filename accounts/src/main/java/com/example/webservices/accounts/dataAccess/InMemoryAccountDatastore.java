@@ -1,7 +1,9 @@
-package com.example.webservices.application.accounts;
+package com.example.webservices.accounts.dataAccess;
+import com.example.webservices.accounts.interfaces.IAccountDatastore;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import org.springframework.stereotype.Service;
+import com.example.webservices.accounts.models.*;
 
 import java.util.*;
 

@@ -1,5 +1,11 @@
-package com.example.webservices.application.accounts;
+package com.example.webservices.accounts.services;
 
+import com.example.webservices.accounts.AccountsApplication;
+import com.example.webservices.accounts.interfaces.IAccountDatastore;
+import com.example.webservices.accounts.models.Account;
+import com.example.webservices.accounts.models.Customer;
+import com.example.webservices.accounts.models.Merchant;
+import com.example.webservices.library.RabbitMQBaseClass;
 import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.dataTransferObjects.AccountType;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
@@ -10,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-class  AccountService implements IAccountService {
+public class  AccountService implements IAccountService {
     private IAccountDatastore accountDatastore;
     private ITokenManager tokenManager;
 
