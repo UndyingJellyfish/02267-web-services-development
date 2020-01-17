@@ -2,7 +2,6 @@ package com.example.webservices.application.stepdefs;
 
 import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.dataTransferObjects.SignupDto;
-import com.example.webservices.application.accounts.IAccountDatastore;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.dataTransferObjects.TokenDto;
 import com.example.webservices.library.interfaces.IAccountService;
