@@ -15,7 +15,13 @@
     <properties>
         <java.version>1.8</java.version>
     </properties>
-
+    <dependencies>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>webservices-library</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>
