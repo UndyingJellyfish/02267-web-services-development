@@ -1,4 +1,4 @@
-package com.example.webservices.application.junit;
+package com.example.webservices.application.accounts.unittest;
 
 import com.example.webservices.application.accounts.Merchant;
 import org.junit.Assert;

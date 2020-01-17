@@ -1,4 +1,4 @@
-package com.example.webservices.application.junit;
+package com.example.webservices.application.accounts.unittest;
 
 import com.example.webservices.application.accounts.Customer;
 import org.junit.Assert;
@@ -16,7 +16,7 @@ public class CustomerTest {
         // Act
         Customer cust = new Customer(name,cpr);
         // Assert
-        assertEquals(name, cust.getName());
+        Assert.assertEquals(name, cust.getName());
     }
 
     @Test

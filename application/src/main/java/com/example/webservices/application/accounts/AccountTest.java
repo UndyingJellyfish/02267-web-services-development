@@ -1,4 +1,4 @@
-package com.example.webservices.application.junit;
+package com.example.webservices.application.accounts.unittest;
 
 import org.junit.Test;
 
