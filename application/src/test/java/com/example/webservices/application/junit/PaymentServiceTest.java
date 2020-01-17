@@ -1,14 +1,14 @@
 package com.example.webservices.application.junit;
 
-import com.example.webservices.application.exceptions.DuplicateEntryException;
-import com.example.webservices.application.bank.IBank;
+import com.example.webservices.library.exceptions.DuplicateEntryException;
+import com.example.webservices.library.interfaces.IBank;
 import com.example.webservices.application.dataAccess.InMemoryDatastore;
-import com.example.webservices.application.exceptions.EntryNotFoundException;
-import com.example.webservices.application.exceptions.TokenQuantityException;
-import com.example.webservices.application.transfers.PaymentService;
+import com.example.webservices.library.exceptions.EntryNotFoundException;
+import com.example.webservices.library.exceptions.TokenQuantityException;
+import com.example.webservices.payments.transfers.PaymentService;
 import com.example.webservices.application.tokens.TokenManager;
-import com.example.webservices.application.models.Customer;
-import com.example.webservices.application.models.Merchant;
+import com.example.webservices.application.accounts.Customer;
+import com.example.webservices.application.accounts.Merchant;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

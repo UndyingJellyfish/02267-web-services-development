@@ -1,24 +1,23 @@
 package com.example.webservices.application.stepdefs;
 
-import com.example.webservices.application.exceptions.TokenQuantityException;
-import com.example.webservices.application.transfers.TransactionDto;
+import com.example.webservices.library.exceptions.TokenQuantityException;
+import com.example.webservices.library.dataTransferObjects.TransactionDto;
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import com.example.webservices.application.dataAccess.InMemoryDatastore;
-import com.example.webservices.application.exceptions.DuplicateEntryException;
-import com.example.webservices.application.bank.IBank;
-import com.example.webservices.application.exceptions.EntryNotFoundException;
+import com.example.webservices.library.exceptions.DuplicateEntryException;
+import com.example.webservices.library.interfaces.IBank;
+import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.application.reporting.ReportingController;
-import com.example.webservices.application.tokens.ITokenManager;
-import com.example.webservices.application.exceptions.TokenException;
+import com.example.webservices.library.interfaces.ITokenManager;
+import com.example.webservices.library.exceptions.TokenException;
 import gherkin.deps.com.google.gson.reflect.TypeToken;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import com.example.webservices.application.transfers.PaymentService;
-import com.example.webservices.application.models.Customer;
-import com.example.webservices.application.models.Merchant;
-import com.example.webservices.application.models.Token;
-import com.example.webservices.application.models.Transaction;
+import com.example.webservices.payments.transfers.PaymentService;
+import com.example.webservices.application.accounts.Customer;
+import com.example.webservices.application.accounts.Merchant;
+import com.example.webservices.application.transfers.Transaction;
 import org.junit.After;
 
 import java.math.BigDecimal;
@@ -105,17 +104,17 @@ public class TransactionHistorySteps extends AbstractSteps {
         for(TransactionDto transaction : transactions){
             Transaction expectedTransaction = this.expectedTransactions
                     .stream()
-                    .filter(t -> t.getTransactionId()
+                    .filter(t -> t.getTransaction()
                             .equals(transaction.getTransactionId()))
                     .findFirst()
                     .orElse(null);
             if(expectedTransaction == null){
                 fail();
             }
-            assertEquals(expectedTransaction.getDebtor().getAccountId(), transaction.getCustomerId());
-            assertEquals(expectedTransaction.getCreditor().getAccountId(), transaction.getMerchantId());
+            assertEquals(expectedTransaction.getDebtorId().getAccountId(), transaction.getCustomerId());
+            assertEquals(expectedTransaction.getCreditorId().getAccountId(), transaction.getMerchantId());
 
-            assertEquals(expectedTransaction.getToken().getTokenId(), transaction.getTokenId());
+            assertEquals(expectedTransaction.getTokenId().getTokenId(), transaction.getTokenId());
             assertEquals(expectedTransaction.getAmount(), transaction.getAmount());
         }
     }
@@ -163,14 +162,14 @@ public class TransactionHistorySteps extends AbstractSteps {
         assertNotNull(transactions);
         assertEquals(expectedTransactions.size(), transactions.size());
         for(TransactionDto transaction : transactions){
-            Transaction expectedTransaction = this.expectedTransactions.stream().filter(t -> t.getTransactionId().equals(transaction.getTransactionId())).findFirst().orElse(null);
+            Transaction expectedTransaction = this.expectedTransactions.stream().filter(t -> t.getTransaction().equals(transaction.getTransactionId())).findFirst().orElse(null);
             if(expectedTransaction == null){
                 fail();
             }
             assertNull(transaction.getCustomerId());
-            assertEquals(expectedTransaction.getCreditor().getAccountId(), transaction.getMerchantId());
+            assertEquals(expectedTransaction.getCreditorId().getAccountId(), transaction.getMerchantId());
 
-            assertEquals(expectedTransaction.getToken().getTokenId(), transaction.getTokenId());
+            assertEquals(expectedTransaction.getTokenId().getTokenId(), transaction.getTokenId());
             assertEquals(expectedTransaction.getAmount(), transaction.getAmount());
             // TODO: Cannot compare transaction date since TransactionDto does not have data information
             //assertEquals(expectedTransaction.getTransactionDate(), transaction.getTransactionDate());

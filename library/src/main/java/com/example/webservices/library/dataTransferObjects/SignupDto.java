@@ -1,4 +1,4 @@
-package com.example.webservices.application.accounts;
+package com.example.webservices.library.dataTransferObjects;
 
 public class SignupDto{
     private String name;

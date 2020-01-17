@@ -48,8 +48,8 @@ var activeTableTab = "activeTableTab";
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../../com/example/webservices/application/transfers/PaymentController.html" title="class in com.example.webservices.application.transfers"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../../../com/example/webservices/application/transfers/TransactionDto.html" title="class in com.example.webservices.application.transfers"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../../../com/example/webservices/application/transfers/PaymentController.html" title="class in com.example.webservices.payments.transfers"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../../../com/example/webservices/application/transfers/TransactionDto.html" title="class in com.example.webservices.payments.transfers"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../../index.html?com/example/webservices/application/transfers/PaymentService.html" target="_top">Frames</a></li>
@@ -91,7 +91,7 @@ var activeTableTab = "activeTableTab";
 <!-- ========= END OF TOP NAVBAR ========= -->
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="subTitle">com.example.webservices.application.transfers</div>
+<div class="subTitle">com.example.webservices.payments.transfers</div>
 <h2 title="Class PaymentService" class="title">Class PaymentService</h2>
 </div>
 <div class="contentContainer">
@@ -99,7 +99,7 @@ var activeTableTab = "activeTableTab";
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li>com.example.webservices.application.transfers.PaymentService</li>
+<li>com.example.webservices.payments.transfers.PaymentService</li>
 </ul>
 </li>
 </ul>
@@ -129,7 +129,7 @@ extends java.lang.Object</pre>
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../com/example/webservices/application/transfers/PaymentService.html#PaymentService-com.example.webservices.application.tokens.ITokenManager-com.example.webservices.application.dataAccess.IAccountDatastore-com.example.webservices.application.dataAccess.ITransactionDatastore-com.example.webservices.application.bank.IBank-">PaymentService</a></span>(<a href="../../../../../com/example/webservices/application/tokens/ITokenManager.html" title="interface in com.example.webservices.application.tokens">ITokenManager</a>&nbsp;tokenManager,
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../com/example/webservices/application/transfers/PaymentService.html#PaymentService-com.example.webservices.library.interfaces.ITokenManager-com.example.webservices.application.accounts.IAccountDatastore-com.example.webservices.application.transfers.ITransactionDatastore-com.example.webservices.library.interfaces.IBank-">PaymentService</a></span>(<a href="../../../../../com/example/webservices/application/tokens/ITokenManager.html" title="interface in com.example.webservices.application.tokens">ITokenManager</a>&nbsp;tokenManager,
               <a href="../../../../../com/example/webservices/application/dataAccess/IAccountDatastore.html" title="interface in com.example.webservices.application.dataAccess">IAccountDatastore</a>&nbsp;accountDatastore,
               <a href="../../../../../com/example/webservices/application/dataAccess/ITransactionDatastore.html" title="interface in com.example.webservices.application.dataAccess">ITransactionDatastore</a>&nbsp;transactionDatastore,
               <a href="../../../../../com/example/webservices/application/bank/IBank.html" title="interface in com.example.webservices.application.bank">IBank</a>&nbsp;bank)</code>&nbsp;</td>
@@ -192,7 +192,7 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a name="PaymentService-com.example.webservices.application.tokens.ITokenManager-com.example.webservices.application.dataAccess.IAccountDatastore-com.example.webservices.application.dataAccess.ITransactionDatastore-com.example.webservices.application.bank.IBank-">
+<a name="PaymentService-com.example.webservices.library.interfaces.ITokenManager-com.example.webservices.application.accounts.IAccountDatastore-com.example.webservices.application.transfers.ITransactionDatastore-com.example.webservices.library.interfaces.IBank-">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -222,14 +222,14 @@ extends java.lang.Object</pre>
                             java.util.UUID&nbsp;merchantId,
                             java.math.BigDecimal&nbsp;amount,
                             java.lang.String&nbsp;description)
-                     throws <a href="../../../../../com/example/webservices/application/exceptions/TokenException.html" title="class in com.example.webservices.application.exceptions">TokenException</a>,
+                     throws <a href="../../../../../com/example/webservices/application/exceptions/TokenException.html" title="class in com.example.webservices.library.exceptions">TokenException</a>,
                             <a href="../../../../../dtu/ws/fastmoney/BankServiceException_Exception.html" title="class in dtu.ws.fastmoney">BankServiceException_Exception</a>,
-                            <a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.application.exceptions">EntryNotFoundException</a></pre>
+                            <a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.library.exceptions">EntryNotFoundException</a></pre>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../../com/example/webservices/application/exceptions/TokenException.html" title="class in com.example.webservices.application.exceptions">TokenException</a></code></dd>
+<dd><code><a href="../../../../../com/example/webservices/application/exceptions/TokenException.html" title="class in com.example.webservices.library.exceptions">TokenException</a></code></dd>
 <dd><code><a href="../../../../../dtu/ws/fastmoney/BankServiceException_Exception.html" title="class in dtu.ws.fastmoney">BankServiceException_Exception</a></code></dd>
-<dd><code><a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.application.exceptions">EntryNotFoundException</a></code></dd>
+<dd><code><a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.library.exceptions">EntryNotFoundException</a></code></dd>
 </dl>
 </li>
 </ul>
@@ -244,14 +244,14 @@ extends java.lang.Object</pre>
                             java.math.BigDecimal&nbsp;amount,
                             boolean&nbsp;isRefund,
                             java.lang.String&nbsp;description)
-                     throws <a href="../../../../../com/example/webservices/application/exceptions/TokenException.html" title="class in com.example.webservices.application.exceptions">TokenException</a>,
+                     throws <a href="../../../../../com/example/webservices/application/exceptions/TokenException.html" title="class in com.example.webservices.library.exceptions">TokenException</a>,
                             <a href="../../../../../dtu/ws/fastmoney/BankServiceException_Exception.html" title="class in dtu.ws.fastmoney">BankServiceException_Exception</a>,
-                            <a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.application.exceptions">EntryNotFoundException</a></pre>
+                            <a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.library.exceptions">EntryNotFoundException</a></pre>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../../com/example/webservices/application/exceptions/TokenException.html" title="class in com.example.webservices.application.exceptions">TokenException</a></code></dd>
+<dd><code><a href="../../../../../com/example/webservices/application/exceptions/TokenException.html" title="class in com.example.webservices.library.exceptions">TokenException</a></code></dd>
 <dd><code><a href="../../../../../dtu/ws/fastmoney/BankServiceException_Exception.html" title="class in dtu.ws.fastmoney">BankServiceException_Exception</a></code></dd>
-<dd><code><a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.application.exceptions">EntryNotFoundException</a></code></dd>
+<dd><code><a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.library.exceptions">EntryNotFoundException</a></code></dd>
 </dl>
 </li>
 </ul>
@@ -264,14 +264,14 @@ extends java.lang.Object</pre>
 <pre>public&nbsp;void&nbsp;refund(java.util.UUID&nbsp;customerId,
                    java.util.UUID&nbsp;merchantId,
                    java.util.UUID&nbsp;tokenId)
-            throws <a href="../../../../../com/example/webservices/application/exceptions/TokenException.html" title="class in com.example.webservices.application.exceptions">TokenException</a>,
+            throws <a href="../../../../../com/example/webservices/application/exceptions/TokenException.html" title="class in com.example.webservices.library.exceptions">TokenException</a>,
                    <a href="../../../../../dtu/ws/fastmoney/BankServiceException_Exception.html" title="class in dtu.ws.fastmoney">BankServiceException_Exception</a>,
-                   <a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.application.exceptions">EntryNotFoundException</a></pre>
+                   <a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.library.exceptions">EntryNotFoundException</a></pre>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../../com/example/webservices/application/exceptions/TokenException.html" title="class in com.example.webservices.application.exceptions">TokenException</a></code></dd>
+<dd><code><a href="../../../../../com/example/webservices/application/exceptions/TokenException.html" title="class in com.example.webservices.library.exceptions">TokenException</a></code></dd>
 <dd><code><a href="../../../../../dtu/ws/fastmoney/BankServiceException_Exception.html" title="class in dtu.ws.fastmoney">BankServiceException_Exception</a></code></dd>
-<dd><code><a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.application.exceptions">EntryNotFoundException</a></code></dd>
+<dd><code><a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.library.exceptions">EntryNotFoundException</a></code></dd>
 </dl>
 </li>
 </ul>
@@ -302,8 +302,8 @@ extends java.lang.Object</pre>
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../../com/example/webservices/application/transfers/PaymentController.html" title="class in com.example.webservices.application.transfers"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../../../com/example/webservices/application/transfers/TransactionDto.html" title="class in com.example.webservices.application.transfers"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../../../com/example/webservices/application/transfers/PaymentController.html" title="class in com.example.webservices.payments.transfers"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../../../com/example/webservices/application/transfers/TransactionDto.html" title="class in com.example.webservices.payments.transfers"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../../index.html?com/example/webservices/application/transfers/PaymentService.html" target="_top">Frames</a></li>

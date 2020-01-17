@@ -1,29 +1,25 @@
 package com.example.webservices.application.stepdefs;
 
-import com.example.webservices.application.accounts.SignupDto;
-import com.example.webservices.application.dataAccess.IAccountDatastore;
+import com.example.webservices.library.dataTransferObjects.SignupDto;
+import com.example.webservices.application.accounts.IAccountDatastore;
 import com.example.webservices.application.dataAccess.InMemoryDatastore;
-import com.example.webservices.application.exceptions.EntryNotFoundException;
-import com.example.webservices.application.exceptions.TokenQuantityException;
-import com.example.webservices.application.models.Customer;
-import com.example.webservices.application.models.Token;
-import com.example.webservices.application.tokens.TokenDto;
+import com.example.webservices.library.exceptions.EntryNotFoundException;
+import com.example.webservices.application.accounts.Customer;
+import com.example.webservices.library.dataTransferObjects.TokenDto;
 import gherkin.deps.com.google.gson.reflect.TypeToken;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import com.example.webservices.application.tokens.RequestTokenDto;
+import com.example.webservices.library.dataTransferObjects.RequestTokenDto;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 

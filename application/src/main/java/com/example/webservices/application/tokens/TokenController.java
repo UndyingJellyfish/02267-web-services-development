@@ -1,8 +1,9 @@
 package com.example.webservices.application.tokens;
 
-import com.example.webservices.application.exceptions.EntryNotFoundException;
-import com.example.webservices.application.exceptions.TokenQuantityException;
-import com.example.webservices.application.models.Token;
+import com.example.webservices.library.dataTransferObjects.RequestTokenDto;
+import com.example.webservices.library.dataTransferObjects.TokenDto;
+import com.example.webservices.library.exceptions.EntryNotFoundException;
+import com.example.webservices.library.exceptions.TokenQuantityException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;

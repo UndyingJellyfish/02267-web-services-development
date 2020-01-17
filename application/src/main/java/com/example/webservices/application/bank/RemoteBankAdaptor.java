@@ -1,12 +1,10 @@
 package com.example.webservices.application.bank;
 
-import dtu.ws.fastmoney.BankService;
-import dtu.ws.fastmoney.BankServiceException_Exception;
-import dtu.ws.fastmoney.BankServiceService;
-import dtu.ws.fastmoney.User;
-import com.example.webservices.application.models.Account;
-import com.example.webservices.application.models.Customer;
-import com.example.webservices.application.models.Merchant;
+import com.example.webservices.library.dataTransferObjects.AccountDto;
+import com.example.webservices.library.dataTransferObjects.AccountType;
+import com.example.webservices.library.exceptions.BankException;
+import com.example.webservices.library.interfaces.IBank;
+import dtu.ws.fastmoney.*;
 
 import javax.xml.ws.Service;
 import java.math.BigDecimal;
@@ -23,39 +21,46 @@ public class RemoteBankAdaptor implements IBank {
     }
 
     @Override
-    public void transferMoney(Customer customer, Merchant merchant, BigDecimal amount, String description) throws BankServiceException_Exception {
+    public void transferMoney(AccountDto customer, AccountDto merchant, BigDecimal amount, String description) throws BankException {
             BankService bankService = bankServiceService.getPort(BankService.class);
+        try {
             bankService.transferMoneyFromTo(
                     customer.getBankAccountId(),
                     merchant.getBankAccountId(),
                     amount,
                     description);
+        } catch (BankServiceException_Exception e) {
+            throw new BankException(e.getMessage());
+        }
     }
 
     @Override
-    public String addAccount(Account account) throws BankServiceException_Exception, ClassNotFoundException {
+    public String addAccount(AccountDto account) throws BankException, ClassNotFoundException {
         return addAccount(account, BigDecimal.ZERO);
     }
 
-    @Override
-    public String addAccount(Account account, BigDecimal balance) throws BankServiceException_Exception, ClassNotFoundException {
-        if (account instanceof Customer) {
-            return addAccountCustomer((Customer)account, balance);
-        } else if (account instanceof Merchant) {
-            return addAccountMerchant((Merchant)account, balance);
+    public String addAccount(AccountDto account, BigDecimal balance) throws BankException, ClassNotFoundException {
+        try{
+            if (account.getType() == AccountType.CUSTOMER) {
+                return addAccountCustomer(account, balance);
+            } else if (account.getType() == AccountType.MERCHANT) {
+                return addAccountMerchant(account, balance);
+            }
+        }catch(BankServiceException_Exception e){
+            throw new BankException(e.getMessage());
         }
         throw new ClassNotFoundException();
     }
 
-    private String addAccountCustomer(Customer customer, BigDecimal balance) throws BankServiceException_Exception {
-        return addAccountCommon(customer, customer.getCpr(), balance);
+    private String addAccountCustomer(AccountDto customer, BigDecimal balance) throws BankServiceException_Exception {
+        return addAccountCommon(customer, customer.getIdentifier(), balance);
     }
 
-    private String addAccountMerchant(Merchant merchant, BigDecimal balance) throws BankServiceException_Exception {
-        return addAccountCommon(merchant, merchant.getCvr(), balance);
+    private String addAccountMerchant(AccountDto merchant, BigDecimal balance) throws BankServiceException_Exception {
+        return addAccountCommon(merchant, merchant.getIdentifier(), balance);
     }
 
-    private String addAccountCommon(Account account, String cpr, BigDecimal balance) throws BankServiceException_Exception {
+    private String addAccountCommon(AccountDto account, String cpr, BigDecimal balance) throws BankServiceException_Exception {
         BankService bankService = bankServiceService.getPort(BankService.class);
         User user = new User();
         setupUserName(account.getName(), user);
@@ -64,15 +69,24 @@ public class RemoteBankAdaptor implements IBank {
     }
 
     @Override
-    public void retireAccount(Account account) throws BankServiceException_Exception {
+    public void retireAccount(AccountDto account) throws BankException {
         BankService bankService = bankServiceService.getPort(BankService.class);
-        bankService.retireAccount(account.getBankAccountId());
+        try {
+            bankService.retireAccount(account.getBankAccountId());
+        } catch (BankServiceException_Exception e) {
+            throw new BankException(e.getMessage());
+        }
     }
 
     @Override
-    public BigDecimal getBalance(Account account) throws BankServiceException_Exception {
+    public BigDecimal getBalance(AccountDto account) throws BankException {
         BankService bankService = bankServiceService.getPort(BankService.class);
-        dtu.ws.fastmoney.Account bankAccount = bankService.getAccount(account.getBankAccountId());
+        Account bankAccount = null;
+        try {
+            bankAccount = bankService.getAccount(account.getBankAccountId());
+        } catch (BankServiceException_Exception e) {
+            throw new BankException(e.getMessage());
+        }
         return bankAccount.getBalance();
     }
 

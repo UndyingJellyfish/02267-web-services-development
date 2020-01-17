@@ -1,19 +1,19 @@
 package com.example.webservices.application.stepdefs;
 
-import com.example.webservices.application.exceptions.EntryNotFoundException;
-import com.example.webservices.application.models.*;
+import com.example.webservices.application.transfers.Transaction;
+import com.example.webservices.library.exceptions.EntryNotFoundException;
 import dtu.ws.fastmoney.BankServiceException_Exception;
-import com.example.webservices.application.accounts.SignupDto;
+import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.application.dataAccess.InMemoryDatastore;
-import com.example.webservices.application.bank.IBank;
+import com.example.webservices.library.interfaces.IBank;
 import gherkin.deps.com.google.gson.reflect.TypeToken;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import com.example.webservices.application.tokens.RequestTokenDto;
-import com.example.webservices.application.transfers.TransactionDto;
+import com.example.webservices.library.dataTransferObjects.RequestTokenDto;
+import com.example.webservices.library.dataTransferObjects.TransactionDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -71,8 +71,8 @@ public class PaymentServiceSteps extends AbstractSteps {
 
     @Then("The transaction should go through")
     public void theTransactionShouldGoThrough() {
-        assertEquals(customerId, transaction.getDebtor().getAccountId());
-        assertEquals(merchantId, transaction.getCreditor().getAccountId());
+        assertEquals(customerId, transaction.getDebtorId().getAccountId());
+        assertEquals(merchantId, transaction.getCreditorId().getAccountId());
         assertEquals(amount, transaction.getAmount());
     }
 

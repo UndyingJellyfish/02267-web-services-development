@@ -1,6 +1,6 @@
-package com.example.webservices.application.models;
+package com.example.webservices.application.accounts;
 
-public class Merchant extends Account {
+ class Merchant extends Account {
 
     private String cvr;
 
@@ -26,4 +26,9 @@ public class Merchant extends Account {
         }
         this.cvr = cvr;
     }
-}
+
+     @Override
+     public String getIdentifier() {
+         return this.getCvr();
+     }
+ }

@@ -1,4 +1,4 @@
-package com.example.webservices.application.exceptions;
+package com.example.webservices.library.exceptions;
 
 public class EntryNotFoundException extends Exception{
     private static String defaultErrorString = "Item with that key does not exists in collection";

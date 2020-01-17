@@ -1,24 +1,25 @@
-package com.example.webservices.application.models;
+package com.example.webservices.application.transfers;
+
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
-public class Transaction {
+ class Transaction {
 
     private Date transactionDate;
-    private Account creditor; // To
-    private Account debtor; // From
+    private UUID creditor; // To
+    private UUID debtor; // From
     private BigDecimal amount;
-    private Token token;
+    private UUID token;
     private boolean isRefund = false;
-    private UUID transactionId;
+    private UUID transaction;
 
     private Transaction(){
-        this.transactionId = UUID.randomUUID();
+        this.transaction = UUID.randomUUID();
     }
 
-    public Transaction(Account creditor, Account debtor, BigDecimal amount, Token token, Date transactionDate){
+    public Transaction(UUID creditor, UUID debtor, BigDecimal amount, UUID token, Date transactionDate){
         this();
         this.creditor = creditor;
         this.debtor = debtor;
@@ -27,11 +28,11 @@ public class Transaction {
         this.transactionDate = transactionDate;
     }
 
-    public Transaction(Account creditor, Account debtor, BigDecimal amount, Token token){
+    public Transaction(UUID creditor, UUID debtor, BigDecimal amount, UUID token){
         this(creditor,debtor,amount,token, new Date());
     }
 
-    public Transaction(Account creditor, Account debtor, BigDecimal amount, Token token, boolean isRefund){
+    public Transaction(UUID creditor, UUID debtor, BigDecimal amount, UUID token, boolean isRefund){
         // A refund always happens today, right now
         this(creditor, debtor, amount, token, new Date());
         this.isRefund = isRefund;
@@ -42,13 +43,13 @@ public class Transaction {
         return transactionDate;
     }
 
-    public Account getCreditor() {
+    public UUID getCreditorId() {
         return creditor;
     }
 
 
 
-    public Account getDebtor() {
+    public UUID getDebtorId() {
         return debtor;
     }
 
@@ -58,17 +59,13 @@ public class Transaction {
     }
 
 
-    public Token getToken() {
+    public UUID getTokenId() {
         return token;
     }
 
     public boolean isRefund() { return isRefund; }
 
-    public UUID getTransactionId() {
-        return this.transactionId;
-    }
-
-    public void anonymize() {
-        this.debtor = null;
+    public UUID getTransaction() {
+        return this.transaction;
     }
 }
