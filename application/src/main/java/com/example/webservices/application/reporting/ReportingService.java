@@ -1,31 +1,34 @@
 package com.example.webservices.application.reporting;
 
-import com.example.webservices.application.dataAccess.IAccountDatastore;
-import com.example.webservices.application.dataAccess.ITransactionDatastore;
-import com.example.webservices.application.exceptions.EntryNotFoundException;
-import com.example.webservices.application.models.Account;
-import com.example.webservices.application.models.Merchant;
-import com.example.webservices.application.models.Transaction;
+import com.example.webservices.library.dataTransferObjects.AccountDto;
+import com.example.webservices.library.dataTransferObjects.TransactionDto;
+import com.example.webservices.library.interfaces.IAccountService;
+import com.example.webservices.library.exceptions.EntryNotFoundException;
+import com.example.webservices.library.interfaces.ITransactionService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
-public class ReportingService {
-    private ITransactionDatastore transactionDatastore;
-    private IAccountDatastore accountDatastore;
+ class ReportingService {
+    private ITransactionService transactionService;
+    private IAccountService accountService;
 
-    public ReportingService(ITransactionDatastore transactionDatastore, IAccountDatastore accountDatastore) {
-        this.transactionDatastore = transactionDatastore;
-        this.accountDatastore = accountDatastore;
+    public ReportingService(ITransactionService transactionService, IAccountService accountService) {
+        this.transactionService = transactionService;
+        this.accountService = accountService;
     }
 
-    public List<Transaction> getTransactionHistory(UUID id) throws EntryNotFoundException {
-        Account account = accountDatastore.getAccount(id);
-        List<Transaction> transactions = transactionDatastore.getTransactions(account);
-        if(account instanceof Merchant){
-            transactions.forEach(Transaction::anonymize);
+    private void Anonymize(TransactionDto transaction) {
+        transaction.setCustomerId(null);
+    }
+
+    public List<TransactionDto> getTransactionHistory(UUID id) throws EntryNotFoundException {
+        AccountDto account = accountService.getAccount(id);
+        List<TransactionDto> transactions = transactionService.getTransactions(id);
+        if(account.getType().equals("Merchant")){
+            transactions.forEach(this::Anonymize);
         }
         return transactions;
     }

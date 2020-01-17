@@ -1,6 +1,6 @@
 package com.example.webservices.application;
 
-import com.example.webservices.application.bank.IBank;
+import com.example.webservices.library.interfaces.IBank;
 import io.cucumber.java.Before;
 import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;

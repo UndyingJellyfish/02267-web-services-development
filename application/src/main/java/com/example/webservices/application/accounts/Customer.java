@@ -1,8 +1,6 @@
-package com.example.webservices.application.models;
+package com.example.webservices.application.accounts;
 
-import java.util.UUID;
-
-public class Customer extends Account {
+ class Customer extends Account {
 
     private String cpr;
 
@@ -29,4 +27,9 @@ public class Customer extends Account {
 
         this.cpr = cpr;
     }
-}
+
+     @Override
+     public String getIdentifier() {
+         return this.getCpr();
+     }
+ }

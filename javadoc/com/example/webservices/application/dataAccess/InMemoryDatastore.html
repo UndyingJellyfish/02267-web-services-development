@@ -157,11 +157,11 @@ implements <a href="../../../../../com/example/webservices/application/dataAcces
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/example/webservices/application/dataAccess/InMemoryDatastore.html#AddTransaction-com.example.webservices.application.models.Transaction-">AddTransaction</a></span>(<a href="../../../../../com/example/webservices/application/models/Transaction.html" title="class in com.example.webservices.application.models">Transaction</a>&nbsp;transaction)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/example/webservices/application/dataAccess/InMemoryDatastore.html#AddTransaction-com.example.webservices.application.transfers.Transaction-">AddTransaction</a></span>(<a href="../../../../../com/example/webservices/application/models/Transaction.html" title="class in com.example.webservices.application.models">Transaction</a>&nbsp;transaction)</code>&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../../../com/example/webservices/application/models/Token.html" title="class in com.example.webservices.application.models">Token</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/example/webservices/application/dataAccess/InMemoryDatastore.html#assignTokens-com.example.webservices.application.models.Customer-java.util.List-">assignTokens</a></span>(<a href="../../../../../com/example/webservices/application/models/Customer.html" title="class in com.example.webservices.application.models">Customer</a>&nbsp;customer,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/example/webservices/application/dataAccess/InMemoryDatastore.html#assignTokens-com.example.webservices.application.accounts.Customer-java.util.List-">assignTokens</a></span>(<a href="../../../../../com/example/webservices/application/models/Customer.html" title="class in com.example.webservices.application.models">Customer</a>&nbsp;customer,
             java.util.List&lt;<a href="../../../../../com/example/webservices/application/models/Token.html" title="class in com.example.webservices.application.models">Token</a>&gt;&nbsp;tokens)</code>&nbsp;</td>
 </tr>
 <tr id="i3" class="rowColor">
@@ -198,7 +198,7 @@ implements <a href="../../../../../com/example/webservices/application/dataAcces
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../../../com/example/webservices/application/models/Transaction.html" title="class in com.example.webservices.application.models">Transaction</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/example/webservices/application/dataAccess/InMemoryDatastore.html#getTransactions-com.example.webservices.application.models.Account-">getTransactions</a></span>(<a href="../../../../../com/example/webservices/application/models/Account.html" title="class in com.example.webservices.application.models">Account</a>&nbsp;account)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/example/webservices/application/dataAccess/InMemoryDatastore.html#getTransactions-com.example.webservices.application.accounts.Account-">getTransactions</a></span>(<a href="../../../../../com/example/webservices/application/models/Account.html" title="class in com.example.webservices.application.models">Account</a>&nbsp;account)</code>&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -255,12 +255,12 @@ implements <a href="../../../../../com/example/webservices/application/dataAcces
 <li class="blockList">
 <h4>getCustomer</h4>
 <pre>public&nbsp;<a href="../../../../../com/example/webservices/application/models/Customer.html" title="class in com.example.webservices.application.models">Customer</a>&nbsp;getCustomer(java.util.UUID&nbsp;customerId)
-                     throws <a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.application.exceptions">EntryNotFoundException</a></pre>
+                     throws <a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.library.exceptions">EntryNotFoundException</a></pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../../../com/example/webservices/application/dataAccess/IAccountDatastore.html#getCustomer-java.util.UUID-">getCustomer</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../com/example/webservices/application/dataAccess/IAccountDatastore.html" title="interface in com.example.webservices.application.dataAccess">IAccountDatastore</a></code></dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.application.exceptions">EntryNotFoundException</a></code></dd>
+<dd><code><a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.library.exceptions">EntryNotFoundException</a></code></dd>
 </dl>
 </li>
 </ul>
@@ -271,12 +271,12 @@ implements <a href="../../../../../com/example/webservices/application/dataAcces
 <li class="blockList">
 <h4>getMerchant</h4>
 <pre>public&nbsp;<a href="../../../../../com/example/webservices/application/models/Merchant.html" title="class in com.example.webservices.application.models">Merchant</a>&nbsp;getMerchant(java.util.UUID&nbsp;merchantId)
-                     throws <a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.application.exceptions">EntryNotFoundException</a></pre>
+                     throws <a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.library.exceptions">EntryNotFoundException</a></pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../../../com/example/webservices/application/dataAccess/IAccountDatastore.html#getMerchant-java.util.UUID-">getMerchant</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../com/example/webservices/application/dataAccess/IAccountDatastore.html" title="interface in com.example.webservices.application.dataAccess">IAccountDatastore</a></code></dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.application.exceptions">EntryNotFoundException</a></code></dd>
+<dd><code><a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.library.exceptions">EntryNotFoundException</a></code></dd>
 </dl>
 </li>
 </ul>
@@ -287,12 +287,12 @@ implements <a href="../../../../../com/example/webservices/application/dataAcces
 <li class="blockList">
 <h4>getAccount</h4>
 <pre>public&nbsp;<a href="../../../../../com/example/webservices/application/models/Account.html" title="class in com.example.webservices.application.models">Account</a>&nbsp;getAccount(java.util.UUID&nbsp;accountId)
-                   throws <a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.application.exceptions">EntryNotFoundException</a></pre>
+                   throws <a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.library.exceptions">EntryNotFoundException</a></pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../../../com/example/webservices/application/dataAccess/IAccountDatastore.html#getAccount-java.util.UUID-">getAccount</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../com/example/webservices/application/dataAccess/IAccountDatastore.html" title="interface in com.example.webservices.application.dataAccess">IAccountDatastore</a></code></dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.application.exceptions">EntryNotFoundException</a></code></dd>
+<dd><code><a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.library.exceptions">EntryNotFoundException</a></code></dd>
 </dl>
 </li>
 </ul>
@@ -303,16 +303,16 @@ implements <a href="../../../../../com/example/webservices/application/dataAcces
 <li class="blockList">
 <h4>deleteAccount</h4>
 <pre>public&nbsp;void&nbsp;deleteAccount(java.util.UUID&nbsp;accountId)
-                   throws <a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.application.exceptions">EntryNotFoundException</a></pre>
+                   throws <a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.library.exceptions">EntryNotFoundException</a></pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../../../com/example/webservices/application/dataAccess/IAccountDatastore.html#deleteAccount-java.util.UUID-">deleteAccount</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../com/example/webservices/application/dataAccess/IAccountDatastore.html" title="interface in com.example.webservices.application.dataAccess">IAccountDatastore</a></code></dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.application.exceptions">EntryNotFoundException</a></code></dd>
+<dd><code><a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.library.exceptions">EntryNotFoundException</a></code></dd>
 </dl>
 </li>
 </ul>
-<a name="addAccount-com.example.webservices.application.models.Account-">
+<a name="addAccount-com.example.webservices.application.accounts.Account-">
 <!--   -->
 </a><a name="addAccount-T-">
 <!--   -->
@@ -321,12 +321,12 @@ implements <a href="../../../../../com/example/webservices/application/dataAcces
 <li class="blockList">
 <h4>addAccount</h4>
 <pre>public&nbsp;&lt;T extends <a href="../../../../../com/example/webservices/application/models/Account.html" title="class in com.example.webservices.application.models">Account</a>&gt;&nbsp;T&nbsp;addAccount(T&nbsp;account)
-                                 throws <a href="../../../../../com/example/webservices/application/exceptions/DuplicateEntryException.html" title="class in com.example.webservices.application.exceptions">DuplicateEntryException</a></pre>
+                                 throws <a href="../../../../../com/example/webservices/application/exceptions/DuplicateEntryException.html" title="class in com.example.webservices.library.exceptions">DuplicateEntryException</a></pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../../../com/example/webservices/application/dataAccess/IAccountDatastore.html#addAccount-T-">addAccount</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../com/example/webservices/application/dataAccess/IAccountDatastore.html" title="interface in com.example.webservices.application.dataAccess">IAccountDatastore</a></code></dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../../com/example/webservices/application/exceptions/DuplicateEntryException.html" title="class in com.example.webservices.application.exceptions">DuplicateEntryException</a></code></dd>
+<dd><code><a href="../../../../../com/example/webservices/application/exceptions/DuplicateEntryException.html" title="class in com.example.webservices.library.exceptions">DuplicateEntryException</a></code></dd>
 </dl>
 </li>
 </ul>
@@ -343,7 +343,7 @@ implements <a href="../../../../../com/example/webservices/application/dataAcces
 </dl>
 </li>
 </ul>
-<a name="assignTokens-com.example.webservices.application.models.Customer-java.util.List-">
+<a name="assignTokens-com.example.webservices.application.accounts.Customer-java.util.List-">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -353,7 +353,7 @@ implements <a href="../../../../../com/example/webservices/application/dataAcces
                                           java.util.List&lt;<a href="../../../../../com/example/webservices/application/models/Token.html" title="class in com.example.webservices.application.models">Token</a>&gt;&nbsp;tokens)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../../../../../com/example/webservices/application/dataAccess/ITokenDatastore.html#assignTokens-com.example.webservices.application.models.Customer-java.util.List-">assignTokens</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../com/example/webservices/application/dataAccess/ITokenDatastore.html" title="interface in com.example.webservices.application.dataAccess">ITokenDatastore</a></code></dd>
+<dd><code><a href="../../../../../com/example/webservices/application/dataAccess/ITokenDatastore.html#assignTokens-com.example.webservices.application.accounts.Customer-java.util.List-">assignTokens</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../com/example/webservices/application/dataAccess/ITokenDatastore.html" title="interface in com.example.webservices.application.dataAccess">ITokenDatastore</a></code></dd>
 </dl>
 </li>
 </ul>
@@ -364,12 +364,12 @@ implements <a href="../../../../../com/example/webservices/application/dataAcces
 <li class="blockList">
 <h4>getToken</h4>
 <pre>public&nbsp;<a href="../../../../../com/example/webservices/application/models/Token.html" title="class in com.example.webservices.application.models">Token</a>&nbsp;getToken(java.util.UUID&nbsp;tokenId)
-               throws <a href="../../../../../com/example/webservices/application/exceptions/InvalidTokenException.html" title="class in com.example.webservices.application.exceptions">InvalidTokenException</a></pre>
+               throws <a href="../../../../../com/example/webservices/application/exceptions/InvalidTokenException.html" title="class in com.example.webservices.library.exceptions">InvalidTokenException</a></pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../../../com/example/webservices/application/dataAccess/ITokenDatastore.html#getToken-java.util.UUID-">getToken</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../com/example/webservices/application/dataAccess/ITokenDatastore.html" title="interface in com.example.webservices.application.dataAccess">ITokenDatastore</a></code></dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../../com/example/webservices/application/exceptions/InvalidTokenException.html" title="class in com.example.webservices.application.exceptions">InvalidTokenException</a></code></dd>
+<dd><code><a href="../../../../../com/example/webservices/application/exceptions/InvalidTokenException.html" title="class in com.example.webservices.library.exceptions">InvalidTokenException</a></code></dd>
 </dl>
 </li>
 </ul>
@@ -386,7 +386,7 @@ implements <a href="../../../../../com/example/webservices/application/dataAcces
 </dl>
 </li>
 </ul>
-<a name="AddTransaction-com.example.webservices.application.models.Transaction-">
+<a name="AddTransaction-com.example.webservices.application.transfers.Transaction-">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -395,11 +395,11 @@ implements <a href="../../../../../com/example/webservices/application/dataAcces
 <pre>public&nbsp;void&nbsp;AddTransaction(<a href="../../../../../com/example/webservices/application/models/Transaction.html" title="class in com.example.webservices.application.models">Transaction</a>&nbsp;transaction)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../../../../../com/example/webservices/application/dataAccess/ITransactionDatastore.html#AddTransaction-com.example.webservices.application.models.Transaction-">AddTransaction</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../com/example/webservices/application/dataAccess/ITransactionDatastore.html" title="interface in com.example.webservices.application.dataAccess">ITransactionDatastore</a></code></dd>
+<dd><code><a href="../../../../../com/example/webservices/application/dataAccess/ITransactionDatastore.html#AddTransaction-com.example.webservices.application.transfers.Transaction-">AddTransaction</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../com/example/webservices/application/dataAccess/ITransactionDatastore.html" title="interface in com.example.webservices.application.dataAccess">ITransactionDatastore</a></code></dd>
 </dl>
 </li>
 </ul>
-<a name="getTransactions-com.example.webservices.application.models.Account-">
+<a name="getTransactions-com.example.webservices.application.accounts.Account-">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -408,7 +408,7 @@ implements <a href="../../../../../com/example/webservices/application/dataAcces
 <pre>public&nbsp;java.util.List&lt;<a href="../../../../../com/example/webservices/application/models/Transaction.html" title="class in com.example.webservices.application.models">Transaction</a>&gt;&nbsp;getTransactions(<a href="../../../../../com/example/webservices/application/models/Account.html" title="class in com.example.webservices.application.models">Account</a>&nbsp;account)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../../../../../com/example/webservices/application/dataAccess/ITransactionDatastore.html#getTransactions-com.example.webservices.application.models.Account-">getTransactions</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../com/example/webservices/application/dataAccess/ITransactionDatastore.html" title="interface in com.example.webservices.application.dataAccess">ITransactionDatastore</a></code></dd>
+<dd><code><a href="../../../../../com/example/webservices/application/dataAccess/ITransactionDatastore.html#getTransactions-com.example.webservices.application.accounts.Account-">getTransactions</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../com/example/webservices/application/dataAccess/ITransactionDatastore.html" title="interface in com.example.webservices.application.dataAccess">ITransactionDatastore</a></code></dd>
 </dl>
 </li>
 </ul>

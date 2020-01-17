@@ -1,16 +1,14 @@
-package com.example.webservices.application.models;
+package com.example.webservices.application.accounts;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.UUID;
 
-public abstract class Account {
+abstract class Account {
 
     private String name;
     private UUID accountId;
     private String bankAccountId;
 
-    private List<Transaction> transactions = new ArrayList<>();
 
 
     public Account(String name){
@@ -40,4 +38,6 @@ public abstract class Account {
     public void setBankAccountId(String bankAccountId) {
         this.bankAccountId = bankAccountId;
     }
+
+    public abstract String getIdentifier();
 }

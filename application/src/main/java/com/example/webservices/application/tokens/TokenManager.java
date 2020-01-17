@@ -1,10 +1,10 @@
 package com.example.webservices.application.tokens;
 
-import com.example.webservices.application.dataAccess.IAccountDatastore;
-import com.example.webservices.application.dataAccess.ITokenDatastore;
-import com.example.webservices.application.exceptions.*;
-import com.example.webservices.application.models.Customer;
-import com.example.webservices.application.models.Token;
+import com.example.webservices.library.dataTransferObjects.AccountDto;
+import com.example.webservices.library.dataTransferObjects.TokenDto;
+import com.example.webservices.library.exceptions.*;
+import com.example.webservices.library.interfaces.IAccountService;
+import com.example.webservices.library.interfaces.ITokenManager;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,16 +16,15 @@ import java.util.stream.Collectors;
 public class TokenManager implements ITokenManager {
 
     private ITokenDatastore datastore;
-    private IAccountDatastore accountDatastore;
+    private IAccountService accountService;
 
-    public TokenManager(ITokenDatastore datastore, IAccountDatastore accountDatastore){
+    public TokenManager(ITokenDatastore datastore, IAccountService accountService){
         this.datastore = datastore;
-        this.accountDatastore = accountDatastore;
+        this.accountService = accountService;
     }
 
     public List<UUID> RequestTokens(UUID customerId, int quantity) throws TokenQuantityException, EntryNotFoundException {
-
-        Customer customer = accountDatastore.getCustomer(customerId);
+        AccountDto customer = accountService.getCustomer(customerId);
 
         if(quantity > 5  || quantity < 1){
             throw new TokenQuantityException("Quantity must be [1,5]");
@@ -39,11 +38,11 @@ public class TokenManager implements ITokenManager {
         List<Token> tokens = new ArrayList<>();
 
         for(int i = 0; i < quantity; i++){
-            Token token = new Token(customer);
+            Token token = new Token();
             tokens.add(token);
         }
 
-        tokens = this.datastore.assignTokens(customer, tokens);
+        this.datastore.assignTokens(customer.getAccountId(), tokens);
         return tokens.stream().map(Token::getTokenId).collect(Collectors.toList());
     }
 
@@ -60,13 +59,14 @@ public class TokenManager implements ITokenManager {
     }
 
     @Override
-    public UUID RequestToken(Customer customer) throws EntryNotFoundException, TokenQuantityException {
-        return RequestTokens(customer.getAccountId(), 1).get(0);
+    public UUID RequestToken(UUID customerId) throws EntryNotFoundException, TokenQuantityException {
+        return RequestTokens(customerId, 1).get(0);
     }
 
     @Override
-    public Token GetToken(UUID tokenId) throws InvalidTokenException {
-        return  this.datastore.getToken(tokenId);
+    public TokenDto GetToken(UUID tokenId) throws InvalidTokenException {
+        Token token = this.datastore.getToken(tokenId);
+        return new TokenDto(token.getTokenId(), token.isUsed());
     }
 
     @Override

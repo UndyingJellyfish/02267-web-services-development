@@ -129,7 +129,7 @@ extends java.lang.Object</pre>
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../com/example/webservices/application/accounts/AccountService.html#AccountService-com.example.webservices.application.dataAccess.IAccountDatastore-com.example.webservices.application.tokens.ITokenManager-">AccountService</a></span>(<a href="../../../../../com/example/webservices/application/dataAccess/IAccountDatastore.html" title="interface in com.example.webservices.application.dataAccess">IAccountDatastore</a>&nbsp;accountDatastore,
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../com/example/webservices/application/accounts/AccountService.html#AccountService-com.example.webservices.application.accounts.IAccountDatastore-com.example.webservices.library.interfaces.ITokenManager-">AccountService</a></span>(<a href="../../../../../com/example/webservices/application/dataAccess/IAccountDatastore.html" title="interface in com.example.webservices.application.dataAccess">IAccountDatastore</a>&nbsp;accountDatastore,
               <a href="../../../../../com/example/webservices/application/tokens/ITokenManager.html" title="interface in com.example.webservices.application.tokens">ITokenManager</a>&nbsp;tokenManager)</code>&nbsp;</td>
 </tr>
 </table>
@@ -182,7 +182,7 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a name="AccountService-com.example.webservices.application.dataAccess.IAccountDatastore-com.example.webservices.application.tokens.ITokenManager-">
+<a name="AccountService-com.example.webservices.application.accounts.IAccountDatastore-com.example.webservices.library.interfaces.ITokenManager-">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -200,7 +200,7 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="addAccount-com.example.webservices.application.models.Account-">
+<a name="addAccount-com.example.webservices.application.accounts.Account-">
 <!--   -->
 </a><a name="addAccount-T-">
 <!--   -->
@@ -209,10 +209,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>addAccount</h4>
 <pre>public&nbsp;&lt;T extends <a href="../../../../../com/example/webservices/application/models/Account.html" title="class in com.example.webservices.application.models">Account</a>&gt;&nbsp;T&nbsp;addAccount(T&nbsp;account)
-                                 throws <a href="../../../../../com/example/webservices/application/exceptions/DuplicateEntryException.html" title="class in com.example.webservices.application.exceptions">DuplicateEntryException</a></pre>
+                                 throws <a href="../../../../../com/example/webservices/application/exceptions/DuplicateEntryException.html" title="class in com.example.webservices.library.exceptions">DuplicateEntryException</a></pre>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../../com/example/webservices/application/exceptions/DuplicateEntryException.html" title="class in com.example.webservices.application.exceptions">DuplicateEntryException</a></code></dd>
+<dd><code><a href="../../../../../com/example/webservices/application/exceptions/DuplicateEntryException.html" title="class in com.example.webservices.library.exceptions">DuplicateEntryException</a></code></dd>
 </dl>
 </li>
 </ul>
@@ -224,10 +224,10 @@ extends java.lang.Object</pre>
 <h4>changeName</h4>
 <pre>public&nbsp;void&nbsp;changeName(java.util.UUID&nbsp;accountId,
                        java.lang.String&nbsp;newName)
-                throws <a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.application.exceptions">EntryNotFoundException</a></pre>
+                throws <a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.library.exceptions">EntryNotFoundException</a></pre>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.application.exceptions">EntryNotFoundException</a></code></dd>
+<dd><code><a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.library.exceptions">EntryNotFoundException</a></code></dd>
 </dl>
 </li>
 </ul>
@@ -238,10 +238,10 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>delete</h4>
 <pre>public&nbsp;void&nbsp;delete(java.util.UUID&nbsp;accountId)
-            throws <a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.application.exceptions">EntryNotFoundException</a></pre>
+            throws <a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.library.exceptions">EntryNotFoundException</a></pre>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.application.exceptions">EntryNotFoundException</a></code></dd>
+<dd><code><a href="../../../../../com/example/webservices/application/exceptions/EntryNotFoundException.html" title="class in com.example.webservices.library.exceptions">EntryNotFoundException</a></code></dd>
 </dl>
 </li>
 </ul>

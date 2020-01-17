@@ -1,16 +1,12 @@
 package com.example.webservices.application.transfers;
 
-import com.example.webservices.application.models.Customer;
-import com.example.webservices.application.models.Merchant;
-import com.example.webservices.application.models.Token;
-import com.example.webservices.application.models.Transaction;
-import dtu.ws.fastmoney.BankServiceException_Exception;
-import com.example.webservices.application.dataAccess.IAccountDatastore;
-import com.example.webservices.application.bank.IBank;
-import com.example.webservices.application.exceptions.EntryNotFoundException;
-import com.example.webservices.application.tokens.ITokenManager;
-import com.example.webservices.application.dataAccess.ITransactionDatastore;
-import com.example.webservices.application.exceptions.TokenException;
+import com.example.webservices.library.dataTransferObjects.AccountDto;
+import com.example.webservices.library.dataTransferObjects.TokenDto;
+import com.example.webservices.library.dataTransferObjects.TransactionDto;
+import com.example.webservices.library.exceptions.BankException;
+import com.example.webservices.library.exceptions.EntryNotFoundException;
+import com.example.webservices.library.exceptions.TokenException;
+import com.example.webservices.library.interfaces.*;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,32 +15,32 @@ import java.util.UUID;
 @Service
 public class PaymentService {
     private ITokenManager tokenManager;
-    private IAccountDatastore accountDatastore;
-    private ITransactionDatastore transactionDatastore;
+    private IAccountService accountService;
+    private ITransactionService transactionService;
     private IBank bank;
 
-    public PaymentService(ITokenManager tokenManager, IAccountDatastore accountDatastore, ITransactionDatastore transactionDatastore, IBank bank) {
+    public PaymentService(ITokenManager tokenManager, IAccountService accountService, ITransactionService transactionService, IBank bank) {
         this.tokenManager = tokenManager;
-        this.accountDatastore = accountDatastore;
-        this.transactionDatastore = transactionDatastore;
+        this.accountService = accountService;
+        this.transactionService = transactionService;
         this.bank = bank;
     }
 
-    public Transaction transfer(UUID tokenId, UUID merchantId, BigDecimal amount, String description) throws TokenException, BankServiceException_Exception, EntryNotFoundException {
+    public TransactionDto transfer(UUID tokenId, UUID merchantId, BigDecimal amount, String description) throws EntryNotFoundException, TokenException, BankException {
         return this.transfer(tokenId, merchantId, amount, false, description);
     }
 
-    public Transaction transfer(UUID tokenId, UUID merchantId, BigDecimal amount, boolean isRefund, String description) throws TokenException, BankServiceException_Exception, EntryNotFoundException {
+    public TransactionDto transfer(UUID tokenId, UUID merchantId, BigDecimal amount, boolean isRefund, String description) throws EntryNotFoundException, TokenException, BankException {
         if(!isGreaterThanZero(amount)){
             throw new IllegalArgumentException();
         }
-        Token token = tokenManager.GetToken(tokenId);
-        Merchant merchant = accountDatastore.getMerchant(merchantId);
-        Customer customer = token.getCustomer();
+        TokenDto token = tokenManager.GetToken(tokenId);
+        AccountDto merchant = accountService.getMerchant(merchantId);
+        AccountDto customer = accountService.getCustomer(token.getCustomerId());
         tokenManager.UseToken(tokenId);
         bank.transferMoney(customer, merchant, amount, description);
-        Transaction transaction = new Transaction(merchant, customer, amount, token, isRefund);
-        transactionDatastore.AddTransaction(transaction);
+        TransactionDto transaction = new TransactionDto(tokenId, merchant.getAccountId(), customer.getAccountId(), amount, description, isRefund);
+        transactionService.AddTransaction(transaction);
         return transaction;
     }
 
@@ -52,11 +48,11 @@ public class PaymentService {
         return amount.compareTo(new BigDecimal(0)) > 0;
     }
 
-    public void refund(UUID customerId, UUID merchantId, UUID tokenId) throws TokenException, BankServiceException_Exception, EntryNotFoundException {
-        UUID newToken = tokenManager.RequestToken(accountDatastore.getCustomer(customerId));
-        Transaction oldTransaction;
+    public void refund(UUID customerId, UUID merchantId, UUID tokenId) throws TokenException, BankException, EntryNotFoundException {
+        UUID newToken = tokenManager.RequestToken(customerId);
+        TransactionDto oldTransaction;
 
-        oldTransaction = transactionDatastore.GetTransactionByTokenId(tokenId);
+        oldTransaction = transactionService.GetTransactionByTokenId(tokenId);
         this.transfer(newToken, merchantId, oldTransaction.getAmount(), true,"Refund");
 
     }

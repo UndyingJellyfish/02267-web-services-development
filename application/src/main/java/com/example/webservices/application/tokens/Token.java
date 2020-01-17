@@ -1,17 +1,18 @@
-package com.example.webservices.application.models;
+package com.example.webservices.application.tokens;
+
 
 import java.util.Date;
 import java.util.UUID;
 
-public class Token {
+ class Token {
     private UUID tokenId;
     private boolean used;
     private Date useDate = null;
-    private Customer customer;
+    private UUID customer;
 
     public Token() {}
 
-    public Token(Customer customer){
+    public Token(UUID customer){
         this.customer = customer;
         this.tokenId = UUID.randomUUID();
     }
@@ -28,7 +29,7 @@ public class Token {
         this.used = used;
     }
 
-    public Customer getCustomer() {
+    public UUID getCustomerId() {
         return customer;
     }
 }

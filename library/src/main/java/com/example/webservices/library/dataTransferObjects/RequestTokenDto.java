@@ -1,4 +1,4 @@
-package com.example.webservices.application.tokens;
+package com.example.webservices.library.dataTransferObjects;
 
 import java.util.UUID;
 

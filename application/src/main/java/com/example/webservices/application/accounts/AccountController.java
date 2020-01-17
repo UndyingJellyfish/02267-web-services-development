@@ -1,9 +1,9 @@
 package com.example.webservices.application.accounts;
 
-import com.example.webservices.application.exceptions.DuplicateEntryException;
-import com.example.webservices.application.exceptions.EntryNotFoundException;
-import com.example.webservices.application.models.Customer;
-import com.example.webservices.application.models.Merchant;
+import com.example.webservices.library.dataTransferObjects.ChangeNameDto;
+import com.example.webservices.library.dataTransferObjects.SignupDto;
+import com.example.webservices.library.exceptions.DuplicateEntryException;
+import com.example.webservices.library.exceptions.EntryNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;

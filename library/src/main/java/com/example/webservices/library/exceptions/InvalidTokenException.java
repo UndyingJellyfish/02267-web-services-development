@@ -1,4 +1,4 @@
-package com.example.webservices.application.exceptions;
+package com.example.webservices.library.exceptions;
 
 public class InvalidTokenException extends TokenException{
     private static String defaultErrorString = "Token does not exist.";
