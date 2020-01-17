@@ -8,17 +8,17 @@
         <outputRelativeToContentRoot value="true" />
         <module name="webservices-tokens" />
         <module name="webservices-application" />
-        <module name="transactions" />
         <module name="accounts" />
-        <module name="tokens" />
+        <module name="project-src" />
         <module name="payments" />
+        <module name="webservices-transactions" />
         <module name="webservices-accounts" />
         <module name="library" />
         <module name="webservices-library" />
         <module name="webservices-payments" />
-        <module name="webservices-transactions" />
+        <module name="tokens" />
         <module name="application" />
-        <module name="project-src" />
+        <module name="transactions" />
       </profile>
     </annotationProcessing>
   </component>
