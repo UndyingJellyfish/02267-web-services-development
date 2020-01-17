@@ -1,6 +1,6 @@
-package com.example.webservices.application.accounts.unittest;
+package com.example.webservices.accounts;
 
-import com.example.webservices.application.accounts.Customer;
+import com.example.webservices.accounts.models.Customer;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -28,7 +28,7 @@ public class CustomerTest {
         // Act
         try {
             Customer cust = new Customer(name,cpr);
-            Assert.fail();
+            fail();
 
         }catch(IllegalArgumentException e){
             // Expected
@@ -43,7 +43,7 @@ public class CustomerTest {
         // Act
         try {
             Customer cust = new Customer(name,cpr);
-            Assert.fail();
+            fail();
 
         }catch(IllegalArgumentException e){
             // Expected
@@ -58,7 +58,7 @@ public class CustomerTest {
         // Act
         try {
             Customer cust = new Customer(name, cpr);
-            Assert.fail();
+            fail();
 
         }catch(IllegalArgumentException e){
             // Expected
@@ -74,7 +74,7 @@ public class CustomerTest {
         // Act
         try {
             Customer cust = new Customer(name,cpr);
-            Assert.fail();
+            fail();
 
         }catch(IllegalArgumentException e){
             // Expected
