@@ -1,4 +1,4 @@
-package com.example.webservices.application.bank;
+package com.example.webservices.application.transfers;
 
 import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.dataTransferObjects.AccountType;

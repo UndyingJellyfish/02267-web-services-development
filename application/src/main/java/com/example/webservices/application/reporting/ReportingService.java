@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
- class ReportingService {
+ class ReportingService implements com.example.webservices.library.interfaces.IReportingService {
     private ITransactionService transactionService;
     private IAccountService accountService;
 
@@ -24,6 +24,7 @@ import java.util.UUID;
         transaction.setDebtor(null);
     }
 
+    @Override
     public List<TransactionDto> getTransactionHistory(UUID id) throws EntryNotFoundException {
         AccountDto account = accountService.getAccount(id);
         List<TransactionDto> transactions = transactionService.getTransactions(id);

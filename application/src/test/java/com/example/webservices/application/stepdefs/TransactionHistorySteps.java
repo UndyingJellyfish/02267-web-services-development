@@ -1,25 +1,22 @@
 /*
-//TODO fix file kthx
+TODO: fix this kthx plz
 package com.example.webservices.application.stepdefs;
 
+import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.exceptions.TokenQuantityException;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
+import com.example.webservices.library.interfaces.IAccountService;
+import com.example.webservices.library.interfaces.IPaymentService;
+import com.example.webservices.library.interfaces.IReportingService;
 import dtu.ws.fastmoney.BankServiceException_Exception;
-import com.example.webservices.application.dataAccess.InMemoryDatastore;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
-import com.example.webservices.library.interfaces.IBank;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
-import com.example.webservices.application.reporting.ReportingController;
 import com.example.webservices.library.interfaces.ITokenManager;
 import com.example.webservices.library.exceptions.TokenException;
 import gherkin.deps.com.google.gson.reflect.TypeToken;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import com.example.webservices.payments.transfers.PaymentService;
-import com.example.webservices.application.accounts.Customer;
-import com.example.webservices.application.accounts.Merchant;
-import com.example.webservices.application.transfers.Transaction;
 import org.junit.After;
 
 import java.math.BigDecimal;
@@ -36,26 +33,24 @@ import static org.mockito.Mockito.*;
 public class TransactionHistorySteps extends AbstractSteps {
 
     private final ITokenManager tokenManagers;
-    private final PaymentService paymentService;
-    private Customer customer;
-    private Merchant merchant;
-    private List<Transaction> expectedTransactions;
-    private IBank bank;
-    private ReportingController reportingController;
-    private InMemoryDatastore store;
+    private final IPaymentService paymentService;
+    private final IReportingService reportingService;
+    private final IAccountService accountService;
+    private AccountDto customer;
+    private AccountDto merchant;
+    private List<TransactionDto> expectedTransactions;
 
 
-    public TransactionHistorySteps(ITokenManager tokenManager, InMemoryDatastore store, ReportingController reportingController){
-        this.store = store;
-        this.reportingController = reportingController;
-        this.bank = mock(IBank.class);
+    public TransactionHistorySteps(ITokenManager tokenManager, IPaymentService paymentService, IReportingService reportingService, IAccountService accountService){
+        this.paymentService = paymentService;
         this.tokenManagers = tokenManager;
-        this.paymentService = new PaymentService(tokenManager, store, store, bank);
+        this.reportingService = reportingService;
+        this.accountService = accountService;
     }
 
     @After
     public void tearDown(){
-        this.store.flush();
+        //TODO: Stuff here
     }
 
     @Given("A Customer with a transaction history")
