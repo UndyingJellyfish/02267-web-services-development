@@ -1,5 +1,7 @@
 package com.example.webservices.application;
 
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +17,12 @@ public class Application {
     @Bean
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
+    }
+
+    @Bean
+    @Qualifier("accounts")
+    public DirectExchange getAccountsExchange(){
+        return new DirectExchange("accounts");
     }
 
 }

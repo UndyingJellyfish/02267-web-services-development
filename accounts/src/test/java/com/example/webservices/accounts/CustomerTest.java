@@ -1,6 +1,6 @@
-package com.example.webservices.application.accounts;
+package com.example.webservices.accounts;
 
-import com.example.webservices.application.accounts.Customer;
+import com.example.webservices.accounts.models.Customer;
 import org.junit.Assert;
 import org.junit.Test;
 

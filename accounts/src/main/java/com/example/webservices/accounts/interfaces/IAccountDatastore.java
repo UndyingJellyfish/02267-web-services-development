@@ -1,7 +1,7 @@
-package com.example.webservices.application.accounts;
-import com.example.webservices.application.accounts.Account;
-import com.example.webservices.application.accounts.Customer;
-import com.example.webservices.application.accounts.Merchant;
+package com.example.webservices.accounts.interfaces;
+import com.example.webservices.accounts.models.Account;
+import com.example.webservices.accounts.models.Customer;
+import com.example.webservices.accounts.models.Merchant;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 

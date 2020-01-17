@@ -1,6 +1,7 @@
 package com.example.webservices.library.interfaces;
 
 import com.example.webservices.library.dataTransferObjects.AccountDto;
+import com.example.webservices.library.dataTransferObjects.ChangeNameDto;
 import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
@@ -12,7 +13,7 @@ public interface IAccountService {
 
     AccountDto addMerchant(SignupDto signupDto) throws DuplicateEntryException;
 
-    void changeName(UUID accountId, String newName) throws EntryNotFoundException;
+    void changeName(ChangeNameDto changeNameDto) throws EntryNotFoundException;
 
     void delete(UUID accountId) throws EntryNotFoundException;
 
@@ -21,4 +22,5 @@ public interface IAccountService {
     AccountDto getAccount(UUID id) throws EntryNotFoundException;
 
     AccountDto getMerchant(UUID merchantId) throws EntryNotFoundException;
+
 }

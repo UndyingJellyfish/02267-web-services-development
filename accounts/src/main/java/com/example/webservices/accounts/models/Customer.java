@@ -1,6 +1,6 @@
-package com.example.webservices.application.accounts;
+package com.example.webservices.accounts.models;
 
- class Customer extends Account {
+public class Customer extends Account {
 
     private String cpr;
 

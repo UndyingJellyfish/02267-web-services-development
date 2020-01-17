@@ -1,9 +1,9 @@
-package com.example.webservices.application.accounts;
+package com.example.webservices.accounts.models;
 
 
 import java.util.UUID;
 
-abstract class Account {
+public abstract class Account {
 
     private String name;
     private UUID accountId;

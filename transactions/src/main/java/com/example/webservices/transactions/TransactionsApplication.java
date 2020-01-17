@@ -1,8 +1,10 @@
 package com.example.webservices.transactions;
 
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import com.example.webservices.library.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 
 @SpringBootApplication
@@ -12,7 +14,14 @@ public class TransactionsApplication {
         SpringApplication.run(TransactionsApplication.class, args);
     }
 
-    private void derp(){
-        DummyClass d = new DummyClass();
+    @Configuration
+    public static class Config{
+
+        @Bean
+        public DirectExchange getExchange(){
+            return new DirectExchange("exchange");
+        }
+
+
     }
 }

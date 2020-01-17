@@ -4,6 +4,7 @@ import com.example.webservices.library.dataTransferObjects.ChangeNameDto;
 import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
+import com.example.webservices.library.interfaces.IAccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,23 +15,19 @@ import java.util.UUID;
 @RequestMapping("/account")
 public class AccountController {
 
-    private AccountService accountService;
+    private final IAccountService accountService;
 
-
-    public AccountController(AccountService accountService){
+    public AccountController(IAccountService accountService) {
         this.accountService = accountService;
     }
 
-
-
-    @PutMapping(value={"/{accountId}"})
+    @PutMapping()
     @ResponseStatus(HttpStatus.OK)
-    public void changeName(@PathVariable UUID accountId, @RequestBody ChangeNameDto newName){
+    public void changeName(@RequestBody ChangeNameDto newName){
         try {
-            accountService.changeName(accountId, newName.getNewName());
+            accountService.changeName(newName);
         } catch (EntryNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-
         }
     }
 
