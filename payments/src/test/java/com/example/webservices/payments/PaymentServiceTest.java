@@ -1,8 +1,9 @@
-package com.example.webservices.application.transfers;
+package com.example.webservices.payments;
 
 import com.example.webservices.library.dataTransferObjects.*;
 import com.example.webservices.library.exceptions.*;
 import com.example.webservices.library.interfaces.*;
+import com.example.webservices.payments.services.PaymentService;
 import org.junit.Before;
 import org.junit.Test;
 import java.math.BigDecimal;

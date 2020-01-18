@@ -2,7 +2,6 @@ package com.example.webservices.application.stepdefs;
 
 import com.example.webservices.library.exceptions.BankException;
 import com.example.webservices.library.interfaces.ITransactionService;
-import dtu.ws.fastmoney.BankServiceException_Exception;
 import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.interfaces.IBank;
 import gherkin.deps.com.google.gson.reflect.TypeToken;
@@ -77,7 +76,7 @@ public class PaymentServiceSteps extends AbstractSteps {
 
 
     @When("The merchant initiates the invalid transaction")
-    public void theMerchantInitiatesTheInvalidTransaction() throws BankServiceException_Exception {
+    public void theMerchantInitiatesTheInvalidTransaction() {
         String invalidDesc = "12312oi3j4to3j4gp24ijgip24utgi24noi4untg";
         this.bank = mock(IBank.class);
         TransactionDto dto = TransactionDto.Create();

@@ -19,6 +19,7 @@ public abstract class RabbitHelper {
     public static final String QUEUE_TOKENS_REQUEST = "tokens.request";
     public static final String QUEUE_TOKENS_RETIRE = "tokens.retire";
 
+    public static final String QUEUE_REPORTING_HISTORY = "reporting.history";
 
     protected Gson gson = new Gson();
 

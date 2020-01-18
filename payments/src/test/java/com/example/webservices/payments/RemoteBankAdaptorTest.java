@@ -1,8 +1,9 @@
-package com.example.webservices.application.transfers;
+package com.example.webservices.payments;
 
 import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.dataTransferObjects.AccountType;
 import com.example.webservices.library.exceptions.BankException;
+import com.example.webservices.payments.services.RemoteBankAdaptor;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

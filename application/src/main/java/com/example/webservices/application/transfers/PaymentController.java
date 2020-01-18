@@ -5,6 +5,7 @@ import com.example.webservices.library.exceptions.BankException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.exceptions.InvalidTransferAmountException;
 import com.example.webservices.library.exceptions.TokenException;
+import com.example.webservices.library.interfaces.IPaymentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,10 +14,10 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/payment")
 public class PaymentController {
 
-    private final PaymentService paymentService;
+    private final IPaymentService paymentService;
 
 
-    public PaymentController(PaymentService paymentService){
+    public PaymentController(IPaymentService paymentService){
         this.paymentService = paymentService;
     }
 

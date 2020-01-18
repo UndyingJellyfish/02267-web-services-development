@@ -30,4 +30,20 @@ public class Application {
         return new DirectExchange("tokens");
     }
 
+    @Bean
+    @Qualifier("transactions")
+    public DirectExchange getTransactionsExchange(){
+        return new DirectExchange("transactions");
+    }
+    @Bean
+    @Qualifier("reporting")
+    public DirectExchange getReportingExchange(){
+        return new DirectExchange("reporting");
+    }
+    @Bean
+    @Qualifier("payments")
+    public DirectExchange getPaymentsExchange(){
+        return new DirectExchange("payments");
+    }
+
 }

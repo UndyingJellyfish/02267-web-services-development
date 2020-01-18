@@ -9,7 +9,6 @@ import com.example.webservices.library.interfaces.IAccountService;
 import com.example.webservices.library.interfaces.IPaymentService;
 import com.example.webservices.library.interfaces.IReportingService;
 import com.example.webservices.library.interfaces.ITokenManager;
-import dtu.ws.fastmoney.Transaction;
 import gherkin.deps.com.google.gson.reflect.TypeToken;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
