@@ -1,4 +1,4 @@
-package com.example.webservices.accounts.services;
+package com.example.webservices.application.tokens;
 
 import com.example.webservices.library.RabbitMQBaseClass;
 import com.example.webservices.library.dataTransferObjects.RequestTokenDto;

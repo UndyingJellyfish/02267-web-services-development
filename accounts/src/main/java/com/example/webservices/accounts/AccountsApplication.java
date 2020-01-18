@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import static com.example.webservices.library.RabbitHelper.*;
 
@@ -17,11 +16,6 @@ public class AccountsApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AccountsApplication.class, args);
-    }
-    @Bean
-    @Qualifier("tokens")
-    public DirectExchange getExchange(){
-        return new DirectExchange("tokens");
     }
 
     @Bean
@@ -33,9 +27,18 @@ public class AccountsApplication {
     public Queue queueCreateCustomer() {
         return new Queue(QUEUE_CUSTOMER_SIGNUP, true);
     }
+
     @Bean
     public Queue queueCreateMerchant() {
         return new Queue(QUEUE_MERCHANT_SIGNUP, true);
+    }
+    @Bean
+    public Queue queueChangeName() {
+        return new Queue(QUEUE_ACCOUNT_CHANGENAME, true);
+    }
+    @Bean
+    public Queue queueDelete() {
+        return new Queue(QUEUE_ACCOUNT_DELETE, true);
     }
 
     @Bean
@@ -50,13 +53,22 @@ public class AccountsApplication {
     }
 
     @Bean
-    public Binding bindingCreateCustomer(@Qualifier("accounts") DirectExchange exchange, Queue queueCreateCutomer) {
-        return BindingBuilder.bind(queueCreateCutomer).to(exchange).with(queueCreateCutomer.getName());
+    public Binding bindingCreateCustomer(@Qualifier("accounts") DirectExchange exchange, Queue queueCreateCustomer) {
+        return BindingBuilder.bind(queueCreateCustomer).to(exchange).with(queueCreateCustomer.getName());
     }
 
     @Bean
     public Binding bindingCreateMerchant(@Qualifier("accounts") DirectExchange exchange, Queue queueCreateMerchant) {
         return BindingBuilder.bind(queueCreateMerchant).to(exchange).with(queueCreateMerchant.getName());
+    }
+
+    @Bean
+    public Binding bindingChangeName(@Qualifier("accounts") DirectExchange exchange, Queue queueChangeName) {
+        return BindingBuilder.bind(queueChangeName).to(exchange).with(queueChangeName.getName());
+    }
+    @Bean
+    public Binding bindingDelete(@Qualifier("accounts") DirectExchange exchange, Queue queueDelete) {
+        return BindingBuilder.bind(queueDelete).to(exchange).with(queueDelete.getName());
     }
 
 
