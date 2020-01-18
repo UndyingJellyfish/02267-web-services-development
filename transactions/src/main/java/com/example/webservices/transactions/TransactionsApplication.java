@@ -14,14 +14,10 @@ public class TransactionsApplication {
         SpringApplication.run(TransactionsApplication.class, args);
     }
 
-    @Configuration
-    public static class Config{
 
-        @Bean
-        public DirectExchange getExchange(){
-            return new DirectExchange("exchange");
-        }
-
-
+    @Bean
+    public DirectExchange getExchange(){
+        return new DirectExchange("transactions");
     }
+
 }
