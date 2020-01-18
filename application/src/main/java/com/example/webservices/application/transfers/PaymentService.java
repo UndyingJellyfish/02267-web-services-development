@@ -5,6 +5,7 @@ import com.example.webservices.library.dataTransferObjects.TokenDto;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
 import com.example.webservices.library.exceptions.BankException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
+import com.example.webservices.library.exceptions.InvalidTransferAmountException;
 import com.example.webservices.library.exceptions.TokenException;
 import com.example.webservices.library.interfaces.*;
 import org.springframework.stereotype.Service;
@@ -27,14 +28,14 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
-    public TransactionDto transfer(UUID tokenId, UUID merchantId, BigDecimal amount, String description) throws EntryNotFoundException, TokenException, BankException {
+    public TransactionDto transfer(UUID tokenId, UUID merchantId, BigDecimal amount, String description) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException {
         return this.transfer(tokenId, merchantId, amount, false, description);
     }
 
     @Override
-    public TransactionDto transfer(UUID tokenId, UUID merchantId, BigDecimal amount, boolean isRefund, String description) throws EntryNotFoundException, TokenException, BankException {
+    public TransactionDto transfer(UUID tokenId, UUID merchantId, BigDecimal amount, boolean isRefund, String description) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException {
         if(!isGreaterThanZero(amount)){
-            throw new IllegalArgumentException();
+            throw new InvalidTransferAmountException();
         }
         TokenDto token = tokenManager.GetToken(tokenId);
         AccountDto merchant = accountService.getMerchant(merchantId);
@@ -51,7 +52,7 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
-    public void refund(UUID customerId, UUID merchantId, UUID tokenId) throws TokenException, BankException, EntryNotFoundException {
+    public void refund(UUID customerId, UUID merchantId, UUID tokenId) throws TokenException, BankException, EntryNotFoundException, InvalidTransferAmountException {
         UUID newToken = tokenManager.RequestToken(customerId);
         TransactionDto oldTransaction;
 

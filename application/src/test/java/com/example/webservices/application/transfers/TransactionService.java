@@ -1,4 +1,4 @@
-package com.example.webservices.transactions.services;
+package com.example.webservices.application.transfers;
 
 import com.example.webservices.library.RabbitMQBaseClass;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;

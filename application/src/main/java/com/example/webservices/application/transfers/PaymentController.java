@@ -3,6 +3,7 @@ package com.example.webservices.application.transfers;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
 import com.example.webservices.library.exceptions.BankException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
+import com.example.webservices.library.exceptions.InvalidTransferAmountException;
 import com.example.webservices.library.exceptions.TokenException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class PaymentController {
     public void TransferMoney(@RequestBody TransactionDto transaction){
         try {
             paymentService.transfer(transaction.getTokenId(), transaction.getCreditorId(), transaction.getAmount(), transaction.getDescription());
-        } catch (TokenException | IllegalArgumentException | EntryNotFoundException| BankException e) {
+        } catch (TokenException | IllegalArgumentException | EntryNotFoundException | BankException | InvalidTransferAmountException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
@@ -35,7 +36,7 @@ public class PaymentController {
     public void RefundTransaction(@RequestBody TransactionDto transaction){
         try {
             paymentService.refund(transaction.getDebtorId(), transaction.getCreditorId(), transaction.getTokenId());
-        } catch (TokenException |IllegalArgumentException | EntryNotFoundException | BankException e) {
+        } catch (TokenException | IllegalArgumentException | EntryNotFoundException | BankException | InvalidTransferAmountException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
