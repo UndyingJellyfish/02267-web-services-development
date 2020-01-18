@@ -48,13 +48,11 @@ public class TokenManagerTest extends AbstractSteps {
             fail();
         }
     }
-// testContext().setPayload(dto);
-// executePost("/account/customer");
 
     @Test
     public void RequestTokens(){
         UUID customerId = customerDto.getAccountId();
-        List<TokenDto> beforeTokens = null;
+        List<TokenDto> beforeTokens;
         try {
             when(tokenDatastore.getTokens(customerId))
                     .thenReturn(new ArrayList<Token>(){});
