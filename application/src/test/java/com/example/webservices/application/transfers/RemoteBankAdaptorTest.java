@@ -59,8 +59,6 @@ public class RemoteBankAdaptorTest {
 
     @Test
     public void TestBalanceWasSetup() {
-
-        // TODO this won't work as there is no public method for setting starting balance currently
         CheckBalance(customerDto, startingBalance, merchantDto, startingBalance);
     }
 
