@@ -8,25 +8,54 @@ import com.example.webservices.library.RabbitHelper;
 import com.example.webservices.library.RabbitMQBaseClass;
 import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.dataTransferObjects.AccountType;
+import com.example.webservices.library.dataTransferObjects.ChangeNameDto;
+import com.example.webservices.library.dataTransferObjects.SignupDto;
+import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Service
 public class AccountMQController extends RabbitHelper {
 
-    private static final String QUEUE_ACCOUNT_GET = "account.get";
-    private static final String QUEUE_CUSTOMER_GET = "account.get.customer";
-    private static final String QUEUE_MERCHANT_GET = "account.get.merchant";
 
     private final IAccountService accountService;
 
     public AccountMQController(IAccountService accountService) {
         super();
         this.accountService = accountService;
+    }
+
+
+    @RabbitListener(queues = QUEUE_ACCOUNT_CHANGENAME)
+    public String changeName(String jsonString){
+        try {
+            ChangeNameDto accountId = fromJson(jsonString, ChangeNameDto.class);
+            this.accountService.changeName(accountId);
+            return success();
+
+        } catch (EntryNotFoundException e) {
+            return failure(e.getMessage());
+        }
+
+    }
+    @RabbitListener(queues = QUEUE_ACCOUNT_DELETE)
+    public String deleteAccount(String jsonString){
+        try {
+            UUID accountId = fromJson(jsonString, UUID.class);
+            this.accountService.delete(accountId);
+
+            return success();
+
+        } catch (EntryNotFoundException e) {
+            return failure(e.getMessage());
+        }
+
     }
 
     @RabbitListener(queues = QUEUE_ACCOUNT_GET)
@@ -43,43 +72,31 @@ public class AccountMQController extends RabbitHelper {
 
     }
 
-   /* @RabbitListener(queues = QUEUE_CUSTOMER_GET)
-    public String getCustomer(String jsonString){
-        UUID accountId = fromJson(jsonString, UUID.class);
-
-        Customer account;
+    @RabbitListener(queues = QUEUE_CUSTOMER_SIGNUP)
+    public String customerSignup(String jsonString){
         try {
-            account = this.accountDatastore.getCustomer(accountId);
-        } catch (EntryNotFoundException e) {
+            SignupDto accountId = fromJson(jsonString, SignupDto.class);
+            AccountDto account = this.accountService.addCustomer(accountId);
+
+            return success(account);
+
+        } catch (DuplicateEntryException e) {
             return failure(e.getMessage());
         }
 
-        return success(createDto(account));
     }
-    @RabbitListener(queues = QUEUE_MERCHANT_GET)
-    public String getMerchant(String jsonString){
-        UUID accountId = fromJson(jsonString, UUID.class);
-
-        Merchant account;
+    @RabbitListener(queues = QUEUE_MERCHANT_SIGNUP)
+    public String merchantSignup(String jsonString){
         try {
-            account = this.accountDatastore.getMerchant(accountId);
-        } catch (EntryNotFoundException e) {
+            SignupDto accountId = fromJson(jsonString, SignupDto.class);
+            AccountDto account = this.accountService.addMerchant(accountId);
+
+            return success(account);
+
+        } catch (DuplicateEntryException e) {
             return failure(e.getMessage());
         }
 
-        return success(createDto(account));
-    }*/
-
-
-    private AccountDto createDto(Account account) {
-        // TODO: Add AccountType to the Account Object, and make the Customer and Merchant Constructors set the field.
-        if(account instanceof Customer){
-            return new AccountDto(account.getAccountId(), account.getName(), account.getBankAccountId(), account.getIdentifier(), AccountType.CUSTOMER);
-        }
-        if(account instanceof Merchant){
-            return new AccountDto(account.getAccountId(), account.getName(), account.getBankAccountId(), account.getIdentifier(), AccountType.MERCHANT);
-        }
-        throw new RuntimeException("This should not happen");
     }
 
 }

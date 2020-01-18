@@ -1,7 +1,8 @@
-package com.example.webservices.accounts.services;
+package com.example.webservices.application.tokens;
 
 import com.example.webservices.library.RabbitMQBaseClass;
 import com.example.webservices.library.dataTransferObjects.RequestTokenDto;
+import com.example.webservices.library.dataTransferObjects.ResponseObject;
 import com.example.webservices.library.dataTransferObjects.TokenDto;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.exceptions.InvalidTokenException;
@@ -13,6 +14,7 @@ import org.hibernate.validator.internal.engine.valueextraction.ArrayElement;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,8 +23,6 @@ import java.util.UUID;
 
 @Service
 public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
-
-    private static final String QUEUE_REQUEST_TOKENS = "tokens.request";
 
     public TokenMQService(RabbitTemplate rabbitTemplate, @Qualifier("tokens") DirectExchange exchange) {
         super(rabbitTemplate, exchange);
@@ -33,7 +33,11 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
         RequestTokenDto dto = new RequestTokenDto();
         dto.setCustomerId(customer);
         dto.setAmount(quantity);
-        return fromJson(send(QUEUE_REQUEST_TOKENS, dto), new TypeToken<ArrayList<UUID>>(){}.getType());
+        ResponseObject response = fromJson(send(QUEUE_REQUEST_TOKENS, dto), ResponseObject.class);
+        if(response.getStatusCode() != HttpStatus.OK){
+            throw new RuntimeException();
+        }
+        return fromJson(response.getBody(), new TypeToken<List<UUID>>(){}.getType());
     }
 
     @Override

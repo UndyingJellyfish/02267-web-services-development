@@ -22,19 +22,13 @@ import java.util.UUID;
 @Service
 public class AccountMQService extends RabbitMQBaseClass implements IAccountService {
 
-    private static final String QUEUE_ACCOUNT_GET = "account.get";
-    private static final String QUEUE_CUSTOMER_CREATE = "account.create.customer";
-    private static final String QUEUE_MERCHANT_CREATE = "account.create.merchant";
-    private static final String QUEUE_ACCOUNT_CHANGENAME = "account.changename";
-    private static final String QUEUE_ACCOUNT_DELETE = "account.delete";
-
     public AccountMQService(RabbitTemplate rabbitTemplate, @Qualifier("accounts") DirectExchange exchange) {
         super(rabbitTemplate, exchange);
     }
 
     @Override
     public AccountDto addCustomer(SignupDto signupDto) throws DuplicateEntryException {
-        ResponseObject response = fromJson(send(QUEUE_CUSTOMER_CREATE, signupDto), ResponseObject.class);
+        ResponseObject response = fromJson(send(QUEUE_CUSTOMER_SIGNUP, signupDto), ResponseObject.class);
         if(response.getStatusCode() == HttpStatus.OK){
             return fromJson(response.getBody(), AccountDto.class);
         }
@@ -43,7 +37,7 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
 
     @Override
     public AccountDto addMerchant(SignupDto signupDto) throws DuplicateEntryException {
-        ResponseObject response = fromJson(send(QUEUE_MERCHANT_CREATE, signupDto), ResponseObject.class);
+        ResponseObject response = fromJson(send(QUEUE_MERCHANT_SIGNUP, signupDto), ResponseObject.class);
         if(response.getStatusCode() == HttpStatus.OK){
             return fromJson(response.getBody(), AccountDto.class);
         }

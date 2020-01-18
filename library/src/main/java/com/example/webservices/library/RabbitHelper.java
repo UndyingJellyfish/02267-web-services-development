@@ -7,7 +7,14 @@ import org.springframework.http.ResponseEntity;
 
 import java.lang.reflect.Type;
 
-public class RabbitHelper {
+public abstract class RabbitHelper {
+
+    public static final String QUEUE_ACCOUNT_GET = "account.get";
+    public static final String QUEUE_CUSTOMER_SIGNUP = "account.signup.customer";
+    public static final String QUEUE_MERCHANT_SIGNUP = "account.signup.merchant";
+    public static final String QUEUE_REQUEST_TOKENS = "token.request";
+    public static final String QUEUE_ACCOUNT_CHANGENAME = "account.changename";
+    public static final String QUEUE_ACCOUNT_DELETE = "account.delete";
 
     protected Gson gson = new Gson();
 
@@ -21,11 +28,18 @@ public class RabbitHelper {
         return gson.toJson(message);
     }
 
+    protected String success(){
+        return toJson(new ResponseObject(HttpStatus.OK));
+    }
+
     protected <T> String success(T response){
         return toJson(new ResponseObject(HttpStatus.OK, toJson(response)));
     }
+    protected <T> String failure(T response, HttpStatus status){
+        return toJson(new ResponseObject(status, toJson(response)));
+    }
     protected <T> String failure(T response){
-        return toJson(new ResponseObject(HttpStatus.BAD_REQUEST, toJson(response)));
+        return failure(response, HttpStatus.BAD_REQUEST);
     }
 
 }
