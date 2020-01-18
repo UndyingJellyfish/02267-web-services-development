@@ -1,5 +1,7 @@
-package com.example.webservices.application.tokens;
+package com.example.webservices.tokens.dataAccess;
 import com.example.webservices.library.exceptions.InvalidTokenException;
+import com.example.webservices.tokens.interfaces.ITokenDatastore;
+import com.example.webservices.tokens.models.Token;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -12,7 +14,6 @@ public class InMemoryTokenDatastore implements ITokenDatastore {
     public void flush(){
         tokens = new ArrayList<>();
     }
-
 
 
     @Override
@@ -38,9 +39,6 @@ public class InMemoryTokenDatastore implements ITokenDatastore {
     public Token getToken(UUID tokenId) throws InvalidTokenException {
         return this.tokens.stream().filter(t -> t.getTokenId().equals(tokenId)).findFirst().orElseThrow(InvalidTokenException::new);
     }
-
-
-
 
     // Extract me somewhere!
     private boolean hasSharedIds(List<UUID> first, List<UUID> second){

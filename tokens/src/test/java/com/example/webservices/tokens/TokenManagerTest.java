@@ -1,6 +1,5 @@
-package com.example.webservices.application.tokens;
+package com.example.webservices.tokens;
 
-import com.example.webservices.application.stepdefs.AbstractSteps;
 import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.dataTransferObjects.AccountType;
 import com.example.webservices.library.dataTransferObjects.SignupDto;
@@ -8,6 +7,9 @@ import com.example.webservices.library.dataTransferObjects.TokenDto;
 import com.example.webservices.library.exceptions.*;
 import com.example.webservices.library.interfaces.IAccountService;
 import com.example.webservices.library.interfaces.ITokenManager;
+import com.example.webservices.tokens.interfaces.ITokenDatastore;
+import com.example.webservices.tokens.models.Token;
+import com.example.webservices.tokens.services.TokenManager;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,7 +22,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-public class TokenManagerTest extends AbstractSteps {
+public class TokenManagerTest {
 
     private ITokenManager tokenManager;
     private ITokenDatastore tokenDatastore = mock(ITokenDatastore.class);

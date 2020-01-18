@@ -1,10 +1,12 @@
-package com.example.webservices.application.tokens;
+package com.example.webservices.tokens.services;
 
 import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.dataTransferObjects.TokenDto;
 import com.example.webservices.library.exceptions.*;
 import com.example.webservices.library.interfaces.IAccountService;
 import com.example.webservices.library.interfaces.ITokenManager;
+import com.example.webservices.tokens.interfaces.ITokenDatastore;
+import com.example.webservices.tokens.models.Token;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,7 +40,7 @@ public class TokenManager implements ITokenManager {
         List<Token> tokens = new ArrayList<>();
 
         for(int i = 0; i < quantity; i++){
-            Token token = new Token();
+            Token token = new Token(customerId);
             tokens.add(token);
         }
 

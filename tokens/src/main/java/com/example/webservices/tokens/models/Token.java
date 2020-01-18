@@ -1,10 +1,10 @@
-package com.example.webservices.application.tokens;
+package com.example.webservices.tokens.models;
 
 
 import java.util.Date;
 import java.util.UUID;
 
- class Token {
+public class Token {
     private UUID tokenId;
     private boolean used;
     private Date useDate = null;

@@ -5,14 +5,24 @@ services:
     build: ./application
     ports:
       - "8181:8080"
+    env_file:
+      - ./.env
   payments:
     build: ./payments
+    env_file:
+      - ./.env
   transactions:
     build: ./transactions
+    env_file:
+      - ./.env
   tokens:
     build: ./tokens
+    env_file:
+      - ./.env
   accounts:
     build: ./accounts
+    env_file:
+      - ./.env
   rabbitmq:
     image: rabbitmq
     ports:

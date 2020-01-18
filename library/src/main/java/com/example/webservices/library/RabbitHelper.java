@@ -16,6 +16,10 @@ public abstract class RabbitHelper {
     public static final String QUEUE_ACCOUNT_CHANGENAME = "account.changename";
     public static final String QUEUE_ACCOUNT_DELETE = "account.delete";
 
+    public static final String QUEUE_TOKENS_GET = "tokens.get";
+    public static final String QUEUE_TOKENS_REQUEST = "tokens.request";
+
+
     protected Gson gson = new Gson();
 
     protected  <T> T fromJson(String response, Class<T> type){

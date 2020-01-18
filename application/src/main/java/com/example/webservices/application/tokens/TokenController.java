@@ -4,6 +4,7 @@ import com.example.webservices.library.dataTransferObjects.RequestTokenDto;
 import com.example.webservices.library.dataTransferObjects.TokenDto;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.exceptions.TokenQuantityException;
+import com.example.webservices.library.interfaces.ITokenManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,10 +16,10 @@ import java.util.UUID;
 @RequestMapping("/tokens")
 public class TokenController {
 
-    private final TokenManager tokenManager;
+    private final ITokenManager tokenManager;
 
 
-    public TokenController(TokenManager tokenManager){
+    public TokenController(ITokenManager tokenManager){
         this.tokenManager = tokenManager;
     }
 
@@ -39,6 +40,10 @@ public class TokenController {
     @GetMapping("/{customerId}")
     @ResponseStatus(HttpStatus.OK)
     public List<TokenDto> getTokens(@PathVariable UUID customerId) {
+        try {
             return tokenManager.GetTokens(customerId);
+        } catch (EntryNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 }
