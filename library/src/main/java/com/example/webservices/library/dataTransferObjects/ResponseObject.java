@@ -2,7 +2,9 @@ package com.example.webservices.library.dataTransferObjects;
 
 import org.springframework.http.HttpStatus;
 
-public class ResponseObject {
+import java.io.Serializable;
+
+public class ResponseObject implements Serializable {
 
     private HttpStatus statusCode;
     private String body;

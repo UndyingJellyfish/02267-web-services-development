@@ -5,27 +5,29 @@ import com.example.webservices.library.dataTransferObjects.AccountType;
 import com.example.webservices.library.exceptions.BankException;
 import com.example.webservices.payments.services.RemoteBankAdaptor;
 import dtu.ws.fastmoney.BankService;
+import dtu.ws.fastmoney.BankServiceService;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootContextLoader;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = PaymentsApplication.class)
+
 public class RemoteBankAdaptorTest {
 
     private static final BigDecimal startingBalance = new BigDecimal("100.");
 
-    @Autowired
-    private BankService bankService;
+    private BankService bankService = new BankServiceService().getBankServicePort();
 
     private RemoteBankAdaptor bank;
     private AccountDto customerDto;

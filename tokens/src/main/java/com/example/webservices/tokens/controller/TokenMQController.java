@@ -2,6 +2,7 @@ package com.example.webservices.tokens.controller;
 
 import com.example.webservices.library.RabbitHelper;
 import com.example.webservices.library.dataTransferObjects.RequestTokenDto;
+import com.example.webservices.library.dataTransferObjects.ResponseObject;
 import com.example.webservices.library.dataTransferObjects.TokenDto;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.exceptions.TokenQuantityException;
@@ -23,7 +24,7 @@ public class TokenMQController extends RabbitHelper {
     }
 
     @RabbitListener(queues = QUEUE_TOKENS_GET)
-    public String getTokens(String jsonString){
+    public ResponseObject getTokens(String jsonString){
         try {
             UUID accountId = fromJson(jsonString, UUID.class);
             List<TokenDto> tokens = this.tokenManager.GetTokens(accountId);
@@ -34,7 +35,7 @@ public class TokenMQController extends RabbitHelper {
     }
 
     @RabbitListener(queues = QUEUE_TOKENS_REQUEST)
-    public String requestTokens(String jsonString){
+    public ResponseObject requestTokens(String jsonString){
         try {
             RequestTokenDto requestTokenDto = fromJson(jsonString, RequestTokenDto.class);
             List<UUID> tokens = this.tokenManager.RequestTokens(requestTokenDto.getCustomerId(), requestTokenDto.getAmount());
@@ -44,7 +45,7 @@ public class TokenMQController extends RabbitHelper {
         }
     }
     @RabbitListener(queues = QUEUE_TOKENS_RETIRE)
-    public String retireTokens(String jsonString){
+    public ResponseObject retireTokens(String jsonString){
         try {
             UUID accountId = fromJson(jsonString, UUID.class);
             this.tokenManager.retireAll(accountId);

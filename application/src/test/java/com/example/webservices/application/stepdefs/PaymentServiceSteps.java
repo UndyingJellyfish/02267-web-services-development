@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class PaymentServiceSteps extends AbstractSteps {
-    private ITransactionService transactionService;
+    private ITransactionService transactionService = mock(ITransactionService.class);
     private UUID merchantId;
     private BigDecimal amount;
     private UUID tokenId;
@@ -32,8 +32,7 @@ public class PaymentServiceSteps extends AbstractSteps {
     private UUID customerId;
     private IBank bank;
 
-    public PaymentServiceSteps(ITransactionService transactionService, IBank bank) {
-        this.transactionService = transactionService;
+    public PaymentServiceSteps(IBank bank) {
         this.bank = bank;
     }
 

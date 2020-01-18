@@ -1,6 +1,7 @@
 package com.example.webservices.payments.controller;
 
 import com.example.webservices.library.RabbitHelper;
+import com.example.webservices.library.dataTransferObjects.ResponseObject;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
 import com.example.webservices.library.exceptions.BankException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
@@ -20,7 +21,7 @@ public class PaymentMQController extends RabbitHelper {
     }
 
     @RabbitListener(queues = QUEUE_PAYMENT_TRANSFER)
-    public String transfer(String jsonString){
+    public ResponseObject transfer(String jsonString){
 
         try {
             TransactionDto transactionDto = fromJson(jsonString, TransactionDto.class);
@@ -32,7 +33,7 @@ public class PaymentMQController extends RabbitHelper {
 
     }
     @RabbitListener(queues = QUEUE_PAYMENT_REFUND)
-    public String refund(String jsonString){
+    public ResponseObject refund(String jsonString){
 
         try {
             TransactionDto transactionDto = fromJson(jsonString, TransactionDto.class);

@@ -1,6 +1,7 @@
 package com.example.webservices.transactions.controller;
 
 import com.example.webservices.library.RabbitHelper;
+import com.example.webservices.library.dataTransferObjects.ResponseObject;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IReportingService;
@@ -21,7 +22,7 @@ public class ReportingMQController extends RabbitHelper {
 
 
     @RabbitListener(queues = QUEUE_REPORTING_HISTORY)
-    public String getReportingHistory(String jsonString){
+    public ResponseObject getReportingHistory(String jsonString){
 
         try {
 

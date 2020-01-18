@@ -2,11 +2,16 @@ package com.example.webservices.payments;
 
 import dtu.ws.fastmoney.BankService;
 import dtu.ws.fastmoney.BankServiceService;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import static com.example.webservices.library.RabbitHelper.*;
 
 @SpringBootApplication
 public class PaymentsApplication {
@@ -18,6 +23,28 @@ public class PaymentsApplication {
     @Bean
     public BankService getBankService(){
         return new BankServiceService().getBankServicePort();
+    }
+
+    @Bean
+    public Queue queueTransfer() {
+        return new Queue(QUEUE_PAYMENT_TRANSFER, true);
+    }
+    @Bean
+    public Queue queueRefund() {
+        return new Queue(QUEUE_PAYMENT_REFUND, true);
+    }
+    @Bean
+    @Qualifier("payments")
+    public DirectExchange getPaymentsExchange(){
+        return new DirectExchange("payments");
+    }
+    @Bean
+    public Binding bindingTransfer(@Qualifier("payments") DirectExchange exchange, Queue queueTransfer) {
+        return BindingBuilder.bind(queueTransfer).to(exchange).with(queueTransfer.getName());
+    }
+    @Bean
+    public Binding bindingRefund(@Qualifier("payments") DirectExchange exchange, Queue queueRefund) {
+        return BindingBuilder.bind(queueRefund).to(exchange).with(queueRefund.getName());
     }
 
     @Bean

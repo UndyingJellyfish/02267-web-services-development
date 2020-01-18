@@ -2,6 +2,7 @@ package com.example.webservices.library;
 
 import com.example.webservices.library.dataTransferObjects.ResponseObject;
 import gherkin.deps.com.google.gson.Gson;
+import gherkin.deps.com.google.gson.GsonBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -29,7 +30,7 @@ public abstract class RabbitHelper {
     public static final String QUEUE_PAYMENT_TRANSFER = "payment.transfer";
     public static final String QUEUE_PAYMENT_REFUND = "payment.refund";
 
-    protected Gson gson = new Gson();
+    protected Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     protected  <T> T fromJson(String response, Class<T> type){
         return gson.fromJson(response, type);
@@ -41,17 +42,19 @@ public abstract class RabbitHelper {
         return gson.toJson(message);
     }
 
-    protected String success(){
-        return toJson(new ResponseObject(HttpStatus.OK));
+    protected <T> ResponseObject success(T response){
+        return new ResponseObject(HttpStatus.OK, toJson(response));
     }
 
-    protected <T> String success(T response){
-        return toJson(new ResponseObject(HttpStatus.OK, toJson(response)));
+    protected ResponseObject success(){
+        return success("success");
     }
-    protected <T> String failure(T response, HttpStatus status){
-        return toJson(new ResponseObject(status, toJson(response)));
+
+
+    protected <T> ResponseObject failure(T response, HttpStatus status){
+        return new ResponseObject(status, toJson(response));
     }
-    protected <T> String failure(T response){
+    protected <T> ResponseObject failure(T response){
         return failure(response, HttpStatus.BAD_REQUEST);
     }
 

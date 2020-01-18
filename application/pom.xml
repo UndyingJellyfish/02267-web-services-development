@@ -26,14 +26,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <environmentVariables>
-                        <RABBITMQ_HOST>localhost</RABBITMQ_HOST>
-                        <RABBITMQ_PORT>5672</RABBITMQ_PORT>
-                        <RABBITMQ_DEFAULT_USER>alex</RABBITMQ_DEFAULT_USER>
-                        <RABBITMQ_DEFAULT_PASS>alex</RABBITMQ_DEFAULT_PASS>
-                    </environmentVariables>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

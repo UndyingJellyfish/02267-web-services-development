@@ -34,7 +34,7 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
 
     @Override
     public AccountDto addMerchant(SignupDto signupDto) throws DuplicateEntryException {
-        ResponseObject response = send(QUEUE_MERCHANT_SIGNUP, signupDto);
+        ResponseObject response = send(QUEUE_MERCHANT_SIGNUP, signupDto, ResponseObject.class);
         if(response.getStatusCode() == HttpStatus.OK){
             return fromJson(response.getBody(), AccountDto.class);
         }

@@ -1,6 +1,8 @@
 package com.example.webservices.library.dataTransferObjects;
 
-public class SignupDto{
+import java.io.Serializable;
+
+public class SignupDto implements Serializable {
     private String name;
     private String identifier;
     private String bankAccountId;

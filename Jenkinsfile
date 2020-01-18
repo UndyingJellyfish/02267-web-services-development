@@ -16,7 +16,7 @@ pipeline {
     }
     stage('Test'){
         steps{
-            sh 'bash build_and_test.sh application'
+            sh 'bash systemTests.sh application'
         }
     }
     stage('Deploy'){

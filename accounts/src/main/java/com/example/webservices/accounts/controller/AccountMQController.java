@@ -29,7 +29,7 @@ public class AccountMQController extends RabbitHelper {
 
 
     @RabbitListener(queues = QUEUE_ACCOUNT_CHANGENAME)
-    public String changeName(String jsonString){
+    public ResponseObject changeName(String jsonString){
         try {
             ChangeNameDto changeNameDto = fromJson(jsonString, ChangeNameDto.class);
             this.accountService.changeName(changeNameDto);
@@ -41,7 +41,7 @@ public class AccountMQController extends RabbitHelper {
 
     }
     @RabbitListener(queues = QUEUE_ACCOUNT_DELETE)
-    public String deleteAccount(String jsonString){
+    public ResponseObject deleteAccount(String jsonString){
         try {
             UUID accountId = fromJson(jsonString, UUID.class);
             this.accountService.delete(accountId);
@@ -55,7 +55,7 @@ public class AccountMQController extends RabbitHelper {
     }
 
     @RabbitListener(queues = QUEUE_ACCOUNT_GET)
-    public String getAccount(String jsonString){
+    public ResponseObject getAccount(String jsonString){
         try {
             UUID accountId = fromJson(jsonString, UUID.class);
             AccountDto account = this.accountService.getAccount(accountId);
@@ -69,7 +69,7 @@ public class AccountMQController extends RabbitHelper {
     }
 
     @RabbitListener(queues = QUEUE_CUSTOMER_SIGNUP)
-    public String customerSignup(String jsonString){
+    public ResponseObject customerSignup(String jsonString){
         try {
             SignupDto signupDto = fromJson(jsonString, SignupDto.class);
             AccountDto account = this.accountService.addCustomer(signupDto);
@@ -82,7 +82,7 @@ public class AccountMQController extends RabbitHelper {
 
     }
     @RabbitListener(queues = QUEUE_MERCHANT_SIGNUP)
-    public String merchantSignup(String jsonString){
+    public ResponseObject merchantSignup(String jsonString){
         try {
             SignupDto signupDto = fromJson(jsonString, SignupDto.class);
             AccountDto account = this.accountService.addMerchant(signupDto);

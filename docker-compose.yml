@@ -9,6 +9,10 @@ services:
       - ./.env
     depends_on:
       - rabbitmq
+      - payments
+      - tokens
+      - transactions
+      - accounts
   payments:
     build: ./payments
     env_file:

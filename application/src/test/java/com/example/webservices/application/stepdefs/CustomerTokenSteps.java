@@ -14,7 +14,14 @@ import io.cucumber.java.en.When;
 import com.example.webservices.library.dataTransferObjects.RequestTokenDto;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,9 +43,12 @@ public class CustomerTokenSteps extends AbstractSteps {
     @Given("A registered user")
     public void aRegisteredUser() {
         SignupDto dto = new SignupDto("bob", "123", UUID.randomUUID().toString());
+        RestTemplate template = new RestTemplate();
+        ResponseEntity<UUID> response = template.postForEntity("http://localhost:8080/account/customer", dto, UUID.class);/*
         testContext().setPayload(dto);
         executePost("/account/customer");
-        UUID customerId = getBody(UUID.class);
+        UUID customerId = getBody(UUID.class);*/
+        UUID customerId = response.getBody();
         try {
             this.customer = accountService.getCustomer(customerId);
         } catch (EntryNotFoundException e) {
