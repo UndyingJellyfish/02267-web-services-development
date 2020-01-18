@@ -1,19 +1,15 @@
-/*
 //TODO: fix this kthx plz
 package com.example.webservices.application.stepdefs;
 
-import com.example.webservices.application.stepdefs.AbstractSteps;
 import com.example.webservices.library.dataTransferObjects.AccountDto;
-import com.example.webservices.library.exceptions.TokenQuantityException;
+import com.example.webservices.library.dataTransferObjects.SignupDto;
+import com.example.webservices.library.exceptions.*;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
 import com.example.webservices.library.interfaces.IAccountService;
 import com.example.webservices.library.interfaces.IPaymentService;
 import com.example.webservices.library.interfaces.IReportingService;
-import dtu.ws.fastmoney.BankServiceException_Exception;
-import com.example.webservices.library.exceptions.DuplicateEntryException;
-import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.ITokenManager;
-import com.example.webservices.library.exceptions.TokenException;
+import dtu.ws.fastmoney.Transaction;
 import gherkin.deps.com.google.gson.reflect.TypeToken;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -27,9 +23,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
 
 public class TransactionHistorySteps extends AbstractSteps {
 
@@ -56,11 +49,11 @@ public class TransactionHistorySteps extends AbstractSteps {
 
     @Given("A Customer with a transaction history")
     public void aCustomerWithATransactionHistory() {
-        this.customer = new Customer("Test Customer","123");
-        this.merchant = new Merchant("Test Merchant", "1234");
+        SignupDto cDto = new SignupDto("Test Customer","123",UUID.randomUUID().toString());
+        SignupDto mDto = new SignupDto("Test Merchant", "1234",UUID.randomUUID().toString());
         try {
-            store.addAccount(customer);
-            store.addAccount(merchant);
+            this.customer = accountService.addCustomer(cDto);
+            this.merchant = accountService.addMerchant(mDto);
         } catch (DuplicateEntryException e) {
             fail();
         }
@@ -75,13 +68,9 @@ public class TransactionHistorySteps extends AbstractSteps {
             UUID token = tokens.get(i);
             BigDecimal amount = new BigDecimal( i == 0 ? 1 : i * 5);
             try {
-                this.expectedTransactions.add(paymentService.transfer(token,this.merchant.getAccountId(), amount, ""));
-                verify(bank, times(1)).transferMoney(
-                        argThat(c -> c.getAccountId().equals(customer.getAccountId())),
-                        argThat(m -> m.getAccountId().equals(merchant.getAccountId())),
-                        eq(amount),
-                        eq(""));
-            } catch (TokenException | BankServiceException_Exception | EntryNotFoundException e) {
+                this.expectedTransactions.add(paymentService.transfer(token, this.merchant.getAccountId(), amount, ""));
+
+            } catch (TokenException | BankException | EntryNotFoundException | InvalidTransferAmountException e) {
                 fail();
             }
         }
@@ -100,30 +89,30 @@ public class TransactionHistorySteps extends AbstractSteps {
         assertNotNull(transactions);
         assertEquals(expectedTransactions.size(), transactions.size());
         for(TransactionDto transaction : transactions){
-            Transaction expectedTransaction = this.expectedTransactions
+            TransactionDto expectedTransaction = this.expectedTransactions
                     .stream()
-                    .filter(t -> t.getTransaction()
+                    .filter(t -> t.getTransactionId()
                             .equals(transaction.getTransactionId()))
                     .findFirst()
                     .orElse(null);
             if(expectedTransaction == null){
                 fail();
             }
-            assertEquals(expectedTransaction.getDebtorId().getAccountId(), transaction.getDebtorId());
-            assertEquals(expectedTransaction.getCreditorId().getAccountId(), transaction.getCreditorId());
+            assertEquals(expectedTransaction.getDebtorId(), transaction.getDebtorId());
+            assertEquals(expectedTransaction.getCreditorId(), transaction.getCreditorId());
 
-            assertEquals(expectedTransaction.getTokenId().getTokenId(), transaction.getTokenId());
+            assertEquals(expectedTransaction.getTokenId(), transaction.getTokenId());
             assertEquals(expectedTransaction.getAmount(), transaction.getAmount());
         }
     }
 
     @Given("A Merchant with a transaction history")
     public void aMerchantWithATransactionHistory() {
-        this.customer = new Customer("Test Customer","123");
-        this.merchant = new Merchant("Test Merchant", "123");
+        SignupDto cDto = new SignupDto("Test Customer","123", UUID.randomUUID().toString());
+        SignupDto mDto = new SignupDto("Test Merchant", "123", UUID.randomUUID().toString());
         try {
-            store.addAccount(customer);
-            store.addAccount(merchant);
+            this.customer = accountService.addCustomer(cDto);
+            this.merchant = accountService.addMerchant(mDto);
         } catch (DuplicateEntryException e) {
             fail();
         }
@@ -139,12 +128,8 @@ public class TransactionHistorySteps extends AbstractSteps {
             BigDecimal amount = new BigDecimal( i == 0 ? 1 : i * 5);
             try {
                 this.expectedTransactions.add(paymentService.transfer(token, this.merchant.getAccountId(), amount, ""));
-                verify(bank, times(1)).transferMoney(
-                        argThat( c -> c.getAccountId().equals(customer.getAccountId())),
-                        argThat(m -> m.getAccountId().equals(merchant.getAccountId())),
-                        eq(amount),
-                        eq(""));
-            } catch (TokenException |EntryNotFoundException| BankServiceException_Exception e) {
+
+            } catch (TokenException | EntryNotFoundException | BankException | InvalidTransferAmountException e) {
                 fail();
             }
         }
@@ -152,7 +137,11 @@ public class TransactionHistorySteps extends AbstractSteps {
 
     @When("The Merchant requests the transaction history")
     public void theMerchantRequestsTheTransactionHistory() {
-        this.transactions = reportingController.getHistory(this.merchant.getAccountId());
+        try {
+            this.transactions = reportingService.getTransactionHistory(this.merchant.getAccountId());
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
     }
 
     @Then("The Merchant receives the transaction history without customer names")
@@ -160,18 +149,17 @@ public class TransactionHistorySteps extends AbstractSteps {
         assertNotNull(transactions);
         assertEquals(expectedTransactions.size(), transactions.size());
         for(TransactionDto transaction : transactions){
-            Transaction expectedTransaction = this.expectedTransactions.stream().filter(t -> t.getTransaction().equals(transaction.getTransactionId())).findFirst().orElse(null);
+            TransactionDto expectedTransaction = this.expectedTransactions.stream().filter(t -> t.equals(transaction.getTransactionId())).findFirst().orElse(null);
             if(expectedTransaction == null){
                 fail();
             }
             assertNull(transaction.getDebtorId());
-            assertEquals(expectedTransaction.getCreditorId().getAccountId(), transaction.getCreditorId());
+            assertEquals(expectedTransaction.getCreditorId(), transaction.getCreditorId());
 
-            assertEquals(expectedTransaction.getTokenId().getTokenId(), transaction.getTokenId());
+            assertEquals(expectedTransaction.getTokenId(), transaction.getTokenId());
             assertEquals(expectedTransaction.getAmount(), transaction.getAmount());
-            // TODO: Cannot compare transaction date since TransactionDto does not have data information
+            // TODO: Cannot compare transaction date since TransactionDto does not have date information
             //assertEquals(expectedTransaction.getTransactionDate(), transaction.getTransactionDate());
         }
     }
 }
-*/
