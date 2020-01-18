@@ -13,6 +13,8 @@ public abstract class RabbitHelper {
     public static final String QUEUE_CUSTOMER_SIGNUP = "account.signup.customer";
     public static final String QUEUE_MERCHANT_SIGNUP = "account.signup.merchant";
     public static final String QUEUE_REQUEST_TOKENS = "token.request";
+    public static final String QUEUE_ACCOUNT_CHANGENAME = "account.changename";
+    public static final String QUEUE_ACCOUNT_DELETE = "account.delete";
 
     protected Gson gson = new Gson();
 
@@ -24,6 +26,10 @@ public abstract class RabbitHelper {
     }
     protected <T> String toJson(T message){
         return gson.toJson(message);
+    }
+
+    protected String success(){
+        return toJson(new ResponseObject(HttpStatus.OK));
     }
 
     protected <T> String success(T response){

@@ -7,8 +7,11 @@ public class ResponseObject {
     private HttpStatus statusCode;
     private String body;
 
-    public ResponseObject(HttpStatus statusCode, String body){
+    public ResponseObject(HttpStatus statusCode){
         this.statusCode = statusCode;
+    }
+    public ResponseObject(HttpStatus statusCode, String body){
+        this(statusCode);
         this.body = body;
     }
 
