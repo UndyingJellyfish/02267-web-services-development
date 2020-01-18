@@ -1,6 +1,8 @@
 package com.example.webservices.application.tokens;
 
+import com.example.webservices.application.stepdefs.AbstractSteps;
 import com.example.webservices.library.dataTransferObjects.AccountDto;
+import com.example.webservices.library.dataTransferObjects.AccountType;
 import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.dataTransferObjects.TokenDto;
 import com.example.webservices.library.exceptions.*;
@@ -9,30 +11,39 @@ import com.example.webservices.library.interfaces.ITokenManager;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
-public class TokenManagerTest {
+public class TokenManagerTest extends AbstractSteps {
 
     private ITokenManager tokenManager;
+    private ITokenDatastore tokenDatastore = mock(ITokenDatastore.class);
     private IAccountService accountService = mock(IAccountService.class);
-    private UUID customerId;
+    private AccountDto customerDto;
 
-    public TokenManagerTest(ITokenManager tokenManager) {
-        this.tokenManager = tokenManager;
+    public TokenManagerTest( ) {
+
     }
 
     @Before
     public void Setup() {
-        SignupDto dto = new SignupDto("Bob","123", UUID.randomUUID().toString());
+        UUID customerId = UUID.randomUUID();
+        SignupDto dto = new SignupDto("Bob","123",customerId.toString());
 
+        this.customerDto = new AccountDto(customerId,
+                dto.getName(),
+                dto.getBankAccountId(),
+                dto.getIdentifier(),
+                AccountType.CUSTOMER);
         try {
-            AccountDto accDto = accountService.addCustomer(dto);
-            customerId = accDto.getAccountId();
+            when(accountService.addCustomer(dto)).thenReturn(customerDto);
+            this.tokenManager = new TokenManager(tokenDatastore,accountService);
         } catch (DuplicateEntryException e) {
             fail();
         }
@@ -40,29 +51,50 @@ public class TokenManagerTest {
 
     @Test
     public void RequestTokens(){
-
-        List<TokenDto> beforeTokens = null;
+        UUID customerId = customerDto.getAccountId();
+        List<TokenDto> beforeTokens;
         try {
+            when(tokenDatastore.getTokens(customerId))
+                    .thenReturn(new ArrayList<Token>(){});
             beforeTokens = tokenManager.GetTokens(customerId);
-            tokenManager.RequestTokens(customerId,2);
+
+            when(accountService.getCustomer(customerId))
+                    .thenReturn(customerDto);
+            List<UUID> tokenIds = tokenManager.RequestTokens(customerId,2);
+            List<Token> tokens = new ArrayList<Token>(){};
+            for(UUID id : tokenIds) {
+                tokens.add(new Token(id));
+            }
+
+            when(tokenDatastore.getTokens(customerId))
+                    .thenReturn(tokens);
             List<TokenDto> afterTokens = tokenManager.GetTokens(customerId);
+
             assertEquals(0, beforeTokens.size());
             assertEquals(2, afterTokens.size());
         } catch (EntryNotFoundException | TokenQuantityException e) {
             fail();
         }
-
     }
 
     @Test
     public void RequestNoTokens(){
-        List<TokenDto> beforeTokens = null;
+        UUID customerId = customerDto.getAccountId();
+        List<TokenDto> beforeTokens;
         try {
+            when(tokenDatastore.getTokens(customerId))
+                    .thenReturn(new ArrayList<Token>(){});
             beforeTokens = tokenManager.GetTokens(customerId);
             try{
-                tokenManager.RequestTokens(customerId,0);
+                when(accountService.getCustomer(customerId))
+                        .thenReturn(customerDto);
+                 tokenManager.RequestTokens(customerId,0);
             }catch(TokenQuantityException ignored){        }
+
+            when(tokenDatastore.getTokens(customerId))
+                    .thenReturn(new ArrayList<Token>(){});
             List<TokenDto> afterTokens = tokenManager.GetTokens(customerId);
+
             assertEquals(beforeTokens.size(), afterTokens.size());
         } catch (EntryNotFoundException e) {
             fail();
@@ -72,12 +104,19 @@ public class TokenManagerTest {
 
     @Test
     public void RequestTooManyTokens(){
-        List<TokenDto> beforeTokens = null;
+        UUID customerId = customerDto.getAccountId();
+        List<TokenDto> beforeTokens;
         try {
+            when(tokenDatastore.getTokens(customerId))
+                    .thenReturn(new ArrayList<Token>(){});
             beforeTokens = tokenManager.GetTokens(customerId);
             try{
+                when(accountService.getCustomer(customerId))
+                        .thenReturn(customerDto);
                 tokenManager.RequestTokens(customerId,6);
             }catch(TokenQuantityException ignored){        }
+            when(tokenDatastore.getTokens(customerId))
+                    .thenReturn(new ArrayList<Token>(){});
             List<TokenDto> afterTokens = tokenManager.GetTokens(customerId);
             assertEquals(beforeTokens.size(), afterTokens.size());
         } catch (EntryNotFoundException e) {
@@ -88,8 +127,18 @@ public class TokenManagerTest {
 
     @Test
     public void RequestTokensWhenOverLimit(){
+        UUID customerId = customerDto.getAccountId();
         try {
-            tokenManager.RequestTokens(customerId,2); // Any qty over 1
+            when(accountService.getCustomer(customerId))
+                    .thenReturn(customerDto);
+            List<UUID> tokenIds = tokenManager.RequestTokens(customerId,2); // Any qty over 1
+
+            List<Token> tokens = new ArrayList<Token>(){};
+            for(UUID id : tokenIds) {
+                tokens.add(new Token(id));
+            }
+            when(tokenDatastore.getTokens(customerId))
+                    .thenReturn(tokens);
             List<TokenDto> beforeTokens = tokenManager.GetTokens(customerId);
             try{
                 tokenManager.RequestTokens(customerId,1);
@@ -105,14 +154,24 @@ public class TokenManagerTest {
 
     @Test
     public void UseExistingToken() {
-        List<UUID> beforeTokens = null;
+        UUID customerId = customerDto.getAccountId();
         try {
-            beforeTokens = tokenManager.RequestTokens(customerId, 1);
+            when(accountService.getCustomer(customerId))
+                    .thenReturn(customerDto);
+            tokenManager.RequestTokens(customerId,1);
+
+            List<Token> tokens = new ArrayList<Token>(){};
+            tokens.add(new Token(UUID.randomUUID()));
+
             try{
-                tokenManager.UseToken(beforeTokens.get(0));
+                when(tokenDatastore.getToken(tokens.get(0).getTokenId()))
+                        .thenReturn(tokens.get(0));
+                tokenManager.UseToken(tokens.get(0).getTokenId());
             } catch (TokenException e){
                 fail();
             }
+            when(tokenDatastore.getTokens(customerId))
+                    .thenReturn(tokens);
             List<TokenDto> afterTokens = tokenManager.GetTokens(customerId);
             assertEquals(1, afterTokens.size());
             boolean isUsed = afterTokens.get(0).isUsed();
@@ -125,9 +184,11 @@ public class TokenManagerTest {
 
     @Test
     public void UseNotExistingToken() {
-        UUID id = UUID.randomUUID();
+        UUID tokenId = UUID.randomUUID();
         try{
-            tokenManager.UseToken(id);
+            when(tokenDatastore.getToken(tokenId))
+                    .thenThrow(InvalidTokenException.class);
+            tokenManager.UseToken(tokenId);
             fail();
         } catch (TokenException e){
             assertTrue(e instanceof  InvalidTokenException);
