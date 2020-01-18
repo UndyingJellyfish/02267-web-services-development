@@ -29,11 +29,10 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
-    public TransactionDto transfer(UUID tokenId, UUID merchantId, BigDecimal amount, String description) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException {
-        return this.transfer(tokenId, merchantId, amount, false, description);
+    public TransactionDto transfer(TransactionDto transactionDto) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException {
+        return this.transfer(transactionDto.getTokenId(), transactionDto.getCreditorId(), transactionDto.getAmount(), false, transactionDto.getDescription());
     }
 
-    @Override
     public TransactionDto transfer(UUID tokenId, UUID merchantId, BigDecimal amount, boolean isRefund, String description) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException {
         if(!isGreaterThanZero(amount)){
             throw new InvalidTransferAmountException();
@@ -53,12 +52,11 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
-    public void refund(UUID customerId, UUID merchantId, UUID tokenId) throws TokenException, BankException, EntryNotFoundException, InvalidTransferAmountException {
-        UUID newToken = tokenManager.RequestToken(customerId);
-        TransactionDto oldTransaction;
+    public void refund(TransactionDto transactionDto) throws TokenException, BankException, EntryNotFoundException, InvalidTransferAmountException {
+        UUID newToken = tokenManager.RequestToken(transactionDto.getDebtorId());
 
-        oldTransaction = transactionService.GetTransactionByTokenId(tokenId);
-        this.transfer(newToken, merchantId, oldTransaction.getAmount(), true,"Refund");
+        TransactionDto oldTransaction = transactionService.GetTransactionByTokenId(transactionDto.getTransactionId());
+        this.transfer(newToken, oldTransaction.getCreditorId(), oldTransaction.getAmount(), true,"Refund");
 
     }
 

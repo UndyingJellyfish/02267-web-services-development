@@ -18,8 +18,16 @@ public abstract class RabbitHelper {
     public static final String QUEUE_TOKENS_GET = "tokens.get";
     public static final String QUEUE_TOKENS_REQUEST = "tokens.request";
     public static final String QUEUE_TOKENS_RETIRE = "tokens.retire";
+    public static final String QUEUE_TOKEN_GET = "token.get";
+    public static final String QUEUE_TOKEN_USE = "token.use";
+    public static final String QUEUE_TOKEN_REQUEST = "token.request";
 
     public static final String QUEUE_REPORTING_HISTORY = "reporting.history";
+    public static final String QUEUE_TRANSACTION_ADD = "transaction.add";
+    public static final String QUEUE_TRANSACTION_GET = "transaction.get";
+
+    public static final String QUEUE_PAYMENT_TRANSFER = "payment.transfer";
+    public static final String QUEUE_PAYMENT_REFUND = "payment.refund";
 
     protected Gson gson = new Gson();
 

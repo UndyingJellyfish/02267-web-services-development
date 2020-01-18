@@ -7,6 +7,7 @@ import com.example.webservices.payments.services.PaymentService;
 import org.junit.Before;
 import org.junit.Test;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.UUID;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -68,7 +69,8 @@ public class PaymentServiceTest {
             BigDecimal amount = new BigDecimal(-23);
             when(accountService.getCustomer(customer.getAccountId())).thenReturn(customerDto);
             when(accountService.getMerchant(merchant.getAccountId())).thenReturn(merchantDto);
-            transaction = paymentService.transfer(tokenId, merchant.getAccountId(), amount ,"");
+            TransactionDto dto = new TransactionDto(tokenId, merchant.getAccountId(), UUID.randomUUID(), amount, "", false, new Date());
+            transaction = paymentService.transfer(dto);
             fail();
         }
         catch(InvalidTransferAmountException e){
@@ -88,7 +90,8 @@ public class PaymentServiceTest {
             when(accountService.getCustomer(customer.getAccountId())).thenReturn(customerDto);
             when(accountService.getMerchant(merchant.getAccountId())).thenReturn(merchantDto);
             when(tokenManager.GetToken(tokenId)).thenReturn(new TokenDto(tokenId, false, customerDto.getAccountId()));
-            transaction = paymentService.transfer(tokenId, merchant.getAccountId(), amount, description);
+            TransactionDto dto = new TransactionDto(tokenId, merchant.getAccountId(), UUID.randomUUID(), amount, description, false, new Date());
+            transaction = paymentService.transfer(dto);
         } catch (EntryNotFoundException | TokenException | BankException | InvalidTransferAmountException e) {
             fail();
         }

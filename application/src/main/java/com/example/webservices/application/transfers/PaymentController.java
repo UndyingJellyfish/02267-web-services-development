@@ -27,7 +27,7 @@ public class PaymentController {
     @ResponseStatus(HttpStatus.OK)
     public void TransferMoney(@RequestBody TransactionDto transaction){
         try {
-            paymentService.transfer(transaction.getTokenId(), transaction.getCreditorId(), transaction.getAmount(), transaction.getDescription());
+            paymentService.transfer(transaction);
         } catch (TokenException | IllegalArgumentException | EntryNotFoundException | BankException | InvalidTransferAmountException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
@@ -36,7 +36,7 @@ public class PaymentController {
     @ResponseStatus(HttpStatus.OK)
     public void RefundTransaction(@RequestBody TransactionDto transaction){
         try {
-            paymentService.refund(transaction.getDebtorId(), transaction.getCreditorId(), transaction.getTokenId());
+            paymentService.refund(transaction);
         } catch (TokenException | IllegalArgumentException | EntryNotFoundException | BankException | InvalidTransferAmountException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

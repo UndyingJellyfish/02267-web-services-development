@@ -4,24 +4,24 @@ import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.exceptions.BankException;
 import com.example.webservices.library.interfaces.IBank;
 import dtu.ws.fastmoney.*;
+import org.springframework.stereotype.Service;
 
-import javax.xml.ws.Service;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-@org.springframework.stereotype.Service
+@Service
 public class RemoteBankAdaptor implements IBank {
 
-    private Service bankServiceService;
+    private final BankService bankService;
 
-    public RemoteBankAdaptor() {
-        this.bankServiceService = new BankServiceService();
+    public RemoteBankAdaptor(BankService bankService) {
+        this.bankService = bankService;
     }
 
     @Override
     public void transferMoney(AccountDto customer, AccountDto merchant, BigDecimal amount, String description) throws BankException {
-            BankService bankService = bankServiceService.getPort(BankService.class);
+
         try {
             bankService.transferMoneyFromTo(
                     customer.getBankAccountId(),
@@ -39,7 +39,6 @@ public class RemoteBankAdaptor implements IBank {
     }
     @Override
     public String addAccount(AccountDto account, BigDecimal balance) throws BankException{
-        BankService bankService = bankServiceService.getPort(BankService.class);
         User user = new User();
         setupUserName(account.getName(), user);
         user.setCprNumber(account.getIdentifier());
@@ -52,7 +51,6 @@ public class RemoteBankAdaptor implements IBank {
 
     @Override
     public void retireAccount(AccountDto account) throws BankException {
-        BankService bankService = bankServiceService.getPort(BankService.class);
         try {
             bankService.retireAccount(account.getBankAccountId());
         } catch (BankServiceException_Exception e) {
@@ -62,7 +60,6 @@ public class RemoteBankAdaptor implements IBank {
 
     @Override
     public BigDecimal getBalance(AccountDto account) throws BankException {
-        BankService bankService = bankServiceService.getPort(BankService.class);
         Account bankAccount = null;
         try {
             bankAccount = bankService.getAccount(account.getBankAccountId());

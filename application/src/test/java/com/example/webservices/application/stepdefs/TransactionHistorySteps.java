@@ -16,10 +16,7 @@ import io.cucumber.java.en.When;
 import org.junit.After;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -67,7 +64,9 @@ public class TransactionHistorySteps extends AbstractSteps {
             UUID token = tokens.get(i);
             BigDecimal amount = new BigDecimal( i == 0 ? 1 : i * 5);
             try {
-                this.expectedTransactions.add(paymentService.transfer(token, this.merchant.getAccountId(), amount, ""));
+                TransactionDto dto = new TransactionDto(token, merchant.getAccountId(), UUID.randomUUID(), amount, "", false, new Date());
+
+                this.expectedTransactions.add(paymentService.transfer(dto));
 
             } catch (TokenException | BankException | EntryNotFoundException | InvalidTransferAmountException e) {
                 fail();
@@ -126,7 +125,9 @@ public class TransactionHistorySteps extends AbstractSteps {
             UUID token = tokens.get(i);
             BigDecimal amount = new BigDecimal( i == 0 ? 1 : i * 5);
             try {
-                this.expectedTransactions.add(paymentService.transfer(token, this.merchant.getAccountId(), amount, ""));
+                TransactionDto dto = new TransactionDto(token, merchant.getAccountId(), UUID.randomUUID(), amount, "", false, new Date());
+
+                this.expectedTransactions.add(paymentService.transfer(dto));
 
             } catch (TokenException | EntryNotFoundException | BankException | InvalidTransferAmountException e) {
                 fail();

@@ -49,17 +49,28 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
 
     @Override
     public void UseToken(UUID tokenId) throws TokenException {
-
+        ResponseObject response = send(QUEUE_TOKEN_USE, tokenId);
+        if(response.getStatusCode() != HttpStatus.OK){
+            throw new RuntimeException();
+        }
     }
 
     @Override
     public UUID RequestToken(UUID customerId) throws EntryNotFoundException, TokenQuantityException {
-        return null;
+        ResponseObject response = send(QUEUE_TOKEN_REQUEST, customerId);
+        if(response.getStatusCode() != HttpStatus.OK){
+            throw new RuntimeException();
+        }
+        return fromJson(response.getBody(), UUID.class);
     }
 
     @Override
     public TokenDto GetToken(UUID tokenId) throws InvalidTokenException {
-        return null;
+        ResponseObject response = send(QUEUE_TOKEN_GET, tokenId);
+        if(response.getStatusCode() != HttpStatus.OK){
+            throw new RuntimeException();
+        }
+        return fromJson(response.getBody(),TokenDto.class);
     }
 
     @Override
