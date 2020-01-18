@@ -70,7 +70,7 @@ public class TransactionHistorySteps extends AbstractSteps {
             try {
                 this.expectedTransactions.add(paymentService.transfer(token, this.merchant.getAccountId(), amount, ""));
 
-            } catch (TokenException | BankException | EntryNotFoundException e) {
+            } catch (TokenException | BankException | EntryNotFoundException | InvalidTransferAmountException e) {
                 fail();
             }
         }
@@ -129,7 +129,7 @@ public class TransactionHistorySteps extends AbstractSteps {
             try {
                 this.expectedTransactions.add(paymentService.transfer(token, this.merchant.getAccountId(), amount, ""));
 
-            } catch (TokenException |EntryNotFoundException| BankException e) {
+            } catch (TokenException | EntryNotFoundException | BankException | InvalidTransferAmountException e) {
                 fail();
             }
         }
