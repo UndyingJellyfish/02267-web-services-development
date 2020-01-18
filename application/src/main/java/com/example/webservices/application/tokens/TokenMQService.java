@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +32,7 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
         RequestTokenDto dto = new RequestTokenDto();
         dto.setCustomerId(customer);
         dto.setAmount(quantity);
-        ResponseObject response = fromJson(send(QUEUE_REQUEST_TOKENS, dto), ResponseObject.class);
+        ResponseObject response = fromJson(send(QUEUE_TOKENS_REQUEST, dto), ResponseObject.class);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new RuntimeException();
         }
@@ -41,8 +40,12 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
     }
 
     @Override
-    public List<TokenDto> GetTokens(UUID customer) throws EntryNotFoundException {
-        return null;
+    public List<TokenDto> GetTokens(UUID customerId) throws EntryNotFoundException {
+        ResponseObject response = fromJson(send(QUEUE_TOKENS_GET, customerId), ResponseObject.class);
+        if(response.getStatusCode() != HttpStatus.OK){
+            throw new RuntimeException();
+        }
+        return fromJson(response.getBody(), new TypeToken<List<TokenDto>>(){}.getType());
     }
 
     @Override

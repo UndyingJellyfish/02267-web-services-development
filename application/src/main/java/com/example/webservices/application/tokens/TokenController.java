@@ -24,7 +24,6 @@ public class TokenController {
     }
 
 
-
     @PostMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<UUID> requestTokens(@RequestBody RequestTokenDto dto) {
