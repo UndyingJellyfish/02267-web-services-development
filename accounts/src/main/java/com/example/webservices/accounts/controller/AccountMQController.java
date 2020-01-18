@@ -6,10 +6,7 @@ import com.example.webservices.accounts.models.Customer;
 import com.example.webservices.accounts.models.Merchant;
 import com.example.webservices.library.RabbitHelper;
 import com.example.webservices.library.RabbitMQBaseClass;
-import com.example.webservices.library.dataTransferObjects.AccountDto;
-import com.example.webservices.library.dataTransferObjects.AccountType;
-import com.example.webservices.library.dataTransferObjects.ChangeNameDto;
-import com.example.webservices.library.dataTransferObjects.SignupDto;
+import com.example.webservices.library.dataTransferObjects.*;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
@@ -23,7 +20,6 @@ import java.util.UUID;
 @Service
 public class AccountMQController extends RabbitHelper {
 
-
     private final IAccountService accountService;
 
     public AccountMQController(IAccountService accountService) {
@@ -35,8 +31,8 @@ public class AccountMQController extends RabbitHelper {
     @RabbitListener(queues = QUEUE_ACCOUNT_CHANGENAME)
     public String changeName(String jsonString){
         try {
-            ChangeNameDto accountId = fromJson(jsonString, ChangeNameDto.class);
-            this.accountService.changeName(accountId);
+            ChangeNameDto changeNameDto = fromJson(jsonString, ChangeNameDto.class);
+            this.accountService.changeName(changeNameDto);
             return success();
 
         } catch (EntryNotFoundException e) {
@@ -75,8 +71,8 @@ public class AccountMQController extends RabbitHelper {
     @RabbitListener(queues = QUEUE_CUSTOMER_SIGNUP)
     public String customerSignup(String jsonString){
         try {
-            SignupDto accountId = fromJson(jsonString, SignupDto.class);
-            AccountDto account = this.accountService.addCustomer(accountId);
+            SignupDto signupDto = fromJson(jsonString, SignupDto.class);
+            AccountDto account = this.accountService.addCustomer(signupDto);
 
             return success(account);
 
@@ -88,8 +84,8 @@ public class AccountMQController extends RabbitHelper {
     @RabbitListener(queues = QUEUE_MERCHANT_SIGNUP)
     public String merchantSignup(String jsonString){
         try {
-            SignupDto accountId = fromJson(jsonString, SignupDto.class);
-            AccountDto account = this.accountService.addMerchant(accountId);
+            SignupDto signupDto = fromJson(jsonString, SignupDto.class);
+            AccountDto account = this.accountService.addMerchant(signupDto);
 
             return success(account);
 

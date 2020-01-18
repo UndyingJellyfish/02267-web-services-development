@@ -1,10 +1,7 @@
 package com.example.webservices.library;
 
-import gherkin.deps.com.google.gson.Gson;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-
-import java.lang.reflect.Type;
 
 
 public abstract class RabbitMQBaseClass extends RabbitHelper {

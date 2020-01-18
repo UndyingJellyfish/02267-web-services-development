@@ -24,5 +24,10 @@ public class Application {
     public DirectExchange getAccountsExchange(){
         return new DirectExchange("accounts");
     }
+    @Bean
+    @Qualifier("tokens")
+    public DirectExchange getTokensExchange(){
+        return new DirectExchange("tokens");
+    }
 
 }
