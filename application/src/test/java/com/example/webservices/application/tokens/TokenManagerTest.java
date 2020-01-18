@@ -105,24 +105,15 @@ public class TokenManagerTest extends AbstractSteps {
     @Test
     public void RequestTooManyTokens(){
         UUID customerId = customerDto.getAccountId();
-        List<TokenDto> beforeTokens;
-        try {
-            when(tokenDatastore.getTokens(customerId))
-                    .thenReturn(new ArrayList<Token>(){});
-            beforeTokens = tokenManager.GetTokens(customerId);
-            try{
-                when(accountService.getCustomer(customerId))
+        try{
+            when(accountService.getCustomer(customerId))
                         .thenReturn(customerDto);
-                tokenManager.RequestTokens(customerId,6);
-            }catch(TokenQuantityException ignored){        }
-            when(tokenDatastore.getTokens(customerId))
-                    .thenReturn(new ArrayList<Token>(){});
-            List<TokenDto> afterTokens = tokenManager.GetTokens(customerId);
-            assertEquals(beforeTokens.size(), afterTokens.size());
+            tokenManager.RequestTokens(customerId,6);
+        } catch (TokenQuantityException ignored){
+
         } catch (EntryNotFoundException e) {
             fail();
         }
-
     }
 
     @Test
