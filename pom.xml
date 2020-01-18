@@ -10,10 +10,10 @@
         <version>2.2.2.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>fastmoney-06-grp</groupId>
-    <artifactId>fastmoney-06</artifactId>
+    <groupId>dtu.ws.fastmoney-06-grp</groupId>
+    <artifactId>dtu.ws.fastmoney-06</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>fastmoney-06</name>
+    <name>dtu.ws.fastmoney-06</name>
     <description>Root</description>
     <packaging>pom</packaging>
 

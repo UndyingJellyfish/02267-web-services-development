@@ -11,19 +11,20 @@ import com.example.webservices.library.interfaces.*;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.UUID;
 
 @Service
 public class PaymentService implements IPaymentService {
     private ITokenManager tokenManager;
     private IAccountService accountService;
-    private ITransactionService transactionService;
+    private IReportingService reportingService;
     private IBank bank;
 
-    public PaymentService(ITokenManager tokenManager, IAccountService accountService, ITransactionService transactionService, IBank bank) {
+    public PaymentService(ITokenManager tokenManager, IAccountService accountService, IReportingService reportingService, IBank bank) {
         this.tokenManager = tokenManager;
         this.accountService = accountService;
-        this.transactionService = transactionService;
+        this.reportingService = reportingService;
         this.bank = bank;
     }
 
@@ -42,8 +43,8 @@ public class PaymentService implements IPaymentService {
         AccountDto customer = accountService.getCustomer(token.getCustomerId());
         tokenManager.UseToken(tokenId);
         bank.transferMoney(customer, merchant, amount, description);
-        TransactionDto transaction = new TransactionDto(tokenId, merchant.getAccountId(), customer.getAccountId(), amount, description, isRefund);
-        transactionService.AddTransaction(transaction);
+        TransactionDto transaction = new TransactionDto(tokenId, merchant.getAccountId(), customer.getAccountId(), amount, description, isRefund, new Date());
+        reportingService.AddTransaction(transaction);
         return transaction;
     }
 
@@ -56,7 +57,7 @@ public class PaymentService implements IPaymentService {
         UUID newToken = tokenManager.RequestToken(customerId);
         TransactionDto oldTransaction;
 
-        oldTransaction = transactionService.GetTransactionByTokenId(tokenId);
+        oldTransaction = reportingService.GetTransactionByTokenId(tokenId);
         this.transfer(newToken, merchantId, oldTransaction.getAmount(), true,"Refund");
 
     }

@@ -1,6 +1,7 @@
 package com.example.webservices.library.dataTransferObjects;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.UUID;
 
 public class TransactionDto {
@@ -12,8 +13,9 @@ public class TransactionDto {
     private BigDecimal amount;
     private String description;
     private boolean isRefund;
+    private Date transactionDate;
 
-    public TransactionDto(UUID tokenId, UUID creditor, UUID debtor, BigDecimal amount, String description, boolean isRefund) {
+    public TransactionDto(UUID tokenId, UUID creditor, UUID debtor, BigDecimal amount, String description, boolean isRefund,Date transactionDate) {
         this.tokenId = tokenId;
         this.creditor = creditor;
         this.debtor = debtor;
@@ -22,7 +24,7 @@ public class TransactionDto {
         this.isRefund = isRefund;
     }
 
-    public TransactionDto(UUID transactionId, UUID tokenId, UUID creditor, UUID debtor, BigDecimal amount, String description, boolean isRefund) {
+    public TransactionDto(UUID transactionId, UUID tokenId, UUID creditor, UUID debtor, BigDecimal amount, String description, boolean isRefund, Date transactionDate) {
         this.transactionId = transactionId;
         this.tokenId = tokenId;
         this.creditor = creditor;
@@ -30,6 +32,7 @@ public class TransactionDto {
         this.amount = amount;
         this.description = description;
         this.isRefund = isRefund;
+        this.transactionDate = transactionDate;
     }
 
     private TransactionDto(UUID uuid) {

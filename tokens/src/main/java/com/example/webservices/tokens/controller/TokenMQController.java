@@ -32,7 +32,7 @@ public class TokenMQController extends RabbitHelper {
             return failure(e.getMessage());
         }
     }
-    
+
     @RabbitListener(queues = QUEUE_TOKENS_REQUEST)
     public String requestTokens(String jsonString){
         try {
@@ -40,6 +40,16 @@ public class TokenMQController extends RabbitHelper {
             List<UUID> tokens = this.tokenManager.RequestTokens(requestTokenDto.getCustomerId(), requestTokenDto.getAmount());
             return success(tokens);
         } catch (EntryNotFoundException | TokenQuantityException e) {
+            return failure(e.getMessage());
+        }
+    }
+    @RabbitListener(queues = QUEUE_TOKENS_RETIRE)
+    public String retireTokens(String jsonString){
+        try {
+            UUID accountId = fromJson(jsonString, UUID.class);
+            this.tokenManager.retireAll(accountId);
+            return success();
+        }catch (Exception e){
             return failure(e.getMessage());
         }
     }

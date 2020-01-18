@@ -38,11 +38,19 @@ public class TokensApplication {
         return new Queue(QUEUE_TOKENS_REQUEST, true);
     }
     @Bean
+    public Queue queueRetireTokens(){
+        return new Queue(QUEUE_TOKENS_RETIRE, true);
+    }
+    @Bean
     public Binding bindingGet(@Qualifier("tokens") DirectExchange exchange, Queue queueGetTokens) {
         return BindingBuilder.bind(queueGetTokens).to(exchange).with(queueGetTokens.getName());
     }
     @Bean
     public Binding bindingRequest(@Qualifier("tokens") DirectExchange exchange, Queue queueRequestTokens) {
         return BindingBuilder.bind(queueRequestTokens).to(exchange).with(queueRequestTokens.getName());
+    }
+    @Bean
+    public Binding bindingRetire(@Qualifier("tokens") DirectExchange exchange, Queue queueRetireTokens) {
+        return BindingBuilder.bind(queueRetireTokens).to(exchange).with(queueRetireTokens.getName());
     }
 }

@@ -1,6 +1,8 @@
-package com.example.webservices.application.transfers;
+package com.example.webservices.transactions.dataAccess;
 
 import com.example.webservices.library.exceptions.EntryNotFoundException;
+import com.example.webservices.transactions.interfaces.ITransactionDatastore;
+import com.example.webservices.transactions.models.Transaction;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

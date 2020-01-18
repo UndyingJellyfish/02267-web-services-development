@@ -1,11 +1,11 @@
-package com.example.webservices.application.transfers;
+package com.example.webservices.transactions.models;
 
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
- class Transaction {
+public class Transaction {
 
     private Date transactionDate;
     private UUID creditor; // To
@@ -13,28 +13,30 @@ import java.util.UUID;
     private BigDecimal amount;
     private UUID token;
     private boolean isRefund = false;
-    private UUID transaction;
+    private UUID transactionId;
+    private String description;
 
     private Transaction(){
-        this.transaction = UUID.randomUUID();
+        this.transactionId = UUID.randomUUID();
     }
 
-    public Transaction(UUID creditor, UUID debtor, BigDecimal amount, UUID token, Date transactionDate){
+    public Transaction(UUID creditor, UUID debtor, BigDecimal amount, UUID token, String description, Date transactionDate){
         this();
         this.creditor = creditor;
         this.debtor = debtor;
         this.amount = amount;
         this.token = token;
+        this.description = description;
         this.transactionDate = transactionDate;
     }
 
-    public Transaction(UUID creditor, UUID debtor, BigDecimal amount, UUID token){
-        this(creditor,debtor,amount,token, new Date());
+    public Transaction(UUID creditor, UUID debtor, BigDecimal amount, UUID token, String description){
+        this(creditor,debtor,amount,token, description, new Date());
     }
 
-    public Transaction(UUID creditor, UUID debtor, BigDecimal amount, UUID token, boolean isRefund){
+    public Transaction(UUID creditor, UUID debtor, BigDecimal amount, UUID token, String description, boolean isRefund){
         // A refund always happens today, right now
-        this(creditor, debtor, amount, token, new Date());
+        this(creditor, debtor, amount, token, description, new Date());
         this.isRefund = isRefund;
     }
 
@@ -65,7 +67,15 @@ import java.util.UUID;
 
     public boolean isRefund() { return isRefund; }
 
-    public UUID getTransaction() {
-        return this.transaction;
+    public UUID getTransactionId() {
+        return this.transactionId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

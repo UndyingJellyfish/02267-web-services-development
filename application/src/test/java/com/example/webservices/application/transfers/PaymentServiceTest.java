@@ -20,12 +20,12 @@ public class PaymentServiceTest {
     private IBank bank = mock(IBank.class);
     private IAccountService accountService = mock(IAccountService.class);
     private ITokenManager tokenManager = mock(ITokenManager.class);
-    private ITransactionService transactionService = mock(ITransactionService.class);
+    private IReportingService reportingService = mock(IReportingService.class);
     private AccountDto customerDto = null;
     private AccountDto merchantDto = null;
 
     public PaymentServiceTest(){
-        this.paymentService = new PaymentService(tokenManager, accountService, transactionService, bank);
+        this.paymentService = new PaymentService(tokenManager, accountService, reportingService, bank);
     }
 
     @Before

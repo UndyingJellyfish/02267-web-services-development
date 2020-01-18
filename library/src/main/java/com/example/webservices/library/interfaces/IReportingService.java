@@ -8,4 +8,7 @@ import java.util.UUID;
 
 public interface IReportingService {
     List<TransactionDto> getTransactionHistory(UUID id) throws EntryNotFoundException;
+    List<TransactionDto> getTransactions(UUID id);
+    void AddTransaction(TransactionDto transaction);
+    TransactionDto GetTransactionByTokenId(UUID tokenId);
 }

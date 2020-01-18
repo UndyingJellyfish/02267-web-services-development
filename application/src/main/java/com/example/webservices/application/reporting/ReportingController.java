@@ -1,5 +1,6 @@
 package com.example.webservices.application.reporting;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
+import com.example.webservices.library.interfaces.IReportingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -11,10 +12,10 @@ import java.util.UUID;
 @RequestMapping("/reporting")
 public class ReportingController {
 
-    private final ReportingService reportingService;
+    private final IReportingService reportingService;
 
 
-    public ReportingController(ReportingService reportingService){
+    public ReportingController(IReportingService reportingService){
         this.reportingService = reportingService;
     }
 

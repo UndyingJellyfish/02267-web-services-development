@@ -1,7 +1,6 @@
 package com.example.webservices.application.transfers;
 
 import com.example.webservices.library.dataTransferObjects.AccountDto;
-import com.example.webservices.library.dataTransferObjects.AccountType;
 import com.example.webservices.library.exceptions.BankException;
 import com.example.webservices.library.interfaces.IBank;
 import dtu.ws.fastmoney.*;

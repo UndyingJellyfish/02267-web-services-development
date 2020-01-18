@@ -32,7 +32,7 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
         RequestTokenDto dto = new RequestTokenDto();
         dto.setCustomerId(customer);
         dto.setAmount(quantity);
-        ResponseObject response = fromJson(send(QUEUE_TOKENS_REQUEST, dto), ResponseObject.class);
+        ResponseObject response = send(QUEUE_TOKENS_REQUEST, dto);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new RuntimeException();
         }
@@ -41,7 +41,7 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
 
     @Override
     public List<TokenDto> GetTokens(UUID customerId) throws EntryNotFoundException {
-        ResponseObject response = fromJson(send(QUEUE_TOKENS_GET, customerId), ResponseObject.class);
+        ResponseObject response = send(QUEUE_TOKENS_GET, customerId);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new RuntimeException();
         }

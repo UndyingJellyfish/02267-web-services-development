@@ -1,4 +1,4 @@
-package com.example.webservices.accounts.services;
+package com.example.webservices.transactions.services;
 
 import com.example.webservices.library.RabbitMQBaseClass;
 import com.example.webservices.library.dataTransferObjects.RequestTokenDto;
@@ -39,8 +39,12 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
     }
 
     @Override
-    public List<TokenDto> GetTokens(UUID customer) throws EntryNotFoundException {
-        return null;
+    public List<TokenDto> GetTokens(UUID customerId) throws EntryNotFoundException {
+        ResponseObject response = send(QUEUE_TOKENS_GET, customerId);
+        if(response.getStatusCode() != HttpStatus.OK){
+            throw new RuntimeException();
+        }
+        return fromJson(response.getBody(), new TypeToken<List<TokenDto>>(){}.getType());
     }
 
     @Override
@@ -60,9 +64,6 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
 
     @Override
     public void retireAll(UUID accountId) {
-        ResponseObject response = send(QUEUE_TOKENS_RETIRE, accountId);
-        if(response.getStatusCode() != HttpStatus.OK){
-            throw new RuntimeException();
-        }
+
     }
 }
