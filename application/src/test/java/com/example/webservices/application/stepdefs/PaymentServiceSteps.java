@@ -1,7 +1,7 @@
 package com.example.webservices.application.stepdefs;
 
 import com.example.webservices.library.exceptions.BankException;
-import com.example.webservices.library.interfaces.IReportingService;
+import com.example.webservices.library.interfaces.ITransactionService;
 import dtu.ws.fastmoney.BankServiceException_Exception;
 import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.interfaces.IBank;
@@ -25,7 +25,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class PaymentServiceSteps extends AbstractSteps {
-    private IReportingService reportingService;
+    private ITransactionService transactionService;
     private UUID merchantId;
     private BigDecimal amount;
     private UUID tokenId;
@@ -33,8 +33,8 @@ public class PaymentServiceSteps extends AbstractSteps {
     private UUID customerId;
     private IBank bank;
 
-    public PaymentServiceSteps(IReportingService reportingService, IBank bank) {
-        this.reportingService = reportingService;
+    public PaymentServiceSteps(ITransactionService transactionService, IBank bank) {
+        this.transactionService = transactionService;
         this.bank = bank;
     }
 
@@ -56,7 +56,7 @@ public class PaymentServiceSteps extends AbstractSteps {
             dto.setDescription(description);
             testContext().setPayload(dto);
             executePost("/payment/transfer");
-            transactionDto = reportingService.GetTransactionByTokenId(tokenId);
+            transactionDto = transactionService.GetTransactionByTokenId(tokenId);
             verify(bank, times(1)).transferMoney(
                     argThat(c -> c.getAccountId().equals(customerId)),
                     argThat(m -> m.getAccountId().equals(merchantId)),
@@ -88,7 +88,7 @@ public class PaymentServiceSteps extends AbstractSteps {
         testContext().setPayload(dto);
         executePost("/payment/transfer");
 
-        transactionDto = reportingService.GetTransactionByTokenId(tokenId);
+        transactionDto = transactionService.GetTransactionByTokenId(tokenId);
 
         try {
             verify(bank, never()).transferMoney(any(), any(), any(), any());

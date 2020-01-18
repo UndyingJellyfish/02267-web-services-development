@@ -7,22 +7,32 @@ services:
       - "8181:8080"
     env_file:
       - ./.env
+    depends_on:
+      - rabbitmq
   payments:
     build: ./payments
     env_file:
       - ./.env
+    depends_on:
+      - rabbitmq
   transactions:
     build: ./transactions
     env_file:
       - ./.env
+    depends_on:
+      - rabbitmq
   tokens:
     build: ./tokens
     env_file:
       - ./.env
+    depends_on:
+      - rabbitmq
   accounts:
     build: ./accounts
     env_file:
       - ./.env
+    depends_on:
+      - rabbitmq
   rabbitmq:
     image: rabbitmq
     ports:

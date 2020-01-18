@@ -21,7 +21,6 @@
         <dependency>
             <groupId>com.example</groupId>
             <artifactId>webservices-library</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <build>

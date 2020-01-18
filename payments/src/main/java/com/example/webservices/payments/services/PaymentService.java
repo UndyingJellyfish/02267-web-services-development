@@ -1,4 +1,4 @@
-package com.example.webservices.application.transfers;
+package com.example.webservices.payments.services;
 
 import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.dataTransferObjects.TokenDto;
@@ -18,13 +18,13 @@ import java.util.UUID;
 public class PaymentService implements IPaymentService {
     private ITokenManager tokenManager;
     private IAccountService accountService;
-    private IReportingService reportingService;
+    private ITransactionService transactionService;
     private IBank bank;
 
-    public PaymentService(ITokenManager tokenManager, IAccountService accountService, IReportingService reportingService, IBank bank) {
+    public PaymentService(ITokenManager tokenManager, IAccountService accountService, ITransactionService transactionService, IBank bank) {
         this.tokenManager = tokenManager;
         this.accountService = accountService;
-        this.reportingService = reportingService;
+        this.transactionService = transactionService;
         this.bank = bank;
     }
 
@@ -44,7 +44,7 @@ public class PaymentService implements IPaymentService {
         tokenManager.UseToken(tokenId);
         bank.transferMoney(customer, merchant, amount, description);
         TransactionDto transaction = new TransactionDto(tokenId, merchant.getAccountId(), customer.getAccountId(), amount, description, isRefund, new Date());
-        reportingService.AddTransaction(transaction);
+        transactionService.AddTransaction(transaction);
         return transaction;
     }
 
@@ -57,7 +57,7 @@ public class PaymentService implements IPaymentService {
         UUID newToken = tokenManager.RequestToken(customerId);
         TransactionDto oldTransaction;
 
-        oldTransaction = reportingService.GetTransactionByTokenId(tokenId);
+        oldTransaction = transactionService.GetTransactionByTokenId(tokenId);
         this.transfer(newToken, merchantId, oldTransaction.getAmount(), true,"Refund");
 
     }

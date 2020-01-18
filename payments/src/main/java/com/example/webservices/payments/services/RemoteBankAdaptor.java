@@ -1,4 +1,4 @@
-package com.example.webservices.application.transfers;
+package com.example.webservices.payments.services;
 
 import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.exceptions.BankException;

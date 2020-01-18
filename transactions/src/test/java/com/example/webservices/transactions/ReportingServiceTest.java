@@ -5,7 +5,7 @@ import com.example.webservices.library.dataTransferObjects.AccountType;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
-import com.example.webservices.transactions.interfaces.ITransactionDatastore;
+import com.example.webservices.library.interfaces.ITransactionService;
 import com.example.webservices.transactions.models.Transaction;
 import com.example.webservices.transactions.services.ReportingService;
 import org.junit.Before;
@@ -14,6 +14,7 @@ import org.mockito.ArgumentMatchers;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -26,14 +27,14 @@ import static org.mockito.Mockito.when;
 public class ReportingServiceTest {
 
     private ReportingService reportingService;
-    private ITransactionDatastore transactionDatastore = mock(ITransactionDatastore.class);
+    private ITransactionService transactionService = mock(ITransactionService.class);
     private IAccountService accountService = mock(IAccountService.class);
     private AccountDto customer;
     private AccountDto merchant;
-    List<Transaction> transactions = new ArrayList<>();
+    List<TransactionDto> transactionDtos = new ArrayList<>();
 
     public ReportingServiceTest() {
-        this.reportingService = new ReportingService(transactionDatastore, accountService);
+        this.reportingService = new ReportingService(transactionService, accountService);
     }
 
     @Before
@@ -54,9 +55,9 @@ public class ReportingServiceTest {
         } catch (EntryNotFoundException e) {
             fail();
         }
-        transactions.add(new Transaction(merchant.getAccountId(), customer.getAccountId(), new BigDecimal("1"), UUID.randomUUID(), "To trick SKAT", false));
-        transactions.add(new Transaction(merchant.getAccountId(), customer.getAccountId(), new BigDecimal("100"), UUID.randomUUID(), "Keep-quite money", false));
-        when(transactionDatastore.getTransactions(ArgumentMatchers.any())).thenReturn(transactions);
+        transactionDtos.add(new TransactionDto(UUID.randomUUID(), merchant.getAccountId(), customer.getAccountId(), new BigDecimal("1"), "To trick SKAT", false, new Date()));
+        transactionDtos.add(new TransactionDto(UUID.randomUUID(), merchant.getAccountId(), customer.getAccountId(), new BigDecimal("100"), "Keep-quite money", false, new Date()));
+        when(transactionService.getTransactions(ArgumentMatchers.any())).thenReturn(transactionDtos);
     }
 
     @Test
@@ -68,18 +69,7 @@ public class ReportingServiceTest {
             fail();
         }
         assertNotNull(history);
-        List<TransactionDto> dtoList = transactions
-                .stream()
-                .map(t ->
-                        new TransactionDto(t.getTransactionId(),
-                                t.getTokenId(), t.getCreditorId(),
-                                t.getDebtorId(), t.getAmount(),
-                                t.getDescription(),
-                                t.isRefund(),
-                                t.getTransactionDate())
-                )
-                .collect(Collectors.toList());
-        assertEquals(dtoList, history);
+        assertEquals(transactionDtos, history);
     }
 
     @Test
@@ -91,18 +81,7 @@ public class ReportingServiceTest {
             fail();
         }
         assertNotNull(history);
-        List<TransactionDto> dtoList = transactions
-                .stream()
-                .map(t ->
-                        new TransactionDto(t.getTransactionId(),
-                                t.getTokenId(), t.getCreditorId(),
-                                t.getDebtorId(), t.getAmount(),
-                                t.getDescription(),
-                                t.isRefund(),
-                                t.getTransactionDate())
-                )
-                .collect(Collectors.toList());
-        dtoList.forEach(t -> t.setDebtor(null));
-        assertEquals(dtoList, history);
+        transactionDtos.forEach(t -> t.setDebtor(null));
+        assertEquals(transactionDtos, history);
     }
 }
