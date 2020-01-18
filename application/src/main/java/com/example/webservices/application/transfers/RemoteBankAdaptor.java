@@ -35,10 +35,11 @@ public class RemoteBankAdaptor implements IBank {
     }
 
     @Override
-    public String addAccount(AccountDto account) throws BankException, ClassNotFoundException {
+    public String addAccount(AccountDto account) throws BankException {
         return addAccount(account, BigDecimal.ZERO);
     }
-    private String addAccount(AccountDto account, BigDecimal balance) throws BankException{
+    @Override
+    public String addAccount(AccountDto account, BigDecimal balance) throws BankException{
         BankService bankService = bankServiceService.getPort(BankService.class);
         User user = new User();
         setupUserName(account.getName(), user);

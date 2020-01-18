@@ -27,11 +27,11 @@ public class RemoteBankAdaptorTest {
         merchantDto = new AccountDto(UUID.randomUUID(),"Bob Bobby", "020202-0202", AccountType.MERCHANT);
 
         try {
-            String customerAccountId = bank.addAccount(customerDto);
+            String customerAccountId = bank.addAccount(customerDto, startingBalance);
             customerDto.setBankAccountId(customerAccountId);
-            String merchantAccountId = bank.addAccount(merchantDto);
+            String merchantAccountId = bank.addAccount(merchantDto, startingBalance);
             merchantDto.setBankAccountId(merchantAccountId);
-        } catch (BankException | ClassNotFoundException e) {
+        } catch (BankException e) {
             Assert.fail();
         }
     }
