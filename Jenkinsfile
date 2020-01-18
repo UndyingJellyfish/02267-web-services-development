@@ -9,7 +9,6 @@ pipeline {
         sh 'bash build_and_test.sh library'
 
 
-        sh 'bash build_and_test.sh application'
         sh 'bash build_and_test.sh payments'
         sh 'bash build_and_test.sh tokens'
         sh 'bash build_and_test.sh accounts'
@@ -17,16 +16,11 @@ pipeline {
 
       }
     }
-    /*stage('Test'){
+    stage('Test'){
         steps{
-            dir('./system-tests'){
-                sh '''
-                set -e
-                mvn test
-                '''
-            }
+            sh 'bash build_and_test.sh application'
         }
-    }*/
+    }
     stage('Deploy'){
         steps{
             sh 'docker-compose -f docker-compose.yml up -d'
