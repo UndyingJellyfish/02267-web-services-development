@@ -8,19 +8,20 @@ import com.example.webservices.library.RabbitHelper;
 import com.example.webservices.library.RabbitMQBaseClass;
 import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.dataTransferObjects.AccountType;
+import com.example.webservices.library.dataTransferObjects.SignupDto;
+import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Service
 public class AccountMQController extends RabbitHelper {
 
-    private static final String QUEUE_ACCOUNT_GET = "account.get";
-    private static final String QUEUE_CUSTOMER_GET = "account.get.customer";
-    private static final String QUEUE_MERCHANT_GET = "account.get.merchant";
 
     private final IAccountService accountService;
 
@@ -43,32 +44,19 @@ public class AccountMQController extends RabbitHelper {
 
     }
 
-   /* @RabbitListener(queues = QUEUE_CUSTOMER_GET)
-    public String getCustomer(String jsonString){
-        UUID accountId = fromJson(jsonString, UUID.class);
-
-        Customer account;
+    @RabbitListener(queues = QUEUE_CUSTOMER_SIGNUP)
+    public String customerSignup(String jsonString){
         try {
-            account = this.accountDatastore.getCustomer(accountId);
-        } catch (EntryNotFoundException e) {
+            SignupDto accountId = fromJson(jsonString, SignupDto.class);
+            AccountDto account = this.accountService.addCustomer(accountId);
+
+            return success(account);
+
+        } catch (DuplicateEntryException e) {
             return failure(e.getMessage());
         }
 
-        return success(createDto(account));
     }
-    @RabbitListener(queues = QUEUE_MERCHANT_GET)
-    public String getMerchant(String jsonString){
-        UUID accountId = fromJson(jsonString, UUID.class);
-
-        Merchant account;
-        try {
-            account = this.accountDatastore.getMerchant(accountId);
-        } catch (EntryNotFoundException e) {
-            return failure(e.getMessage());
-        }
-
-        return success(createDto(account));
-    }*/
 
 
     private AccountDto createDto(Account account) {

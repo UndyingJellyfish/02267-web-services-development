@@ -23,8 +23,8 @@ import java.util.UUID;
 public class AccountMQService extends RabbitMQBaseClass implements IAccountService {
 
     private static final String QUEUE_ACCOUNT_GET = "account.get";
-    private static final String QUEUE_CUSTOMER_CREATE = "account.create.customer";
-    private static final String QUEUE_MERCHANT_CREATE = "account.create.merchant";
+    private static final String QUEUE_CUSTOMER_CREATE = "account.signup.customer";
+    private static final String QUEUE_MERCHANT_CREATE = "account.signup.merchant";
     private static final String QUEUE_ACCOUNT_CHANGENAME = "account.changename";
     private static final String QUEUE_ACCOUNT_DELETE = "account.delete";
 
