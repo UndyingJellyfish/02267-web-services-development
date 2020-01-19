@@ -35,10 +35,10 @@ public class TokenMQController extends RabbitHelper {
     }
 
     @RabbitListener(queues = QUEUE_TOKENS_REQUEST)
-    public ResponseObject requestTokens(String jsonString){
+    public ResponseObject requestTokens(RequestTokenDto jsonString){
         try {
-            RequestTokenDto requestTokenDto = fromJson(jsonString, RequestTokenDto.class);
-            List<UUID> tokens = this.tokenManager.RequestTokens(requestTokenDto.getCustomerId(), requestTokenDto.getAmount());
+            //RequestTokenDto requestTokenDto = fromJson(jsonString, RequestTokenDto.class);
+            List<UUID> tokens = this.tokenManager.RequestTokens(jsonString.getCustomerId(), jsonString.getAmount());
             return success(tokens);
         } catch (EntryNotFoundException | TokenQuantityException e) {
             return failure(e.getMessage());

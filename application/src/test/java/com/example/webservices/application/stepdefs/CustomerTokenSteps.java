@@ -19,10 +19,12 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.assertj.core.util.Lists;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -45,7 +47,7 @@ public class CustomerTokenSteps extends AbstractSteps {
         //ResponseEntity<UUID> response = template.postForEntity("http://localhost:8080/account/customer", dto, UUID.class);
         testContext().setPayload(dto);
         executePost("/account/customer");
-        UUID customerId = getBody(UUID.class);
+        customerId = getBody(UUID.class);
         //UUID customerId = response.getBody();
 
     }
@@ -54,7 +56,7 @@ public class CustomerTokenSteps extends AbstractSteps {
     public void theUserHasSpentAllTokens() {
 
         executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId",customerId.toString());}});
-        List<TokenDto> tokens = getBody(new TypeToken<List<TokenDto>>(){}.getType());
+        List<TokenDto> tokens = Lists.list(getBody(TokenDto[].class));
         assertTrue(tokens.stream().allMatch(TokenDto::isUsed));
     }
 
@@ -65,7 +67,7 @@ public class CustomerTokenSteps extends AbstractSteps {
         dto.setCustomerId(this.customerId);
         testContext().setPayload(dto);
         executePost("/tokens");
-        tokenIdList = getBody(new TypeToken<List<UUID>>(){}.getType());
+        tokenIdList = Lists.list(getBody(UUID[].class));
     }
 
     @Then("The user receives {int} tokens")
@@ -75,8 +77,18 @@ public class CustomerTokenSteps extends AbstractSteps {
         if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
             fail();
         }
-        tokenList = getBody(new TypeToken<List<TokenDto>>(){}.getType());
+        tokenList = Lists.list(getBody(TokenDto[].class));
         assertEquals(arg0,tokenList.size());
+    }
+
+    @After
+    public void tearDown(){
+        if(customerId != null){
+
+            executeDelete("/account/{accountId}",
+                    new HashMap<String, String>(){{put("accountId", customerId.toString());}});
+
+        }
     }
 
     @And("The user has {int} unused token")
@@ -96,7 +108,8 @@ public class CustomerTokenSteps extends AbstractSteps {
         if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
             fail();
         }
-        List<TokenDto> tokens = getBody(new TypeToken<List<TokenDto>>(){}.getType());
+
+        List<TokenDto> tokens = Lists.list(getBody(TokenDto[].class));
         assertEquals(arg0, tokens.stream().filter(t ->!t.isUsed()).count());
     }
 
@@ -108,7 +121,7 @@ public class CustomerTokenSteps extends AbstractSteps {
         if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
             fail();
         }
-        List<TokenDto> tokens = getBody(new TypeToken<List<TokenDto>>(){}.getType());
+        List<TokenDto> tokens = Lists.list(getBody(TokenDto[].class));
         assertEquals(arg0, tokens.stream().filter(t ->!t.isUsed()).count());
     }
 
@@ -129,15 +142,15 @@ public class CustomerTokenSteps extends AbstractSteps {
     private int excp = -1;
     @When("The user requests {int} tokens")
     public void theUserRequestsTokens(int arg0) {
-            RequestTokenDto dto = new RequestTokenDto();
-            dto.setAmount(arg0);
-            dto.setCustomerId(this.customerId);
-            testContext().setPayload(dto);
-            executePost("/tokens");
-            if(testContext().getResponse().statusCode() == HttpStatus.OK.value()){
-                fail();
-            }
-            excp = testContext().getResponse().statusCode();
+        RequestTokenDto dto = new RequestTokenDto();
+        dto.setAmount(arg0);
+        dto.setCustomerId(this.customerId);
+        testContext().setPayload(dto);
+        executePost("/tokens");
+        if(testContext().getResponse().statusCode() == HttpStatus.OK.value()){
+            fail();
+        }
+        excp = testContext().getResponse().statusCode();
     }
 
     @Then("It should fail")
@@ -171,7 +184,7 @@ public class CustomerTokenSteps extends AbstractSteps {
         if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
             fail();
         }
-        this.tokenList = getBody(new TypeToken<List<TokenDto>>(){}.getType());
+        this.tokenList = Lists.list(getBody(TokenDto[].class));
     }
 
     @Then("He should get his tokens")

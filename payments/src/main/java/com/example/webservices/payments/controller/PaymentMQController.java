@@ -8,6 +8,7 @@ import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.exceptions.InvalidTransferAmountException;
 import com.example.webservices.library.exceptions.TokenException;
 import com.example.webservices.library.interfaces.IPaymentService;
+import dtu.ws.fastmoney.Transaction;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +22,11 @@ public class PaymentMQController extends RabbitHelper {
     }
 
     @RabbitListener(queues = QUEUE_PAYMENT_TRANSFER)
-    public ResponseObject transfer(String jsonString){
+    public ResponseObject transfer(TransactionDto jsonString){
 
         try {
-            TransactionDto transactionDto = fromJson(jsonString, TransactionDto.class);
-            TransactionDto result = this.paymentService.transfer(transactionDto);
+            //TransactionDto transactionDto = fromJson(jsonString, TransactionDto.class);
+            TransactionDto result = this.paymentService.transfer(jsonString);
             return success(result);
         } catch (EntryNotFoundException | TokenException | BankException | InvalidTransferAmountException e) {
             return failure(e.getMessage());
@@ -33,11 +34,11 @@ public class PaymentMQController extends RabbitHelper {
 
     }
     @RabbitListener(queues = QUEUE_PAYMENT_REFUND)
-    public ResponseObject refund(String jsonString){
+    public ResponseObject refund(TransactionDto jsonString){
 
         try {
-            TransactionDto transactionDto = fromJson(jsonString, TransactionDto.class);
-            this.paymentService.refund(transactionDto);
+           //TransactionDto transactionDto = fromJson(jsonString, TransactionDto.class);
+            this.paymentService.refund(jsonString);
             return success();
         } catch (EntryNotFoundException | TokenException | BankException | InvalidTransferAmountException e) {
             return failure(e.getMessage());

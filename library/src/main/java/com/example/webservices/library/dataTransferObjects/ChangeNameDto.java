@@ -1,8 +1,9 @@
 package com.example.webservices.library.dataTransferObjects;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class ChangeNameDto {
+public class ChangeNameDto implements Serializable {
 
     private UUID accountId;
     private String newName;
