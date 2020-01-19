@@ -36,13 +36,13 @@ public class TransactionServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        transaction = new Transaction(creditorId,
-                debtorId,
-                amount,
-                tokenId,
-                description,
-                date);
-        transactions = new ArrayList<Transaction>(){
+        this.transaction = new Transaction(this.creditorId,
+                this.debtorId,
+                this.amount,
+                this.tokenId,
+                this.description,
+                this.date);
+        this.transactions = new ArrayList<Transaction>(){
             {add(transaction);}
         };
         when(transactionDatastore.getTransactions(creditorId)).thenReturn(transactions);
@@ -104,16 +104,39 @@ public class TransactionServiceTest {
    }
 
     @Test
-    public void getTransactionByTokenId() throws EntryNotFoundException {
-        when(transactionDatastore
-            .getTransactionByTokenId(eq(tokenId)))
-            .thenReturn(transaction);
+    public void getTransactionByTokenId() {
+        try {
+            when(transactionDatastore
+                .getTransactionByTokenId(eq(tokenId)))
+                .thenReturn(transaction);
+            TransactionDto actualTransaction = transactionService.getTransactionByTokenId(tokenId);
 
-        TransactionDto actualTransaction = transactionService.getTransactionByTokenId(tokenId);
+            verify(transactionDatastore, times(1))
+                    .getTransactionByTokenId(eq(tokenId));
 
-        verify(transactionDatastore, times(1))
-                .getTransactionByTokenId(eq(tokenId));
+            assertTrue(Match(actualTransaction));
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
+    }
 
-        assertTrue(Match(actualTransaction));
+    @Test
+    public void refundExistingTransaction() {
+
+        try {
+            when(transactionDatastore
+                    .getTransactionByTokenId(eq(tokenId)))
+                    .thenReturn(transaction);
+            List<TransactionDto> creditorTransactionPre = transactionService.getTransactions(creditorId);
+            List<TransactionDto> debtorTransactionPre = transactionService.getTransactions(debtorId);
+
+            transactionService.refundTransaction(tokenId);
+            List<TransactionDto> creditorTransactionPost = transactionService.getTransactions(creditorId);
+            List<TransactionDto> debtorTransactionPost = transactionService.getTransactions(debtorId);
+            // FIXME assert differences in the lists below:
+            fail(); // for now
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
     }
 }

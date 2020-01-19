@@ -57,7 +57,7 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
-    public void RefundTransaction(UUID tokenId) throws EntryNotFoundException {
+    public void refundTransaction(UUID tokenId) throws EntryNotFoundException {
         TransactionDto dto = getTransactionByTokenId(tokenId);
         UUID temp = dto.getCreditorId();
         dto.setCreditor(dto.getDebtorId());
