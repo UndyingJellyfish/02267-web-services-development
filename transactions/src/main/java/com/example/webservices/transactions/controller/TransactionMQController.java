@@ -21,11 +21,11 @@ public class TransactionMQController extends RabbitHelper {
     }
 
     @RabbitListener(queues = QUEUE_TRANSACTION_ADD)
-    public ResponseObject addTransaction(String jsonString){
+    public ResponseObject addTransaction(TransactionDto jsonString){
 
         try{
-            TransactionDto dto = fromJson(jsonString, TransactionDto.class);
-            this.transactionService.AddTransaction(dto);
+            //TransactionDto dto = fromJson(jsonString, TransactionDto.class);
+            this.transactionService.addTransaction(jsonString);
             return success();
         }
         catch (Exception e){

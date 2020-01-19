@@ -43,7 +43,7 @@ public class PaymentService implements IPaymentService {
         tokenManager.UseToken(tokenId);
         bank.transferMoney(customer, merchant, amount, description);
         TransactionDto transaction = new TransactionDto(tokenId, merchant.getAccountId(), customer.getAccountId(), amount, description, isRefund, new Date());
-        transactionService.AddTransaction(transaction);
+        transactionService.addTransaction(transaction);
         return transaction;
     }
 
@@ -52,12 +52,8 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
-    public void refund(TransactionDto transactionDto) throws TokenException, BankException, EntryNotFoundException, InvalidTransferAmountException {
-        UUID newToken = tokenManager.RequestToken(transactionDto.getDebtorId());
-
-        TransactionDto oldTransaction = transactionService.GetTransactionByTokenId(transactionDto.getTransactionId());
-        this.transfer(newToken, oldTransaction.getCreditorId(), oldTransaction.getAmount(), true,"Refund");
-
+    public void refund(UUID transactionId) throws EntryNotFoundException {
+        transactionService.RefundTransaction(transactionId);
     }
 
 }

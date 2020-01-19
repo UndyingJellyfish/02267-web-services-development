@@ -50,7 +50,6 @@ public abstract class RabbitHelper {
         return success("success");
     }
 
-
     protected <T> ResponseObject failure(T response, HttpStatus status){
         return new ResponseObject(status, toJson(response));
     }

@@ -29,6 +29,6 @@ public class ReportingMQService extends RabbitMQBaseClass implements IReportingS
             throw new EntryNotFoundException();
         }
 
-        return fromJson(response.getBody(),new TypeToken<ArrayList<TransactionDto>>(){}.getType());
+        return fromJson(response.getBody(),new TypeToken<List<TransactionDto>>(){}.getType());
     }
 }

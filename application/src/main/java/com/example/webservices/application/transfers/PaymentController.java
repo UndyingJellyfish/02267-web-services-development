@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/payment")
 public class PaymentController {
@@ -34,10 +36,10 @@ public class PaymentController {
     }
     @PostMapping("/refund")
     @ResponseStatus(HttpStatus.OK)
-    public void RefundTransaction(@RequestBody TransactionDto transaction){
+    public void RefundTransaction(@RequestBody UUID transactionId){
         try {
-            paymentService.refund(transaction);
-        } catch (TokenException | IllegalArgumentException | EntryNotFoundException | BankException | InvalidTransferAmountException e) {
+            paymentService.refund(transactionId);
+        } catch (EntryNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }

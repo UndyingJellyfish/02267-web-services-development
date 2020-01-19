@@ -1,10 +1,11 @@
 package com.example.webservices.library.dataTransferObjects;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
-public class TransactionDto {
+public class TransactionDto implements Serializable {
     private UUID transactionId;
 
     private UUID tokenId;
@@ -15,13 +16,12 @@ public class TransactionDto {
     private boolean isRefund;
     private Date transactionDate;
 
+    public TransactionDto(UUID tokenId, UUID creditor, UUID debtor, BigDecimal amount, String description, Date transactionDate) {
+        this(null, tokenId,creditor,debtor,amount,description,false,transactionDate);
+    }
+
     public TransactionDto(UUID tokenId, UUID creditor, UUID debtor, BigDecimal amount, String description, boolean isRefund,Date transactionDate) {
-        this.tokenId = tokenId;
-        this.creditor = creditor;
-        this.debtor = debtor;
-        this.amount = amount;
-        this.description = description;
-        this.isRefund = isRefund;
+        this(null, tokenId,creditor,debtor,amount,description,isRefund,transactionDate);
     }
 
     public TransactionDto(UUID transactionId, UUID tokenId, UUID creditor, UUID debtor, BigDecimal amount, String description, boolean isRefund, Date transactionDate) {
@@ -43,20 +43,6 @@ public class TransactionDto {
         return new TransactionDto(UUID.randomUUID());
     }
 
-/*
-    public TransactionDto(Transaction transaction) {
-        transactionId = transaction.getTransactionId();
-        tokenId = transaction.getToken().getTokenId();
-        merchantId = transaction.getCreditor().getAccountId();
-        Account debtor = transaction.getDebtor();
-        if (debtor != null) {
-            customerId = debtor.getAccountId();
-        }
-        amount = transaction.getAmount();
-        description = null; // TODO: Why the fuck is there not a description in the transaction object but there is in the DTO???
-        // TODO: Where the FUCK is transaction date???
-    }
- */
 
     public UUID getTokenId() {
         return tokenId;
@@ -108,5 +94,13 @@ public class TransactionDto {
 
     public void setRefund(boolean refund) {
         isRefund = refund;
+    }
+
+    public Date getTransactionDate() {
+        return transactionDate;
+    }
+
+    public void setTransactionDate(Date transactionDate) {
+        this.transactionDate = transactionDate;
     }
 }

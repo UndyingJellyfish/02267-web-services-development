@@ -56,7 +56,7 @@ public class TransactionHistorySteps extends AbstractSteps {
         this.expectedTransactions = new ArrayList<>();
         List<UUID> tokens = null;
         try {
-            tokens = tokenManagers.RequestTokens(this.customer.getAccountId(), 5);
+            tokens =  tokenManagers.RequestTokens(this.customer.getAccountId(), 5);
         } catch (EntryNotFoundException | TokenQuantityException e) {
             fail();
         }

@@ -4,14 +4,14 @@ import com.example.webservices.library.dataTransferObjects.*;
 import com.example.webservices.library.exceptions.*;
 import com.example.webservices.library.interfaces.*;
 import com.example.webservices.payments.services.PaymentService;
+import dtu.ws.fastmoney.Transaction;
 import org.junit.Before;
 import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class PaymentServiceTest {
 
@@ -100,5 +100,10 @@ public class PaymentServiceTest {
         assertEquals(amount, transaction.getAmount());
         assertEquals(description, transaction.getDescription());
         assertEquals(tokenId, transaction.getTokenId());
+    }
+
+    @Test
+    public void refundAmount() {
+        // TODO
     }
 }

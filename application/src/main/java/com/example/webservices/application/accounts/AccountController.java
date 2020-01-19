@@ -1,5 +1,6 @@
 package com.example.webservices.application.accounts;
 
+import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.dataTransferObjects.ChangeNameDto;
 import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
@@ -45,7 +46,8 @@ public class AccountController {
     @ResponseStatus(HttpStatus.OK)
     public UUID signupCustomer(@RequestBody SignupDto customer){
         try {
-            return accountService.addCustomer(customer).getAccountId();
+            AccountDto dto = accountService.addCustomer(customer);
+            return dto.getAccountId();
         } catch (DuplicateEntryException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }

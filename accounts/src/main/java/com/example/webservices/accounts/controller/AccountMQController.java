@@ -29,10 +29,10 @@ public class AccountMQController extends RabbitHelper {
 
 
     @RabbitListener(queues = QUEUE_ACCOUNT_CHANGENAME)
-    public ResponseObject changeName(String jsonString){
+    public ResponseObject changeName(ChangeNameDto jsonString){
         try {
-            ChangeNameDto changeNameDto = fromJson(jsonString, ChangeNameDto.class);
-            this.accountService.changeName(changeNameDto);
+            //ChangeNameDto changeNameDto = fromJson(jsonString, ChangeNameDto.class);
+            this.accountService.changeName(jsonString);
             return success();
 
         } catch (EntryNotFoundException e) {
@@ -69,10 +69,10 @@ public class AccountMQController extends RabbitHelper {
     }
 
     @RabbitListener(queues = QUEUE_CUSTOMER_SIGNUP)
-    public ResponseObject customerSignup(String jsonString){
+    public ResponseObject customerSignup(SignupDto jsonString){
         try {
-            SignupDto signupDto = fromJson(jsonString, SignupDto.class);
-            AccountDto account = this.accountService.addCustomer(signupDto);
+            //SignupDto signupDto = fromJson(jsonString, SignupDto.class);
+            AccountDto account = this.accountService.addCustomer(jsonString);
 
             return success(account);
 
@@ -82,10 +82,10 @@ public class AccountMQController extends RabbitHelper {
 
     }
     @RabbitListener(queues = QUEUE_MERCHANT_SIGNUP)
-    public ResponseObject merchantSignup(String jsonString){
+    public ResponseObject merchantSignup(SignupDto jsonString){
         try {
-            SignupDto signupDto = fromJson(jsonString, SignupDto.class);
-            AccountDto account = this.accountService.addMerchant(signupDto);
+            //SignupDto signupDto = fromJson(jsonString, SignupDto.class);
+            AccountDto account = this.accountService.addMerchant(jsonString);
 
             return success(account);
 
