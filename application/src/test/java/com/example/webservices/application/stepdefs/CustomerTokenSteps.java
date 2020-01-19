@@ -31,35 +31,29 @@ import static org.junit.Assert.*;
 
 public class CustomerTokenSteps extends AbstractSteps {
 
-    private AccountDto customer;
-    private IAccountService accountService;
+    private UUID customerId;
     private List<UUID> tokenIdList;
     private List<TokenDto> tokenList;
 
-    public CustomerTokenSteps(IAccountService accountService){
-        this.accountService = accountService;
+    public CustomerTokenSteps(){
     }
 
     @Given("A registered user")
     public void aRegisteredUser() {
         SignupDto dto = new SignupDto("bob", "123", UUID.randomUUID().toString());
         RestTemplate template = new RestTemplate();
-        ResponseEntity<UUID> response = template.postForEntity("http://localhost:8080/account/customer", dto, UUID.class);/*
+        //ResponseEntity<UUID> response = template.postForEntity("http://localhost:8080/account/customer", dto, UUID.class);
         testContext().setPayload(dto);
         executePost("/account/customer");
-        UUID customerId = getBody(UUID.class);*/
-        UUID customerId = response.getBody();
-        try {
-            this.customer = accountService.getCustomer(customerId);
-        } catch (EntryNotFoundException e) {
-            fail();
-        }
+        UUID customerId = getBody(UUID.class);
+        //UUID customerId = response.getBody();
+
     }
 
     @And("The user has spent all tokens")
     public void theUserHasSpentAllTokens() {
 
-        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId",customer.getAccountId().toString());}});
+        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId",customerId.toString());}});
         List<TokenDto> tokens = getBody(new TypeToken<List<TokenDto>>(){}.getType());
         assertTrue(tokens.stream().allMatch(TokenDto::isUsed));
     }
@@ -68,7 +62,7 @@ public class CustomerTokenSteps extends AbstractSteps {
     public void theUserRequestsANumberOfTokens(int arg0) {
         RequestTokenDto dto = new RequestTokenDto();
         dto.setAmount(arg0);
-        dto.setCustomerId(this.customer.getAccountId());
+        dto.setCustomerId(this.customerId);
         testContext().setPayload(dto);
         executePost("/tokens");
         tokenIdList = getBody(new TypeToken<List<UUID>>(){}.getType());
@@ -77,7 +71,7 @@ public class CustomerTokenSteps extends AbstractSteps {
     @Then("The user receives {int} tokens")
     public void theUserReceivesNumberTokens(int arg0) {
         List<TokenDto> tokenList = null;
-        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId", customer.getAccountId().toString());}});
+        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId", customerId.toString());}});
         if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
             fail();
         }
@@ -89,7 +83,7 @@ public class CustomerTokenSteps extends AbstractSteps {
     public void theUserHasUnusedToken(int arg0) {
         RequestTokenDto dto = new RequestTokenDto();
         dto.setAmount(arg0);
-        dto.setCustomerId(customer.getAccountId());
+        dto.setCustomerId(customerId);
         testContext().setPayload(dto);
         executePost("/tokens");
         Response response = testContext().getResponse();
@@ -98,7 +92,7 @@ public class CustomerTokenSteps extends AbstractSteps {
         if(response.getStatusCode() != HttpStatus.OK.value()){
             fail();
         }
-        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId", customer.getAccountId().toString());}});
+        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId", customerId.toString());}});
         if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
             fail();
         }
@@ -110,7 +104,7 @@ public class CustomerTokenSteps extends AbstractSteps {
 
     @Then("The user has {int} unused tokens")
     public void theUserHasUnusedTokens(int arg0) {
-        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId", customer.getAccountId().toString());}});
+        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId", customerId.toString());}});
         if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
             fail();
         }
@@ -123,7 +117,7 @@ public class CustomerTokenSteps extends AbstractSteps {
     @And("The user already has {int} unused tokens")
     public void theUserAlreadyHasUnusedTokens(int arg0) {
         RequestTokenDto dto = new RequestTokenDto();
-        dto.setCustomerId(customer.getAccountId());
+        dto.setCustomerId(customerId);
         dto.setAmount(arg0);
         testContext().setPayload(dto);
         executePost("/tokens");
@@ -137,7 +131,7 @@ public class CustomerTokenSteps extends AbstractSteps {
     public void theUserRequestsTokens(int arg0) {
             RequestTokenDto dto = new RequestTokenDto();
             dto.setAmount(arg0);
-            dto.setCustomerId(this.customer.getAccountId());
+            dto.setCustomerId(this.customerId);
             testContext().setPayload(dto);
             executePost("/tokens");
             if(testContext().getResponse().statusCode() == HttpStatus.OK.value()){
@@ -156,7 +150,7 @@ public class CustomerTokenSteps extends AbstractSteps {
         if(arg0 > 0){
             List<UUID> out = null;
             RequestTokenDto dto = new RequestTokenDto();
-            dto.setCustomerId(customer.getAccountId());
+            dto.setCustomerId(customerId);
             dto.setAmount(arg0);
             testContext().setPayload(dto);
             executePost("/tokens");
@@ -173,7 +167,7 @@ public class CustomerTokenSteps extends AbstractSteps {
 
     @When("The user queries his tokens")
     public void theUserQueriesHisTokens() {
-        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId", customer.getAccountId().toString());}});
+        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId", customerId.toString());}});
         if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
             fail();
         }
