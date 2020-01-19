@@ -32,11 +32,6 @@ public class RemoteBankAdaptor implements IBank {
             throw new BankException(e.getMessage());
         }
     }
-
-    @Override
-    public String addAccount(AccountDto account) throws BankException {
-        return addAccount(account, BigDecimal.ZERO);
-    }
     @Override
     public String addAccount(AccountDto account, BigDecimal balance) throws BankException{
         User user = new User();
@@ -60,7 +55,7 @@ public class RemoteBankAdaptor implements IBank {
 
     @Override
     public BigDecimal getBalance(AccountDto account) throws BankException {
-        Account bankAccount = null;
+        Account bankAccount;
         try {
             bankAccount = bankService.getAccount(account.getBankAccountId());
         } catch (BankServiceException_Exception e) {
