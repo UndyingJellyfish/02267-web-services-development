@@ -11,10 +11,6 @@ import java.util.stream.Collectors;
 public class InMemoryTokenDatastore implements ITokenDatastore {
     private List<Token> tokens = new ArrayList<>();
 
-    public void flush(){
-        tokens = new ArrayList<>();
-    }
-
 
     @Override
     public List<Token> getTokens(UUID customerId){
