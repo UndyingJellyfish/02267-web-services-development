@@ -4,6 +4,11 @@ import java.util.UUID;
 
 public class ChangeNameDto {
 
+    public ChangeNameDto(UUID accountId, String newName){
+
+        this.accountId = accountId;
+        this.newName = newName;
+    }
     private UUID accountId;
     private String newName;
 

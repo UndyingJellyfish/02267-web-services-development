@@ -22,8 +22,16 @@ public class InMemoryTokenDatastore implements ITokenDatastore {
     }
 
     @Override
-    public void assignTokens(UUID customerId, List<Token> tokens) {
-        List<UUID> newIds = tokens.stream().map(Token::getTokenId).collect(Collectors.toList());
+    public List<Token> assignTokens(UUID customerId, int quantity) {
+
+        List<Token> newTokens = new ArrayList<>();
+
+        for(int i = 0; i < quantity; i++){
+            Token token = new Token(customerId);
+            newTokens.add(token);
+        }
+
+        List<UUID> newIds = newTokens.stream().map(Token::getTokenId).collect(Collectors.toList());
         List<UUID> existingIds = this.tokens.stream().map(Token::getTokenId).collect(Collectors.toList());
 
         if(hasSharedIds(newIds, existingIds)){
@@ -32,7 +40,9 @@ public class InMemoryTokenDatastore implements ITokenDatastore {
         if(hasDuplicateIds(newIds)){
             throw new IllegalArgumentException("Supplied tokens contain duplicate id's");
         }
-        this.tokens.addAll(tokens);
+
+        this.tokens.addAll(newTokens);
+        return newTokens;
     }
 
     @Override

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-mvn clean
+mvn clean compile
 
 bash build_and_test.sh library
 
