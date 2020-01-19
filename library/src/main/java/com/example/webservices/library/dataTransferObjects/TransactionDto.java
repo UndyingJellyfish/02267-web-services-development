@@ -22,6 +22,7 @@ public class TransactionDto {
         this.amount = amount;
         this.description = description;
         this.isRefund = isRefund;
+        this.transactionDate = transactionDate;
     }
 
     public TransactionDto(UUID transactionId, UUID tokenId, UUID creditor, UUID debtor, BigDecimal amount, String description, boolean isRefund, Date transactionDate) {
@@ -43,20 +44,6 @@ public class TransactionDto {
         return new TransactionDto(UUID.randomUUID());
     }
 
-/*
-    public TransactionDto(Transaction transaction) {
-        transactionId = transaction.getTransactionId();
-        tokenId = transaction.getToken().getTokenId();
-        merchantId = transaction.getCreditor().getAccountId();
-        Account debtor = transaction.getDebtor();
-        if (debtor != null) {
-            customerId = debtor.getAccountId();
-        }
-        amount = transaction.getAmount();
-        description = null; // TODO: Why the fuck is there not a description in the transaction object but there is in the DTO???
-        // TODO: Where the FUCK is transaction date???
-    }
- */
 
     public UUID getTokenId() {
         return tokenId;
@@ -108,5 +95,13 @@ public class TransactionDto {
 
     public void setRefund(boolean refund) {
         isRefund = refund;
+    }
+
+    public Date getTransactionDate() {
+        return transactionDate;
+    }
+
+    public void setTransactionDate(Date transactionDate) {
+        this.transactionDate = transactionDate;
     }
 }
