@@ -117,7 +117,7 @@ public class UserServiceSteps extends AbstractSteps {
         try {
             ChangeNameDto changeNameDto = new ChangeNameDto(customerId, "newName");
             testContext().setPayload(changeNameDto);
-            executePut("/account/{accountId}", new HashMap<String,String>(){{put("accountId", customerId.toString());}});
+            executePut("/account");
             assertNotNull(testContext().getResponse());
             customerName = accountService.getAccount(customerId).getName();
         } catch (ResponseStatusException | EntryNotFoundException e) {

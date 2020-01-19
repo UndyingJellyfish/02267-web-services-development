@@ -79,7 +79,7 @@ public class TransactionHistorySteps extends AbstractSteps {
     @When("The Customer requests the transaction history")
     public void theCustomerRequestsTheTransactionHistory() {
         executeGet("/reporting/{accountId}", new HashMap<String, String>(){{put("accountId", customer.getAccountId().toString());}});
-        this.transactions = getBody(new TypeToken<List<TransactionDto>>(){}.getType());
+        this.transactions = Arrays.asList(getBody(TransactionDto[].class));
     }
 
     @Then("The Customer receives the transaction history")
