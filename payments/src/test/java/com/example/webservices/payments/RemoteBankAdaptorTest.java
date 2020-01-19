@@ -46,7 +46,7 @@ public class RemoteBankAdaptorTest {
             String merchantAccountId = bank.addAccount(merchantDto, startingBalance);
             merchantDto.setBankAccountId(merchantAccountId);
         } catch (BankException e) {
-            Assert.fail();
+            Assert.fail(e.getMessage());
         }
     }
 
@@ -56,7 +56,7 @@ public class RemoteBankAdaptorTest {
             bank.retireAccount(customerDto);
             bank.retireAccount(merchantDto);
         } catch (BankException e) {
-            Assert.fail();
+            Assert.fail(e.getMessage());
         }
     }
 
@@ -67,7 +67,7 @@ public class RemoteBankAdaptorTest {
             currentBalance = bank.getBalance(merchant);
             Assert.assertEquals(merchantBalance, currentBalance);
         } catch (BankException e) {
-            Assert.fail();
+            Assert.fail(e.getMessage());
         }
     }
 
@@ -84,7 +84,7 @@ public class RemoteBankAdaptorTest {
             bank.transferMoney(customerDto, merchantDto, amount, "Test transfer");
             CheckBalance(customerDto, startingBalance.subtract(amount), merchantDto, startingBalance.add(amount));
         } catch (BankException e) {
-            Assert.fail();
+            Assert.fail(e.getMessage());
         }
     }
 }
