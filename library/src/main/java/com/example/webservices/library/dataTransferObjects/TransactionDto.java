@@ -15,14 +15,12 @@ public class TransactionDto {
     private boolean isRefund;
     private Date transactionDate;
 
+    public TransactionDto(UUID tokenId, UUID creditor, UUID debtor, BigDecimal amount, String description, Date transactionDate) {
+        this(null, tokenId,creditor,debtor,amount,description,false,transactionDate);
+    }
+
     public TransactionDto(UUID tokenId, UUID creditor, UUID debtor, BigDecimal amount, String description, boolean isRefund,Date transactionDate) {
-        this.tokenId = tokenId;
-        this.creditor = creditor;
-        this.debtor = debtor;
-        this.amount = amount;
-        this.description = description;
-        this.isRefund = isRefund;
-        this.transactionDate = transactionDate;
+        this(null, tokenId,creditor,debtor,amount,description,isRefund,transactionDate);
     }
 
     public TransactionDto(UUID transactionId, UUID tokenId, UUID creditor, UUID debtor, BigDecimal amount, String description, boolean isRefund, Date transactionDate) {

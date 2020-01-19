@@ -57,6 +57,15 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
+    public void RefundTransaction(UUID tokenId) throws EntryNotFoundException {
+        TransactionDto dto = getTransactionByTokenId(tokenId);
+        UUID temp = dto.getCreditorId();
+        dto.setCreditor(dto.getDebtorId());
+        dto.setDebtor(temp);
+        addTransaction(dto);
+    }
+
+    @Override
     public TransactionDto getTransactionByTokenId(UUID tokenId) throws EntryNotFoundException {
         Transaction transaction = transactionDatastore.getTransactionByTokenId(tokenId);
         return new TransactionDto(
