@@ -1,6 +1,8 @@
 package com.example.webservices.application;
 
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +19,13 @@ public class Application {
     @Bean
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
+    }
+
+    @Bean
+    public RabbitTemplate rabbitTemplate(ConnectionFactory factory){
+        RabbitTemplate template = new RabbitTemplate(factory);
+        template.setReplyTimeout(Long.MAX_VALUE);
+        return template;
     }
 
     @Bean

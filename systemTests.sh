@@ -7,6 +7,7 @@ fi
 APP=$1
 COMMANDS="clean package"
 
+docker-compose -f docker-compose.yml down
 docker-compose -f docker-compose.yml up -d --scale ${APP}=0
 echo "Running mvn -pl $APP clean package"
 mvn -pl $APP clean package

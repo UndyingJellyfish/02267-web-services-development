@@ -1,8 +1,9 @@
 package com.example.webservices.library.dataTransferObjects;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class RequestTokenDto {
+public class RequestTokenDto implements Serializable {
     private UUID customerId;
     private int amount;
 

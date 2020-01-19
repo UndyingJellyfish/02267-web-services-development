@@ -32,29 +32,21 @@ public class  AccountService implements IAccountService {
         this.accountDatastore.getAccount(changeNameDto.getAccountId()).setName(changeNameDto.getNewName());
     }
 
-    private AccountDto addAccount(SignupDto signupDto, AccountType type) throws DuplicateEntryException {
-        Account account;
-        if(type == AccountType.CUSTOMER){
-            account = new Customer(signupDto.getName(), signupDto.getIdentifier(), signupDto.getBankAccountId());
-        }
-        else if(type == AccountType.MERCHANT){
-            account = new Merchant(signupDto.getName(), signupDto.getIdentifier(), signupDto.getBankAccountId());
-        }
-        else {
-            throw new DuplicateEntryException();
-        }
+    private AccountDto addAccount(Account account) throws DuplicateEntryException {
         account = this.accountDatastore.addAccount(account);
-        return new AccountDto(account.getAccountId(), account.getName(), account.getBankAccountId(), account.getIdentifier(), type);
+        return new AccountDto(account.getAccountId(), account.getName(), account.getBankAccountId(), account.getIdentifier(), account.getType());
     }
 
     @Override
     public AccountDto addCustomer(SignupDto signupDto) throws DuplicateEntryException {
-        return addAccount(signupDto, AccountType.CUSTOMER);
+        Account account = new Customer(signupDto.getName(), signupDto.getIdentifier(), signupDto.getBankAccountId());
+        return addAccount(account);
     }
 
     @Override
     public AccountDto addMerchant(SignupDto signupDto) throws DuplicateEntryException {
-        return addAccount(signupDto, AccountType.MERCHANT);
+        Account account = new Merchant(signupDto.getName(), signupDto.getIdentifier(), signupDto.getBankAccountId());
+        return addAccount(account);
     }
 
 

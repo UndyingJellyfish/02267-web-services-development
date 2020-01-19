@@ -1,8 +1,9 @@
 package com.example.webservices.library.dataTransferObjects;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class AccountDto {
+public class AccountDto implements Serializable {
     private UUID accountId;
     private String name;
     private String bankAccountId;

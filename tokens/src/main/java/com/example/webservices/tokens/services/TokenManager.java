@@ -9,7 +9,6 @@ import com.example.webservices.tokens.interfaces.ITokenDatastore;
 import com.example.webservices.tokens.models.Token;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -37,15 +36,7 @@ public class TokenManager implements ITokenManager {
             throw new TokenQuantityException();
         }
 
-        List<Token> tokens = new ArrayList<>();
-
-        for(int i = 0; i < quantity; i++){
-            Token token = new Token(customerId);
-            tokens.add(token);
-        }
-
-        this.datastore.assignTokens(customer.getAccountId(), tokens);
-        return tokens.stream().map(Token::getTokenId).collect(Collectors.toList());
+        return this.datastore.assignTokens(customer.getAccountId(), quantity).stream().map(Token::getTokenId).collect(Collectors.toList());
     }
 
     public List<TokenDto> GetTokens(UUID customerId) {
@@ -68,11 +59,11 @@ public class TokenManager implements ITokenManager {
     @Override
     public TokenDto GetToken(UUID tokenId) throws InvalidTokenException {
         Token token = this.datastore.getToken(tokenId);
-        return new TokenDto(token.getTokenId(), token.isUsed());
+        return new TokenDto(token.getTokenId(), token.isUsed(), token.getCustomerId());
     }
 
     @Override
     public void retireAll(UUID customerId) {
-        this.GetTokens(customerId).forEach(t -> t.setUsed(true));
+        this.datastore.getTokens(customerId).forEach(t -> t.setUsed(true));
     }
 }

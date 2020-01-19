@@ -1,5 +1,7 @@
 package com.example.webservices.accounts.models;
 
+import com.example.webservices.library.dataTransferObjects.AccountType;
+
 public class Merchant extends Account {
 
     private String cvr;
@@ -31,4 +33,9 @@ public class Merchant extends Account {
      public String getIdentifier() {
          return this.getCvr();
      }
- }
+
+    @Override
+    public AccountType getType() {
+        return AccountType.MERCHANT;
+    }
+}

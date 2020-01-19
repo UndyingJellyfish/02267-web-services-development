@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,7 +36,7 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
         if(response.getStatusCode() != HttpStatus.OK){
             throw new RuntimeException();
         }
-        return fromJson(response.getBody(), new TypeToken<List<UUID>>(){}.getType());
+        return Arrays.asList(fromJson(response.getBody(), UUID[].class));
     }
 
     @Override

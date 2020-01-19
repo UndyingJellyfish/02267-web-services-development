@@ -1,10 +1,12 @@
 package com.example.webservices.application.stepdefs;
 
 import com.example.webservices.application.CucumberTestContext;
+import gherkin.deps.com.google.gson.Gson;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -25,7 +27,7 @@ public class AbstractSteps {
     private int port;
 
     protected String baseUrl() {
-        return "http://localhost:" + port;
+        return "http://localhost:" + (port == 0 ? 8080 : port);
     }
 
     protected CucumberTestContext testContext() {
@@ -33,7 +35,7 @@ public class AbstractSteps {
     }
 
     protected <T> T getBody(Class<T> type){
-        return CONTEXT.getResponse().then().extract().as(type);
+        return new Gson().fromJson(CONTEXT.getResponse().thenReturn().getBody().asString(), type);
     }
 
     protected <T> T getBody(Type type){
