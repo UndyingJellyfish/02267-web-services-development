@@ -1,6 +1,9 @@
 package com.example.webservices.accounts.models;
 
 
+import com.example.webservices.library.dataTransferObjects.AccountType;
+import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
+
 import java.util.UUID;
 
 public abstract class Account {
@@ -40,4 +43,6 @@ public abstract class Account {
     }
 
     public abstract String getIdentifier();
+
+    public abstract AccountType getType();
 }

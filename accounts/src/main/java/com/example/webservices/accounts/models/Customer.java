@@ -1,5 +1,7 @@
 package com.example.webservices.accounts.models;
 
+import com.example.webservices.library.dataTransferObjects.AccountType;
+
 public class Customer extends Account {
 
     private String cpr;
@@ -32,4 +34,9 @@ public class Customer extends Account {
      public String getIdentifier() {
          return this.getCpr();
      }
- }
+
+    @Override
+    public AccountType getType() {
+        return AccountType.CUSTOMER;
+    }
+}
