@@ -9,5 +9,6 @@ public interface ITransactionService {
 
     List<TransactionDto> getTransactions(UUID id);
     void AddTransaction(TransactionDto transaction);
+    void RefundTransaction(UUID tokenId);
     TransactionDto GetTransactionByTokenId(UUID tokenId);
 }

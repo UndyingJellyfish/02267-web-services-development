@@ -49,6 +49,15 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
+    public void RefundTransaction(UUID tokenId) {
+        TransactionDto dto = GetTransactionByTokenId(tokenId);
+        UUID temp = dto.getCreditorId();
+        dto.setCreditor(dto.getDebtorId());
+        dto.setDebtor(temp);
+        AddTransaction(dto);
+    }
+
+    @Override
     public TransactionDto GetTransactionByTokenId(UUID tokenId) {
         return null;
     }
