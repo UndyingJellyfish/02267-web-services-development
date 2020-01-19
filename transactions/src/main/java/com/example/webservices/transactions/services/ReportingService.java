@@ -1,6 +1,7 @@
 package com.example.webservices.transactions.services;
 
 import com.example.webservices.library.dataTransferObjects.AccountDto;
+import com.example.webservices.library.dataTransferObjects.AccountType;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
@@ -30,7 +31,7 @@ public class ReportingService implements IReportingService {
     public List<TransactionDto> getTransactionHistory(UUID id) throws EntryNotFoundException {
         AccountDto account = accountService.getAccount(id);
         List<TransactionDto> transactions = this.transactionService.getTransactions(id);
-        if(account.getType().toString().equals("Merchant")){
+        if(account.getType().equals(AccountType.MERCHANT)){
             transactions.forEach(this::Anonymize);
         }
         return transactions;

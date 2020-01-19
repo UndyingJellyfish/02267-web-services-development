@@ -76,7 +76,7 @@ public class ReportingServiceTest {
     public void getTransactionHistoryMerchant(){
         List<TransactionDto> history = null;
         try {
-            history = reportingService.getTransactionHistory(customer.getAccountId());
+            history = reportingService.getTransactionHistory(merchant.getAccountId());
         } catch (EntryNotFoundException e) {
             fail();
         }
