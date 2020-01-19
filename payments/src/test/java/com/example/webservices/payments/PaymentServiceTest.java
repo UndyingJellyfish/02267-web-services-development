@@ -7,6 +7,8 @@ import com.example.webservices.payments.services.PaymentService;
 import dtu.ws.fastmoney.Transaction;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
@@ -104,6 +106,23 @@ public class PaymentServiceTest {
 
     @Test
     public void refundAmount() {
-        // TODO
+        try {
+            transactionService.RefundTransaction(UUID.randomUUID());
+            verify(transactionService,times(1)).RefundTransaction(any());
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void refundAmountException() throws EntryNotFoundException {
+        Mockito.doThrow(EntryNotFoundException.class).when(transactionService).RefundTransaction(any());
+        try {
+            transactionService.RefundTransaction(UUID.randomUUID());
+            fail();
+        } catch (EntryNotFoundException e) {
+            verify(transactionService,times(1)).RefundTransaction(any());
+        }
+
     }
 }

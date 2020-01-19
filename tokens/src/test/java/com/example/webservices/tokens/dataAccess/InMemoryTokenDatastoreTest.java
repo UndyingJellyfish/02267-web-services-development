@@ -41,7 +41,6 @@ public class InMemoryTokenDatastoreTest {
 
     @Test
     public void getNonExistingToken(){
-        //List<Token> tokens = datastore.assignTokens(customerId,1);
         try{
             Token found = datastore.getToken(UUID.randomUUID());
             Assert.fail();

@@ -116,4 +116,27 @@ public class TransactionServiceTest {
 
         assertTrue(Match(actualTransaction));
     }
+
+    @Test
+    public void refundTransaction() {
+
+        Transaction transaction = new Transaction(creditorId, debtorId, amount, tokenId, description, date);
+        try {
+            when(transactionDatastore.getTransactionByTokenId(tokenId)).thenReturn(transaction);
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
+
+        try {
+            transactionService.RefundTransaction(tokenId);
+        } catch (EntryNotFoundException e) {
+            fail();
+        }
+
+        verify(transactionDatastore, times(1))
+                    .addTransaction(any());
+
+
+
+    }
 }

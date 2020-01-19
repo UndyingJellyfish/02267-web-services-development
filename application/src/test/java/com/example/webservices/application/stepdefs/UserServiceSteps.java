@@ -115,8 +115,7 @@ public class UserServiceSteps extends AbstractSteps {
     @When("The user requests a name change")
     public void theUserRequestsANameChange() {
         try {
-            ChangeNameDto changeNameDto = new ChangeNameDto();
-            changeNameDto.setNewName("newName");
+            ChangeNameDto changeNameDto = new ChangeNameDto(customerId, "newName");
             testContext().setPayload(changeNameDto);
             executePut("/account/{accountId}", new HashMap<String,String>(){{put("accountId", customerId.toString());}});
             assertNotNull(testContext().getResponse());
