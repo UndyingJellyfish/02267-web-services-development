@@ -6,34 +6,25 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="transactions" />
-        <module name="payments" />
-        <module name="tokens" />
-        <module name="fastmoney-06-application" />
+        <module name="02267-web-services-development" />
+        <module name="webservices-accounts" />
         <module name="webservices-application" />
+        <module name="webservices-tokens" />
+        <module name="library" />
+        <module name="webservices-library" />
+        <module name="webservices-payments" />
         <module name="webservices-transactions" />
         <module name="application" />
-        <module name="webservices-tokens" />
         <module name="project-src" />
-        <module name="webservices-library" />
-        <module name="accounts" />
-        <module name="webservices-payments" />
-        <module name="library" />
-        <module name="webservices-accounts" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="02267-web-services-development" options="-parameters" />
-      <module name="accounts" options="-parameters" />
       <module name="application" options="-parameters" />
-      <module name="fastmoney-06" options="" />
-      <module name="fastmoney-06-application" options="-parameters" />
+      <module name="fastmoney-06" options="-parameters" />
       <module name="library" options="-parameters" />
-      <module name="payments" options="-parameters" />
-      <module name="tokens" options="-parameters" />
-      <module name="transactions" options="-parameters" />
       <module name="webservices-accounts" options="-parameters" />
       <module name="webservices-application" options="-parameters" />
       <module name="webservices-library" options="-parameters" />

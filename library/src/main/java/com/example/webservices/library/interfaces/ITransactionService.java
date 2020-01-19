@@ -9,7 +9,7 @@ import java.util.UUID;
 public interface ITransactionService {
 
     List<TransactionDto> getTransactions(UUID id);
-    void refundTransaction(UUID tokenId) throws EntryNotFoundException;
+    UUID refundTransaction(UUID tokenId) throws EntryNotFoundException;
     UUID addTransaction(TransactionDto transaction);
     TransactionDto getTransactionByTokenId(UUID tokenId) throws EntryNotFoundException;
 }

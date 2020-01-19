@@ -107,8 +107,8 @@ public class PaymentServiceTest {
     @Test
     public void refundAmount() {
         try {
-            transactionService.RefundTransaction(UUID.randomUUID());
-            verify(transactionService,times(1)).RefundTransaction(any());
+            transactionService.refundTransaction(UUID.randomUUID());
+            verify(transactionService,times(1)).refundTransaction(any());
         } catch (EntryNotFoundException e) {
             fail();
         }
@@ -116,13 +116,12 @@ public class PaymentServiceTest {
 
     @Test
     public void refundAmountException() throws EntryNotFoundException {
-        Mockito.doThrow(EntryNotFoundException.class).when(transactionService).RefundTransaction(any());
+        Mockito.doThrow(EntryNotFoundException.class).when(transactionService).refundTransaction(any());
         try {
-            transactionService.RefundTransaction(UUID.randomUUID());
+            transactionService.refundTransaction(UUID.randomUUID());
             fail();
         } catch (EntryNotFoundException e) {
-            verify(transactionService,times(1)).RefundTransaction(any());
+            verify(transactionService,times(1)).refundTransaction(any());
         }
-
     }
 }

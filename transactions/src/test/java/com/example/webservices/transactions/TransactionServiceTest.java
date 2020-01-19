@@ -122,44 +122,37 @@ public class TransactionServiceTest {
 
     @Test
     public void refundExistingTransaction() {
+        // Given
+        UUID refundId = UUID.randomUUID();
+        Transaction refundTransaction = new Transaction(
+                transaction.getDebtorId(),
+                transaction.getCreditorId(),
+                transaction.getAmount(),
+                transaction.getTokenId(),
+                transaction.getDescription(),
+                true,
+                transaction.getTransactionDate());
+        UUID serviceReturn = null;
 
+        // When
         try {
             when(transactionDatastore
                     .getTransactionByTokenId(eq(tokenId)))
                     .thenReturn(transaction);
-            List<TransactionDto> creditorTransactionPre = transactionService.getTransactions(creditorId);
-            List<TransactionDto> debtorTransactionPre = transactionService.getTransactions(debtorId);
+            when(transactionDatastore
+                    .addTransaction(refundTransaction))
+                    .thenReturn(refundId);
 
-            transactionService.refundTransaction(tokenId);
-            List<TransactionDto> creditorTransactionPost = transactionService.getTransactions(creditorId);
-            List<TransactionDto> debtorTransactionPost = transactionService.getTransactions(debtorId);
-            // FIXME assert differences in the lists below:
-            fail(); // for now
-        } catch (EntryNotFoundException e) {
-            fail();
-        }
-    }
+            serviceReturn = transactionService.refundTransaction(transaction.getTransactionId());
 
-    @Test
-    public void refundTransaction() {
-
-        Transaction transaction = new Transaction(creditorId, debtorId, amount, tokenId, description, date);
-        try {
-            when(transactionDatastore.getTransactionByTokenId(tokenId)).thenReturn(transaction);
         } catch (EntryNotFoundException e) {
             fail();
         }
 
-        try {
-            transactionService.RefundTransaction(tokenId);
-        } catch (EntryNotFoundException e) {
-            fail();
-        }
-
+        // Then
         verify(transactionDatastore, times(1))
-                    .addTransaction(any());
-
-
-
+                .addTransaction(any());
+        assertNotNull(serviceReturn);
+        assertEquals(refundId, serviceReturn);
     }
 }

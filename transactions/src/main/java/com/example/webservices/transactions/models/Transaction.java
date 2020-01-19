@@ -2,6 +2,7 @@ package com.example.webservices.transactions.models;
 
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -18,9 +19,10 @@ public class Transaction {
 
     private Transaction(){
         this.transactionId = UUID.randomUUID();
+        this.isRefund = false;
     }
 
-    public Transaction(UUID creditor, UUID debtor, BigDecimal amount, UUID token, String description, Date transactionDate){
+    public Transaction(UUID creditor, UUID debtor, BigDecimal amount, UUID token, String description, Date transactionDate) {
         this();
         this.creditor = creditor;
         this.debtor = debtor;
@@ -30,15 +32,19 @@ public class Transaction {
         this.transactionDate = transactionDate;
     }
 
-    public Transaction(UUID creditor, UUID debtor, BigDecimal amount, UUID token, String description){
-        this(creditor,debtor,amount,token, description, new Date());
+    public Transaction(UUID creditor, UUID debtor, BigDecimal amount, UUID token, String description) {
+        this(creditor,debtor,amount,token, description, Calendar.getInstance().getTime());
     }
 
-    public Transaction(UUID creditor, UUID debtor, BigDecimal amount, UUID token, String description, boolean isRefund){
-        // A refund always happens today, right now
-        this(creditor, debtor, amount, token, description, new Date());
+    public Transaction(UUID creditor, UUID debtor, BigDecimal amount, UUID token, String description, boolean isRefund) {
+        this(creditor, debtor, amount, token, description, Calendar.getInstance().getTime());
         this.isRefund = isRefund;
     }
+    public Transaction(UUID creditor, UUID debtor, BigDecimal amount, UUID token, String description, boolean isRefund, Date transactionDate) {
+        this(creditor, debtor, amount, token, description, transactionDate);
+        this.isRefund = isRefund;
+    }
+
 
     /*No setters, values should be set in constructor*/
     public Date getTransactionDate() {

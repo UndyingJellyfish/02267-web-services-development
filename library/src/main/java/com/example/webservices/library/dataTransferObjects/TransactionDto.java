@@ -2,6 +2,7 @@ package com.example.webservices.library.dataTransferObjects;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 

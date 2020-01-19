@@ -6,6 +6,7 @@ import com.example.webservices.library.interfaces.ITransactionService;
 import com.example.webservices.transactions.interfaces.ITransactionDatastore;
 import com.example.webservices.transactions.models.Transaction;
 import org.springframework.stereotype.Service;
+import sun.security.util.PendingException;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -52,17 +53,24 @@ public class TransactionService implements ITransactionService {
                 dto.getAmount(),
                 dto.getTokenId(),
                 dto.getDescription(),
-                dto.isRefund());
+                dto.isRefund(),
+                dto.getTransactionDate());
+
         return transactionDatastore.addTransaction(transaction);
     }
 
     @Override
-    public void refundTransaction(UUID tokenId) throws EntryNotFoundException {
-        TransactionDto dto = getTransactionByTokenId(tokenId);
+    public UUID refundTransaction(UUID transactionId) throws EntryNotFoundException {
+        throw new PendingException();
+        // FIXME: Get transaction by transaction id and use that to issue the refund. getting it by the token id makes zero sense
+        // Also emil er DÅM
+        /*TransactionDto dto = getTransactionByTokenId(transactionId);
         UUID temp = dto.getCreditorId();
         dto.setCreditor(dto.getDebtorId());
         dto.setDebtor(temp);
-        addTransaction(dto);
+        UUID result = addTransaction(dto);
+
+        return result;*/
     }
 
     @Override
