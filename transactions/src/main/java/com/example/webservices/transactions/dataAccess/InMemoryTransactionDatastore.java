@@ -19,16 +19,17 @@ public class InMemoryTransactionDatastore implements ITransactionDatastore {
 
 
     @Override
-    public Transaction GetTransactionByTokenId(UUID tokenId) throws EntryNotFoundException {
+    public Transaction getTransactionByTokenId(UUID tokenId) throws EntryNotFoundException {
         return this.transactions.stream().filter(t -> t.getTokenId().equals(tokenId)).findFirst().orElseThrow(EntryNotFoundException::new);
     }
 
     @Override
-    public void AddTransaction(Transaction transaction) {
+    public UUID addTransaction(Transaction transaction) {
         if(transactions.stream().anyMatch(t -> t.getTokenId().equals(transaction.getTokenId()))){
             throw new IllegalArgumentException("The value is already in the list.");
         }
         this.transactions.add(transaction);
+        return transaction.getTransactionId();
     }
 
     @Override

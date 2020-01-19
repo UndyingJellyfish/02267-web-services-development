@@ -25,7 +25,7 @@ public class TransactionMQController extends RabbitHelper {
 
         try{
             //TransactionDto dto = fromJson(jsonString, TransactionDto.class);
-            this.transactionService.AddTransaction(jsonString);
+            this.transactionService.addTransaction(jsonString);
             return success();
         }
         catch (Exception e){

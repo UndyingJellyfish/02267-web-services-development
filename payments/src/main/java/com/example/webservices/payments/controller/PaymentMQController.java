@@ -8,7 +8,6 @@ import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.exceptions.InvalidTransferAmountException;
 import com.example.webservices.library.exceptions.TokenException;
 import com.example.webservices.library.interfaces.IPaymentService;
-import dtu.ws.fastmoney.Transaction;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
@@ -34,13 +33,13 @@ public class PaymentMQController extends RabbitHelper {
 
     }
     @RabbitListener(queues = QUEUE_PAYMENT_REFUND)
-    public ResponseObject refund(TransactionDto jsonString){
+    public ResponseObject refund(TransactionDto transactionDto){
 
         try {
            //TransactionDto transactionDto = fromJson(jsonString, TransactionDto.class);
-            this.paymentService.refund(jsonString);
+            this.paymentService.refund(transactionDto.getTransactionId());
             return success();
-        } catch (EntryNotFoundException | TokenException | BankException | InvalidTransferAmountException e) {
+        } catch (EntryNotFoundException e) {
             return failure(e.getMessage());
         }
 
