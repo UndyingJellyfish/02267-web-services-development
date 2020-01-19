@@ -52,7 +52,7 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
-    public void refund(UUID transactionId) {
+    public void refund(UUID transactionId) throws EntryNotFoundException {
         transactionService.RefundTransaction(transactionId);
     }
 

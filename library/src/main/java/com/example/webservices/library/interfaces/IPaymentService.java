@@ -12,5 +12,5 @@ import java.util.UUID;
 public interface IPaymentService {
     TransactionDto transfer(TransactionDto transactionDto) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException;
 
-    void refund(UUID transactionId);
+    void refund(UUID transactionId) throws EntryNotFoundException;
 }

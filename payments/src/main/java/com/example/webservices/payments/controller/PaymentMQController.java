@@ -37,9 +37,9 @@ public class PaymentMQController extends RabbitHelper {
 
         try {
             TransactionDto transactionDto = fromJson(jsonString, TransactionDto.class);
-            this.paymentService.refund(transactionDto);
+            this.paymentService.refund(transactionDto.getTransactionId());
             return success();
-        } catch (EntryNotFoundException | TokenException | BankException | InvalidTransferAmountException e) {
+        } catch (EntryNotFoundException e) {
             return failure(e.getMessage());
         }
 

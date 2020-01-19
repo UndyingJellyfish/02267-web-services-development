@@ -3,6 +3,7 @@ package com.example.webservices.payments.services;
 import com.example.webservices.library.RabbitMQBaseClass;
 import com.example.webservices.library.dataTransferObjects.ResponseObject;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
+import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.ITransactionService;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -23,6 +24,11 @@ public class TransactionMQService extends RabbitMQBaseClass implements ITransact
     @Override
     public List<TransactionDto> getTransactions(UUID id) {
         return null;
+    }
+
+    @Override
+    public void RefundTransaction(UUID tokenId) throws EntryNotFoundException {
+        //TODO: Fix
     }
 
     @Override
