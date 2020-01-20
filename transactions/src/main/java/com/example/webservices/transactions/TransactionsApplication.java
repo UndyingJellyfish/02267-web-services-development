@@ -1,5 +1,8 @@
 package com.example.webservices.transactions;
 
+import com.example.webservices.transactions.dataAccess.JpaTransactionDatastore;
+import com.example.webservices.transactions.dataAccess.TransactionRepository;
+import com.example.webservices.transactions.interfaces.ITransactionDatastore;
 import com.google.gson.*;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -9,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
@@ -18,6 +22,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.json.Json;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import javax.sql.DataSource;
 import java.lang.reflect.Type;
 
 import static com.example.webservices.library.RabbitHelper.*;
@@ -25,6 +30,19 @@ import static com.example.webservices.library.RabbitHelper.*;
 
 @SpringBootApplication(exclude = {JacksonAutoConfiguration.class})
 public class TransactionsApplication {
+
+    @Bean
+    public ITransactionDatastore transactionDatastore(TransactionRepository transactionRepository){
+        return new JpaTransactionDatastore(transactionRepository);
+    }
+
+    @Bean
+    public DataSource dataSource() {
+        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        dataSourceBuilder.driverClassName("org.sqlite.JDBC");
+        dataSourceBuilder.url("jdbc:sqlite:transaction.db");
+        return dataSourceBuilder.build();
+    }
 
     @Bean
     public Docket myApi() {
