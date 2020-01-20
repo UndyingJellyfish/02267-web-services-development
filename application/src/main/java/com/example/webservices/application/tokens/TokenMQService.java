@@ -15,6 +15,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,16 +35,16 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
         dto.setAmount(quantity);
         ResponseObject response = send(QUEUE_TOKENS_REQUEST, dto);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new RuntimeException(fromJson(response.getBody(), String.class));
+            throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
         }
         return Arrays.asList(fromJson(response.getBody(), UUID[].class));
     }
 
     @Override
-    public List<TokenDto> GetTokens(UUID customerId) throws EntryNotFoundException {
+    public List<TokenDto> GetTokens(UUID customerId) {
         ResponseObject response = send(QUEUE_TOKENS_GET, customerId);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new RuntimeException(fromJson(response.getBody(), String.class));
+            throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
         }
         return Arrays.asList(fromJson(response.getBody(), TokenDto[].class));
     }

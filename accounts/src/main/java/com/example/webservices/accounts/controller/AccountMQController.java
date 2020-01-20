@@ -75,8 +75,8 @@ public class AccountMQController extends RabbitHelper {
 
             return success(account);
 
-        } catch (Exception e) {
-            return failure(e.getMessage());
+        } catch (DuplicateEntryException e) {
+            return failure(e.getMessage(), HttpStatus.CONFLICT);
         }
 
     }
@@ -88,8 +88,8 @@ public class AccountMQController extends RabbitHelper {
 
             return success(account);
 
-        } catch (Exception e) {
-            return failure(e.getMessage());
+        } catch (DuplicateEntryException e) {
+            return failure(e.getMessage(), HttpStatus.CONFLICT);
         }
 
     }

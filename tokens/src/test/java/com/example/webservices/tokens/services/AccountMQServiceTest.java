@@ -47,6 +47,9 @@ public class AccountMQServiceTest {
     private <T> void setupFail(T ret){
         setup(HttpStatus.BAD_REQUEST, ret);
     }
+    private <T> void setupFail(T ret, HttpStatus status){
+        setup(status, ret);
+    }
     private <T> void setupSuccess(T ret){
         setup(HttpStatus.OK, ret);
     }
@@ -55,25 +58,21 @@ public class AccountMQServiceTest {
     public void addCustomer() {
 
         setupSuccess(customerAccountDto);
-        try {
             AccountDto res = service.addCustomer(customerSignupDto);
             assertEquals(customerAccountDto.getAccountId(), res.getAccountId());
-        } catch (DuplicateEntryException e) {
-            fail(e.getMessage());
-        }
 
 
     }
     @Test
     public void addCustomerException() {
 
-        setupFail(null);
+        setupFail(null, HttpStatus.CONFLICT);
 
         try {
             service.addCustomer(customerSignupDto);
             fail();
-        } catch (DuplicateEntryException e) {
-            assertNotNull(e);
+        }  catch (ResponseStatusException e) {
+            assertEquals(HttpStatus.CONFLICT, e.getStatus());
         }
     }
 
@@ -81,42 +80,36 @@ public class AccountMQServiceTest {
     public void addMerchant() {
 
         setupSuccess(merchantAccountDto);
-        try {
-            AccountDto res = service.addMerchant(merchantSignupDto);
-            assertEquals(merchantAccountDto.getAccountId(), res.getAccountId());
-        } catch (DuplicateEntryException e) {
-            fail(e.getMessage());
-        }
+        AccountDto res = service.addMerchant(merchantSignupDto);
+        assertEquals(merchantAccountDto.getAccountId(), res.getAccountId());
+
     }
 
     @Test
     public void addMerchantException() {
-        setupFail(null);
+        setupFail(null, HttpStatus.CONFLICT);
         try {
             service.addMerchant(merchantSignupDto);
             fail();
-        } catch (DuplicateEntryException e) {
-            assertNotNull(e);
+        } catch (ResponseStatusException e) {
+            assertEquals(HttpStatus.CONFLICT, e.getStatus());
         }
     }
 
     @Test
     public void changeName() {
-       setupSuccess(null);
-        try {
-            service.changeName(new ChangeNameDto( UUID.randomUUID(),"yeet"));
-        } catch (EntryNotFoundException e) {
-            fail();
-        }
-    }
+        setupSuccess(null);
+        service.changeName(new ChangeNameDto( UUID.randomUUID(),"yeet"));
+     }
 
     @Test
     public void changeNameException() {
-        setupFail(null);
+        setupFail(null, HttpStatus.NOT_FOUND);
         try {
             service.changeName(new ChangeNameDto( UUID.randomUUID(),"yeet"));
             fail();
-        } catch (EntryNotFoundException ignored) {
+        } catch (ResponseStatusException e) {
+            assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
         }
     }
 
@@ -125,14 +118,14 @@ public class AccountMQServiceTest {
         setupSuccess(null);
         try {
             service.delete( UUID.randomUUID());
-        } catch (EntryNotFoundException e) {
+        } catch (ResponseStatusException e) {
             fail();
         }
     }
 
     @Test
     public void deleteException() {
-        setupFail(null);
+        setupFail(null, HttpStatus.NOT_FOUND);
         try {
             service.delete( UUID.randomUUID());
             fail();
@@ -144,59 +137,57 @@ public class AccountMQServiceTest {
     @Test
     public void getCustomer() {
         setupSuccess(customerAccountDto);
-        try {
-            AccountDto dto = service.getCustomer(customerAccountDto.getAccountId());
-            assertEquals(customerAccountDto.getAccountId(), dto.getAccountId());
-        } catch (EntryNotFoundException e) {
-            fail(e.getMessage());
-        }
+        AccountDto dto = service.getCustomer(customerAccountDto.getAccountId());
+        assertEquals(customerAccountDto.getAccountId(), dto.getAccountId());
+
     }
 
     @Test
     public void getCustomerException() {
-        setupFail("exception");
+        setupFail("exception", HttpStatus.NOT_FOUND);
         try {
             service.getCustomer(customerAccountDto.getAccountId());
             fail();
-        } catch (EntryNotFoundException ignored) {        }
+        } catch (ResponseStatusException e) {
+            assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+        }
     }
 
     @Test
     public void getAccount() {
         setupSuccess(customerAccountDto);
-        try {
-            AccountDto dto = service.getAccount(customerAccountDto.getAccountId());
-            assertEquals(customerAccountDto.getAccountId(), dto.getAccountId());
-        } catch (EntryNotFoundException e) {
-            fail(e.getMessage());
-        }
+        AccountDto dto = service.getAccount(customerAccountDto.getAccountId());
+        assertEquals(customerAccountDto.getAccountId(), dto.getAccountId());
+
     }
 
     @Test
     public void getAccountException() {
-        setupFail("exception");
+        setupFail("exception", HttpStatus.NOT_FOUND);
         try {
             service.getAccount(customerAccountDto.getAccountId());
             fail();
-        } catch (EntryNotFoundException ignored) {        }
+        } catch (ResponseStatusException e) {
+        assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+        }
     }
 
     @Test
     public void getMerchant() {
         setupSuccess(merchantAccountDto);
-        try {
-            AccountDto dto = service.getMerchant(merchantAccountDto.getAccountId());
-            assertEquals(merchantAccountDto.getAccountId(), dto.getAccountId());
-        } catch (EntryNotFoundException e) {
-            fail(e.getMessage());
-        }
+
+        AccountDto dto = service.getMerchant(merchantAccountDto.getAccountId());
+        assertEquals(merchantAccountDto.getAccountId(), dto.getAccountId());
+
     }
     @Test
     public void getMerchantException() {
-        setupFail("exception");
+        setupFail("exception", HttpStatus.NOT_FOUND);
         try {
             service.getCustomer(merchantAccountDto.getAccountId());
             fail();
-        } catch (EntryNotFoundException ignored) {        }
+        } catch (ResponseStatusException e) {
+            assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+        }
     }
 }
