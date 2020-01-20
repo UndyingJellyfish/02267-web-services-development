@@ -41,7 +41,7 @@ public class ReportingService implements IReportingService {
     private List<TransactionDto> getTransactionHistoryWithStartDate(RequestReportingHistoryDto dto) throws EntryNotFoundException{
         AccountDto account = accountService.getAccount(dto.getAccountId());
         List<TransactionDto> transactions = this.transactionService.getTransactions(dto.getAccountId());
-        if (dto.getAccountId() != null) {
+        if (dto.getStartDate() != null) {
             transactions.removeIf(x -> x.getTransactionDate().before(dto.getStartDate()));
         }
         if (account.getType().equals(AccountType.MERCHANT)) {
