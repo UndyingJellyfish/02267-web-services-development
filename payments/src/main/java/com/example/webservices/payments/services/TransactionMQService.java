@@ -11,6 +11,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import sun.security.util.PendingException;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public class TransactionMQService extends RabbitMQBaseClass implements ITransact
     public UUID addTransaction(TransactionDto transaction) {
         ResponseObject response = send(QUEUE_TRANSACTION_ADD, transaction);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new RuntimeException();
+            throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
         }
         return fromJson(response.getBody(), UUID.class);
     }
@@ -47,7 +48,7 @@ public class TransactionMQService extends RabbitMQBaseClass implements ITransact
     public TransactionDto getTransaction(UUID transactionId) {
         ResponseObject response = send(QUEUE_TRANSACTION_GET, transactionId);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new RuntimeException();
+            throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
         }
         return fromJson(response.getBody(), TransactionDto.class);
     }

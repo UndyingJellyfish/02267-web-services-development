@@ -24,11 +24,19 @@ public class PaymentServiceSteps extends AbstractSteps {
     private UUID tokenId;
     private TransactionDto transactionDto;
     private UUID customerId;
+    private String merchantBankId;
+    private String customerBankId;
 
+    private final String bankBaseRestUrl = "http://fastmoney-00.compute.dtu.dk";
 
     @After
     public void tearDown() {
-
+        if(merchantBankId != null && !merchantBankId.equals("")){
+            executeDelete( bankBaseRestUrl + "/rest/accounts/" + merchantBankId);
+        }
+        if(customerBankId != null && !customerBankId.equals("")){
+            executeDelete(bankBaseRestUrl + "/rest/accounts/" + customerBankId);
+        }
     }
 
 
@@ -102,7 +110,22 @@ public class PaymentServiceSteps extends AbstractSteps {
 
     @Given("A merchant")
     public void aMerchant() {
-        SignupDto dto = new SignupDto("Alice", "123", UUID.randomUUID().toString());
+        merchantBankId = "";
+        try {
+            Account json = new Account();
+            json.balance = new BigDecimal("10000");
+            json.user = new User();
+            json.user.cprNumber = UUID.randomUUID().toString();
+            json.user.firstName = "Alice";
+            json.user.lastName = "Alice";
+
+            testContext().setPayload(json);
+            executePost(bankBaseRestUrl + "/rest/accounts");
+            merchantBankId = getBody(String.class);
+        } catch (Exception e){
+            fail(e.getMessage());
+        }
+        SignupDto dto = new SignupDto("Alice", "1231231233", merchantBankId);
         try {
             testContext().setPayload(dto);
             executePost("/account/merchant");
@@ -112,9 +135,75 @@ public class PaymentServiceSteps extends AbstractSteps {
         }
     }
 
+    public class Account{
+        private BigDecimal balance;
+        private User user;
+
+        public User getUser() {
+            return user;
+        }
+
+        public void setUser(User user) {
+            this.user = user;
+        }
+        public BigDecimal getBalance() {
+            return balance;
+        }
+
+        public void setBalance(BigDecimal balance) {
+            this.balance = balance;
+        }
+    }
+    public class User{
+        private String cprNumber;
+        private String firstName;
+        private String lastName;
+
+        public String getCprNumber() {
+            return cprNumber;
+        }
+
+        public void setCprNumber(String cprNumber) {
+            this.cprNumber = cprNumber;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }
+
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
+        }
+    }
+
     @And("A valid token")
     public void aValidToken() {
-        SignupDto dto = new SignupDto("Bob", "123", UUID.randomUUID().toString());
+
+        customerBankId = "";
+        try {
+            Account json = new Account();
+            json.balance = new BigDecimal("10000");
+            json.user = new User();
+            json.user.cprNumber = UUID.randomUUID().toString();
+            json.user.firstName = "Bob";
+            json.user.lastName = "Bob";
+
+            testContext().setPayload(json);
+            executePost(bankBaseRestUrl + "/rest/accounts");
+            customerBankId = getBody(String.class);
+        } catch (Exception e){
+            fail(e.getMessage());
+        }
+
+        SignupDto dto = new SignupDto("Bob", "21312321412", customerBankId);
         try {
             testContext().setPayload(dto);
             executePost("/account/customer");
@@ -139,7 +228,7 @@ public class PaymentServiceSteps extends AbstractSteps {
 
     @And("A token that doesn't exist")
     public void aTokenThatDoesnTExist() {
-        tokenId = null;
+        tokenId = UUID.randomUUID();
     }
 
     @And("A token that has already been used")

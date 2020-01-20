@@ -34,7 +34,7 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
         dto.setAmount(quantity);
         ResponseObject response = send(QUEUE_TOKENS_REQUEST, dto);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new RuntimeException();
+            throw new RuntimeException(fromJson(response.getBody(), String.class));
         }
         return Arrays.asList(fromJson(response.getBody(), UUID[].class));
     }
@@ -43,7 +43,7 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
     public List<TokenDto> GetTokens(UUID customerId) throws EntryNotFoundException {
         ResponseObject response = send(QUEUE_TOKENS_GET, customerId);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new RuntimeException();
+            throw new RuntimeException(fromJson(response.getBody(), String.class));
         }
         return Arrays.asList(fromJson(response.getBody(), TokenDto[].class));
     }

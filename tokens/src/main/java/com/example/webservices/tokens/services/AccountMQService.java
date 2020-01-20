@@ -14,6 +14,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
 
@@ -27,34 +28,36 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
     @Override
     public AccountDto addCustomer(SignupDto signupDto) throws DuplicateEntryException {
         ResponseObject response = send(QUEUE_CUSTOMER_SIGNUP, signupDto);
-        if(response.getStatusCode() == HttpStatus.OK){
-            return fromJson(response.getBody(), AccountDto.class);
+        if(response.getStatusCode() != HttpStatus.OK){
+            throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
         }
-        throw new DuplicateEntryException();
+        return fromJson(response.getBody(), AccountDto.class);
+
     }
 
     @Override
     public AccountDto addMerchant(SignupDto signupDto) throws DuplicateEntryException {
         ResponseObject response = send(QUEUE_MERCHANT_SIGNUP, signupDto);
-        if(response.getStatusCode() == HttpStatus.OK){
-            return fromJson(response.getBody(), AccountDto.class);
+        if(response.getStatusCode() != HttpStatus.OK){
+            throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
         }
-        throw new DuplicateEntryException();
+        return fromJson(response.getBody(), AccountDto.class);
+
     }
 
     @Override
     public void changeName(ChangeNameDto changeNameDto) throws EntryNotFoundException {
         ResponseObject response = send(QUEUE_ACCOUNT_CHANGENAME, changeNameDto);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new EntryNotFoundException();
+            throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
         }
     }
 
     @Override
-    public void delete(UUID accountId) throws EntryNotFoundException {
+    public void delete(UUID accountId) {
         ResponseObject response = send(QUEUE_ACCOUNT_DELETE, accountId);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new EntryNotFoundException();
+            throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
         }
     }
 
@@ -66,10 +69,11 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
     @Override
     public AccountDto getAccount(UUID id) throws EntryNotFoundException {
         ResponseObject response = send(QUEUE_ACCOUNT_GET, id);
-        if(response.getStatusCode() == HttpStatus.OK){
-            return fromJson(response.getBody(), AccountDto.class);
+        if(response.getStatusCode() != HttpStatus.OK){
+            throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
         }
-        throw new EntryNotFoundException();
+        return fromJson(response.getBody(), AccountDto.class);
+
     }
 
     @Override

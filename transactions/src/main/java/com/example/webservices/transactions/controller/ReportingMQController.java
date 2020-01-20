@@ -30,7 +30,7 @@ public class ReportingMQController extends RabbitHelper {
             List<TransactionDto> transactionDtos = this.reportingService.getTransactionHistory(accountId);
 
             return success(transactionDtos);
-        } catch (EntryNotFoundException e) {
+        } catch (Exception e) {
             return failure(e.getMessage());
         }
     }

@@ -31,7 +31,7 @@ public class TokenMQController extends RabbitHelper {
         try {
             this.tokenManager.UseToken(tokenId);
             return success();
-        }catch (TokenException e) {
+        }catch (Exception e) {
             return failure(e.getMessage());
         }
     }
@@ -40,7 +40,7 @@ public class TokenMQController extends RabbitHelper {
         try {
             List<TokenDto> tokens = this.tokenManager.GetTokens(accountId);
             return success(tokens);
-        }catch (EntryNotFoundException e) {
+        }catch (Exception e) {
             return failure(e.getMessage());
         }
     }
@@ -49,7 +49,7 @@ public class TokenMQController extends RabbitHelper {
         try {
             TokenDto tokens = this.tokenManager.GetToken(accountId);
             return success(tokens);
-        }catch (InvalidTokenException e) {
+        }catch (Exception e) {
             return failure(e.getMessage());
         }
     }
@@ -59,7 +59,7 @@ public class TokenMQController extends RabbitHelper {
         try {
             UUID token = this.tokenManager.RequestToken(requestTokenDto.getCustomerId());
             return success(token);
-        } catch (EntryNotFoundException | TokenQuantityException e) {
+        } catch (Exception e) {
             return failure(e.getMessage());
         }
     }
@@ -68,7 +68,7 @@ public class TokenMQController extends RabbitHelper {
         try {
             List<UUID> tokens = this.tokenManager.RequestTokens(requestTokenDto.getCustomerId(), requestTokenDto.getAmount());
             return success(tokens);
-        } catch (EntryNotFoundException | TokenQuantityException  e) {
+        } catch (Exception  e) {
             return failure(e.getMessage());
         }
     }

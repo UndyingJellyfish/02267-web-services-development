@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -37,7 +38,7 @@ public class AccountMQController extends RabbitHelper {
             return success();
 
         } catch (EntryNotFoundException e) {
-            return failure(e.getMessage());
+            return failure(e.getMessage(), HttpStatus.NOT_FOUND);
         }
 
     }
@@ -45,11 +46,10 @@ public class AccountMQController extends RabbitHelper {
     public ResponseObject deleteAccount(UUID accountId) {
         try {
             this.accountService.delete(accountId);
-
             return success();
 
         } catch (EntryNotFoundException e) {
-            return failure(e.getMessage());
+            return failure(e.getMessage(), HttpStatus.NOT_FOUND);
         }
 
     }
@@ -62,7 +62,7 @@ public class AccountMQController extends RabbitHelper {
             return success(account);
 
         } catch (EntryNotFoundException  e) {
-            return failure(e.getMessage());
+            return failure(e.getMessage(), HttpStatus.NOT_FOUND);
         }
 
     }
@@ -75,7 +75,7 @@ public class AccountMQController extends RabbitHelper {
 
             return success(account);
 
-        } catch (DuplicateEntryException e) {
+        } catch (Exception e) {
             return failure(e.getMessage());
         }
 
@@ -88,7 +88,7 @@ public class AccountMQController extends RabbitHelper {
 
             return success(account);
 
-        } catch (DuplicateEntryException e) {
+        } catch (Exception e) {
             return failure(e.getMessage());
         }
 

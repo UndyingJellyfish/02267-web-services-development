@@ -30,7 +30,7 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
         if(response.getStatusCode() == HttpStatus.OK){
             return fromJson(response.getBody(), AccountDto.class);
         }
-        throw new DuplicateEntryException();
+        throw new DuplicateEntryException(fromJson(response.getBody(), String.class));
     }
 
     @Override
@@ -39,14 +39,14 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
         if(response.getStatusCode() == HttpStatus.OK){
             return fromJson(response.getBody(), AccountDto.class);
         }
-        throw new DuplicateEntryException();
+        throw new DuplicateEntryException(fromJson(response.getBody(), String.class));
     }
 
     @Override
     public void changeName(ChangeNameDto changeNameDto) throws EntryNotFoundException {
         ResponseObject response = send(QUEUE_ACCOUNT_CHANGENAME, changeNameDto);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new EntryNotFoundException();
+            throw new EntryNotFoundException(fromJson(response.getBody(), String.class));
         }
     }
 
@@ -54,7 +54,7 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
     public void delete(UUID accountId) throws EntryNotFoundException {
         ResponseObject response = send(QUEUE_ACCOUNT_DELETE, accountId);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new EntryNotFoundException();
+            throw new EntryNotFoundException(fromJson(response.getBody(), String.class));
         }
     }
 
@@ -69,7 +69,7 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
         if(response.getStatusCode() == HttpStatus.OK){
             return fromJson(response.getBody(), AccountDto.class);
         }
-        throw new EntryNotFoundException();
+        throw new EntryNotFoundException(fromJson(response.getBody(), String.class));
     }
 
     @Override

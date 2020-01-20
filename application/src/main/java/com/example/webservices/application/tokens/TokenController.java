@@ -35,6 +35,8 @@ public class TokenController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
         }catch(TokenQuantityException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+        } catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
         }
     }
 
@@ -43,7 +45,7 @@ public class TokenController {
     public List<TokenDto> getTokens(@PathVariable UUID customerId) {
         try {
             return tokenManager.GetTokens(customerId);
-        } catch (EntryNotFoundException e) {
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }

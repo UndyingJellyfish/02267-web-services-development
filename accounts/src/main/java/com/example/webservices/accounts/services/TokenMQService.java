@@ -63,7 +63,7 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
     public void retireAll(UUID accountId) {
         ResponseObject response = send(QUEUE_TOKENS_RETIRE, accountId);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new RuntimeException();
+            throw new RuntimeException(fromJson(response.getBody(), String.class));
         }
     }
 }

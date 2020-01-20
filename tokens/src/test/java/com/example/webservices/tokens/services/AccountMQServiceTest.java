@@ -11,6 +11,7 @@ import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.Message;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.spec.ECField;
 import java.util.UUID;
@@ -135,7 +136,8 @@ public class AccountMQServiceTest {
         try {
             service.delete( UUID.randomUUID());
             fail();
-        } catch (EntryNotFoundException ignored) {
+        } catch (ResponseStatusException e) {
+            assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
         }
     }
 
@@ -152,7 +154,7 @@ public class AccountMQServiceTest {
 
     @Test
     public void getCustomerException() {
-        setupFail(customerAccountDto);
+        setupFail("exception");
         try {
             service.getCustomer(customerAccountDto.getAccountId());
             fail();
@@ -172,7 +174,7 @@ public class AccountMQServiceTest {
 
     @Test
     public void getAccountException() {
-        setupFail(customerAccountDto);
+        setupFail("exception");
         try {
             service.getAccount(customerAccountDto.getAccountId());
             fail();
@@ -191,7 +193,7 @@ public class AccountMQServiceTest {
     }
     @Test
     public void getMerchantException() {
-        setupFail(merchantAccountDto);
+        setupFail("exception");
         try {
             service.getCustomer(merchantAccountDto.getAccountId());
             fail();

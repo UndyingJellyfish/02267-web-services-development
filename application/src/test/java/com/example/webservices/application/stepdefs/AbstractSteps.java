@@ -1,6 +1,7 @@
 package com.example.webservices.application.stepdefs;
 
 import com.example.webservices.application.CucumberTestContext;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -27,7 +28,7 @@ public class AbstractSteps {
     private int port;
 
     protected String baseUrl() {
-        return "http://localhost:" + (port == 0 ? 8080 : port);
+        return "http://localhost:" + port;
     }
 
     protected CucumberTestContext testContext() {
@@ -36,9 +37,13 @@ public class AbstractSteps {
 
     protected <T> T getBody(Class<T> type){
         try {
+
             return new ObjectMapper().readerFor(type).readValue(CONTEXT.getResponse().thenReturn().getBody().asString());
         }
         catch (Exception e){
+            if(e instanceof JsonParseException){
+                return (T) CONTEXT.getResponse().thenReturn().getBody().asString();
+            }
             throw new RuntimeException(e.getMessage());
         }
     }
@@ -54,13 +59,16 @@ public class AbstractSteps {
     protected void executePost(String apiPath, Map<String, String> pathParams, Map<String, String> queryParamas) {
         final RequestSpecification request = CONTEXT.getRequest();
         final Object payload = CONTEXT.getPayload();
-        final String url = baseUrl() + apiPath;
+        String url = baseUrl() + apiPath;
+        if(apiPath.startsWith("http")){
+            url = apiPath;
+        }
 
         setPayload(request, payload);
         setQueryParams(pathParams, request);
         setPathParams(queryParamas, request);
 
-        Response response = request.accept(ContentType.JSON)
+        Response response = request.accept(ContentType.ANY)
                 .log()
                 .all()
                 .post(url);
@@ -73,7 +81,10 @@ public class AbstractSteps {
     protected void executeMultiPartPost(String apiPath) {
         final RequestSpecification request = CONTEXT.getRequest();
         final Object payload = CONTEXT.getPayload();
-        final String url = baseUrl() + apiPath;
+        String url = baseUrl() + apiPath;
+        if(apiPath.startsWith("http")){
+            url = apiPath;
+        }
 
         Response response = request.multiPart("fuelTransfer", payload, "application/json")
                 .log()
@@ -95,7 +106,10 @@ public class AbstractSteps {
     protected void executeDelete(String apiPath, Map<String, String> pathParams, Map<String, String> queryParams) {
         final RequestSpecification request = CONTEXT.getRequest();
         final Object payload = CONTEXT.getPayload();
-        final String url = baseUrl() + apiPath;
+        String url = baseUrl() + apiPath;
+        if(apiPath.startsWith("http")){
+            url = apiPath;
+        }
 
         setPayload(request, payload);
         setQueryParams(pathParams, request);
@@ -121,7 +135,10 @@ public class AbstractSteps {
     protected void executePut(String apiPath, Map<String, String> pathParams, Map<String, String> queryParams) {
         final RequestSpecification request = CONTEXT.getRequest();
         final Object payload = CONTEXT.getPayload();
-        final String url = baseUrl() + apiPath;
+        String url = baseUrl() + apiPath;
+        if(apiPath.startsWith("http")){
+            url = apiPath;
+        }
 
         setPayload(request, payload);
         setQueryParams(pathParams, request);
@@ -147,7 +164,10 @@ public class AbstractSteps {
     protected void executePatch(String apiPath, Map<String, String> pathParams, Map<String, String> queryParams) {
         final RequestSpecification request = CONTEXT.getRequest();
         final Object payload = CONTEXT.getPayload();
-        final String url = baseUrl() + apiPath;
+        String url = baseUrl() + apiPath;
+        if(apiPath.startsWith("http")){
+            url = apiPath;
+        }
 
         setPayload(request, payload);
         setQueryParams(pathParams, request);
@@ -172,7 +192,10 @@ public class AbstractSteps {
 
     protected void executeGet(String apiPath, Map<String, String> pathParams, Map<String, String> queryParams) {
         final RequestSpecification request = CONTEXT.getRequest();
-        final String url = baseUrl() + apiPath;
+        String url = baseUrl() + apiPath;
+        if(apiPath.startsWith("http")){
+            url = apiPath;
+        }
 
         setQueryParams(pathParams, request);
         setPathParams(queryParams, request);

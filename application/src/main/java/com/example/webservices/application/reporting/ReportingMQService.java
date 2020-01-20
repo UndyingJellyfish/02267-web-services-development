@@ -25,7 +25,7 @@ public class ReportingMQService extends RabbitMQBaseClass implements IReportingS
     public List<TransactionDto> getTransactionHistory(UUID id) throws EntryNotFoundException {
         ResponseObject response = send(QUEUE_REPORTING_HISTORY, id);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new EntryNotFoundException();
+            throw new EntryNotFoundException(fromJson(response.getBody(), String.class));
         }
 
         return Arrays.asList(fromJson(response.getBody(), TransactionDto[].class));
@@ -35,7 +35,7 @@ public class ReportingMQService extends RabbitMQBaseClass implements IReportingS
     public List<TransactionDto> getTransactionHistorySince(RequestReportingHistoryDto dto) throws EntryNotFoundException {
         ResponseObject response = send(QUEUE_REPORTING_HISTORY, dto);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new EntryNotFoundException();
+            throw new EntryNotFoundException(fromJson(response.getBody(), String.class));
         }
 
         return Arrays.asList(fromJson(response.getBody(), TransactionDto[].class));
