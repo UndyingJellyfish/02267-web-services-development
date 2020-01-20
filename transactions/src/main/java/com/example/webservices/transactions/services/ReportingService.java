@@ -3,6 +3,7 @@ package com.example.webservices.transactions.services;
 import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.dataTransferObjects.AccountType;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
+import com.example.webservices.library.dataTransferObjects.RequestReportingHistoryDto;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
 import com.example.webservices.library.interfaces.IReportingService;
@@ -11,11 +12,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class ReportingService implements IReportingService {
-    private  ITransactionService transactionService;
+    private ITransactionService transactionService;
     private IAccountService accountService;
 
     public ReportingService(ITransactionService transactionService, IAccountService accountService) {
@@ -29,13 +29,24 @@ public class ReportingService implements IReportingService {
 
     @Override
     public List<TransactionDto> getTransactionHistory(UUID id) throws EntryNotFoundException {
-        AccountDto account = accountService.getAccount(id);
-        List<TransactionDto> transactions = this.transactionService.getTransactions(id);
-        if(account.getType().equals(AccountType.MERCHANT)){
+        return getTransactionHistoryWithStartDate(new RequestReportingHistoryDto(id));
+    }
+
+    @Override
+    public List<TransactionDto> getTransactionHistorySince(RequestReportingHistoryDto dto) throws EntryNotFoundException {
+        return getTransactionHistoryWithStartDate(dto);
+    }
+
+    private List<TransactionDto> getTransactionHistoryWithStartDate(RequestReportingHistoryDto dto) throws EntryNotFoundException{
+        AccountDto account = accountService.getAccount(dto.getAccountId());
+        List<TransactionDto> transactions = this.transactionService.getTransactions(dto.getAccountId());
+        if (dto.getAccountId() != null) {
+            transactions.removeIf(x -> x.getTransactionDate().before(dto.getStartDate()));
+        }
+        if (account.getType().equals(AccountType.MERCHANT)) {
             transactions.forEach(this::Anonymize);
         }
         return transactions;
     }
-
 
 }
