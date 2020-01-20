@@ -115,7 +115,7 @@ public class AbstractSteps {
         setQueryParams(pathParams, request);
         setPathParams(queryParams, request);
 
-        Response response = request.accept(ContentType.JSON)
+        Response response = request.accept(ContentType.ANY)
                 .log()
                 .all()
                 .delete(url);
