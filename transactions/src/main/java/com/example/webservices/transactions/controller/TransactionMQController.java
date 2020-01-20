@@ -4,8 +4,8 @@ import com.example.webservices.library.RabbitHelper;
 import com.example.webservices.library.dataTransferObjects.ResponseObject;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
+import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.ITransactionService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,12 +19,11 @@ public class TransactionMQController extends RabbitHelper {
     private final ITransactionService transactionService;
 
     public TransactionMQController(ITransactionService transactionService){
-
         this.transactionService = transactionService;
     }
 
     @RabbitListener(queues = QUEUE_TRANSACTION_ADD)
-    public ResponseObject addTransaction(TransactionDto transactionDto) throws JsonProcessingException {
+    public ResponseObject addTransaction(TransactionDto transactionDto) {
 
         try{
             UUID transactionId = this.transactionService.addTransaction(transactionDto);
@@ -35,8 +34,20 @@ public class TransactionMQController extends RabbitHelper {
         }
     }
 
+    @RabbitListener(queues = QUEUE_TRANSACTION_REFUND)
+    public ResponseObject refund(UUID transactionId) {
+        try{
+            UUID newTransaction = this.transactionService.refundTransaction(transactionId);
+            return success(newTransaction);
+        } catch (EntryNotFoundException e) {
+            return failure(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (DuplicateEntryException e) {
+            return failure(e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
     @RabbitListener(queues = QUEUE_TRANSACTION_GET)
-    public ResponseObject getTransaction(UUID transactionId) throws JsonProcessingException {
+    public ResponseObject getTransaction(UUID transactionId) {
         try{
             List<TransactionDto> result = this.transactionService.getTransactions(transactionId);
             return success(result);
@@ -44,10 +55,5 @@ public class TransactionMQController extends RabbitHelper {
         catch (Exception e){
             return failure(e.getMessage());
         }
-
-
-
     }
-
-
 }
