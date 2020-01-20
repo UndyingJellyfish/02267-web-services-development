@@ -1,15 +1,13 @@
 package com.example.webservices.transactions.services;
 
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
+import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.ITransactionService;
 import com.example.webservices.transactions.interfaces.ITransactionDatastore;
 import com.example.webservices.transactions.models.Transaction;
 import org.springframework.stereotype.Service;
-import sun.security.util.PendingException;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -46,7 +44,7 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
-    public UUID addTransaction(TransactionDto dto) {
+    public UUID addTransaction(TransactionDto dto) throws DuplicateEntryException {
         Transaction transaction = new Transaction(
                 dto.getCreditorId(),
                 dto.getDebtorId(),
@@ -60,12 +58,12 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
-    public UUID refundTransaction(UUID transactionId) throws EntryNotFoundException {
+    public UUID refundTransaction(UUID transactionId) throws EntryNotFoundException, DuplicateEntryException {
         TransactionDto dto = getTransaction(transactionId);
         // Swap debtor creditor
         UUID temp = dto.getCreditorId();
-        dto.setCreditor(dto.getDebtorId());
-        dto.setDebtor(temp);
+        dto.setCreditorId(dto.getDebtorId());
+        dto.setDebtorId(temp);
 
         return addTransaction(dto);
     }

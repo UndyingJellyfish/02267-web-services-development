@@ -1,30 +1,23 @@
 package com.example.webservices.application.stepdefs;
 
-import com.example.webservices.library.dataTransferObjects.AccountDto;
+import com.example.webservices.library.dataTransferObjects.RequestTokenDto;
 import com.example.webservices.library.dataTransferObjects.SignupDto;
-import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.dataTransferObjects.TokenDto;
-import com.example.webservices.library.interfaces.IAccountService;
-import gherkin.deps.com.google.gson.reflect.TypeToken;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import com.example.webservices.library.dataTransferObjects.RequestTokenDto;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.assertj.core.util.Lists;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 

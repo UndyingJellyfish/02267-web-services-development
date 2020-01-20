@@ -8,6 +8,7 @@ import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,7 +35,7 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
 
     @Override
     public AccountDto addMerchant(SignupDto signupDto) throws DuplicateEntryException {
-        ResponseObject response = send(QUEUE_MERCHANT_SIGNUP, signupDto, ResponseObject.class);
+        ResponseObject response = send(QUEUE_MERCHANT_SIGNUP, signupDto);
         if(response.getStatusCode() == HttpStatus.OK){
             return fromJson(response.getBody(), AccountDto.class);
         }

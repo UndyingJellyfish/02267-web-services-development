@@ -7,6 +7,7 @@ import com.example.webservices.library.interfaces.IAccountService;
 import com.example.webservices.library.interfaces.ITokenManager;
 import com.example.webservices.tokens.interfaces.ITokenDatastore;
 import com.example.webservices.tokens.models.Token;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

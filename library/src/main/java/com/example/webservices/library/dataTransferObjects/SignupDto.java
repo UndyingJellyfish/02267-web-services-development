@@ -6,6 +6,9 @@ public class SignupDto implements Serializable {
     private String name;
     private String identifier;
     private String bankAccountId;
+
+    private SignupDto(){}
+
     public SignupDto(String name, String identifier, String bankAccountId){
         this.name = name;
         this.identifier = identifier;

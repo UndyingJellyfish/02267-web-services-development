@@ -8,6 +8,7 @@ import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
 import com.example.webservices.library.interfaces.IReportingService;
 import com.example.webservices.library.interfaces.ITransactionService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class ReportingService implements IReportingService {
     }
 
     private void Anonymize(TransactionDto transaction) {
-        transaction.setDebtor(null);
+        transaction.setDebtorId(null);
     }
 
     @Override

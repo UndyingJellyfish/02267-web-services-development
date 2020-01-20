@@ -3,6 +3,7 @@ package com.example.webservices.tokens.services;
 import com.example.webservices.library.dataTransferObjects.*;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,7 +58,7 @@ public class AccountMQServiceTest {
             AccountDto res = service.addCustomer(customerSignupDto);
             assertEquals(customerAccountDto.getAccountId(), res.getAccountId());
         } catch (DuplicateEntryException e) {
-            fail();
+            fail(e.getMessage());
         }
 
 
@@ -83,7 +84,7 @@ public class AccountMQServiceTest {
             AccountDto res = service.addMerchant(merchantSignupDto);
             assertEquals(merchantAccountDto.getAccountId(), res.getAccountId());
         } catch (DuplicateEntryException e) {
-            fail();
+            fail(e.getMessage());
         }
     }
 
@@ -145,7 +146,7 @@ public class AccountMQServiceTest {
             AccountDto dto = service.getCustomer(customerAccountDto.getAccountId());
             assertEquals(customerAccountDto.getAccountId(), dto.getAccountId());
         } catch (EntryNotFoundException e) {
-            fail();
+            fail(e.getMessage());
         }
     }
 
@@ -165,7 +166,7 @@ public class AccountMQServiceTest {
             AccountDto dto = service.getAccount(customerAccountDto.getAccountId());
             assertEquals(customerAccountDto.getAccountId(), dto.getAccountId());
         } catch (EntryNotFoundException e) {
-            fail();
+            fail(e.getMessage());
         }
     }
 
@@ -185,7 +186,7 @@ public class AccountMQServiceTest {
             AccountDto dto = service.getMerchant(merchantAccountDto.getAccountId());
             assertEquals(merchantAccountDto.getAccountId(), dto.getAccountId());
         } catch (EntryNotFoundException e) {
-            fail();
+            fail(e.getMessage());
         }
     }
     @Test

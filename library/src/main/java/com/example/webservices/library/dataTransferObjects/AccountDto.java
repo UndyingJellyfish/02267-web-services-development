@@ -3,12 +3,15 @@ package com.example.webservices.library.dataTransferObjects;
 import java.io.Serializable;
 import java.util.UUID;
 
+
 public class AccountDto implements Serializable {
     private UUID accountId;
     private String name;
     private String bankAccountId;
     private String identifier;
     private AccountType type;
+
+    private AccountDto(){}
 
     public AccountDto(UUID accountId, String name, String identifier, AccountType type) {
         this(accountId, name, "", identifier, type);

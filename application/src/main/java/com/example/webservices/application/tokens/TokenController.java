@@ -5,6 +5,7 @@ import com.example.webservices.library.dataTransferObjects.TokenDto;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.exceptions.TokenQuantityException;
 import com.example.webservices.library.interfaces.ITokenManager;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;

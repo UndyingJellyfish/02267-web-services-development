@@ -5,6 +5,7 @@ import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.dataTransferObjects.TokenDto;
 import com.example.webservices.library.interfaces.IAccountService;
 import com.example.webservices.library.interfaces.ITokenManager;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -62,7 +63,7 @@ public class UserServiceSteps extends AbstractSteps {
         try {
             customer = accountService.getCustomer(customerId);
         } catch (EntryNotFoundException e) {
-            fail();
+            fail(e.getMessage());
         }
         assertNotNull(customer);
         assertEquals(customer.getName(),customerName);
@@ -93,7 +94,7 @@ public class UserServiceSteps extends AbstractSteps {
         try {
             merchant = accountService.getMerchant(merchantId);
         } catch (EntryNotFoundException e) {
-            fail();
+            fail(e.getMessage());
         }
         assertNotNull(merchant);
         assertEquals(merchant.getName(),merchantName);
@@ -121,7 +122,7 @@ public class UserServiceSteps extends AbstractSteps {
             assertNotNull(testContext().getResponse());
             customerName = accountService.getAccount(customerId).getName();
         } catch (ResponseStatusException | EntryNotFoundException e) {
-            fail();
+            fail(e.getMessage());
         }
     }
 

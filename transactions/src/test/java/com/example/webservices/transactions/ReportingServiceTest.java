@@ -8,6 +8,7 @@ import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
 import com.example.webservices.library.interfaces.ITransactionService;
 import com.example.webservices.transactions.services.ReportingService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -53,7 +54,7 @@ public class ReportingServiceTest {
             when(accountService.getAccount(customer.getAccountId())).thenReturn(customer);
             when(accountService.getAccount(merchant.getAccountId())).thenReturn(merchant);
         } catch (EntryNotFoundException e) {
-            fail();
+            fail(e.getMessage());
         }
         // unix time = 0, 1970-01-01 00:00:00 UTC+0
         oldTransactionDate = new Date(0);
@@ -85,7 +86,7 @@ public class ReportingServiceTest {
             fail(e.getMessage());
         }
         assertNotNull(history);
-        transactionDtos.forEach(t -> t.setDebtor(null));
+        transactionDtos.forEach(t -> t.setDebtorId(null));
         assertEquals(transactionDtos, history);
     }
 

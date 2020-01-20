@@ -77,7 +77,7 @@ public class PaymentServiceTest {
         }
         catch(InvalidTransferAmountException e){
             exception = e;
-        } catch (BankException | TokenException | EntryNotFoundException ignored) {
+        } catch (BankException | TokenException | EntryNotFoundException | DuplicateEntryException ignored) {
             fail();
         }
         assertNull(transaction);
@@ -94,7 +94,7 @@ public class PaymentServiceTest {
             when(tokenManager.GetToken(tokenId)).thenReturn(new TokenDto(tokenId, false, customerDto.getAccountId()));
             TransactionDto dto = new TransactionDto(tokenId, merchant.getAccountId(), UUID.randomUUID(), amount, description, false, new Date());
             transaction = paymentService.transfer(dto);
-        } catch (EntryNotFoundException | TokenException | BankException | InvalidTransferAmountException e) {
+        } catch (EntryNotFoundException | TokenException | BankException | InvalidTransferAmountException | DuplicateEntryException e) {
             fail();
         }
         assertEquals(merchant.getAccountId(),transaction.getCreditorId());
@@ -109,13 +109,13 @@ public class PaymentServiceTest {
         try {
             transactionService.refundTransaction(UUID.randomUUID());
             verify(transactionService,times(1)).refundTransaction(any());
-        } catch (EntryNotFoundException e) {
+        } catch (EntryNotFoundException | DuplicateEntryException e) {
             fail();
         }
     }
 
     @Test
-    public void refundAmountException() throws EntryNotFoundException {
+    public void refundAmountException() throws EntryNotFoundException, DuplicateEntryException {
         Mockito.doThrow(EntryNotFoundException.class).when(transactionService).refundTransaction(any());
         try {
             transactionService.refundTransaction(UUID.randomUUID());

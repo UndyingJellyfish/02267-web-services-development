@@ -5,6 +5,7 @@ import com.example.webservices.library.dataTransferObjects.ChangeNameDto;
 import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.UUID;
 

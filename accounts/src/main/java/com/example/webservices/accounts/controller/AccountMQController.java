@@ -10,6 +10,7 @@ import com.example.webservices.library.dataTransferObjects.*;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -29,7 +30,7 @@ public class AccountMQController extends RabbitHelper {
 
 
     @RabbitListener(queues = QUEUE_ACCOUNT_CHANGENAME)
-    public ResponseObject changeName(ChangeNameDto jsonString){
+    public ResponseObject changeName(ChangeNameDto jsonString) {
         try {
             //ChangeNameDto changeNameDto = fromJson(jsonString, ChangeNameDto.class);
             this.accountService.changeName(jsonString);
@@ -41,9 +42,8 @@ public class AccountMQController extends RabbitHelper {
 
     }
     @RabbitListener(queues = QUEUE_ACCOUNT_DELETE)
-    public ResponseObject deleteAccount(String jsonString){
+    public ResponseObject deleteAccount(UUID accountId) {
         try {
-            UUID accountId = fromJson(jsonString, UUID.class);
             this.accountService.delete(accountId);
 
             return success();
@@ -55,21 +55,20 @@ public class AccountMQController extends RabbitHelper {
     }
 
     @RabbitListener(queues = QUEUE_ACCOUNT_GET)
-    public ResponseObject getAccount(String jsonString){
+    public ResponseObject getAccount(UUID accountId) {
         try {
-            UUID accountId = fromJson(jsonString, UUID.class);
             AccountDto account = this.accountService.getAccount(accountId);
 
             return success(account);
 
-        } catch (EntryNotFoundException e) {
+        } catch (EntryNotFoundException  e) {
             return failure(e.getMessage());
         }
 
     }
 
     @RabbitListener(queues = QUEUE_CUSTOMER_SIGNUP)
-    public ResponseObject customerSignup(SignupDto jsonString){
+    public ResponseObject customerSignup(SignupDto jsonString) {
         try {
             //SignupDto signupDto = fromJson(jsonString, SignupDto.class);
             AccountDto account = this.accountService.addCustomer(jsonString);
@@ -82,7 +81,7 @@ public class AccountMQController extends RabbitHelper {
 
     }
     @RabbitListener(queues = QUEUE_MERCHANT_SIGNUP)
-    public ResponseObject merchantSignup(SignupDto jsonString){
+    public ResponseObject merchantSignup(SignupDto jsonString) {
         try {
             //SignupDto signupDto = fromJson(jsonString, SignupDto.class);
             AccountDto account = this.accountService.addMerchant(jsonString);

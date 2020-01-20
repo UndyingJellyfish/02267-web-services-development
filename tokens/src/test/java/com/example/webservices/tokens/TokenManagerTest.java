@@ -10,6 +10,7 @@ import com.example.webservices.library.interfaces.ITokenManager;
 import com.example.webservices.tokens.interfaces.ITokenDatastore;
 import com.example.webservices.tokens.models.Token;
 import com.example.webservices.tokens.services.TokenManager;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -50,7 +51,7 @@ public class TokenManagerTest {
             when(accountService.addCustomer(dto)).thenReturn(customerDto);
             this.tokenManager = new TokenManager(tokenDatastore,accountService);
         } catch (DuplicateEntryException e) {
-            fail();
+            fail(e.getMessage());
         }
     }
 
@@ -82,7 +83,7 @@ public class TokenManagerTest {
             assertEquals(afterTokens.stream().map(TokenDto::getTokenId).collect(Collectors.toList()), tokenIds);
             assertEquals(2, afterTokens.size());
         } catch (EntryNotFoundException | TokenQuantityException e) {
-            fail();
+            fail(e.getMessage());
         }
     }
 
@@ -106,7 +107,7 @@ public class TokenManagerTest {
 
             assertEquals(beforeTokens.size(), afterTokens.size());
         } catch (EntryNotFoundException e) {
-            fail();
+            fail(e.getMessage());
         }
 
     }
@@ -121,7 +122,7 @@ public class TokenManagerTest {
         } catch (TokenQuantityException ignored){
 
         } catch (EntryNotFoundException e) {
-            fail();
+            fail(e.getMessage());
         }
     }
 
@@ -152,7 +153,7 @@ public class TokenManagerTest {
             List<TokenDto> afterTokens = tokenManager.GetTokens(customerId);
             assertEquals(beforeTokens.size(), afterTokens.size());
         } catch (EntryNotFoundException | TokenQuantityException e) {
-            fail();
+            fail(e.getMessage());
         }
 
     }
@@ -182,7 +183,7 @@ public class TokenManagerTest {
             boolean isUsed = afterTokens.get(0).isUsed();
             assertTrue(isUsed);
         } catch (EntryNotFoundException | TokenQuantityException e) {
-            fail();
+            fail(e.getMessage());
         }
 
     }
@@ -228,7 +229,7 @@ public class TokenManagerTest {
             assertEquals(0, beforeTokens.size());
             assertEquals(1, afterTokens.size());
         } catch (EntryNotFoundException | TokenQuantityException e) {
-            fail();
+            fail(e.getMessage());
         }
     }
 
@@ -254,7 +255,7 @@ public class TokenManagerTest {
             assertEquals(customerId, tokenDto.getCustomerId());
 
         } catch (EntryNotFoundException | InvalidTokenException | TokenQuantityException e) {
-            fail();
+            fail(e.getMessage());
         }
 
     }

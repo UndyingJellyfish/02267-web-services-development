@@ -1,6 +1,7 @@
 package com.example.webservices.tokens.dataAccess;
 
 import com.example.webservices.library.exceptions.TokenException;
+import com.example.webservices.tokens.TokensApplication;
 import com.example.webservices.tokens.interfaces.ITokenDatastore;
 import com.example.webservices.tokens.models.Token;
 import org.junit.Assert;
@@ -8,16 +9,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.sql.DataSource;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,7 +31,7 @@ public class TokenDatastoreTest {
 
     private ITokenDatastore datastore;
     @Autowired
-    private JpaTokenDatastore tokenDatastore;
+    private ITokenDatastore tokenDatastore;
     public UUID customerId = UUID.randomUUID();
 
     @Before

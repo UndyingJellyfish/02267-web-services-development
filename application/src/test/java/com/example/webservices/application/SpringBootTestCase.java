@@ -12,7 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 //@RunWith(SpringRunner.class)
 //@WebMvcTest(controllers = PaymentController.class)
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration( classes = Application.class, loader = SpringBootContextLoader.class)
 public class SpringBootTestCase {
 

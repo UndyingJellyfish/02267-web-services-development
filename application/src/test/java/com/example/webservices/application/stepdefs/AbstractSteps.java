@@ -1,17 +1,17 @@
 package com.example.webservices.application.stepdefs;
 
 import com.example.webservices.application.CucumberTestContext;
-import gherkin.deps.com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.server.LocalServerPort;
+
+import java.lang.reflect.Type;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Class that abstract test context management and REST API invocation.
@@ -35,11 +35,12 @@ public class AbstractSteps {
     }
 
     protected <T> T getBody(Class<T> type){
-        return new Gson().fromJson(CONTEXT.getResponse().thenReturn().getBody().asString(), type);
-    }
-
-    protected <T> T getBody(Type type){
-        return CONTEXT.getResponse().then().extract().as(type);
+        try {
+            return new ObjectMapper().readerFor(type).readValue(CONTEXT.getResponse().thenReturn().getBody().asString());
+        }
+        catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     protected void executePost(String apiPath) {

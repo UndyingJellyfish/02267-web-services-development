@@ -1,12 +1,9 @@
 package com.example.webservices.library;
 
 import com.example.webservices.library.dataTransferObjects.ResponseObject;
-import gherkin.deps.com.google.gson.Gson;
-import gherkin.deps.com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import java.lang.reflect.Type;
 
 public abstract class RabbitHelper {
 
@@ -30,30 +27,38 @@ public abstract class RabbitHelper {
     public static final String QUEUE_PAYMENT_TRANSFER = "payment.transfer";
     public static final String QUEUE_PAYMENT_REFUND = "payment.refund";
 
-    protected Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    protected ObjectMapper jackson = new ObjectMapper();
 
-    protected  <T> T fromJson(String response, Class<T> type){
-        return gson.fromJson(response, type);
-    }
-    protected  <T> T fromJson(String response, Type type){
-        return gson.fromJson(response, type);
-    }
-    protected <T> String toJson(T message){
-        return gson.toJson(message);
+    protected  <T> T fromJson(String response, Class<T> type) {
+        try{
+            return jackson.readerFor(type).readValue(response);
+        }
+        catch (JsonProcessingException e){
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
-    protected <T> ResponseObject success(T response){
+    protected <T> String toJson(T message) {
+        try{
+            return jackson.writeValueAsString(message);
+        }
+        catch (JsonProcessingException e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    protected <T> ResponseObject success(T response) {
         return new ResponseObject(HttpStatus.OK, toJson(response));
     }
 
-    protected ResponseObject success(){
+    protected ResponseObject success() {
         return success("success");
     }
 
-    protected <T> ResponseObject failure(T response, HttpStatus status){
+    protected <T> ResponseObject failure(T response, HttpStatus status) {
         return new ResponseObject(status, toJson(response));
     }
-    protected <T> ResponseObject failure(T response){
+    protected <T> ResponseObject failure(T response) {
         return failure(response, HttpStatus.BAD_REQUEST);
     }
 

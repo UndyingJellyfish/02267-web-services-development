@@ -50,14 +50,14 @@ public class TransactionHistorySteps extends AbstractSteps {
             this.customer = accountService.addCustomer(cDto);
             this.merchant = accountService.addMerchant(mDto);
         } catch (DuplicateEntryException e) {
-            fail();
+            fail(e.getMessage());
         }
         this.expectedTransactions = new ArrayList<>();
         List<UUID> tokens = null;
         try {
             tokens =  tokenManagers.RequestTokens(this.customer.getAccountId(), 5);
         } catch (EntryNotFoundException | TokenQuantityException e) {
-            fail();
+            fail(e.getMessage());
         }
         for(int i = 0; i < tokens.size(); i++){
             UUID token = tokens.get(i);
@@ -67,8 +67,8 @@ public class TransactionHistorySteps extends AbstractSteps {
 
                 this.expectedTransactions.add(paymentService.transfer(dto));
 
-            } catch (TokenException | BankException | EntryNotFoundException | InvalidTransferAmountException e) {
-                fail();
+            } catch (TokenException | BankException | EntryNotFoundException | InvalidTransferAmountException | DuplicateEntryException e) {
+                fail(e.getMessage());
             }
         }
     }
@@ -111,14 +111,14 @@ public class TransactionHistorySteps extends AbstractSteps {
             this.customer = accountService.addCustomer(cDto);
             this.merchant = accountService.addMerchant(mDto);
         } catch (DuplicateEntryException e) {
-            fail();
+            fail(e.getMessage());
         }
         this.expectedTransactions = new ArrayList<>();
         List<UUID> tokens = null;
         try {
             tokens = tokenManagers.RequestTokens(this.customer.getAccountId(), 5);
         } catch (EntryNotFoundException | TokenQuantityException e) {
-            fail();
+            fail(e.getMessage());
         }
         for(int i = 0; i < tokens.size(); i++){
             UUID token = tokens.get(i);
@@ -128,8 +128,8 @@ public class TransactionHistorySteps extends AbstractSteps {
 
                 this.expectedTransactions.add(paymentService.transfer(dto));
 
-            } catch (TokenException | EntryNotFoundException | BankException | InvalidTransferAmountException e) {
-                fail();
+            } catch (TokenException | EntryNotFoundException | BankException | InvalidTransferAmountException | DuplicateEntryException e) {
+                fail(e.getMessage());
             }
         }
     }
@@ -139,7 +139,7 @@ public class TransactionHistorySteps extends AbstractSteps {
         try {
             this.transactions = reportingService.getTransactionHistory(this.merchant.getAccountId());
         } catch (EntryNotFoundException e) {
-            fail();
+            fail(e.getMessage());
         }
     }
 
@@ -148,7 +148,7 @@ public class TransactionHistorySteps extends AbstractSteps {
         assertNotNull(transactions);
         assertEquals(expectedTransactions.size(), transactions.size());
         for(TransactionDto transaction : transactions){
-            TransactionDto expectedTransaction = this.expectedTransactions.stream().filter(t -> t.equals(transaction.getTransactionId())).findFirst().orElse(null);
+            TransactionDto expectedTransaction = this.expectedTransactions.stream().filter(t -> t.equals(transaction)).findFirst().orElse(null);
             if(expectedTransaction == null){
                 fail();
             }
@@ -157,8 +157,6 @@ public class TransactionHistorySteps extends AbstractSteps {
 
             assertEquals(expectedTransaction.getTokenId(), transaction.getTokenId());
             assertEquals(expectedTransaction.getAmount(), transaction.getAmount());
-            // TODO: Cannot compare transaction date since TransactionDto does not have date information
-            //assertEquals(expectedTransaction.getTransactionDate(), transaction.getTransactionDate());
         }
     }
 }

@@ -5,6 +5,7 @@ import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.exceptions.InvalidTokenException;
 import com.example.webservices.library.exceptions.TokenException;
 import com.example.webservices.library.exceptions.TokenQuantityException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
 import java.util.UUID;
