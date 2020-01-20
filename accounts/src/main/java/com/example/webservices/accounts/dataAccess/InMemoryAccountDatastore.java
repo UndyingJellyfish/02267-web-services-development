@@ -11,9 +11,6 @@ import java.util.*;
 public class InMemoryAccountDatastore implements IAccountDatastore {
     private List<Account> accounts = new ArrayList<>();
 
-    public void flush(){
-        accounts = new ArrayList<>();
-    }
 
     @Override
     public Customer getCustomer(UUID customerId) throws EntryNotFoundException {
