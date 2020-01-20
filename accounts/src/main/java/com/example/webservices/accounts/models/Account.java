@@ -2,24 +2,30 @@ package com.example.webservices.accounts.models;
 
 
 import com.example.webservices.library.dataTransferObjects.AccountType;
-import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
 
+import javax.persistence.*;
 import java.util.UUID;
 
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue("Account")
 public abstract class Account {
 
-    private String name;
+    @Id
     private UUID accountId;
+    private String name;
     private String bankAccountId;
 
 
-
+    public Account(){
+        this.accountId = UUID.randomUUID();
+    }
     public Account(String name){
+        this();
         if(name == null || name.isEmpty()){
             throw new IllegalArgumentException("Name must be not null");
         }
         this.name = name;
-        this.accountId = UUID.randomUUID();
     }
 
     public String getName() {

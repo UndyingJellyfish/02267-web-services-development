@@ -2,10 +2,18 @@ package com.example.webservices.accounts.models;
 
 import com.example.webservices.library.dataTransferObjects.AccountType;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("Merchant")
 public class Merchant extends Account {
 
     private String cvr;
 
+    public Merchant(){
+        super();
+    }
     public Merchant(String name, String cvr) {
         this(name, cvr, null);
     }

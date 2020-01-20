@@ -5,11 +5,11 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import springfox.documentation.builders.PathSelectors;
@@ -19,6 +19,8 @@ import springfox.documentation.spring.web.json.Json;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.lang.reflect.Type;
+
+import javax.sql.DataSource;
 
 import static com.example.webservices.library.RabbitHelper.*;
 
@@ -56,6 +58,14 @@ public class AccountsApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AccountsApplication.class, args);
+    }
+
+    @Bean
+    public DataSource dataSource() {
+        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        dataSourceBuilder.driverClassName("org.sqlite.JDBC");
+        dataSourceBuilder.url("jdbc:sqlite:account.db");
+        return dataSourceBuilder.build();
     }
 
     @Bean
