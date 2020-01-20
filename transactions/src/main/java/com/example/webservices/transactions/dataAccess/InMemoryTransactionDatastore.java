@@ -13,19 +13,12 @@ public class InMemoryTransactionDatastore implements ITransactionDatastore {
 
     private List<Transaction> transactions = new ArrayList<>();
 
-    public void flush(){
-        transactions = new ArrayList<>();
-    }
 
 
     @Override
     public Transaction getTransaction(UUID transactionId) throws EntryNotFoundException {
         return this.transactions.stream().filter(t -> t.getTransactionId().equals(transactionId)).findFirst().orElseThrow(EntryNotFoundException::new);
     }
-
-    /*public Transaction getTransactionByTokenId(UUID tokenId) throws EntryNotFoundException {
-        return this.transactions.stream().filter(t -> t.getTokenId().equals(tokenId)).findFirst().orElseThrow(EntryNotFoundException::new);
-    }*/
 
     @Override
     public UUID addTransaction(Transaction transaction) {
