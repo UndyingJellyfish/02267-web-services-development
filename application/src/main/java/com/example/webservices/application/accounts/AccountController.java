@@ -28,7 +28,7 @@ public class AccountController {
     public void changeName(@RequestBody ChangeNameDto newName){
         try {
             accountService.changeName(newName);
-        } catch (EntryNotFoundException e) {
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
@@ -38,7 +38,7 @@ public class AccountController {
     public UUID signupMerchant(@RequestBody SignupDto merchant){
         try {
             return accountService.addMerchant(merchant).getAccountId();
-        } catch (DuplicateEntryException e) {
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
@@ -49,7 +49,7 @@ public class AccountController {
         try {
             AccountDto dto = accountService.addCustomer(customer);
             return dto.getAccountId();
-        } catch (DuplicateEntryException e) {
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
@@ -59,7 +59,7 @@ public class AccountController {
     public void delete(@PathVariable UUID accountId){
         try {
             accountService.delete(accountId);
-        } catch (EntryNotFoundException e) {
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
 

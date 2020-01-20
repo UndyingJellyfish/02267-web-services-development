@@ -28,7 +28,7 @@ public class PaymentMQService extends RabbitMQBaseClass implements IPaymentServi
     public TransactionDto transfer(TransactionDto transactionDto) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException {
         ResponseObject response = send(QUEUE_PAYMENT_TRANSFER, transactionDto);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new RuntimeException();
+            throw new RuntimeException(fromJson(response.getBody(), String.class));
         }
         return fromJson(response.getBody(), TransactionDto.class);
     }
@@ -38,7 +38,7 @@ public class PaymentMQService extends RabbitMQBaseClass implements IPaymentServi
     public void refund(UUID transactionId) {
         ResponseObject response = send(QUEUE_PAYMENT_REFUND, transactionId);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new RuntimeException();
+            throw new RuntimeException(fromJson(response.getBody(), String.class));
         }
     }
 }

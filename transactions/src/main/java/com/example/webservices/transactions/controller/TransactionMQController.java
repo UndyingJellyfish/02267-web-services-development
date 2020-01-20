@@ -25,8 +25,8 @@ public class TransactionMQController extends RabbitHelper {
     public ResponseObject addTransaction(TransactionDto transactionDto) throws JsonProcessingException {
 
         try{
-            this.transactionService.addTransaction(transactionDto);
-            return success();
+            UUID transactionId = this.transactionService.addTransaction(transactionDto);
+            return success(transactionId);
         }
         catch (Exception e){
             return failure(e.getMessage());

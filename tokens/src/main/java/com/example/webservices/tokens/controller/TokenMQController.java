@@ -4,13 +4,12 @@ import com.example.webservices.library.RabbitHelper;
 import com.example.webservices.library.dataTransferObjects.RequestTokenDto;
 import com.example.webservices.library.dataTransferObjects.ResponseObject;
 import com.example.webservices.library.dataTransferObjects.TokenDto;
-import com.example.webservices.library.exceptions.EntryNotFoundException;
-import com.example.webservices.library.exceptions.InvalidTokenException;
-import com.example.webservices.library.exceptions.TokenException;
-import com.example.webservices.library.exceptions.TokenQuantityException;
+import com.example.webservices.library.exceptions.*;
 import com.example.webservices.library.interfaces.ITokenManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import javafx.scene.web.WebHistory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,26 +30,32 @@ public class TokenMQController extends RabbitHelper {
         try {
             this.tokenManager.UseToken(tokenId);
             return success();
-        }catch (TokenException e) {
-            return failure(e.getMessage());
+        } catch (UsedTokenException e) {
+            return failure(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (InvalidTokenException e) {
+            return failure(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (TokenException e) {
+            return failure(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @RabbitListener(queues = QUEUE_TOKENS_GET)
     public ResponseObject getTokens(UUID accountId) {
         try {
             List<TokenDto> tokens = this.tokenManager.GetTokens(accountId);
             return success(tokens);
         }catch (EntryNotFoundException e) {
-            return failure(e.getMessage());
+            return failure(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
     @RabbitListener(queues = QUEUE_TOKEN_GET)
-    public ResponseObject getToken(UUID accountId) {
+    public ResponseObject getToken(UUID tokenId) {
         try {
-            TokenDto tokens = this.tokenManager.GetToken(accountId);
+            TokenDto tokens = this.tokenManager.GetToken(tokenId);
             return success(tokens);
         }catch (InvalidTokenException e) {
-            return failure(e.getMessage());
+            return failure(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -59,8 +64,10 @@ public class TokenMQController extends RabbitHelper {
         try {
             UUID token = this.tokenManager.RequestToken(requestTokenDto.getCustomerId());
             return success(token);
-        } catch (EntryNotFoundException | TokenQuantityException e) {
-            return failure(e.getMessage());
+        } catch (EntryNotFoundException e) {
+            return failure(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (TokenQuantityException e) {
+            return failure(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
     @RabbitListener(queues = QUEUE_TOKENS_REQUEST)
@@ -68,17 +75,16 @@ public class TokenMQController extends RabbitHelper {
         try {
             List<UUID> tokens = this.tokenManager.RequestTokens(requestTokenDto.getCustomerId(), requestTokenDto.getAmount());
             return success(tokens);
-        } catch (EntryNotFoundException | TokenQuantityException  e) {
-            return failure(e.getMessage());
+        } catch (EntryNotFoundException e) {
+            return failure(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (TokenQuantityException e) {
+            return failure(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
     @RabbitListener(queues = QUEUE_TOKENS_RETIRE)
     public ResponseObject retireTokens(UUID accountId) {
-        try {
             this.tokenManager.retireAll(accountId);
             return success();
-        }catch (Exception e){
-            return failure(e.getMessage());
-        }
+
     }
 }
