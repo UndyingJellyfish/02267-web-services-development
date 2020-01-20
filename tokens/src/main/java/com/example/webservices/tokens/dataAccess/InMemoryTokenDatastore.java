@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Service
 public class InMemoryTokenDatastore implements ITokenDatastore {
     private List<Token> tokens = new ArrayList<>();
 
@@ -18,7 +17,7 @@ public class InMemoryTokenDatastore implements ITokenDatastore {
     }
 
     @Override
-    public List<Token> assignTokens(UUID customerId, int quantity) {
+    public List<Token> generateAndAssignTokens(UUID customerId, int quantity) {
 
         List<Token> newTokens = new ArrayList<>();
 

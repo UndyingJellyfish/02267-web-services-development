@@ -1,5 +1,8 @@
 package com.example.webservices.tokens;
 
+import com.example.webservices.tokens.dataAccess.JpaTokenDatastore;
+import com.example.webservices.tokens.dataAccess.TokenRepository;
+import com.example.webservices.tokens.interfaces.ITokenDatastore;
 import com.google.gson.*;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -9,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import springfox.documentation.builders.PathSelectors;
@@ -17,11 +21,24 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.json.Json;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import javax.sql.DataSource;
 import java.lang.reflect.Type;
 
 import static com.example.webservices.library.RabbitHelper.*;
 @SpringBootApplication(exclude = {JacksonAutoConfiguration.class})
 public class TokensApplication {
+
+    @Bean
+    public ITokenDatastore tokenDatastore(TokenRepository tokenRepository){
+        return new JpaTokenDatastore(tokenRepository);
+    }
+    @Bean
+    public DataSource dataSource() {
+        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        dataSourceBuilder.driverClassName("org.sqlite.JDBC");
+        dataSourceBuilder.url("jdbc:sqlite:token.db");
+        return dataSourceBuilder.build();
+    }
 
     @Bean
     public Docket myApi() {

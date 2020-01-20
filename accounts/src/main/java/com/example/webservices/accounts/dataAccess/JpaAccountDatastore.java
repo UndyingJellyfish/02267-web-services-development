@@ -1,6 +1,5 @@
 package com.example.webservices.accounts.dataAccess;
 
-import com.example.webservices.accounts.interfaces.AccountRepository;
 import com.example.webservices.accounts.interfaces.IAccountDatastore;
 import com.example.webservices.accounts.models.Account;
 import com.example.webservices.accounts.models.Customer;

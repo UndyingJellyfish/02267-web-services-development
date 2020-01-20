@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -68,7 +67,7 @@ public class TokenManagerTest {
                     .thenReturn(customerDto);
 
             List<Token> tokens = new ArrayList<Token>(){{add(new Token(customerId));add(new Token(customerId));}};
-            when(tokenDatastore.assignTokens(customerId,2))
+            when(tokenDatastore.generateAndAssignTokens(customerId,2))
                     .thenReturn(tokens);
 
             List<UUID> tokenIds = tokenManager.RequestTokens(customerId,2);
@@ -134,7 +133,7 @@ public class TokenManagerTest {
                     .thenReturn(customerDto);
             List<Token> tokensList = new ArrayList<Token>(){{add(new Token(customerId));add(new Token(customerId));}};
 
-            when(tokenDatastore.assignTokens(customerId,2))
+            when(tokenDatastore.generateAndAssignTokens(customerId,2))
                     .thenReturn(tokensList);
 
             List<UUID> tokenIds = tokenManager.RequestTokens(customerId,2); // Any qty over 1
@@ -216,7 +215,7 @@ public class TokenManagerTest {
 
             beforeTokens = tokenManager.GetTokens(customerId);
             tl.add(new Token(customerId));
-            when(tokenDatastore.assignTokens(customerId,1))
+            when(tokenDatastore.generateAndAssignTokens(customerId,1))
                     .thenReturn(tl);
 
             UUID tokenId = tokenManager.RequestToken(customerId);
@@ -241,7 +240,7 @@ public class TokenManagerTest {
             when(accountService.getCustomer(customerId))
                     .thenReturn(customerDto);
             Token token = new Token(customerId);
-            when(tokenDatastore.assignTokens(customerId, 1))
+            when(tokenDatastore.generateAndAssignTokens(customerId, 1))
                     .thenReturn(new ArrayList<Token>(){{add(token);}} );
 
             UUID tokenId = tokenManager.RequestTokens(customerId,1).get(0);

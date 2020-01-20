@@ -36,7 +36,7 @@ public class TokenManager implements ITokenManager {
             throw new TokenQuantityException();
         }
 
-        return this.datastore.assignTokens(customer.getAccountId(), quantity).stream().map(Token::getTokenId).collect(Collectors.toList());
+        return this.datastore.generateAndAssignTokens(customer.getAccountId(), quantity).stream().map(Token::getTokenId).collect(Collectors.toList());
     }
 
     public List<TokenDto> GetTokens(UUID customerId) {
