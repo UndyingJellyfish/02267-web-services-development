@@ -7,6 +7,7 @@ import com.example.webservices.library.exceptions.TokenException;
 import com.example.webservices.library.exceptions.TokenQuantityException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,4 +54,6 @@ public interface ITokenManager {
      * @param accountId account for whom to retire all tokens
      */
     void retireAll(UUID accountId);
+
+    List<TokenDto> GetActiveTokens(UUID customerId);
 }

@@ -43,15 +43,11 @@ public class UserServiceSteps extends AbstractSteps {
 
     @When("The customer signs up")
     public void theCustomerSignsUp() {
-        try {
-            SignupDto dto = new SignupDto(customerName, "12345678", bankAccountId);
-            testContext().setPayload(dto);
-            executePost("/account/customer");
-            assertNotNull(testContext().getResponse());
-            customerId = getBody(UUID.class);
-        } catch (ResponseStatusException e) {
-            fail();
-        }
+        SignupDto dto = new SignupDto(customerName, "12345678", bankAccountId);
+        testContext().setPayload(dto);
+        executePost("/account/customer");
+        assertNotNull(testContext().getResponse());
+        customerId = getBody(UUID.class);
     }
 
     @Then("The customer should be signed up")
@@ -71,14 +67,10 @@ public class UserServiceSteps extends AbstractSteps {
 
     @When("The merchant signs up")
     public void theMerchantSignsUp() {
-        try {
-            SignupDto dto = new SignupDto(merchantName, "1234", bankAccountId);
-            testContext().setPayload(dto);
-            executePost("/account/merchant");
-            merchantId = getBody(UUID.class);
-        } catch (ResponseStatusException e) {
-            fail();
-        }
+        SignupDto dto = new SignupDto(merchantName, "1234", bankAccountId);
+        testContext().setPayload(dto);
+        executePost("/account/merchant");
+        merchantId = getBody(UUID.class);
     }
 
     @Then("The merchant should be signed up")
@@ -93,29 +85,21 @@ public class UserServiceSteps extends AbstractSteps {
 
     @Given("An account")
     public void anAccount() {
-        try {
-            SignupDto dto = new SignupDto("oldname", "123", UUID.randomUUID().toString());
-            testContext().setPayload(dto);
-            executePost("/account/customer");
-            customerId = getBody(UUID.class);
-        } catch (ResponseStatusException e) {
-            fail();
-        }
+        SignupDto dto = new SignupDto("oldname", "123", UUID.randomUUID().toString());
+        testContext().setPayload(dto);
+        executePost("/account/customer");
+        customerId = getBody(UUID.class);
     }
 
     @When("The user requests a name change")
     public void theUserRequestsANameChange() {
-        try {
-            ChangeNameDto changeNameDto = new ChangeNameDto(customerId, "newName");
-            testContext().setPayload(changeNameDto);
-            executePut("/account");
-            assertNotNull(testContext().getResponse());
-            executeGet("/account/customer/" + customerId);
-            AccountDto  customer = getBody(AccountDto.class);
-            customerName = customer.getName();
-        } catch (ResponseStatusException e) {
-            fail(e.getMessage());
-        }
+        ChangeNameDto changeNameDto = new ChangeNameDto(customerId, "newName");
+        testContext().setPayload(changeNameDto);
+        executePut("/account");
+        assertNotNull(testContext().getResponse());
+        executeGet("/account/customer/" + customerId);
+        AccountDto  customer = getBody(AccountDto.class);
+        customerName = customer.getName();
     }
 
     @Then("The name should be changed")
@@ -125,25 +109,19 @@ public class UserServiceSteps extends AbstractSteps {
 
     @When("The user requests to be deleted")
     public void theUserRequestsToBeDeleted() {
-        try {
-            executeDelete("/account/"+customerId.toString());
-        } catch (ResponseStatusException e) {
-            fail();
-        }
+
+        executeDelete("/account/"+customerId.toString());
+
     }
 
     @Then("The user should be deleted, and unused tokens should be removed")
     public void theUserShouldBeDeletedAndUnusedTokensShouldBeRemoved() {
-        throw new PendingException();
-        /* List<TokenDto> tokens = null; // TODO: Add method to get count of active tokens
-        try {
-            executeGet("/account/customer/" + customerId);
-            AccountDto  customer = getBody(AccountDto.class);
-            fail();
-        } catch (ResponseStatusException e) {
-            // entry not found = entry deleted
-            assertEquals(0, tokens.stream().filter(t -> !t.isUsed()).count());
-        }*/
+
+        executeGet("tokens/" + customerId);
+        int tokens = getBody(int.class);
+        executeGet("/account/customer/" + customerId);
+        assertEquals(0, tokens);
+
     }
 
     @And("A bank account number")

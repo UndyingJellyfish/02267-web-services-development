@@ -40,13 +40,13 @@ public class TokenController {
         }
     }
 
-    /*@GetMapping("/{customerId}")
+    @GetMapping("/{customerId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<TokenDto> getTokens(@PathVariable UUID customerId) {
+    public int getActiveTokenCount(@PathVariable UUID customerId) {
         try {
-            return tokenManager.GetTokens(customerId);
+            return tokenManager.GetActiveTokens(customerId).size();
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
-    }*/
+    }
 }
