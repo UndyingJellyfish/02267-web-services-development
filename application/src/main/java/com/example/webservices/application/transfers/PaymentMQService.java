@@ -25,7 +25,7 @@ public class PaymentMQService extends RabbitMQBaseClass implements IPaymentServi
     }
 
     @Override
-    public TransactionDto transfer(TransactionDto transactionDto) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException, JsonProcessingException {
+    public TransactionDto transfer(TransactionDto transactionDto) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException {
         ResponseObject response = send(QUEUE_PAYMENT_TRANSFER, transactionDto);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new RuntimeException();

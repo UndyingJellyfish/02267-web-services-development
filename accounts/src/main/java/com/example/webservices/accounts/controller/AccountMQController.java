@@ -30,65 +30,65 @@ public class AccountMQController extends RabbitHelper {
 
 
     @RabbitListener(queues = QUEUE_ACCOUNT_CHANGENAME)
-    public ResponseObject changeName(ChangeNameDto jsonString) throws JsonProcessingException {
+    public ResponseObject changeName(ChangeNameDto jsonString) {
         try {
             //ChangeNameDto changeNameDto = fromJson(jsonString, ChangeNameDto.class);
             this.accountService.changeName(jsonString);
             return success();
 
-        } catch (EntryNotFoundException | JsonProcessingException e) {
+        } catch (EntryNotFoundException e) {
             return failure(e.getMessage());
         }
 
     }
     @RabbitListener(queues = QUEUE_ACCOUNT_DELETE)
-    public ResponseObject deleteAccount(UUID accountId) throws JsonProcessingException {
+    public ResponseObject deleteAccount(UUID accountId) {
         try {
             this.accountService.delete(accountId);
 
             return success();
 
-        } catch (EntryNotFoundException | JsonProcessingException e) {
+        } catch (EntryNotFoundException e) {
             return failure(e.getMessage());
         }
 
     }
 
     @RabbitListener(queues = QUEUE_ACCOUNT_GET)
-    public ResponseObject getAccount(UUID accountId) throws JsonProcessingException {
+    public ResponseObject getAccount(UUID accountId) {
         try {
             AccountDto account = this.accountService.getAccount(accountId);
 
             return success(account);
 
-        } catch (EntryNotFoundException | JsonProcessingException e) {
+        } catch (EntryNotFoundException  e) {
             return failure(e.getMessage());
         }
 
     }
 
     @RabbitListener(queues = QUEUE_CUSTOMER_SIGNUP)
-    public ResponseObject customerSignup(SignupDto jsonString) throws JsonProcessingException {
+    public ResponseObject customerSignup(SignupDto jsonString) {
         try {
             //SignupDto signupDto = fromJson(jsonString, SignupDto.class);
             AccountDto account = this.accountService.addCustomer(jsonString);
 
             return success(account);
 
-        } catch (DuplicateEntryException | JsonProcessingException e) {
+        } catch (DuplicateEntryException e) {
             return failure(e.getMessage());
         }
 
     }
     @RabbitListener(queues = QUEUE_MERCHANT_SIGNUP)
-    public ResponseObject merchantSignup(SignupDto jsonString) throws JsonProcessingException {
+    public ResponseObject merchantSignup(SignupDto jsonString) {
         try {
             //SignupDto signupDto = fromJson(jsonString, SignupDto.class);
             AccountDto account = this.accountService.addMerchant(jsonString);
 
             return success(account);
 
-        } catch (DuplicateEntryException | JsonProcessingException e) {
+        } catch (DuplicateEntryException e) {
             return failure(e.getMessage());
         }
 

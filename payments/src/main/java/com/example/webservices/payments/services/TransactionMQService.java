@@ -35,7 +35,7 @@ public class TransactionMQService extends RabbitMQBaseClass implements ITransact
     }
 
     @Override
-    public UUID addTransaction(TransactionDto transaction) throws JsonProcessingException {
+    public UUID addTransaction(TransactionDto transaction) {
         ResponseObject response = send(QUEUE_TRANSACTION_ADD, transaction);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new RuntimeException();
@@ -44,7 +44,7 @@ public class TransactionMQService extends RabbitMQBaseClass implements ITransact
     }
 
     @Override
-    public TransactionDto getTransaction(UUID transactionId) throws JsonProcessingException {
+    public TransactionDto getTransaction(UUID transactionId) {
         ResponseObject response = send(QUEUE_TRANSACTION_GET, transactionId);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new RuntimeException();

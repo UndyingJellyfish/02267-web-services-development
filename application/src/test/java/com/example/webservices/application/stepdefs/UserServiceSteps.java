@@ -62,8 +62,8 @@ public class UserServiceSteps extends AbstractSteps {
         AccountDto customer = null;
         try {
             customer = accountService.getCustomer(customerId);
-        } catch (EntryNotFoundException | JsonProcessingException e) {
-            fail();
+        } catch (EntryNotFoundException e) {
+            fail(e.getMessage());
         }
         assertNotNull(customer);
         assertEquals(customer.getName(),customerName);
@@ -93,8 +93,8 @@ public class UserServiceSteps extends AbstractSteps {
         AccountDto merchant = null;
         try {
             merchant = accountService.getMerchant(merchantId);
-        } catch (EntryNotFoundException | JsonProcessingException e) {
-            fail();
+        } catch (EntryNotFoundException e) {
+            fail(e.getMessage());
         }
         assertNotNull(merchant);
         assertEquals(merchant.getName(),merchantName);
@@ -121,8 +121,8 @@ public class UserServiceSteps extends AbstractSteps {
             executePut("/account");
             assertNotNull(testContext().getResponse());
             customerName = accountService.getAccount(customerId).getName();
-        } catch (ResponseStatusException | EntryNotFoundException | JsonProcessingException e) {
-            fail();
+        } catch (ResponseStatusException | EntryNotFoundException e) {
+            fail(e.getMessage());
         }
     }
 
@@ -149,8 +149,6 @@ public class UserServiceSteps extends AbstractSteps {
         } catch (EntryNotFoundException e) {
             // entry not found = entry deleted
             assertEquals(0, tokens.stream().filter(t -> !t.isUsed()).count());
-        } catch (JsonProcessingException e) {
-            fail();
         }
     }
 

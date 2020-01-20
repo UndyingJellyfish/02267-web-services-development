@@ -51,8 +51,8 @@ public class ReportingServiceTest {
         try {
             when(accountService.getAccount(customer.getAccountId())).thenReturn(customer);
             when(accountService.getAccount(merchant.getAccountId())).thenReturn(merchant);
-        } catch (EntryNotFoundException | JsonProcessingException e) {
-            fail();
+        } catch (EntryNotFoundException e) {
+            fail(e.getMessage());
         }
         transactionDtos.add(new TransactionDto(UUID.randomUUID(), merchant.getAccountId(), customer.getAccountId(), new BigDecimal("1"), "To trick SKAT", false, new Date()));
         transactionDtos.add(new TransactionDto(UUID.randomUUID(), merchant.getAccountId(), customer.getAccountId(), new BigDecimal("100"), "Keep-quite money", false, new Date()));
@@ -64,8 +64,8 @@ public class ReportingServiceTest {
         List<TransactionDto> history = null;
         try {
             history = reportingService.getTransactionHistory(customer.getAccountId());
-        } catch (EntryNotFoundException | JsonProcessingException e) {
-            fail();
+        } catch (EntryNotFoundException e) {
+            fail(e.getMessage());
         }
         assertNotNull(history);
         assertEquals(transactionDtos, history);
@@ -76,8 +76,8 @@ public class ReportingServiceTest {
         List<TransactionDto> history = null;
         try {
             history = reportingService.getTransactionHistory(merchant.getAccountId());
-        } catch (EntryNotFoundException | JsonProcessingException e) {
-            fail();
+        } catch (EntryNotFoundException e) {
+            fail(e.getMessage());
         }
         assertNotNull(history);
         transactionDtos.forEach(t -> t.setDebtorId(null));

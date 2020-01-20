@@ -57,8 +57,8 @@ public class AccountMQServiceTest {
         try {
             AccountDto res = service.addCustomer(customerSignupDto);
             assertEquals(customerAccountDto.getAccountId(), res.getAccountId());
-        } catch (DuplicateEntryException | JsonProcessingException e) {
-            fail();
+        } catch (DuplicateEntryException e) {
+            fail(e.getMessage());
         }
 
 
@@ -73,8 +73,6 @@ public class AccountMQServiceTest {
             fail();
         } catch (DuplicateEntryException e) {
             assertNotNull(e);
-        } catch (JsonProcessingException e) {
-            fail();
         }
     }
 
@@ -85,8 +83,8 @@ public class AccountMQServiceTest {
         try {
             AccountDto res = service.addMerchant(merchantSignupDto);
             assertEquals(merchantAccountDto.getAccountId(), res.getAccountId());
-        } catch (DuplicateEntryException | JsonProcessingException e) {
-            fail();
+        } catch (DuplicateEntryException e) {
+            fail(e.getMessage());
         }
     }
 
@@ -98,8 +96,6 @@ public class AccountMQServiceTest {
             fail();
         } catch (DuplicateEntryException e) {
             assertNotNull(e);
-        } catch (JsonProcessingException e) {
-            fail();
         }
     }
 
@@ -149,7 +145,7 @@ public class AccountMQServiceTest {
         try {
             AccountDto dto = service.getCustomer(customerAccountDto.getAccountId());
             assertEquals(customerAccountDto.getAccountId(), dto.getAccountId());
-        } catch (EntryNotFoundException | JsonProcessingException e) {
+        } catch (EntryNotFoundException e) {
             fail(e.getMessage());
         }
     }
@@ -160,9 +156,7 @@ public class AccountMQServiceTest {
         try {
             service.getCustomer(customerAccountDto.getAccountId());
             fail();
-        } catch (EntryNotFoundException ignored) {        } catch (JsonProcessingException e) {
-            fail();
-        }
+        } catch (EntryNotFoundException ignored) {        }
     }
 
     @Test
@@ -171,8 +165,8 @@ public class AccountMQServiceTest {
         try {
             AccountDto dto = service.getAccount(customerAccountDto.getAccountId());
             assertEquals(customerAccountDto.getAccountId(), dto.getAccountId());
-        } catch (EntryNotFoundException | JsonProcessingException e) {
-            fail();
+        } catch (EntryNotFoundException e) {
+            fail(e.getMessage());
         }
     }
 
@@ -182,9 +176,7 @@ public class AccountMQServiceTest {
         try {
             service.getAccount(customerAccountDto.getAccountId());
             fail();
-        } catch (EntryNotFoundException ignored) {        } catch (JsonProcessingException e) {
-            fail();
-        }
+        } catch (EntryNotFoundException ignored) {        }
     }
 
     @Test
@@ -193,8 +185,8 @@ public class AccountMQServiceTest {
         try {
             AccountDto dto = service.getMerchant(merchantAccountDto.getAccountId());
             assertEquals(merchantAccountDto.getAccountId(), dto.getAccountId());
-        } catch (EntryNotFoundException | JsonProcessingException e) {
-            fail();
+        } catch (EntryNotFoundException e) {
+            fail(e.getMessage());
         }
     }
     @Test
@@ -203,8 +195,6 @@ public class AccountMQServiceTest {
         try {
             service.getCustomer(merchantAccountDto.getAccountId());
             fail();
-        } catch (EntryNotFoundException ignored) {        } catch (JsonProcessingException e) {
-            fail();
-        }
+        } catch (EntryNotFoundException ignored) {        }
     }
 }

@@ -28,7 +28,7 @@ public class ReportingService implements IReportingService {
     }
 
     @Override
-    public List<TransactionDto> getTransactionHistory(UUID id) throws EntryNotFoundException, JsonProcessingException {
+    public List<TransactionDto> getTransactionHistory(UUID id) throws EntryNotFoundException {
         AccountDto account = accountService.getAccount(id);
         List<TransactionDto> transactions = this.transactionService.getTransactions(id);
         if(account.getType().equals(AccountType.MERCHANT)){

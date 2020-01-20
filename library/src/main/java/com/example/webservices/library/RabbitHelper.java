@@ -47,18 +47,18 @@ public abstract class RabbitHelper {
         }
     }
 
-    protected <T> ResponseObject success(T response) throws JsonProcessingException {
+    protected <T> ResponseObject success(T response) {
         return new ResponseObject(HttpStatus.OK, toJson(response));
     }
 
-    protected ResponseObject success() throws JsonProcessingException {
+    protected ResponseObject success() {
         return success("success");
     }
 
-    protected <T> ResponseObject failure(T response, HttpStatus status) throws JsonProcessingException {
+    protected <T> ResponseObject failure(T response, HttpStatus status) {
         return new ResponseObject(status, toJson(response));
     }
-    protected <T> ResponseObject failure(T response) throws JsonProcessingException {
+    protected <T> ResponseObject failure(T response) {
         return failure(response, HttpStatus.BAD_REQUEST);
     }
 

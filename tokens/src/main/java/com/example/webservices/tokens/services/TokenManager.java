@@ -25,7 +25,7 @@ public class TokenManager implements ITokenManager {
         this.accountService = accountService;
     }
 
-    public List<UUID> RequestTokens(UUID customerId, int quantity) throws TokenQuantityException, EntryNotFoundException, JsonProcessingException {
+    public List<UUID> RequestTokens(UUID customerId, int quantity) throws TokenQuantityException, EntryNotFoundException {
         AccountDto customer = accountService.getCustomer(customerId);
 
         if(quantity > 5  || quantity < 1){
@@ -53,7 +53,7 @@ public class TokenManager implements ITokenManager {
     }
 
     @Override
-    public UUID RequestToken(UUID customerId) throws EntryNotFoundException, TokenQuantityException, JsonProcessingException {
+    public UUID RequestToken(UUID customerId) throws EntryNotFoundException, TokenQuantityException {
         return RequestTokens(customerId, 1).get(0);
     }
 

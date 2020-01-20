@@ -35,8 +35,6 @@ public class TokenController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
         }catch(TokenQuantityException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
-        } catch (JsonProcessingException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
@@ -47,8 +45,6 @@ public class TokenController {
             return tokenManager.GetTokens(customerId);
         } catch (EntryNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (JsonProcessingException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 }

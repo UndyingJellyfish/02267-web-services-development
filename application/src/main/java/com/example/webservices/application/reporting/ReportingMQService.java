@@ -23,7 +23,7 @@ public class ReportingMQService extends RabbitMQBaseClass implements IReportingS
     }
 
     @Override
-    public List<TransactionDto> getTransactionHistory(UUID id) throws EntryNotFoundException, JsonProcessingException {
+    public List<TransactionDto> getTransactionHistory(UUID id) throws EntryNotFoundException {
         ResponseObject response = send(QUEUE_REPORTING_HISTORY, id);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new EntryNotFoundException();

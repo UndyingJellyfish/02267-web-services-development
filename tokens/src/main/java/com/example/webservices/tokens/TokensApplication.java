@@ -18,6 +18,7 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 
+import javax.sql.DataSource;
 import java.lang.reflect.Type;
 
 import static com.example.webservices.library.RabbitHelper.*;

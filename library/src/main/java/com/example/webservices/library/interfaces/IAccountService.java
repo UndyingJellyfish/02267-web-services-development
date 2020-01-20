@@ -10,18 +10,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.UUID;
 
 public interface IAccountService {
-    AccountDto addCustomer(SignupDto signupDto) throws DuplicateEntryException, JsonProcessingException;
+    AccountDto addCustomer(SignupDto signupDto) throws DuplicateEntryException;
 
-    AccountDto addMerchant(SignupDto signupDto) throws DuplicateEntryException, JsonProcessingException;
+    AccountDto addMerchant(SignupDto signupDto) throws DuplicateEntryException;
 
     void changeName(ChangeNameDto changeNameDto) throws EntryNotFoundException;
 
     void delete(UUID accountId) throws EntryNotFoundException;
 
-    AccountDto getCustomer(UUID customerId) throws EntryNotFoundException, JsonProcessingException;
+    AccountDto getCustomer(UUID customerId) throws EntryNotFoundException;
 
-    AccountDto getAccount(UUID id) throws EntryNotFoundException, JsonProcessingException;
+    AccountDto getAccount(UUID id) throws EntryNotFoundException;
 
-    AccountDto getMerchant(UUID merchantId) throws EntryNotFoundException, JsonProcessingException;
+    AccountDto getMerchant(UUID merchantId) throws EntryNotFoundException;
 
 }

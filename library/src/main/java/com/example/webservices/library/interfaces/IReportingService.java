@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IReportingService {
-    List<TransactionDto> getTransactionHistory(UUID id) throws EntryNotFoundException, JsonProcessingException;
+    List<TransactionDto> getTransactionHistory(UUID id) throws EntryNotFoundException;
 }

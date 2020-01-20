@@ -25,7 +25,7 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
     }
 
     @Override
-    public AccountDto addCustomer(SignupDto signupDto) throws DuplicateEntryException, JsonProcessingException {
+    public AccountDto addCustomer(SignupDto signupDto) throws DuplicateEntryException {
         ResponseObject response = send(QUEUE_CUSTOMER_SIGNUP, signupDto);
         if(response.getStatusCode() == HttpStatus.OK){
             return fromJson(response.getBody(), AccountDto.class);
@@ -34,7 +34,7 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
     }
 
     @Override
-    public AccountDto addMerchant(SignupDto signupDto) throws DuplicateEntryException, JsonProcessingException {
+    public AccountDto addMerchant(SignupDto signupDto) throws DuplicateEntryException {
         ResponseObject response = send(QUEUE_MERCHANT_SIGNUP, signupDto);
         if(response.getStatusCode() == HttpStatus.OK){
             return fromJson(response.getBody(), AccountDto.class);
@@ -59,12 +59,12 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
     }
 
     @Override
-    public AccountDto getCustomer(UUID customerId) throws EntryNotFoundException, JsonProcessingException {
+    public AccountDto getCustomer(UUID customerId) throws EntryNotFoundException {
         return getAccount(customerId);
     }
 
     @Override
-    public AccountDto getAccount(UUID id) throws EntryNotFoundException, JsonProcessingException {
+    public AccountDto getAccount(UUID id) throws EntryNotFoundException {
         ResponseObject response = send(QUEUE_ACCOUNT_GET, id);
         if(response.getStatusCode() == HttpStatus.OK){
             return fromJson(response.getBody(), AccountDto.class);
@@ -73,7 +73,7 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
     }
 
     @Override
-    public AccountDto getMerchant(UUID merchantId) throws EntryNotFoundException, JsonProcessingException {
+    public AccountDto getMerchant(UUID merchantId) throws EntryNotFoundException {
         return getAccount(merchantId);
     }
 }

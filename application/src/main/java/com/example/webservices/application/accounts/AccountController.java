@@ -38,7 +38,7 @@ public class AccountController {
     public UUID signupMerchant(@RequestBody SignupDto merchant){
         try {
             return accountService.addMerchant(merchant).getAccountId();
-        } catch (DuplicateEntryException | JsonProcessingException e) {
+        } catch (DuplicateEntryException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
@@ -49,7 +49,7 @@ public class AccountController {
         try {
             AccountDto dto = accountService.addCustomer(customer);
             return dto.getAccountId();
-        } catch (DuplicateEntryException | JsonProcessingException e) {
+        } catch (DuplicateEntryException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }

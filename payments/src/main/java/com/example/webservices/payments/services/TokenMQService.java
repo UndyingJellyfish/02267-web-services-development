@@ -28,7 +28,7 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
     }
 
     @Override
-    public List<UUID> RequestTokens(UUID customer, int quantity) throws JsonProcessingException {
+    public List<UUID> RequestTokens(UUID customer, int quantity) {
         RequestTokenDto dto = new RequestTokenDto();
         dto.setCustomerId(customer);
         dto.setAmount(quantity);
@@ -40,7 +40,7 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
     }
 
     @Override
-    public List<TokenDto> GetTokens(UUID customerId) throws EntryNotFoundException, JsonProcessingException {
+    public List<TokenDto> GetTokens(UUID customerId) throws EntryNotFoundException {
         ResponseObject response = send(QUEUE_TOKENS_GET, customerId);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new RuntimeException();
@@ -57,7 +57,7 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
     }
 
     @Override
-    public UUID RequestToken(UUID customerId) throws EntryNotFoundException, TokenQuantityException, JsonProcessingException {
+    public UUID RequestToken(UUID customerId) throws EntryNotFoundException, TokenQuantityException {
         ResponseObject response = send(QUEUE_TOKEN_REQUEST, customerId);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new RuntimeException();
@@ -66,7 +66,7 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
     }
 
     @Override
-    public TokenDto GetToken(UUID tokenId) throws InvalidTokenException, JsonProcessingException {
+    public TokenDto GetToken(UUID tokenId) throws InvalidTokenException {
         ResponseObject response = send(QUEUE_TOKEN_GET, tokenId);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new RuntimeException();

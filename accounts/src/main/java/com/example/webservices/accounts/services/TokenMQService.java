@@ -28,7 +28,7 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
     }
 
     @Override
-    public List<UUID> RequestTokens(UUID customer, int quantity) throws JsonProcessingException {
+    public List<UUID> RequestTokens(UUID customer, int quantity) {
         RequestTokenDto dto = new RequestTokenDto();
         dto.setCustomerId(customer);
         dto.setAmount(quantity);

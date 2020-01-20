@@ -23,14 +23,14 @@ public class ReportingMQController extends RabbitHelper {
 
 
     @RabbitListener(queues = QUEUE_REPORTING_HISTORY)
-    public ResponseObject getReportingHistory(UUID accountId) throws JsonProcessingException {
+    public ResponseObject getReportingHistory(UUID accountId) {
 
         try {
 
             List<TransactionDto> transactionDtos = this.reportingService.getTransactionHistory(accountId);
 
             return success(transactionDtos);
-        } catch (EntryNotFoundException | JsonProcessingException e) {
+        } catch (EntryNotFoundException e) {
             return failure(e.getMessage());
         }
 
