@@ -12,7 +12,12 @@
     <artifactId>webservices-library</artifactId>
     <name>library</name>
     <description>Library</description>
-
+    <dependencies>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+    </dependencies>
 
 
 </project>
