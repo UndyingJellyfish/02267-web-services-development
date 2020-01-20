@@ -33,22 +33,13 @@ public class CustomerTokenSteps extends AbstractSteps {
     @Given("A registered user")
     public void aRegisteredUser() {
         SignupDto dto = new SignupDto("bob", "123", UUID.randomUUID().toString());
-        RestTemplate template = new RestTemplate();
-        //ResponseEntity<UUID> response = template.postForEntity("http://localhost:8080/account/customer", dto, UUID.class);
         testContext().setPayload(dto);
         executePost("/account/customer");
         customerId = getBody(UUID.class);
-        //UUID customerId = response.getBody();
 
     }
 
-    @And("The user has spent all tokens")
-    public void theUserHasSpentAllTokens() {
 
-        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId",customerId.toString());}});
-        List<TokenDto> tokens = Lists.list(getBody(TokenDto[].class));
-        assertTrue(tokens.stream().allMatch(TokenDto::isUsed));
-    }
 
     @When("The user requests {int} of tokens")
     public void theUserRequestsANumberOfTokens(int arg0) {
@@ -62,13 +53,10 @@ public class CustomerTokenSteps extends AbstractSteps {
 
     @Then("The user receives {int} tokens")
     public void theUserReceivesNumberTokens(int arg0) {
-        List<TokenDto> tokenList = null;
-        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId", customerId.toString());}});
-        if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
-            fail();
+        assertEquals(arg0, tokenIdList.size());
+        for(UUID id : tokenIdList){
+            assertNotNull(id);
         }
-        tokenList = Lists.list(getBody(TokenDto[].class));
-        assertEquals(arg0,tokenList.size());
     }
 
     @After
@@ -84,35 +72,24 @@ public class CustomerTokenSteps extends AbstractSteps {
     @And("The user has {int} unused token")
     public void theUserHasUnusedToken(int arg0) {
         RequestTokenDto dto = new RequestTokenDto();
+        unusedCount = arg0;
         dto.setAmount(arg0);
         dto.setCustomerId(customerId);
         testContext().setPayload(dto);
         executePost("/tokens");
         Response response = testContext().getResponse();
-        ResponseBody body = response.getBody();
-        String message = body.prettyPrint();
         if(response.getStatusCode() != HttpStatus.OK.value()){
             fail();
         }
-        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId", customerId.toString());}});
-        if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
-            fail();
-        }
-
-        List<TokenDto> tokens = Lists.list(getBody(TokenDto[].class));
-        assertEquals(arg0, tokens.stream().filter(t ->!t.isUsed()).count());
+        tokenIdList = Lists.list(getBody(UUID[].class));
+        assertEquals(arg0, tokenIdList.size());
     }
 
-
+    private int unusedCount;
 
     @Then("The user has {int} unused tokens")
     public void theUserHasUnusedTokens(int arg0) {
-        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId", customerId.toString());}});
-        if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
-            fail();
-        }
-        List<TokenDto> tokens = Lists.list(getBody(TokenDto[].class));
-        assertEquals(arg0, tokens.stream().filter(t ->!t.isUsed()).count());
+        assertEquals(arg0,unusedCount + tokenIdList.size());
     }
 
 
@@ -127,6 +104,8 @@ public class CustomerTokenSteps extends AbstractSteps {
         if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
             fail();
         }
+        tokenIdList = Lists.list(getBody(UUID[].class));
+        assertEquals(arg0, tokenIdList.size());
     }
 
     private int excp = -1;
@@ -163,23 +142,5 @@ public class CustomerTokenSteps extends AbstractSteps {
             out = Arrays.asList(getBody(UUID[].class));
             assertEquals(arg0, out.size());
         }
-    }
-
-
-
-
-    @When("The user queries his tokens")
-    public void theUserQueriesHisTokens() {
-        executeGet("/tokens/{customerId}", new HashMap<String, String>(){{put("customerId", customerId.toString());}});
-        if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
-            fail();
-        }
-        this.tokenList = Lists.list(getBody(TokenDto[].class));
-    }
-
-    @Then("He should get his tokens")
-    public void heShouldGetHisTokens() {
-        assertEquals(2, this.tokenList.stream().filter(t -> !t.isUsed()).count());
-        assertTrue(this.tokenList.size() >= 2);
     }
 }
