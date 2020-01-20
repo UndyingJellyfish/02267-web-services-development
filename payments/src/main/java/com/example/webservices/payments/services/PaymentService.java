@@ -3,10 +3,7 @@ package com.example.webservices.payments.services;
 import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.dataTransferObjects.TokenDto;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
-import com.example.webservices.library.exceptions.BankException;
-import com.example.webservices.library.exceptions.EntryNotFoundException;
-import com.example.webservices.library.exceptions.InvalidTransferAmountException;
-import com.example.webservices.library.exceptions.TokenException;
+import com.example.webservices.library.exceptions.*;
 import com.example.webservices.library.interfaces.*;
 import org.springframework.stereotype.Service;
 
@@ -29,11 +26,11 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
-    public TransactionDto transfer(TransactionDto transactionDto) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException {
+    public TransactionDto transfer(TransactionDto transactionDto) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException, DuplicateEntryException {
         return this.transfer(transactionDto.getTokenId(), transactionDto.getCreditorId(), transactionDto.getAmount(), false, transactionDto.getDescription());
     }
 
-    public TransactionDto transfer(UUID tokenId, UUID merchantId, BigDecimal amount, boolean isRefund, String description) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException {
+    public TransactionDto transfer(UUID tokenId, UUID merchantId, BigDecimal amount, boolean isRefund, String description) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException, DuplicateEntryException {
         if(!isGreaterThanZero(amount)){
             throw new InvalidTransferAmountException();
         }
@@ -52,7 +49,7 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
-    public void refund(UUID transactionId) throws EntryNotFoundException {
+    public void refund(UUID transactionId) throws EntryNotFoundException, DuplicateEntryException {
         transactionService.refundTransaction(transactionId);
     }
 

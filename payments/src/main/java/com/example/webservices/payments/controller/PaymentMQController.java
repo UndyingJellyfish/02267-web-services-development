@@ -3,10 +3,7 @@ package com.example.webservices.payments.controller;
 import com.example.webservices.library.RabbitHelper;
 import com.example.webservices.library.dataTransferObjects.ResponseObject;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
-import com.example.webservices.library.exceptions.BankException;
-import com.example.webservices.library.exceptions.EntryNotFoundException;
-import com.example.webservices.library.exceptions.InvalidTransferAmountException;
-import com.example.webservices.library.exceptions.TokenException;
+import com.example.webservices.library.exceptions.*;
 import com.example.webservices.library.interfaces.IPaymentService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
@@ -27,7 +24,7 @@ public class PaymentMQController extends RabbitHelper {
             //TransactionDto transactionDto = fromJson(jsonString, TransactionDto.class);
             TransactionDto result = this.paymentService.transfer(jsonString);
             return success(result);
-        } catch (EntryNotFoundException | TokenException | BankException | InvalidTransferAmountException e) {
+        } catch (EntryNotFoundException | TokenException | BankException | InvalidTransferAmountException | DuplicateEntryException e) {
             return failure(e.getMessage());
         }
 
@@ -39,7 +36,7 @@ public class PaymentMQController extends RabbitHelper {
            //TransactionDto transactionDto = fromJson(jsonString, TransactionDto.class);
             this.paymentService.refund(transactionDto.getTransactionId());
             return success();
-        } catch (EntryNotFoundException e) {
+        } catch (EntryNotFoundException | DuplicateEntryException e) {
             return failure(e.getMessage());
         }
 

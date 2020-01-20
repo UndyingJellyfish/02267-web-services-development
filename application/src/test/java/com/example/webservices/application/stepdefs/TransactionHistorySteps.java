@@ -67,7 +67,7 @@ public class TransactionHistorySteps extends AbstractSteps {
 
                 this.expectedTransactions.add(paymentService.transfer(dto));
 
-            } catch (TokenException | BankException | EntryNotFoundException | InvalidTransferAmountException e) {
+            } catch (TokenException | BankException | EntryNotFoundException | InvalidTransferAmountException | DuplicateEntryException e) {
                 fail();
             }
         }
@@ -128,7 +128,7 @@ public class TransactionHistorySteps extends AbstractSteps {
 
                 this.expectedTransactions.add(paymentService.transfer(dto));
 
-            } catch (TokenException | EntryNotFoundException | BankException | InvalidTransferAmountException e) {
+            } catch (TokenException | EntryNotFoundException | BankException | InvalidTransferAmountException | DuplicateEntryException e) {
                 fail();
             }
         }
@@ -148,7 +148,7 @@ public class TransactionHistorySteps extends AbstractSteps {
         assertNotNull(transactions);
         assertEquals(expectedTransactions.size(), transactions.size());
         for(TransactionDto transaction : transactions){
-            TransactionDto expectedTransaction = this.expectedTransactions.stream().filter(t -> t.equals(transaction.getTransactionId())).findFirst().orElse(null);
+            TransactionDto expectedTransaction = this.expectedTransactions.stream().filter(t -> t.equals(transaction)).findFirst().orElse(null);
             if(expectedTransaction == null){
                 fail();
             }
@@ -157,8 +157,6 @@ public class TransactionHistorySteps extends AbstractSteps {
 
             assertEquals(expectedTransaction.getTokenId(), transaction.getTokenId());
             assertEquals(expectedTransaction.getAmount(), transaction.getAmount());
-            // TODO: Cannot compare transaction date since TransactionDto does not have date information
-            //assertEquals(expectedTransaction.getTransactionDate(), transaction.getTransactionDate());
         }
     }
 }
