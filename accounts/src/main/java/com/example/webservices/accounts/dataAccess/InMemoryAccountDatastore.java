@@ -7,13 +7,10 @@ import com.example.webservices.accounts.models.*;
 
 import java.util.*;
 
-@Service
+//@Service
 public class InMemoryAccountDatastore implements IAccountDatastore {
     private List<Account> accounts = new ArrayList<>();
 
-    public void flush(){
-        accounts = new ArrayList<>();
-    }
 
     @Override
     public Customer getCustomer(UUID customerId) throws EntryNotFoundException {
@@ -40,7 +37,8 @@ public class InMemoryAccountDatastore implements IAccountDatastore {
     @Override
     public <T extends Account> T addAccount(T account) throws DuplicateEntryException {
         if(accounts.stream().anyMatch(a -> a.getAccountId().equals(account.getAccountId())
-                || (account instanceof Customer && a instanceof Customer) && ((Customer) a).getCpr().equals(((Customer) account).getCpr()))){
+                || (account instanceof Customer && a instanceof Customer)
+                && ((Customer) a).getCpr().equals(((Customer) account).getCpr()))){
             throw new DuplicateEntryException();
         }
         accounts.add(account);

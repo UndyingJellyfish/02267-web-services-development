@@ -1,6 +1,7 @@
 package com.example.webservices.transactions;
 
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
+import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.transactions.interfaces.ITransactionDatastore;
 import com.example.webservices.transactions.models.Transaction;
@@ -83,7 +84,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    public void addTransaction() {
+    public void addTransaction() throws DuplicateEntryException {
        TransactionDto dto = new TransactionDto(
                 tokenId,
                 creditorId,
@@ -123,7 +124,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    public void refundExistingTransaction() {
+    public void refundExistingTransaction() throws DuplicateEntryException {
         // Given
         UUID refundId = UUID.randomUUID();
         Transaction refundTransaction = new Transaction(
@@ -147,7 +148,7 @@ public class TransactionServiceTest {
 
             serviceReturn = transactionService.refundTransaction(transaction.getTransactionId());
 
-        } catch (EntryNotFoundException e) {
+        } catch (EntryNotFoundException | DuplicateEntryException e) {
             fail();
         }
 

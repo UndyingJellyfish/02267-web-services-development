@@ -1,5 +1,6 @@
 package com.example.webservices.transactions.dataAccess;
 
+import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.transactions.interfaces.ITransactionDatastore;
 import com.example.webservices.transactions.models.Transaction;
@@ -21,9 +22,9 @@ public class InMemoryTransactionDatastore implements ITransactionDatastore {
     }
 
     @Override
-    public UUID addTransaction(Transaction transaction) {
+    public UUID addTransaction(Transaction transaction) throws DuplicateEntryException {
         if(transactions.stream().anyMatch(t -> t.getTokenId().equals(transaction.getTokenId()))){
-            throw new IllegalArgumentException("The value is already in the list.");
+            throw new DuplicateEntryException();
         }
         this.transactions.add(transaction);
         return transaction.getTransactionId();

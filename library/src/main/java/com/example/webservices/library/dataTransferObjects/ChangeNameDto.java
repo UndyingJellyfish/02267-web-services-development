@@ -8,7 +8,6 @@ public class ChangeNameDto implements Serializable {
     private ChangeNameDto(){}
 
     public ChangeNameDto(UUID accountId, String newName){
-
         this.accountId = accountId;
         this.newName = newName;
     }

@@ -6,20 +6,19 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="transactions" />
-        <module name="payments" />
-        <module name="02267-web-services-development" />
+        <module name="webservices-tokens" />
         <module name="webservices-application" />
-        <module name="webservices-transactions" />
-        <module name="application" />
+        <module name="accounts" />
         <module name="tokens" />
-        <module name="webservices-payments" />
+        <module name="payments" />
+        <module name="webservices-accounts" />
+        <module name="library" />
         <module name="project-src" />
         <module name="webservices-library" />
-        <module name="accounts" />
-        <module name="library" />
-        <module name="webservices-tokens" />
-        <module name="webservices-accounts" />
+        <module name="webservices-payments" />
+        <module name="webservices-transactions" />
+        <module name="application" />
+        <module name="transactions" />
       </profile>
     </annotationProcessing>
   </component>

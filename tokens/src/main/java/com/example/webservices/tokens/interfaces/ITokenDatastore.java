@@ -8,6 +8,6 @@ import java.util.UUID;
 
 public interface ITokenDatastore {
     List<Token> getTokens(UUID customerId);
-    List<Token> assignTokens(UUID customerId, int quantity);
+    List<Token> generateAndAssignTokens(UUID customerId, int quantity);
     Token getToken(UUID tokenId) throws InvalidTokenException;
 }

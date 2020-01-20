@@ -1,12 +1,19 @@
 package com.example.webservices.transactions.models;
 
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
+@Entity
+@Table(name="PayTransaction")
 public class Transaction {
+    @Id
+    private UUID transactionId;
 
     private Date transactionDate;
     private UUID creditor; // To
@@ -14,10 +21,9 @@ public class Transaction {
     private BigDecimal amount;
     private UUID token;
     private boolean isRefund = false;
-    private UUID transactionId;
     private String description;
 
-    private Transaction(){
+    public Transaction(){
         this.transactionId = UUID.randomUUID();
         this.isRefund = false;
     }

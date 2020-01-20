@@ -1,5 +1,11 @@
 package com.example.webservices.accounts;
 
+import com.example.webservices.accounts.dataAccess.AccountRepository;
+import com.example.webservices.accounts.dataAccess.JpaAccountDatastore;
+import com.example.webservices.accounts.interfaces.IAccountDatastore;
+import com.example.webservices.accounts.models.Account;
+import com.example.webservices.accounts.models.Customer;
+import com.example.webservices.accounts.models.Merchant;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -9,12 +15,21 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
+
+import javax.sql.DataSource;
 
 import static com.example.webservices.library.RabbitHelper.*;
 
 @SpringBootApplication
 public class AccountsApplication {
+
+    @Bean
+    public IAccountDatastore accountDatastore(AccountRepository<Account> accountRepository, AccountRepository<Customer> customerRepository, AccountRepository<Merchant> merchantRepository){
+        return new JpaAccountDatastore(accountRepository, customerRepository, merchantRepository);
+    }
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory factory){
         RabbitTemplate template = new RabbitTemplate(factory);
@@ -24,6 +39,14 @@ public class AccountsApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AccountsApplication.class, args);
+    }
+
+    @Bean
+    public DataSource dataSource() {
+        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        dataSourceBuilder.driverClassName("org.sqlite.JDBC");
+        dataSourceBuilder.url("jdbc:sqlite:account.db");
+        return dataSourceBuilder.build();
     }
 
     @Bean
