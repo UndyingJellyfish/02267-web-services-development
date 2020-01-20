@@ -1,5 +1,7 @@
 package com.example.webservices.application.stepdefs;
 
+import com.example.webservices.application.stepdefs.json.Account;
+import com.example.webservices.application.stepdefs.json.User;
 import com.example.webservices.library.dataTransferObjects.RequestTokenDto;
 import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
@@ -112,12 +114,13 @@ public class PaymentServiceSteps extends AbstractSteps {
     public void aMerchant() {
         merchantBankId = "";
         try {
+            User usr = new User();
+            usr.setCprNumber(UUID.randomUUID().toString());
+            usr.setFirstName("Alice");
+            usr.setLastName("Alice");
             Account json = new Account();
-            json.balance = new BigDecimal("10000");
-            json.user = new User();
-            json.user.cprNumber = UUID.randomUUID().toString();
-            json.user.firstName = "Alice";
-            json.user.lastName = "Alice";
+            json.setBalance(new BigDecimal("10000"));
+            json.setUser(usr);
 
             testContext().setPayload(json);
             executePost(bankBaseRestUrl + "/rest/accounts");
@@ -135,66 +138,20 @@ public class PaymentServiceSteps extends AbstractSteps {
         }
     }
 
-    public class Account{
-        private BigDecimal balance;
-        private User user;
 
-        public User getUser() {
-            return user;
-        }
-
-        public void setUser(User user) {
-            this.user = user;
-        }
-        public BigDecimal getBalance() {
-            return balance;
-        }
-
-        public void setBalance(BigDecimal balance) {
-            this.balance = balance;
-        }
-    }
-    public class User{
-        private String cprNumber;
-        private String firstName;
-        private String lastName;
-
-        public String getCprNumber() {
-            return cprNumber;
-        }
-
-        public void setCprNumber(String cprNumber) {
-            this.cprNumber = cprNumber;
-        }
-
-        public String getFirstName() {
-            return firstName;
-        }
-
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
-
-        public String getLastName() {
-            return lastName;
-        }
-
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
-        }
-    }
 
     @And("A valid token")
     public void aValidToken() {
 
         customerBankId = "";
         try {
+            User usr = new User();
+            usr.setCprNumber(UUID.randomUUID().toString());
+            usr.setFirstName("Bob");
+            usr.setLastName("Bob");
             Account json = new Account();
-            json.balance = new BigDecimal("10000");
-            json.user = new User();
-            json.user.cprNumber = UUID.randomUUID().toString();
-            json.user.firstName = "Bob";
-            json.user.lastName = "Bob";
+            json.setBalance(new BigDecimal("10000"));
+            json.setUser(usr);
 
             testContext().setPayload(json);
             executePost(bankBaseRestUrl + "/rest/accounts");
