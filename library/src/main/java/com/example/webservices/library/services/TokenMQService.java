@@ -82,4 +82,9 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
             throw new RuntimeException(fromJson(response.getBody(), String.class));
         }
     }
+
+    @Override
+    public List<TokenDto> GetActiveTokens(UUID customerId) {
+        throw new RuntimeException("Not inteded for MQ use");
+    }
 }

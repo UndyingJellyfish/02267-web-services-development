@@ -7,7 +7,6 @@ import com.example.webservices.library.interfaces.IAccountService;
 import com.example.webservices.library.interfaces.ITokenManager;
 import com.example.webservices.tokens.interfaces.ITokenDatastore;
 import com.example.webservices.tokens.models.Token;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -66,5 +65,10 @@ public class TokenManager implements ITokenManager {
     @Override
     public void retireAll(UUID customerId) {
         this.datastore.getTokens(customerId).forEach(t -> t.setUsed(true));
+    }
+
+    @Override
+    public List<TokenDto> GetActiveTokens(UUID customerId) {
+        return this.GetTokens(customerId).stream().filter(t -> !t.isUsed()).collect(Collectors.toList());
     }
 }

@@ -30,9 +30,12 @@ public class TransactionMQService extends RabbitMQBaseClass implements ITransact
     }
 
     @Override
-    public UUID refundTransaction(UUID tokenId) throws EntryNotFoundException {
-        //TODO: Fix
-        throw new PendingException();
+    public UUID refundTransaction(UUID tokenId) {
+        ResponseObject response = send(QUEUE_TRANSACTION_REFUND, tokenId);
+        if(response.getStatusCode() != HttpStatus.OK){
+            throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
+        }
+        return fromJson(response.getBody(), UUID.class);
     }
 
     @Override
