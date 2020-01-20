@@ -55,7 +55,7 @@ public class PaymentServiceSteps extends AbstractSteps {
             dto.setDescription(description);
             testContext().setPayload(dto);
             executePost("/payment/transfer");
-            transactionDto = transactionService.getTransactionByTokenId(tokenId);
+            transactionDto = transactionService.getTransaction(transactionDto.getTransactionId());
             verify(bank, times(1)).transferMoney(
                     argThat(c -> c.getAccountId().equals(customerId)),
                     argThat(m -> m.getAccountId().equals(merchantId)),
@@ -88,7 +88,7 @@ public class PaymentServiceSteps extends AbstractSteps {
         executePost("/payment/transfer");
 
         try {
-            transactionDto = transactionService.getTransactionByTokenId(tokenId);
+            transactionDto = transactionService.getTransaction(transactionDto.getTransactionId());
         } catch (EntryNotFoundException ignored) {
 
         }

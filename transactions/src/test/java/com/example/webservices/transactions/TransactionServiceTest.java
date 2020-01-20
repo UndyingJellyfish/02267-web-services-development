@@ -25,6 +25,7 @@ public class TransactionServiceTest {
     private UUID creditorId = UUID.randomUUID();
     private UUID debtorId = UUID.randomUUID();
     private UUID tokenId = UUID.randomUUID();
+    private UUID transactionId;
     private BigDecimal amount = new BigDecimal(100);
     private String description = "Transaction";
     private Date date = new Date();
@@ -42,6 +43,7 @@ public class TransactionServiceTest {
                 this.tokenId,
                 this.description,
                 this.date);
+        this.transactionId = this.transaction.getTransactionId();
         this.transactions = new ArrayList<Transaction>(){
             {add(transaction);}
         };
@@ -104,15 +106,15 @@ public class TransactionServiceTest {
    }
 
     @Test
-    public void getTransactionByTokenId() {
+    public void getTransaction() {
         try {
             when(transactionDatastore
-                .getTransactionByTokenId(eq(tokenId)))
+                .getTransaction(eq(transactionId)))
                 .thenReturn(transaction);
-            TransactionDto actualTransaction = transactionService.getTransactionByTokenId(tokenId);
+            TransactionDto actualTransaction = transactionService.getTransaction(transactionId);
 
             verify(transactionDatastore, times(1))
-                    .getTransactionByTokenId(eq(tokenId));
+                    .getTransaction(eq(transactionId));
 
             assertTrue(Match(actualTransaction));
         } catch (EntryNotFoundException e) {
@@ -137,10 +139,10 @@ public class TransactionServiceTest {
         // When
         try {
             when(transactionDatastore
-                    .getTransactionByTokenId(eq(tokenId)))
+                    .getTransaction(eq(transactionId)))
                     .thenReturn(transaction);
             when(transactionDatastore
-                    .addTransaction(refundTransaction))
+                    .addTransaction(any()))
                     .thenReturn(refundId);
 
             serviceReturn = transactionService.refundTransaction(transaction.getTransactionId());
@@ -151,7 +153,7 @@ public class TransactionServiceTest {
 
         // Then
         verify(transactionDatastore, times(1))
-                .addTransaction(any());
+                .addTransaction(argThat(dto -> dto.getTokenId() == tokenId));
         assertNotNull(serviceReturn);
         assertEquals(refundId, serviceReturn);
     }

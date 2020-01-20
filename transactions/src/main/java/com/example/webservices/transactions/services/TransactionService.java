@@ -61,21 +61,18 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public UUID refundTransaction(UUID transactionId) throws EntryNotFoundException {
-        throw new PendingException();
-        // FIXME: Get transaction by transaction id and use that to issue the refund. getting it by the token id makes zero sense
-        // Also emil er DÅM
-        /*TransactionDto dto = getTransactionByTokenId(transactionId);
+        TransactionDto dto = getTransaction(transactionId);
+        // Swap debtor creditor
         UUID temp = dto.getCreditorId();
         dto.setCreditor(dto.getDebtorId());
         dto.setDebtor(temp);
-        UUID result = addTransaction(dto);
 
-        return result;*/
+        return addTransaction(dto);
     }
 
     @Override
-    public TransactionDto getTransactionByTokenId(UUID tokenId) throws EntryNotFoundException {
-        Transaction transaction = transactionDatastore.getTransactionByTokenId(tokenId);
+    public TransactionDto getTransaction(UUID transactionId) throws EntryNotFoundException {
+        Transaction transaction = transactionDatastore.getTransaction(transactionId);
         return new TransactionDto(
                 transaction.getTransactionId(),
                 transaction.getTokenId(),
