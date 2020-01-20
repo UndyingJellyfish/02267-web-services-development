@@ -22,17 +22,10 @@ import static org.junit.Assert.*;
 
 public class UserServiceSteps extends AbstractSteps {
     private String customerName;
-    private IAccountService accountService;
-    private ITokenManager tokenManager;
     private UUID customerId;
     private String merchantName;
     private UUID merchantId;
     private String bankAccountId;
-
-    public UserServiceSteps(IAccountService accountService, ITokenManager tokenManager) {
-        this.accountService = accountService;
-        this.tokenManager = tokenManager;
-    }
 
     @After
     public void tearDown(){

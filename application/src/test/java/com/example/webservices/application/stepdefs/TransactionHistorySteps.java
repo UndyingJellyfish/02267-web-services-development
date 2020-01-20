@@ -21,21 +21,9 @@ import static org.junit.Assert.*;
 
 public class TransactionHistorySteps extends AbstractSteps {
 
-    private final ITokenManager tokenManagers;
-    private final IPaymentService paymentService;
-    private final IReportingService reportingService;
-    private final IAccountService accountService;
     private AccountDto customer;
     private AccountDto merchant;
     private List<TransactionDto> expectedTransactions;
-
-
-    public TransactionHistorySteps(ITokenManager tokenManager, IPaymentService paymentService, IReportingService reportingService, IAccountService accountService){
-        this.paymentService = paymentService;
-        this.tokenManagers = tokenManager;
-        this.reportingService = reportingService;
-        this.accountService = accountService;
-    }
 
     @After
     public void tearDown(){
