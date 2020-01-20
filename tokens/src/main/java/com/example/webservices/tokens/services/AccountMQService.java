@@ -8,6 +8,7 @@ import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,7 +25,7 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
     }
 
     @Override
-    public AccountDto addCustomer(SignupDto signupDto) throws DuplicateEntryException {
+    public AccountDto addCustomer(SignupDto signupDto) throws DuplicateEntryException, JsonProcessingException {
         ResponseObject response = send(QUEUE_CUSTOMER_SIGNUP, signupDto);
         if(response.getStatusCode() == HttpStatus.OK){
             return fromJson(response.getBody(), AccountDto.class);
@@ -33,7 +34,7 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
     }
 
     @Override
-    public AccountDto addMerchant(SignupDto signupDto) throws DuplicateEntryException {
+    public AccountDto addMerchant(SignupDto signupDto) throws DuplicateEntryException, JsonProcessingException {
         ResponseObject response = send(QUEUE_MERCHANT_SIGNUP, signupDto);
         if(response.getStatusCode() == HttpStatus.OK){
             return fromJson(response.getBody(), AccountDto.class);
@@ -58,12 +59,12 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
     }
 
     @Override
-    public AccountDto getCustomer(UUID customerId) throws EntryNotFoundException {
+    public AccountDto getCustomer(UUID customerId) throws EntryNotFoundException, JsonProcessingException {
         return getAccount(customerId);
     }
 
     @Override
-    public AccountDto getAccount(UUID id) throws EntryNotFoundException {
+    public AccountDto getAccount(UUID id) throws EntryNotFoundException, JsonProcessingException {
         ResponseObject response = send(QUEUE_ACCOUNT_GET, id);
         if(response.getStatusCode() == HttpStatus.OK){
             return fromJson(response.getBody(), AccountDto.class);
@@ -72,7 +73,7 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
     }
 
     @Override
-    public AccountDto getMerchant(UUID merchantId) throws EntryNotFoundException {
+    public AccountDto getMerchant(UUID merchantId) throws EntryNotFoundException, JsonProcessingException {
         return getAccount(merchantId);
     }
 }

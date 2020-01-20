@@ -7,6 +7,7 @@ import com.example.webservices.library.interfaces.IAccountService;
 import com.example.webservices.library.interfaces.ITokenManager;
 import com.example.webservices.tokens.interfaces.ITokenDatastore;
 import com.example.webservices.tokens.models.Token;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class TokenManager implements ITokenManager {
         this.accountService = accountService;
     }
 
-    public List<UUID> RequestTokens(UUID customerId, int quantity) throws TokenQuantityException, EntryNotFoundException {
+    public List<UUID> RequestTokens(UUID customerId, int quantity) throws TokenQuantityException, EntryNotFoundException, JsonProcessingException {
         AccountDto customer = accountService.getCustomer(customerId);
 
         if(quantity > 5  || quantity < 1){
@@ -52,7 +53,7 @@ public class TokenManager implements ITokenManager {
     }
 
     @Override
-    public UUID RequestToken(UUID customerId) throws EntryNotFoundException, TokenQuantityException {
+    public UUID RequestToken(UUID customerId) throws EntryNotFoundException, TokenQuantityException, JsonProcessingException {
         return RequestTokens(customerId, 1).get(0);
     }
 

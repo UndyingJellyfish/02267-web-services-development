@@ -9,7 +9,7 @@ import com.example.webservices.library.exceptions.InvalidTokenException;
 import com.example.webservices.library.exceptions.TokenException;
 import com.example.webservices.library.exceptions.TokenQuantityException;
 import com.example.webservices.library.interfaces.ITokenManager;
-import gherkin.deps.com.google.gson.reflect.TypeToken;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,7 +28,7 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
     }
 
     @Override
-    public List<UUID> RequestTokens(UUID customer, int quantity){
+    public List<UUID> RequestTokens(UUID customer, int quantity) throws JsonProcessingException {
         RequestTokenDto dto = new RequestTokenDto();
         dto.setCustomerId(customer);
         dto.setAmount(quantity);
@@ -40,7 +40,7 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
     }
 
     @Override
-    public List<TokenDto> GetTokens(UUID customerId) throws EntryNotFoundException {
+    public List<TokenDto> GetTokens(UUID customerId) throws EntryNotFoundException, JsonProcessingException {
         ResponseObject response = send(QUEUE_TOKENS_GET, customerId);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new RuntimeException();

@@ -6,8 +6,8 @@ import com.example.webservices.library.dataTransferObjects.TransactionDto;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
 import com.example.webservices.library.interfaces.ITransactionService;
-import com.example.webservices.transactions.models.Transaction;
 import com.example.webservices.transactions.services.ReportingService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -52,7 +51,7 @@ public class ReportingServiceTest {
         try {
             when(accountService.getAccount(customer.getAccountId())).thenReturn(customer);
             when(accountService.getAccount(merchant.getAccountId())).thenReturn(merchant);
-        } catch (EntryNotFoundException e) {
+        } catch (EntryNotFoundException | JsonProcessingException e) {
             fail();
         }
         transactionDtos.add(new TransactionDto(UUID.randomUUID(), merchant.getAccountId(), customer.getAccountId(), new BigDecimal("1"), "To trick SKAT", false, new Date()));
@@ -65,7 +64,7 @@ public class ReportingServiceTest {
         List<TransactionDto> history = null;
         try {
             history = reportingService.getTransactionHistory(customer.getAccountId());
-        } catch (EntryNotFoundException e) {
+        } catch (EntryNotFoundException | JsonProcessingException e) {
             fail();
         }
         assertNotNull(history);
@@ -77,11 +76,11 @@ public class ReportingServiceTest {
         List<TransactionDto> history = null;
         try {
             history = reportingService.getTransactionHistory(merchant.getAccountId());
-        } catch (EntryNotFoundException e) {
+        } catch (EntryNotFoundException | JsonProcessingException e) {
             fail();
         }
         assertNotNull(history);
-        transactionDtos.forEach(t -> t.setDebtor(null));
+        transactionDtos.forEach(t -> t.setDebtorId(null));
         assertEquals(transactionDtos, history);
     }
 }

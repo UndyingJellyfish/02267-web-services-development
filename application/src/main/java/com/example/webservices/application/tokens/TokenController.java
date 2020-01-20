@@ -5,6 +5,7 @@ import com.example.webservices.library.dataTransferObjects.TokenDto;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.exceptions.TokenQuantityException;
 import com.example.webservices.library.interfaces.ITokenManager;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -34,6 +35,8 @@ public class TokenController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
         }catch(TokenQuantityException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+        } catch (JsonProcessingException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
@@ -44,6 +47,8 @@ public class TokenController {
             return tokenManager.GetTokens(customerId);
         } catch (EntryNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (JsonProcessingException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 }

@@ -6,6 +6,7 @@ import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -37,7 +38,7 @@ public class AccountController {
     public UUID signupMerchant(@RequestBody SignupDto merchant){
         try {
             return accountService.addMerchant(merchant).getAccountId();
-        } catch (DuplicateEntryException e) {
+        } catch (DuplicateEntryException | JsonProcessingException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
@@ -48,7 +49,7 @@ public class AccountController {
         try {
             AccountDto dto = accountService.addCustomer(customer);
             return dto.getAccountId();
-        } catch (DuplicateEntryException e) {
+        } catch (DuplicateEntryException | JsonProcessingException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }

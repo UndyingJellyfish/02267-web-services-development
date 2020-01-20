@@ -1,14 +1,25 @@
 package com.example.webservices.library.dataTransferObjects;
 
-import gherkin.deps.com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
+import java.sql.Statement;
+import java.util.concurrent.ExecutionException;
 
 public class ResponseObject implements Serializable {
 
     private HttpStatus statusCode;
     private String body;
+
+    private static String toJson(Object body){
+        try{
+            return new ObjectMapper().writeValueAsString(body);
+        }
+        catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
     public ResponseObject(HttpStatus statusCode){
         this.statusCode = statusCode;
@@ -18,8 +29,9 @@ public class ResponseObject implements Serializable {
         this.body = body;
     }
 
+
     public ResponseObject(HttpStatus statusCode, Object body){
-        this(statusCode,new Gson().toJson(body));
+        this(statusCode, toJson(body));
     }
 
     public HttpStatus getStatusCode() {

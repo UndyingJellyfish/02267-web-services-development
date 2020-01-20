@@ -2,7 +2,6 @@ package com.example.webservices.library.dataTransferObjects;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -10,26 +9,29 @@ public class TransactionDto implements Serializable {
     private UUID transactionId;
 
     private UUID tokenId;
-    private UUID creditor;
-    private UUID debtor;
+    private UUID creditorId;
+    private UUID debtorId;
     private BigDecimal amount;
     private String description;
     private boolean isRefund;
     private Date transactionDate;
 
-    public TransactionDto(UUID tokenId, UUID creditor, UUID debtor, BigDecimal amount, String description, Date transactionDate) {
-        this(null, tokenId,creditor,debtor,amount,description,false,transactionDate);
+    private TransactionDto(){}
+
+
+    public TransactionDto(UUID tokenId, UUID creditorId, UUID debtorId, BigDecimal amount, String description, Date transactionDate) {
+        this(null, tokenId, creditorId, debtorId,amount,description,false,transactionDate);
     }
 
-    public TransactionDto(UUID tokenId, UUID creditor, UUID debtor, BigDecimal amount, String description, boolean isRefund,Date transactionDate) {
-        this(null, tokenId,creditor,debtor,amount,description,isRefund,transactionDate);
+    public TransactionDto(UUID tokenId, UUID creditorId, UUID debtorId, BigDecimal amount, String description, boolean isRefund, Date transactionDate) {
+        this(null, tokenId, creditorId, debtorId,amount,description,isRefund,transactionDate);
     }
 
-    public TransactionDto(UUID transactionId, UUID tokenId, UUID creditor, UUID debtor, BigDecimal amount, String description, boolean isRefund, Date transactionDate) {
+    public TransactionDto(UUID transactionId, UUID tokenId, UUID creditorId, UUID debtorId, BigDecimal amount, String description, boolean isRefund, Date transactionDate) {
         this.transactionId = transactionId;
         this.tokenId = tokenId;
-        this.creditor = creditor;
-        this.debtor = debtor;
+        this.creditorId = creditorId;
+        this.debtorId = debtorId;
         this.amount = amount;
         this.description = description;
         this.isRefund = isRefund;
@@ -54,11 +56,11 @@ public class TransactionDto implements Serializable {
     }
 
     public UUID getCreditorId() {
-        return creditor;
+        return creditorId;
     }
 
-    public void setCreditor(UUID creditor) {
-        this.creditor = creditor;
+    public void setCreditorId(UUID creditorId) {
+        this.creditorId = creditorId;
     }
 
     public BigDecimal getAmount() {
@@ -77,12 +79,12 @@ public class TransactionDto implements Serializable {
         this.description = description;
     }
 
-    public void setDebtor(UUID debtor) {
-        this.debtor = debtor;
+    public void setDebtorId(UUID debtorId) {
+        this.debtorId = debtorId;
     }
 
     public UUID getDebtorId() {
-        return debtor;
+        return debtorId;
     }
 
     public UUID getTransactionId() {

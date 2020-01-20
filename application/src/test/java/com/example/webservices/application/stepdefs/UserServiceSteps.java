@@ -5,6 +5,7 @@ import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.dataTransferObjects.TokenDto;
 import com.example.webservices.library.interfaces.IAccountService;
 import com.example.webservices.library.interfaces.ITokenManager;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -61,7 +62,7 @@ public class UserServiceSteps extends AbstractSteps {
         AccountDto customer = null;
         try {
             customer = accountService.getCustomer(customerId);
-        } catch (EntryNotFoundException e) {
+        } catch (EntryNotFoundException | JsonProcessingException e) {
             fail();
         }
         assertNotNull(customer);
@@ -92,7 +93,7 @@ public class UserServiceSteps extends AbstractSteps {
         AccountDto merchant = null;
         try {
             merchant = accountService.getMerchant(merchantId);
-        } catch (EntryNotFoundException e) {
+        } catch (EntryNotFoundException | JsonProcessingException e) {
             fail();
         }
         assertNotNull(merchant);
@@ -120,7 +121,7 @@ public class UserServiceSteps extends AbstractSteps {
             executePut("/account");
             assertNotNull(testContext().getResponse());
             customerName = accountService.getAccount(customerId).getName();
-        } catch (ResponseStatusException | EntryNotFoundException e) {
+        } catch (ResponseStatusException | EntryNotFoundException | JsonProcessingException e) {
             fail();
         }
     }
@@ -148,6 +149,8 @@ public class UserServiceSteps extends AbstractSteps {
         } catch (EntryNotFoundException e) {
             // entry not found = entry deleted
             assertEquals(0, tokens.stream().filter(t -> !t.isUsed()).count());
+        } catch (JsonProcessingException e) {
+            fail();
         }
     }
 

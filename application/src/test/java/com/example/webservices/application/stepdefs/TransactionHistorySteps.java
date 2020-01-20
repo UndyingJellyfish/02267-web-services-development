@@ -9,6 +9,7 @@ import com.example.webservices.library.interfaces.IAccountService;
 import com.example.webservices.library.interfaces.IPaymentService;
 import com.example.webservices.library.interfaces.IReportingService;
 import com.example.webservices.library.interfaces.ITokenManager;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -49,15 +50,15 @@ public class TransactionHistorySteps extends AbstractSteps {
         try {
             this.customer = accountService.addCustomer(cDto);
             this.merchant = accountService.addMerchant(mDto);
-        } catch (DuplicateEntryException e) {
-            fail();
+        } catch (DuplicateEntryException | JsonProcessingException e) {
+            fail(e.getMessage());
         }
         this.expectedTransactions = new ArrayList<>();
         List<UUID> tokens = null;
         try {
             tokens =  tokenManagers.RequestTokens(this.customer.getAccountId(), 5);
-        } catch (EntryNotFoundException | TokenQuantityException e) {
-            fail();
+        } catch (EntryNotFoundException | TokenQuantityException | JsonProcessingException e) {
+            fail(e.getMessage());
         }
         for(int i = 0; i < tokens.size(); i++){
             UUID token = tokens.get(i);
@@ -67,8 +68,8 @@ public class TransactionHistorySteps extends AbstractSteps {
 
                 this.expectedTransactions.add(paymentService.transfer(dto));
 
-            } catch (TokenException | BankException | EntryNotFoundException | InvalidTransferAmountException e) {
-                fail();
+            } catch (TokenException | BankException | EntryNotFoundException | InvalidTransferAmountException | JsonProcessingException e) {
+                fail(e.getMessage());
             }
         }
     }
@@ -110,15 +111,15 @@ public class TransactionHistorySteps extends AbstractSteps {
         try {
             this.customer = accountService.addCustomer(cDto);
             this.merchant = accountService.addMerchant(mDto);
-        } catch (DuplicateEntryException e) {
-            fail();
+        } catch (DuplicateEntryException | JsonProcessingException e) {
+            fail(e.getMessage());
         }
         this.expectedTransactions = new ArrayList<>();
         List<UUID> tokens = null;
         try {
             tokens = tokenManagers.RequestTokens(this.customer.getAccountId(), 5);
-        } catch (EntryNotFoundException | TokenQuantityException e) {
-            fail();
+        } catch (EntryNotFoundException | TokenQuantityException | JsonProcessingException e) {
+            fail(e.getMessage());
         }
         for(int i = 0; i < tokens.size(); i++){
             UUID token = tokens.get(i);
@@ -128,8 +129,8 @@ public class TransactionHistorySteps extends AbstractSteps {
 
                 this.expectedTransactions.add(paymentService.transfer(dto));
 
-            } catch (TokenException | EntryNotFoundException | BankException | InvalidTransferAmountException e) {
-                fail();
+            } catch (TokenException | EntryNotFoundException | BankException | InvalidTransferAmountException | JsonProcessingException e) {
+                fail(e.getMessage());
             }
         }
     }
@@ -138,8 +139,8 @@ public class TransactionHistorySteps extends AbstractSteps {
     public void theMerchantRequestsTheTransactionHistory() {
         try {
             this.transactions = reportingService.getTransactionHistory(this.merchant.getAccountId());
-        } catch (EntryNotFoundException e) {
-            fail();
+        } catch (EntryNotFoundException | JsonProcessingException e) {
+            fail(e.getMessage());
         }
     }
 

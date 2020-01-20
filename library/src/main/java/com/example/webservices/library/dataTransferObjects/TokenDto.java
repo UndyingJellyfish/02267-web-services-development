@@ -8,6 +8,8 @@ public class TokenDto implements Serializable {
     private boolean isUsed;
     private UUID customerId;
 
+    private TokenDto(){}
+
     public TokenDto(UUID tokenId, boolean isUsed){
         this.tokenId = tokenId;
         this.isUsed = isUsed;

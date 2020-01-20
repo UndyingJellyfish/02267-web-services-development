@@ -5,6 +5,7 @@ import com.example.webservices.library.dataTransferObjects.ResponseObject;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IReportingService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
@@ -22,15 +23,14 @@ public class ReportingMQController extends RabbitHelper {
 
 
     @RabbitListener(queues = QUEUE_REPORTING_HISTORY)
-    public ResponseObject getReportingHistory(String jsonString){
+    public ResponseObject getReportingHistory(UUID accountId) throws JsonProcessingException {
 
         try {
 
-            UUID accountId = fromJson(jsonString, UUID.class);
             List<TransactionDto> transactionDtos = this.reportingService.getTransactionHistory(accountId);
 
             return success(transactionDtos);
-        } catch (EntryNotFoundException e) {
+        } catch (EntryNotFoundException | JsonProcessingException e) {
             return failure(e.getMessage());
         }
 

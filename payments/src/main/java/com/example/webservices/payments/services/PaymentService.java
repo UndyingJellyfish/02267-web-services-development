@@ -8,6 +8,7 @@ import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.exceptions.InvalidTransferAmountException;
 import com.example.webservices.library.exceptions.TokenException;
 import com.example.webservices.library.interfaces.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -29,11 +30,11 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
-    public TransactionDto transfer(TransactionDto transactionDto) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException {
+    public TransactionDto transfer(TransactionDto transactionDto) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException, JsonProcessingException {
         return this.transfer(transactionDto.getTokenId(), transactionDto.getCreditorId(), transactionDto.getAmount(), false, transactionDto.getDescription());
     }
 
-    public TransactionDto transfer(UUID tokenId, UUID merchantId, BigDecimal amount, boolean isRefund, String description) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException {
+    public TransactionDto transfer(UUID tokenId, UUID merchantId, BigDecimal amount, boolean isRefund, String description) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException, JsonProcessingException {
         if(!isGreaterThanZero(amount)){
             throw new InvalidTransferAmountException();
         }

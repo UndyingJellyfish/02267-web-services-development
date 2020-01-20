@@ -4,6 +4,7 @@ import com.example.webservices.library.RabbitHelper;
 import com.example.webservices.library.dataTransferObjects.ResponseObject;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
 import com.example.webservices.library.interfaces.ITransactionService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +22,10 @@ public class TransactionMQController extends RabbitHelper {
     }
 
     @RabbitListener(queues = QUEUE_TRANSACTION_ADD)
-    public ResponseObject addTransaction(TransactionDto jsonString){
+    public ResponseObject addTransaction(TransactionDto transactionDto) throws JsonProcessingException {
 
         try{
-            //TransactionDto dto = fromJson(jsonString, TransactionDto.class);
-            this.transactionService.addTransaction(jsonString);
+            this.transactionService.addTransaction(transactionDto);
             return success();
         }
         catch (Exception e){
@@ -34,9 +34,8 @@ public class TransactionMQController extends RabbitHelper {
     }
 
     @RabbitListener(queues = QUEUE_TRANSACTION_GET)
-    public ResponseObject getTransaction(String jsonString){
+    public ResponseObject getTransaction(UUID transactionId) throws JsonProcessingException {
         try{
-            UUID transactionId = fromJson(jsonString, UUID.class);
             List<TransactionDto> result = this.transactionService.getTransactions(transactionId);
             return success(result);
         }

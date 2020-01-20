@@ -5,6 +5,7 @@ import com.example.webservices.library.dataTransferObjects.ResponseObject;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.ITransactionService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,7 +35,7 @@ public class TransactionMQService extends RabbitMQBaseClass implements ITransact
     }
 
     @Override
-    public UUID addTransaction(TransactionDto transaction) {
+    public UUID addTransaction(TransactionDto transaction) throws JsonProcessingException {
         ResponseObject response = send(QUEUE_TRANSACTION_ADD, transaction);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new RuntimeException();
@@ -43,7 +44,7 @@ public class TransactionMQService extends RabbitMQBaseClass implements ITransact
     }
 
     @Override
-    public TransactionDto getTransaction(UUID transactionId) {
+    public TransactionDto getTransaction(UUID transactionId) throws JsonProcessingException {
         ResponseObject response = send(QUEUE_TRANSACTION_GET, transactionId);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new RuntimeException();

@@ -4,6 +4,7 @@ import com.example.webservices.library.dataTransferObjects.*;
 import com.example.webservices.library.exceptions.*;
 import com.example.webservices.library.interfaces.*;
 import com.example.webservices.payments.services.PaymentService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import dtu.ws.fastmoney.Transaction;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,13 +53,13 @@ public class PaymentServiceTest {
             when(accountService.addMerchant(merchantSignup)).thenReturn(merchantDto);
             this.customer = accountService.addCustomer(customerSignup);
             this.merchant = accountService.addMerchant(merchantSignup);
-        } catch (DuplicateEntryException e) {
+        } catch (DuplicateEntryException | JsonProcessingException e) {
             fail();
         }
         try {
             when(tokenManager.RequestToken(this.customer.getAccountId())).thenReturn(UUID.randomUUID());
             this.tokenId = tokenManager.RequestToken(this.customer.getAccountId());
-        } catch (EntryNotFoundException | TokenQuantityException e) {
+        } catch (EntryNotFoundException | TokenQuantityException | JsonProcessingException e) {
             fail();
         }
     }
@@ -77,7 +78,7 @@ public class PaymentServiceTest {
         }
         catch(InvalidTransferAmountException e){
             exception = e;
-        } catch (BankException | TokenException | EntryNotFoundException ignored) {
+        } catch (BankException | TokenException | EntryNotFoundException | JsonProcessingException ignored) {
             fail();
         }
         assertNull(transaction);
@@ -94,7 +95,7 @@ public class PaymentServiceTest {
             when(tokenManager.GetToken(tokenId)).thenReturn(new TokenDto(tokenId, false, customerDto.getAccountId()));
             TransactionDto dto = new TransactionDto(tokenId, merchant.getAccountId(), UUID.randomUUID(), amount, description, false, new Date());
             transaction = paymentService.transfer(dto);
-        } catch (EntryNotFoundException | TokenException | BankException | InvalidTransferAmountException e) {
+        } catch (EntryNotFoundException | TokenException | BankException | InvalidTransferAmountException | JsonProcessingException e) {
             fail();
         }
         assertEquals(merchant.getAccountId(),transaction.getCreditorId());

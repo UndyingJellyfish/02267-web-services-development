@@ -7,11 +7,11 @@ import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
 import com.example.webservices.library.interfaces.IReportingService;
 import com.example.webservices.library.interfaces.ITransactionService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class ReportingService implements IReportingService {
@@ -24,11 +24,11 @@ public class ReportingService implements IReportingService {
     }
 
     private void Anonymize(TransactionDto transaction) {
-        transaction.setDebtor(null);
+        transaction.setDebtorId(null);
     }
 
     @Override
-    public List<TransactionDto> getTransactionHistory(UUID id) throws EntryNotFoundException {
+    public List<TransactionDto> getTransactionHistory(UUID id) throws EntryNotFoundException, JsonProcessingException {
         AccountDto account = accountService.getAccount(id);
         List<TransactionDto> transactions = this.transactionService.getTransactions(id);
         if(account.getType().equals(AccountType.MERCHANT)){
