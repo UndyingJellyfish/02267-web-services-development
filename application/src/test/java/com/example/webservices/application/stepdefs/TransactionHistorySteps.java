@@ -1,7 +1,10 @@
 //TODO: fix this kthx plz
 package com.example.webservices.application.stepdefs;
 
+import com.example.webservices.application.stepdefs.json.Account;
+import com.example.webservices.application.stepdefs.json.User;
 import com.example.webservices.library.dataTransferObjects.AccountDto;
+import com.example.webservices.library.dataTransferObjects.RequestTokenDto;
 import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.exceptions.*;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
@@ -23,45 +26,79 @@ public class TransactionHistorySteps extends AbstractSteps {
 
     private AccountDto customer;
     private AccountDto merchant;
+    private String customerBankId;
+    private String merchantBankId;
+    private List<TransactionDto> transactions;
     private List<TransactionDto> expectedTransactions;
+    private TransactionDto transferDto;
+
+    private final String bankBaseRestUrl = "http://fastmoney-00.compute.dtu.dk";
 
     @After
     public void tearDown(){
-        //TODO: Stuff here
+        if(merchantBankId != null && !merchantBankId.equals("")){
+            executeDelete( bankBaseRestUrl + "/rest/accounts/" + merchantBankId);
+        }
+        if(customerBankId != null && !customerBankId.equals("")){
+            executeDelete(bankBaseRestUrl + "/rest/accounts/" + customerBankId);
+        }
+    }
+
+    private String putUserInBank(String first, String last, BigDecimal balance) {
+        String id = null;
+        try {
+            User usr = new User();
+            usr.setCprNumber(UUID.randomUUID().toString());
+            usr.setFirstName(first);
+            usr.setLastName(last);
+            Account json = new Account();
+            json.setBalance(balance);
+            json.setUser(usr);
+
+            testContext().setPayload(json);
+            executePost(bankBaseRestUrl + "/rest/accounts");
+            id = getBody(String.class);
+        } catch (Exception e){
+            fail(e.getMessage());
+        }
+        return id;
     }
 
     @Given("A Customer with a transaction history")
     public void aCustomerWithATransactionHistory() {
-        SignupDto cDto = new SignupDto("Test Customer","123",UUID.randomUUID().toString());
-        SignupDto mDto = new SignupDto("Test Merchant", "1234",UUID.randomUUID().toString());
-        try {
-            this.customer = accountService.addCustomer(cDto);
-            this.merchant = accountService.addMerchant(mDto);
-        } catch (DuplicateEntryException e) {
-            fail(e.getMessage());
-        }
+        merchantBankId = putUserInBank("Alice", "Alice", new BigDecimal("10000"));
+        customerBankId = putUserInBank("Bob", "Bob", new BigDecimal("1000"));
+
+        SignupDto mDto = new SignupDto("Alice Alice","123",merchantBankId);
+        SignupDto cDto = new SignupDto("Bob", "1234",customerBankId);
+
+        testContext().setPayload(cDto);
+        executePost("/account/customer");
+        this.customer = getBody(AccountDto.class);
+
+        testContext().setPayload(mDto);
+        executePost("/account/merchant");
+        this.merchant = getBody(AccountDto.class);
+
         this.expectedTransactions = new ArrayList<>();
         List<UUID> tokens = null;
-        try {
-            tokens =  tokenManagers.RequestTokens(this.customer.getAccountId(), 5);
-        } catch (EntryNotFoundException | TokenQuantityException e) {
-            fail(e.getMessage());
-        }
+        RequestTokenDto rDto = new RequestTokenDto();
+        rDto.setAmount(5);
+        rDto.setCustomerId(this.customer.getAccountId());
+
+        testContext().setPayload(rDto);
+        executePost("/tokens");
+        tokens = Arrays.asList(getBody(UUID[].class));
+
         for(int i = 0; i < tokens.size(); i++){
             UUID token = tokens.get(i);
             BigDecimal amount = new BigDecimal( i == 0 ? 1 : i * 5);
-            try {
-                TransactionDto dto = new TransactionDto(token, merchant.getAccountId(), UUID.randomUUID(), amount, "", false, new Date());
-
-                this.expectedTransactions.add(paymentService.transfer(dto));
-
-            } catch (TokenException | BankException | EntryNotFoundException | InvalidTransferAmountException | DuplicateEntryException e) {
-                fail(e.getMessage());
-            }
+            transferDto = new TransactionDto(token, merchant.getAccountId(), UUID.randomUUID(), amount, "", false, new Date());
+            expectedTransactions.add(transferDto);
+            testContext().setPayload(transferDto);
+            executePost("/transfer");
         }
     }
-
-    private List<TransactionDto> transactions;
 
     @When("The Customer requests the transaction history")
     public void theCustomerRequestsTheTransactionHistory() {
@@ -93,42 +130,44 @@ public class TransactionHistorySteps extends AbstractSteps {
 
     @Given("A Merchant with a transaction history")
     public void aMerchantWithATransactionHistory() {
-        SignupDto cDto = new SignupDto("Test Customer","123", UUID.randomUUID().toString());
-        SignupDto mDto = new SignupDto("Test Merchant", "123", UUID.randomUUID().toString());
-        try {
-            this.customer = accountService.addCustomer(cDto);
-            this.merchant = accountService.addMerchant(mDto);
-        } catch (DuplicateEntryException e) {
-            fail(e.getMessage());
-        }
+        merchantBankId = putUserInBank("Alice", "Alice", new BigDecimal("10000"));
+        customerBankId = putUserInBank("Bob", "Bob", new BigDecimal("1000"));
+
+        SignupDto mDto = new SignupDto("Alice Alice","123",merchantBankId);
+        SignupDto cDto = new SignupDto("Bob", "1234",customerBankId);
+
+        testContext().setPayload(cDto);
+        executePost("/account/customer");
+        this.customer = getBody(AccountDto.class);
+
+        testContext().setPayload(mDto);
+        executePost("/account/merchant");
+        this.merchant = getBody(AccountDto.class);
+
         this.expectedTransactions = new ArrayList<>();
         List<UUID> tokens = null;
-        try {
-            tokens = tokenManagers.RequestTokens(this.customer.getAccountId(), 5);
-        } catch (EntryNotFoundException | TokenQuantityException e) {
-            fail(e.getMessage());
-        }
+        RequestTokenDto rDto = new RequestTokenDto();
+        rDto.setAmount(5);
+        rDto.setCustomerId(this.customer.getAccountId());
+
+        testContext().setPayload(rDto);
+        executePost("/tokens");
+        tokens = Arrays.asList(getBody(UUID[].class));
+
         for(int i = 0; i < tokens.size(); i++){
             UUID token = tokens.get(i);
             BigDecimal amount = new BigDecimal( i == 0 ? 1 : i * 5);
-            try {
-                TransactionDto dto = new TransactionDto(token, merchant.getAccountId(), UUID.randomUUID(), amount, "", false, new Date());
-
-                this.expectedTransactions.add(paymentService.transfer(dto));
-
-            } catch (TokenException | EntryNotFoundException | BankException | InvalidTransferAmountException | DuplicateEntryException e) {
-                fail(e.getMessage());
-            }
+            transferDto = new TransactionDto(token, merchant.getAccountId(), UUID.randomUUID(), amount, "", false, new Date());
+            expectedTransactions.add(transferDto);
+            testContext().setPayload(transferDto);
+            executePost("/transfer");
         }
     }
 
     @When("The Merchant requests the transaction history")
     public void theMerchantRequestsTheTransactionHistory() {
-        try {
-            this.transactions = reportingService.getTransactionHistory(this.merchant.getAccountId());
-        } catch (EntryNotFoundException e) {
-            fail(e.getMessage());
-        }
+        executeGet("/reporting/{accountId}", new HashMap<String, String>(){{put("accountId", merchant.getAccountId().toString());}});
+        this.transactions = Arrays.asList(getBody(TransactionDto[].class));
     }
 
     @Then("The Merchant receives the transaction history without customer names")
