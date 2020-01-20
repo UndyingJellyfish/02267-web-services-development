@@ -4,6 +4,7 @@ package com.example.webservices.accounts.models;
 import com.example.webservices.library.dataTransferObjects.AccountType;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -51,4 +52,12 @@ public abstract class Account {
     public abstract String getIdentifier();
 
     public abstract AccountType getType();
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Account)) {
+            return super.equals(obj);
+        }
+        return Objects.equals(((Account) obj).accountId, accountId);
+    }
 }

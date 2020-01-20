@@ -42,7 +42,8 @@ public class AccountServiceTest {
     public void changeName() throws EntryNotFoundException {
         String newName = "newName";
         when(store.getAccount(customerId)).thenReturn(customer);
-        service.changeName(new ChangeNameDto(customerId,newName));
+        ChangeNameDto dto = new ChangeNameDto(customerId,newName);
+        service.changeName(dto);
         assertEquals(newName, customer.getName());
     }
 

@@ -6,22 +6,32 @@ import com.example.webservices.accounts.models.Customer;
 import com.example.webservices.accounts.models.Merchant;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
-import org.codehaus.groovy.runtime.MethodRankHelper;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import java.security.SecureRandom;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
 
-public class InMemoryAccountDatastoreTest {
-    private IAccountDatastore store = new InMemoryAccountDatastore();
+@RunWith(SpringRunner.class)
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public class AccountDatastoreTest {
+    @Autowired
+    private JpaAccountDatastore jpaAccountDatastore;
+    private IAccountDatastore store;
     private Customer customer = new Customer("name","123");
     private Merchant merchant = new Merchant("name","123");
 
+
     @Before
     public void setup() throws DuplicateEntryException {
+        this.store = jpaAccountDatastore;
         store.addAccount(customer);
         store.addAccount(merchant);
     }

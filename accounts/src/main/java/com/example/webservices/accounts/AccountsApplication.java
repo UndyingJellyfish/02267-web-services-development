@@ -1,5 +1,11 @@
 package com.example.webservices.accounts;
 
+import com.example.webservices.accounts.dataAccess.AccountRepository;
+import com.example.webservices.accounts.dataAccess.JpaAccountDatastore;
+import com.example.webservices.accounts.interfaces.IAccountDatastore;
+import com.example.webservices.accounts.models.Account;
+import com.example.webservices.accounts.models.Customer;
+import com.example.webservices.accounts.models.Merchant;
 import com.google.gson.*;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -27,6 +33,10 @@ import static com.example.webservices.library.RabbitHelper.*;
 @SpringBootApplication(exclude = {JacksonAutoConfiguration.class})
 public class AccountsApplication {
 
+    @Bean
+    public IAccountDatastore accountDatastore(AccountRepository<Account> accountRepository, AccountRepository<Customer> customerRepository, AccountRepository<Merchant> merchantRepository){
+        return new JpaAccountDatastore(accountRepository, customerRepository, merchantRepository);
+    }
     @Bean
     public Docket myApi() {
         return new Docket(DocumentationType.SWAGGER_2)

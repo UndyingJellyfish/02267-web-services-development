@@ -5,8 +5,11 @@ import java.util.UUID;
 
 public class ChangeNameDto implements Serializable {
 
-    public ChangeNameDto(UUID accountId, String newName){
+    public ChangeNameDto(){
 
+    }
+
+    public ChangeNameDto(UUID accountId, String newName){
         this.accountId = accountId;
         this.newName = newName;
     }
