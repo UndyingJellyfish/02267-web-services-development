@@ -1,17 +1,13 @@
 package com.example.webservices.tokens.controller;
-
 import com.example.webservices.library.RabbitHelper;
 import com.example.webservices.library.dataTransferObjects.RequestTokenDto;
 import com.example.webservices.library.dataTransferObjects.ResponseObject;
 import com.example.webservices.library.dataTransferObjects.TokenDto;
 import com.example.webservices.library.exceptions.*;
 import com.example.webservices.library.interfaces.ITokenManager;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import javafx.scene.web.WebHistory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-
+import org.springframework.stereotype.Service;  
 import java.util.List;
 import java.util.UUID;
 

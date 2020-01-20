@@ -13,6 +13,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import org.springframework.web.server.ResponseStatusException;
+import sun.security.util.PendingException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,16 +23,13 @@ import static org.junit.Assert.*;
 
 public class UserServiceSteps extends AbstractSteps {
     private String customerName;
-    private IAccountService accountService;
-    private ITokenManager tokenManager;
     private UUID customerId;
     private String merchantName;
     private UUID merchantId;
     private String bankAccountId;
 
-    public UserServiceSteps(IAccountService accountService, ITokenManager tokenManager) {
-        this.accountService = accountService;
-        this.tokenManager = tokenManager;
+    public UserServiceSteps() {
+
     }
 
     @After
@@ -59,12 +57,8 @@ public class UserServiceSteps extends AbstractSteps {
     @Then("The customer should be signed up")
     public void theCustomerShouldBeSignedUp() {
         assertNotNull(customerId);
-        AccountDto customer = null;
-        try {
-            customer = accountService.getCustomer(customerId);
-        } catch (EntryNotFoundException e) {
-            fail(e.getMessage());
-        }
+        executeGet("/account/customer/" + customerId);
+        AccountDto  customer = getBody(AccountDto.class);
         assertNotNull(customer);
         assertEquals(customer.getName(),customerName);
         assertEquals(customer.getBankAccountId(),bankAccountId);
@@ -90,12 +84,8 @@ public class UserServiceSteps extends AbstractSteps {
     @Then("The merchant should be signed up")
     public void theMerchantShouldBeSignedUp() {
         assertNotNull(merchantId);
-        AccountDto merchant = null;
-        try {
-            merchant = accountService.getMerchant(merchantId);
-        } catch (EntryNotFoundException e) {
-            fail(e.getMessage());
-        }
+        executeGet("/account/merchant/" + customerId);
+        AccountDto  merchant = getBody(AccountDto.class);
         assertNotNull(merchant);
         assertEquals(merchant.getName(),merchantName);
         assertEquals(merchant.getBankAccountId(),bankAccountId);
@@ -120,8 +110,10 @@ public class UserServiceSteps extends AbstractSteps {
             testContext().setPayload(changeNameDto);
             executePut("/account");
             assertNotNull(testContext().getResponse());
-            customerName = accountService.getAccount(customerId).getName();
-        } catch (ResponseStatusException | EntryNotFoundException e) {
+            executeGet("/account/customer/" + customerId);
+            AccountDto  customer = getBody(AccountDto.class);
+            customerName = customer.getName();
+        } catch (ResponseStatusException e) {
             fail(e.getMessage());
         }
     }
@@ -142,14 +134,16 @@ public class UserServiceSteps extends AbstractSteps {
 
     @Then("The user should be deleted, and unused tokens should be removed")
     public void theUserShouldBeDeletedAndUnusedTokensShouldBeRemoved() {
-        List<TokenDto> tokens = null; // TODO: FIX tokenManager.getTokens(customerId);
+        throw new PendingException();
+        /* List<TokenDto> tokens = null; // TODO: Add method to get count of active tokens
         try {
-            accountService.getAccount(customerId);
+            executeGet("/account/customer/" + customerId);
+            AccountDto  customer = getBody(AccountDto.class);
             fail();
-        } catch (EntryNotFoundException e) {
+        } catch (ResponseStatusException e) {
             // entry not found = entry deleted
             assertEquals(0, tokens.stream().filter(t -> !t.isUsed()).count());
-        }
+        }*/
     }
 
     @And("A bank account number")

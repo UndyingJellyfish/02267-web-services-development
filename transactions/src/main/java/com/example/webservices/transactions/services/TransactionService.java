@@ -64,7 +64,6 @@ public class TransactionService implements ITransactionService {
         UUID temp = dto.getCreditorId();
         dto.setCreditorId(dto.getDebtorId());
         dto.setDebtorId(temp);
-
         return addTransaction(dto);
     }
 
