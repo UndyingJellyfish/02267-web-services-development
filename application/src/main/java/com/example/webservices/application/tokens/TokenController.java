@@ -40,7 +40,7 @@ public class TokenController {
         }
     }
 
-    @GetMapping("/{customerId}")
+    /*@GetMapping("/{customerId}")
     @ResponseStatus(HttpStatus.OK)
     public List<TokenDto> getTokens(@PathVariable UUID customerId) {
         try {
@@ -48,5 +48,5 @@ public class TokenController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
-    }
+    }*/
 }
