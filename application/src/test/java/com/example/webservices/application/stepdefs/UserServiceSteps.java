@@ -116,12 +116,10 @@ public class UserServiceSteps extends AbstractSteps {
 
     @Then("The user should be deleted, and unused tokens should be removed")
     public void theUserShouldBeDeletedAndUnusedTokensShouldBeRemoved() {
-
         executeGet("tokens/" + customerId);
         int tokens = getBody(int.class);
         executeGet("/account/customer/" + customerId);
         assertEquals(0, tokens);
-
     }
 
     @And("A bank account number")

@@ -67,4 +67,9 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
     public void retireAll(UUID accountId) {
 
     }
+
+    @Override
+    public List<TokenDto> GetActiveTokens(UUID customerId) {
+        throw new RuntimeException("Not intended for use in MQ");
+    }
 }
