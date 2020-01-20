@@ -21,6 +21,7 @@ public abstract class RabbitHelper {
     public static final String QUEUE_TOKEN_REQUEST = "token.request";
 
     public static final String QUEUE_REPORTING_HISTORY = "reporting.history";
+    public static final String QUEUE_REPORTING_HISTORY_DATE = "reporting.history.date";
     public static final String QUEUE_TRANSACTION_ADD = "transaction.add";
     public static final String QUEUE_TRANSACTION_GET = "transaction.get";
 

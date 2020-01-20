@@ -8,7 +8,6 @@ import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
 import com.example.webservices.library.interfaces.IReportingService;
 import com.example.webservices.library.interfaces.ITransactionService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,15 +29,15 @@ public class ReportingService implements IReportingService {
 
     @Override
     public List<TransactionDto> getTransactionHistory(UUID id) throws EntryNotFoundException {
-        return getTransactionHistoryWithStartDate(new RequestReportingHistoryDto(id));
+        return getTransactionHistory(new RequestReportingHistoryDto(id));
     }
 
     @Override
     public List<TransactionDto> getTransactionHistorySince(RequestReportingHistoryDto dto) throws EntryNotFoundException {
-        return getTransactionHistoryWithStartDate(dto);
+        return getTransactionHistory(dto);
     }
 
-    private List<TransactionDto> getTransactionHistoryWithStartDate(RequestReportingHistoryDto dto) throws EntryNotFoundException{
+    private List<TransactionDto> getTransactionHistory(RequestReportingHistoryDto dto) throws EntryNotFoundException{
         AccountDto account = accountService.getAccount(dto.getAccountId());
         List<TransactionDto> transactions = this.transactionService.getTransactions(dto.getAccountId());
         if (dto.getStartDate() != null) {

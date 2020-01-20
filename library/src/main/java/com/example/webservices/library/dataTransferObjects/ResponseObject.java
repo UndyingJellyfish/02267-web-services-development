@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
-import java.sql.Statement;
-import java.util.concurrent.ExecutionException;
 
 public class ResponseObject implements Serializable {
 

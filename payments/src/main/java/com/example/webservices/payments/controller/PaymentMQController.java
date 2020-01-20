@@ -5,7 +5,9 @@ import com.example.webservices.library.dataTransferObjects.ResponseObject;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
 import com.example.webservices.library.exceptions.*;
 import com.example.webservices.library.interfaces.IPaymentService;
+import jdk.nashorn.internal.parser.Token;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,21 +26,30 @@ public class PaymentMQController extends RabbitHelper {
             //TransactionDto transactionDto = fromJson(jsonString, TransactionDto.class);
             TransactionDto result = this.paymentService.transfer(jsonString);
             return success(result);
-        } catch (Exception e) {
-            return failure(e.getMessage());
+        } catch (EntryNotFoundException | InvalidTokenException e) {
+            return failure(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+        catch ( DuplicateEntryException e) {
+            return failure(e.getMessage(), HttpStatus.CONFLICT);
+        }
+        catch (TokenException | InvalidTransferAmountException e) {
+            return failure(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (BankException e) {
+            return failure(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
     @RabbitListener(queues = QUEUE_PAYMENT_REFUND)
     public ResponseObject refund(TransactionDto transactionDto){
-
         try {
-           //TransactionDto transactionDto = fromJson(jsonString, TransactionDto.class);
             this.paymentService.refund(transactionDto.getTransactionId());
             return success();
-        } catch (Exception  e) {
-            return failure(e.getMessage());
+        } catch (EntryNotFoundException e) {
+            return failure(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-
+        catch (DuplicateEntryException e) {
+            return failure(e.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 }
