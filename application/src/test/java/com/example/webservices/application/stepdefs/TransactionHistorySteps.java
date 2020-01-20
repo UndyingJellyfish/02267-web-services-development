@@ -16,6 +16,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.After;
+import org.springframework.http.HttpStatus;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -26,6 +27,8 @@ public class TransactionHistorySteps extends AbstractSteps {
 
     private AccountDto customer;
     private AccountDto merchant;
+    private UUID customerId;
+    private UUID merchantId;
     private String customerBankId;
     private String merchantBankId;
     private List<TransactionDto> transactions;
@@ -74,17 +77,17 @@ public class TransactionHistorySteps extends AbstractSteps {
 
         testContext().setPayload(cDto);
         executePost("/account/customer");
-        this.customer = getBody(AccountDto.class);
+        this.customerId = getBody(UUID.class);
 
         testContext().setPayload(mDto);
         executePost("/account/merchant");
-        this.merchant = getBody(AccountDto.class);
+        this.merchantId = getBody(UUID.class);
 
         this.expectedTransactions = new ArrayList<>();
         List<UUID> tokens = null;
         RequestTokenDto rDto = new RequestTokenDto();
         rDto.setAmount(5);
-        rDto.setCustomerId(this.customer.getAccountId());
+        rDto.setCustomerId(this.customerId);
 
         testContext().setPayload(rDto);
         executePost("/tokens");
@@ -93,16 +96,19 @@ public class TransactionHistorySteps extends AbstractSteps {
         for(int i = 0; i < tokens.size(); i++){
             UUID token = tokens.get(i);
             BigDecimal amount = new BigDecimal( i == 0 ? 1 : i * 5);
-            transferDto = new TransactionDto(token, merchant.getAccountId(), UUID.randomUUID(), amount, "", false, new Date());
+            transferDto = new TransactionDto(token, merchantId, customerId, amount, "koioikiko" + i, false, new Date());
             expectedTransactions.add(transferDto);
             testContext().setPayload(transferDto);
-            executePost("/transfer");
+            executePost("/payment/transfer");
+            if(testContext().getResponse().getStatusCode() != HttpStatus.OK.value()){
+                fail();
+            }
         }
     }
 
     @When("The Customer requests the transaction history")
     public void theCustomerRequestsTheTransactionHistory() {
-        executeGet("/reporting/{accountId}", new HashMap<String, String>(){{put("accountId", customer.getAccountId().toString());}});
+        executeGet("/reporting/{accountId}", new HashMap<String, String>(){{put("accountId", customerId.toString());}});
         this.transactions = Arrays.asList(getBody(TransactionDto[].class));
     }
 
@@ -113,8 +119,8 @@ public class TransactionHistorySteps extends AbstractSteps {
         for(TransactionDto transaction : transactions){
             TransactionDto expectedTransaction = this.expectedTransactions
                     .stream()
-                    .filter(t -> t.getTransactionId()
-                            .equals(transaction.getTransactionId()))
+                    .filter(t -> t.getDescription()
+                            .equals(transaction.getDescription()))
                     .findFirst()
                     .orElse(null);
             if(expectedTransaction == null){
@@ -138,17 +144,17 @@ public class TransactionHistorySteps extends AbstractSteps {
 
         testContext().setPayload(cDto);
         executePost("/account/customer");
-        this.customer = getBody(AccountDto.class);
+        this.customerId = getBody(UUID.class);
 
         testContext().setPayload(mDto);
         executePost("/account/merchant");
-        this.merchant = getBody(AccountDto.class);
+        this.merchantId = getBody(UUID.class);
 
         this.expectedTransactions = new ArrayList<>();
         List<UUID> tokens = null;
         RequestTokenDto rDto = new RequestTokenDto();
         rDto.setAmount(5);
-        rDto.setCustomerId(this.customer.getAccountId());
+        rDto.setCustomerId(this.customerId);
 
         testContext().setPayload(rDto);
         executePost("/tokens");
@@ -157,16 +163,19 @@ public class TransactionHistorySteps extends AbstractSteps {
         for(int i = 0; i < tokens.size(); i++){
             UUID token = tokens.get(i);
             BigDecimal amount = new BigDecimal( i == 0 ? 1 : i * 5);
-            transferDto = new TransactionDto(token, merchant.getAccountId(), UUID.randomUUID(), amount, "", false, new Date());
+            transferDto = new TransactionDto(token, merchantId, customerId, amount, "dadssadasd" +i, false, new Date());
             expectedTransactions.add(transferDto);
             testContext().setPayload(transferDto);
-            executePost("/transfer");
+            executePost("/payment/transfer");
+            if(testContext().getResponse().getStatusCode() != HttpStatus.OK.value()){
+                fail();
+            }
         }
     }
 
     @When("The Merchant requests the transaction history")
     public void theMerchantRequestsTheTransactionHistory() {
-        executeGet("/reporting/{accountId}", new HashMap<String, String>(){{put("accountId", merchant.getAccountId().toString());}});
+        executeGet("/reporting/{accountId}", new HashMap<String, String>(){{put("accountId", merchantId.toString());}});
         this.transactions = Arrays.asList(getBody(TransactionDto[].class));
     }
 
@@ -175,7 +184,12 @@ public class TransactionHistorySteps extends AbstractSteps {
         assertNotNull(transactions);
         assertEquals(expectedTransactions.size(), transactions.size());
         for(TransactionDto transaction : transactions){
-            TransactionDto expectedTransaction = this.expectedTransactions.stream().filter(t -> t.equals(transaction)).findFirst().orElse(null);
+            TransactionDto expectedTransaction = this.expectedTransactions
+                    .stream()
+                    .filter(t -> t.getDescription()
+                            .equals(transaction.getDescription()))
+                    .findFirst()
+                    .orElse(null);
             if(expectedTransaction == null){
                 fail();
             }

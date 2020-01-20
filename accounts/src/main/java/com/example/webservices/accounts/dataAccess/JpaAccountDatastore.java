@@ -61,4 +61,9 @@ public class JpaAccountDatastore implements IAccountDatastore {
         }
         accountRepository.deleteById(accountId);
     }
+
+    @Override
+    public Account saveAccount(Account account) {
+        return accountRepository.save(account);
+    }
 }

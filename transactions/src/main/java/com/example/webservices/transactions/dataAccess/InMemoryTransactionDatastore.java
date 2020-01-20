@@ -38,5 +38,10 @@ public class InMemoryTransactionDatastore implements ITransactionDatastore {
 
     }
 
+    @Override
+    public Transaction saveTransaction(Transaction transaction) {
+        return transaction;
+    }
+
 
 }

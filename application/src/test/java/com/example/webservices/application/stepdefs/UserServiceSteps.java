@@ -53,7 +53,7 @@ public class UserServiceSteps extends AbstractSteps {
     @Then("The customer should be signed up")
     public void theCustomerShouldBeSignedUp() {
         assertNotNull(customerId);
-        executeGet("/account/customer/" + customerId);
+        executeGet("/account/" + customerId);
         AccountDto  customer = getBody(AccountDto.class);
         assertNotNull(customer);
         assertEquals(customer.getName(),customerName);
@@ -76,7 +76,7 @@ public class UserServiceSteps extends AbstractSteps {
     @Then("The merchant should be signed up")
     public void theMerchantShouldBeSignedUp() {
         assertNotNull(merchantId);
-        executeGet("/account/merchant/" + customerId);
+        executeGet("/account/" + merchantId);
         AccountDto  merchant = getBody(AccountDto.class);
         assertNotNull(merchant);
         assertEquals(merchant.getName(),merchantName);
@@ -97,7 +97,7 @@ public class UserServiceSteps extends AbstractSteps {
         testContext().setPayload(changeNameDto);
         executePut("/account");
         assertNotNull(testContext().getResponse());
-        executeGet("/account/customer/" + customerId);
+        executeGet("/account/" + customerId);
         AccountDto  customer = getBody(AccountDto.class);
         customerName = customer.getName();
     }
@@ -116,9 +116,9 @@ public class UserServiceSteps extends AbstractSteps {
 
     @Then("The user should be deleted, and unused tokens should be removed")
     public void theUserShouldBeDeletedAndUnusedTokensShouldBeRemoved() {
-        executeGet("tokens/" + customerId);
+        executeGet("/tokens/" + customerId);
         int tokens = getBody(int.class);
-        executeGet("/account/customer/" + customerId);
+        executeGet("/account/" + customerId);
         assertEquals(0, tokens);
     }
 

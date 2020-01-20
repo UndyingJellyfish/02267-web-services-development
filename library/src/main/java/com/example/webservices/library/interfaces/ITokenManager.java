@@ -55,5 +55,5 @@ public interface ITokenManager {
      */
     void retireAll(UUID accountId);
 
-    List<TokenDto> GetActiveTokens(UUID customerId);
+    int GetActiveTokens(UUID customerId);
 }

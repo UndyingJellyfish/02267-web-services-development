@@ -6,6 +6,7 @@ import com.example.webservices.library.dataTransferObjects.TransactionDto;
 import com.example.webservices.library.exceptions.*;
 import com.example.webservices.library.interfaces.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -34,13 +35,36 @@ public class PaymentService implements IPaymentService {
         if(!isGreaterThanZero(amount)){
             throw new InvalidTransferAmountException();
         }
-        TokenDto token = tokenManager.GetToken(tokenId);
-        AccountDto merchant = accountService.getMerchant(merchantId);
-        AccountDto customer = accountService.getCustomer(token.getCustomerId());
-        tokenManager.UseToken(tokenId);
+        TokenDto token;
+        try {
+            token = tokenManager.GetToken(tokenId);
+        }
+        catch (ResponseStatusException e){
+            throw new InvalidTokenException();
+        }
+        AccountDto merchant;
+        AccountDto customer;
+        try {
+             merchant = accountService.getMerchant(merchantId);
+             customer = accountService.getCustomer(token.getCustomerId());
+        } catch (ResponseStatusException e){
+            throw new EntryNotFoundException();
+        }
+        try {
+            tokenManager.UseToken(tokenId);
+        } catch (ResponseStatusException e){
+            throw new UsedTokenException();
+        }
         bank.transferMoney(customer, merchant, amount, description);
+
         TransactionDto transaction = new TransactionDto(tokenId, merchant.getAccountId(), customer.getAccountId(), amount, description, isRefund, new Date());
-        transactionService.addTransaction(transaction);
+
+        try {
+            transactionService.addTransaction(transaction);
+        } catch (ResponseStatusException e){
+            throw new RuntimeException();
+        }
+
         return transaction;
     }
 

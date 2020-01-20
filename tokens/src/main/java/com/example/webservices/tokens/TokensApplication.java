@@ -74,6 +74,10 @@ public class TokensApplication {
         return new DirectExchange("transactions");
     }
 
+    @Bean
+    public Queue queueActiveTokens(){
+        return new Queue(QUEUE_TOKENS_ACTIVE, true);
+    }
 
     @Bean
     public Queue queueUseToken(){
@@ -99,6 +103,12 @@ public class TokensApplication {
     public Queue queueRetireTokens(){
         return new Queue(QUEUE_TOKENS_RETIRE, true);
     }
+
+    @Bean
+    public Binding bindingActiveTokens(@Qualifier("tokens") DirectExchange exchange, Queue queueActiveTokens) {
+        return BindingBuilder.bind(queueActiveTokens).to(exchange).with(queueActiveTokens.getName());
+    }
+
     @Bean
     public Binding bindingUseToken(@Qualifier("tokens") DirectExchange exchange, Queue queueUseToken) {
         return BindingBuilder.bind(queueUseToken).to(exchange).with(queueUseToken.getName());

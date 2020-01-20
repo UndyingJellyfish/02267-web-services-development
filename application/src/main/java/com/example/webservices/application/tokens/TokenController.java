@@ -44,7 +44,7 @@ public class TokenController {
     @ResponseStatus(HttpStatus.OK)
     public int getActiveTokenCount(@PathVariable UUID customerId) {
         try {
-            return tokenManager.GetActiveTokens(customerId).size();
+            return tokenManager.GetActiveTokens(customerId);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

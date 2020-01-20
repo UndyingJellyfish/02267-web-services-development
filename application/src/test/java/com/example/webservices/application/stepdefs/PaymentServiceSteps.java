@@ -86,7 +86,7 @@ public class PaymentServiceSteps extends AbstractSteps {
 
     @Then("The transaction should fail")
     public void theTransactionShouldFail() {
-        assertEquals(HttpStatus.BAD_REQUEST.value(), testContext().getResponse().statusCode());
+        assertEquals(HttpStatus.NOT_FOUND.value(), testContext().getResponse().statusCode());
     }
 
 /*    private String createBankAccountCustomer(SignupDto signupDto){
@@ -190,7 +190,24 @@ public class PaymentServiceSteps extends AbstractSteps {
 
     @And("A token that has already been used")
     public void aTokenThatHasAlreadyBeenUsed() {
-        SignupDto dto = new SignupDto("Bob", "123", UUID.randomUUID().toString());
+        customerBankId = "";
+        try {
+            User usr = new User();
+            usr.setCprNumber(UUID.randomUUID().toString());
+            usr.setFirstName("Bob");
+            usr.setLastName("Bob");
+            Account json = new Account();
+            json.setBalance(new BigDecimal("10000"));
+            json.setUser(usr);
+
+            testContext().setPayload(json);
+            executePost(bankBaseRestUrl + "/rest/accounts");
+            customerBankId = getBody(String.class);
+        } catch (Exception e){
+            fail(e.getMessage());
+        }
+
+        SignupDto dto = new SignupDto("Bob", "21312321412", customerBankId);
         try {
             testContext().setPayload(dto);
             executePost("/account/customer");
@@ -217,10 +234,12 @@ public class PaymentServiceSteps extends AbstractSteps {
         } catch (ResponseStatusException e) {
             fail();
         }
+
     }
 
     @Then("The transaction should fail and inform that the token is used")
     public void theTransactionShouldFailAndInformThatTheTokenIsUsed() {
+
         assertEquals(HttpStatus.BAD_REQUEST.value(), testContext().getResponse().statusCode());
     }
 

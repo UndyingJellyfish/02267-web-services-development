@@ -35,6 +35,11 @@ public class InMemoryAccountDatastore implements IAccountDatastore {
     }
 
     @Override
+    public Account saveAccount(Account account) {
+        return account;
+    }
+
+    @Override
     public <T extends Account> T addAccount(T account) throws DuplicateEntryException {
         if(accounts.stream().anyMatch(a -> a.getAccountId().equals(account.getAccountId())
                 || (account instanceof Customer && a instanceof Customer)

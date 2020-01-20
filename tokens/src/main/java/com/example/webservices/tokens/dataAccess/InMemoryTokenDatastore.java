@@ -45,6 +45,12 @@ public class InMemoryTokenDatastore implements ITokenDatastore {
         return this.tokens.stream().filter(t -> t.getTokenId().equals(tokenId)).findFirst().orElseThrow(InvalidTokenException::new);
     }
 
+    @Override
+    public Token useToken(Token token) {
+        token.setUsed(true);
+        return token;
+    }
+
     // Extract me somewhere!
     private boolean hasSharedIds(List<UUID> first, List<UUID> second){
         return first.stream().anyMatch(second::contains);

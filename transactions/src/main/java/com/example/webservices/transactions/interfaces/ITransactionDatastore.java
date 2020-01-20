@@ -11,4 +11,5 @@ public interface ITransactionDatastore {
     Transaction getTransaction(UUID transactionId) throws EntryNotFoundException;
     UUID addTransaction(Transaction transaction) throws DuplicateEntryException;
     List<Transaction> getTransactions(UUID accountId);
+    Transaction saveTransaction(Transaction transaction);
 }

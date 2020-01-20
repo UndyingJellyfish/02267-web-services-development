@@ -67,7 +67,7 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
     }
 
     @Override
-    public TokenDto GetToken(UUID tokenId) throws InvalidTokenException {
+    public TokenDto GetToken(UUID tokenId) {
         ResponseObject response = send(QUEUE_TOKEN_GET, tokenId);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
@@ -84,7 +84,11 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
     }
 
     @Override
-    public List<TokenDto> GetActiveTokens(UUID customerId) {
-        throw new RuntimeException("Not inteded for MQ use");
+    public int GetActiveTokens(UUID customerId) {
+        ResponseObject response = send(QUEUE_TOKENS_ACTIVE, customerId);
+        if(response.getStatusCode() != HttpStatus.OK){
+            throw new RuntimeException(fromJson(response.getBody(), String.class));
+        }
+        return fromJson(response.getBody(), int.class);
     }
 }

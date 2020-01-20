@@ -48,7 +48,7 @@ public class TokenManager implements ITokenManager {
         if(token.isUsed()){
             throw new UsedTokenException();
         }
-        token.setUsed(true);
+        this.datastore.useToken(token);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class TokenManager implements ITokenManager {
     }
 
     @Override
-    public List<TokenDto> GetActiveTokens(UUID customerId) {
-        return this.GetTokens(customerId).stream().filter(t -> !t.isUsed()).collect(Collectors.toList());
+    public int GetActiveTokens(UUID customerId) {
+        return (int) this.GetTokens(customerId).stream().filter(t -> !t.isUsed()).count();
     }
 }

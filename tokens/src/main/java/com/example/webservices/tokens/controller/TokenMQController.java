@@ -83,4 +83,10 @@ public class TokenMQController extends RabbitHelper {
             return success();
 
     }
+    @RabbitListener(queues = QUEUE_TOKENS_ACTIVE)
+    public ResponseObject getActiveTokens(UUID accountId) {
+        int tokens = this.tokenManager.GetActiveTokens(accountId);
+        return success(tokens);
+
+    }
 }

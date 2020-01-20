@@ -12,6 +12,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -25,7 +26,7 @@ public class ReportingMQService extends RabbitMQBaseClass implements IReportingS
     public List<TransactionDto> getTransactionHistory(UUID id) throws EntryNotFoundException {
         ResponseObject response = send(QUEUE_REPORTING_HISTORY, id);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new EntryNotFoundException(fromJson(response.getBody(), String.class));
+            throw new ResponseStatusException(response.getStatusCode(),fromJson(response.getBody(), String.class));
         }
 
         return Arrays.asList(fromJson(response.getBody(), TransactionDto[].class));
@@ -35,7 +36,7 @@ public class ReportingMQService extends RabbitMQBaseClass implements IReportingS
     public List<TransactionDto> getTransactionHistorySince(RequestReportingHistoryDto dto) throws EntryNotFoundException {
         ResponseObject response = send(QUEUE_REPORTING_HISTORY_DATE, dto);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new EntryNotFoundException(fromJson(response.getBody(), String.class));
+            throw new ResponseStatusException(response.getStatusCode(),fromJson(response.getBody(), String.class));
         }
 
         return Arrays.asList(fromJson(response.getBody(), TransactionDto[].class));

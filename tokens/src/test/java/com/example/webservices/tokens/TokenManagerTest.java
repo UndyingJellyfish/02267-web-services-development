@@ -22,8 +22,7 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 public class TokenManagerTest {
@@ -180,8 +179,8 @@ public class TokenManagerTest {
                     .thenReturn(tokens);
             List<TokenDto> afterTokens = tokenManager.GetTokens(customerId);
             assertEquals(1, afterTokens.size());
-            boolean isUsed = afterTokens.get(0).isUsed();
-            assertTrue(isUsed);
+            verify(tokenDatastore, times(1)).useToken(
+                    argThat(t -> t.getTokenId().equals(tokens.get(0).getTokenId())));
         } catch (EntryNotFoundException | TokenQuantityException e) {
             fail(e.getMessage());
         }

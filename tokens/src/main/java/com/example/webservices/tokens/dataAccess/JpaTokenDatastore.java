@@ -39,4 +39,10 @@ public class JpaTokenDatastore implements ITokenDatastore {
     public Token getToken(UUID tokenId) throws InvalidTokenException {
         return tokenRepository.findById(tokenId).orElseThrow(InvalidTokenException::new);
     }
+
+    @Override
+    public Token useToken(Token token) {
+        token.setUsed(true);
+        return this.tokenRepository.save(token);
+    }
 }

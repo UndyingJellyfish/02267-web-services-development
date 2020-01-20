@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/account")
@@ -38,9 +39,22 @@ public class AccountController {
     public UUID signupMerchant(@RequestBody SignupDto merchant){
         try {
             return accountService.addMerchant(merchant).getAccountId();
-        } catch (Exception e) {
+        } catch (ResponseStatusException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
+    }
+
+    @GetMapping(value={"/{accountId}"})
+    @ResponseStatus(HttpStatus.OK)
+    public AccountDto getAccount(@PathVariable UUID accountId){
+        try {
+            return accountService.getAccount(accountId);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+
     }
 
     @PostMapping("/customer")
@@ -49,8 +63,10 @@ public class AccountController {
         try {
             AccountDto dto = accountService.addCustomer(customer);
             return dto.getAccountId();
-        } catch (Exception e) {
+        } catch (ResponseStatusException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 

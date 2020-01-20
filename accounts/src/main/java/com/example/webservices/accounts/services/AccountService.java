@@ -29,7 +29,9 @@ public class  AccountService implements IAccountService {
 
     @Override
     public void changeName(ChangeNameDto changeNameDto) throws EntryNotFoundException {
-        this.accountDatastore.getAccount(changeNameDto.getAccountId()).setName(changeNameDto.getNewName());
+        Account account = this.accountDatastore.getAccount(changeNameDto.getAccountId());
+        account.setName(changeNameDto.getNewName());
+        this.accountDatastore.saveAccount(account);
     }
 
     private AccountDto addAccount(Account account) throws DuplicateEntryException {

@@ -37,4 +37,9 @@ public class JpaTransactionDatastore implements ITransactionDatastore {
     public List<Transaction> getTransactions(UUID accountId) {
         return this.transactionRepository.findAllByDebtorOrCreditor(accountId, accountId);
     }
+
+    @Override
+    public Transaction saveTransaction(Transaction transaction) {
+        return this.transactionRepository.save(transaction);
+    }
 }

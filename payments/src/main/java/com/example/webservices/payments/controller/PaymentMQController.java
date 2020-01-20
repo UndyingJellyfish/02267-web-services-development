@@ -35,10 +35,9 @@ public class PaymentMQController extends RabbitHelper {
         catch (TokenException | InvalidTransferAmountException e) {
             return failure(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        catch (BankException e) {
+        catch (Exception e) {
             return failure(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
     @RabbitListener(queues = QUEUE_PAYMENT_REFUND)
     public ResponseObject refund(TransactionDto transactionDto){
