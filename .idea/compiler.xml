@@ -8,7 +8,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="transactions" />
         <module name="payments" />
-        <module name="02267-web-services-development" />
         <module name="webservices-application" />
         <module name="webservices-transactions" />
         <module name="application" />

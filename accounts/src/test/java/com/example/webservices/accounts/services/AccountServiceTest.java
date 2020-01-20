@@ -3,6 +3,7 @@ package com.example.webservices.accounts.services;
 import com.example.webservices.accounts.interfaces.IAccountDatastore;
 import com.example.webservices.accounts.models.Customer;
 import com.example.webservices.accounts.models.Merchant;
+import com.example.webservices.library.dataTransferObjects.AccountDto;
 import com.example.webservices.library.dataTransferObjects.ChangeNameDto;
 import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
@@ -73,14 +74,29 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void getCustomer() {
+    public void getCustomer() throws EntryNotFoundException {
+        when(store.getAccount(customerId)).thenReturn(customer);
+        AccountDto dto = service.getCustomer(customerId);
+        assertEquals(customerId,dto.getAccountId());
+
+    }
+
+
+    @Test
+    public void getMerchant() throws EntryNotFoundException {
+        when(store.getAccount(merchantId)).thenReturn(merchant);
+        AccountDto dto = service.getMerchant(merchantId);
+        assertEquals(merchantId, dto.getAccountId());
     }
 
     @Test
-    public void getAccount() {
-    }
+    public void getAccountException()  {
+        try {
+            when(store.getAccount(any())).thenThrow(EntryNotFoundException.class);
+            service.getAccount(customerId);
+            fail();
+        } catch (EntryNotFoundException ignored) {
+        }
 
-    @Test
-    public void getMerchant() {
     }
 }
