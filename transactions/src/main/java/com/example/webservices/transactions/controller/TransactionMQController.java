@@ -24,7 +24,7 @@ public class TransactionMQController extends RabbitHelper {
     }
 
     @RabbitListener(queues = QUEUE_TRANSACTION_ADD)
-    public ResponseObject addTransaction(TransactionDto transactionDto) throws JsonProcessingException {
+    public ResponseObject addTransaction(TransactionDto transactionDto) {
 
         try{
             UUID transactionId = this.transactionService.addTransaction(transactionDto);
@@ -36,7 +36,7 @@ public class TransactionMQController extends RabbitHelper {
     }
 
     @RabbitListener(queues = QUEUE_TRANSACTION_GET)
-    public ResponseObject getTransaction(UUID transactionId) throws JsonProcessingException {
+    public ResponseObject getTransaction(UUID transactionId) {
         try{
             List<TransactionDto> result = this.transactionService.getTransactions(transactionId);
             return success(result);
