@@ -4,7 +4,6 @@ Feature: Customer Token Generator Feature
 
   Scenario Outline: Request 1-5 Tokens
     Given A registered user
-    And The user has spent all tokens
     When The user requests <number> of tokens
     Then The user receives <number> tokens
   Examples:
@@ -26,12 +25,6 @@ Feature: Customer Token Generator Feature
     And The user already has 2 unused tokens
     When The user requests 1 tokens
     Then It should fail
-
-  Scenario: Query existing tokens for customer
-    Given A registered user
-    And The user already has 2 unused tokens
-    When The user queries his tokens
-    Then He should get his tokens
 
   Scenario Outline: User requests illegal amount of tokens
     Given A registered user
