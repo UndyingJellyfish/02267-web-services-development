@@ -30,12 +30,6 @@ public class AccountsApplication {
     public IAccountDatastore accountDatastore(AccountRepository<Account> accountRepository, AccountRepository<Customer> customerRepository, AccountRepository<Merchant> merchantRepository){
         return new JpaAccountDatastore(accountRepository, customerRepository, merchantRepository);
     }
-    @Bean
-    public RabbitTemplate rabbitTemplate(ConnectionFactory factory){
-        RabbitTemplate template = new RabbitTemplate(factory);
-        template.setReplyTimeout(Long.MAX_VALUE);
-        return template;
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(AccountsApplication.class, args);

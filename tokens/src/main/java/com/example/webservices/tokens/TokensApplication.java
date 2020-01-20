@@ -41,12 +41,13 @@ public class TokensApplication {
         SpringApplication.run(TokensApplication.class, args);
     }
 
-    @Bean
+   /*@Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory factory){
         RabbitTemplate template = new RabbitTemplate(factory);
         template.setReplyTimeout(Long.MAX_VALUE);
         return template;
-    }
+    }*/
+
     @Bean
     @Qualifier("accounts")
     public DirectExchange accountExchange(){

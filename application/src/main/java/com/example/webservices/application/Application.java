@@ -23,12 +23,7 @@ public class Application {
         return new RestTemplate();
     }
 
-    @Bean
-    public RabbitTemplate rabbitTemplate(ConnectionFactory factory){
-        RabbitTemplate template = new RabbitTemplate(factory);
-        template.setReplyTimeout(Long.MAX_VALUE);
-        return template;
-    }
+
 
     @Bean
     @Qualifier("accounts")

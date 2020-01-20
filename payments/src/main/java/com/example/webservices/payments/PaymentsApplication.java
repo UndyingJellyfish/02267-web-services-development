@@ -22,12 +22,7 @@ public class PaymentsApplication {
     public static void main(String[] args) {
         SpringApplication.run(PaymentsApplication.class, args);
     }
-    @Bean
-    public RabbitTemplate rabbitTemplate(ConnectionFactory factory){
-        RabbitTemplate template = new RabbitTemplate(factory);
-        template.setReplyTimeout(Long.MAX_VALUE);
-        return template;
-    }
+
     @Bean
     public BankService getBankService(){
         return new BankServiceService().getBankServicePort();

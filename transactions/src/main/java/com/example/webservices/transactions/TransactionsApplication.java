@@ -44,12 +44,7 @@ public class TransactionsApplication {
     public static void main(String[] args) {
         SpringApplication.run(TransactionsApplication.class, args);
     }
-    @Bean
-    public RabbitTemplate rabbitTemplate(ConnectionFactory factory){
-        RabbitTemplate template = new RabbitTemplate(factory);
-        template.setReplyTimeout(Long.MAX_VALUE);
-        return template;
-    }
+
     @Bean
     public Queue queueAddTransaction(){
         return new Queue(QUEUE_TRANSACTION_ADD, true);
