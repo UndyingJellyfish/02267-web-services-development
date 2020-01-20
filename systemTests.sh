@@ -9,13 +9,13 @@ COMMANDS="clean package"
 
 docker-compose -f docker-compose.yml down
 docker-compose -f docker-compose.yml up -d rabbitmq accounts payments tokens transactions
-sleep 5
-echo "Running mvn -pl $APP clean package"
-mvn -pl "$APP" clean package
+sleep 10
+echo "Running mvn clean package -pl $APP"
+mvn clean package -pl $APP
 docker-compose -f docker-compose.yml down
 
 echo "Starting docker build..."
-docker-compose -f docker-compose.yml build "$APP"
+docker-compose -f docker-compose.yml build $APP
 echo "Docker build done"
 
 

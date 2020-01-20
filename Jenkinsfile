@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'mvn clean'
+        sh 'mvn clean compile'
 
         // Library should build first, there's no Dockerfile for it, since it is shared
         sh 'bash build_and_test.sh library'
