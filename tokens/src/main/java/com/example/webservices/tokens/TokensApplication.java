@@ -22,7 +22,7 @@ import javax.sql.DataSource;
 import java.lang.reflect.Type;
 
 import static com.example.webservices.library.RabbitHelper.*;
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.example.webservices")
 public class TokensApplication {
 
     @Bean
@@ -49,15 +49,31 @@ public class TokensApplication {
     }*/
 
     @Bean
+    @Qualifier("tokens")
+    public DirectExchange tokensExchange() {
+        return new DirectExchange("tokens");
+    }
+    @Bean
     @Qualifier("accounts")
-    public DirectExchange accountExchange(){
+    public DirectExchange exchange() {
         return new DirectExchange("accounts");
     }
     @Bean
-    @Qualifier("tokens")
-    public DirectExchange tokensExchange(){
-        return new DirectExchange("tokens");
+    @Qualifier("payments")
+    public DirectExchange paymentsExchange() {
+        return new DirectExchange("payments");
     }
+    @Bean
+    @Qualifier("reporting")
+    public DirectExchange reportingExchange() {
+        return new DirectExchange("reporting");
+    }
+    @Bean
+    @Qualifier("transactions")
+    public DirectExchange transactionsExchange() {
+        return new DirectExchange("transactions");
+    }
+
 
     @Bean
     public Queue queueUseToken(){

@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Bean;
 import static com.example.webservices.library.RabbitHelper.QUEUE_PAYMENT_REFUND;
 import static com.example.webservices.library.RabbitHelper.QUEUE_PAYMENT_TRANSFER;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.example.webservices")
 public class PaymentsApplication {
 
     public static void main(String[] args) {
@@ -59,6 +59,12 @@ public class PaymentsApplication {
     @Qualifier("tokens")
     public DirectExchange getTokensExchange(){
         return new DirectExchange("tokens");
+    }
+
+    @Bean
+    @Qualifier("reporting")
+    public DirectExchange getReportingExchange(){
+        return new DirectExchange("reporting");
     }
 
     @Bean

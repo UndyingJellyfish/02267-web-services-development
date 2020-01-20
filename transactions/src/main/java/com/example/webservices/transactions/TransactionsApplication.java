@@ -26,7 +26,7 @@ import java.lang.reflect.Type;
 import static com.example.webservices.library.RabbitHelper.*;
 
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.example.webservices")
 public class TransactionsApplication {
 
     @Bean
@@ -58,6 +58,25 @@ public class TransactionsApplication {
         return new Queue(QUEUE_REPORTING_HISTORY, true);
     }
     @Bean
+    public Queue queueReportingSince(){
+    return new Queue(QUEUE_REPORTING_HISTORY_DATE, true);
+    }
+
+    @Bean
+    public Queue queueRefund(){
+        return new Queue(QUEUE_TRANSACTION_REFUND, true);
+    }
+
+    @Bean
+    public Binding bindingRefund(@Qualifier("transactions") DirectExchange exchange, Queue queueRefund) {
+        return BindingBuilder.bind(queueRefund).to(exchange).with(queueRefund.getName());
+    }
+    @Bean
+    public Binding bindingHistorySince(@Qualifier("reporting") DirectExchange exchange, Queue queueReportingSince) {
+        return BindingBuilder.bind(queueReportingSince).to(exchange).with(queueReportingSince.getName());
+    }
+
+    @Bean
     public Binding bindingGet(@Qualifier("transactions") DirectExchange exchange, Queue queueAddTransaction) {
         return BindingBuilder.bind(queueAddTransaction).to(exchange).with(queueAddTransaction.getName());
     }
@@ -72,24 +91,30 @@ public class TransactionsApplication {
 
 
     @Bean
-    @Qualifier("transactions")
-    public DirectExchange getExchange(){
-        return new DirectExchange("transactions");
-    }
-    @Bean
-    @Qualifier("reporting")
-    public DirectExchange getReportingExchange(){
-        return new DirectExchange("reporting");
-    }
-    @Bean
     @Qualifier("tokens")
-    public DirectExchange getTokensExchange(){
+    public DirectExchange tokensExchange() {
         return new DirectExchange("tokens");
     }
     @Bean
     @Qualifier("accounts")
-    public DirectExchange getAccountsExchange(){
+    public DirectExchange exchange() {
         return new DirectExchange("accounts");
     }
+    @Bean
+    @Qualifier("payments")
+    public DirectExchange paymentsExchange() {
+        return new DirectExchange("payments");
+    }
+    @Bean
+    @Qualifier("reporting")
+    public DirectExchange reportingExchange() {
+        return new DirectExchange("reporting");
+    }
+    @Bean
+    @Qualifier("transactions")
+    public DirectExchange transactionsExchange() {
+        return new DirectExchange("transactions");
+    }
+
 
 }

@@ -30,7 +30,7 @@ public class ReportingController {
         }
     }
 
-    @GetMapping("/{accountId}&date={date}")
+    @GetMapping("/{accountId}/{date}")
     @ResponseStatus(HttpStatus.OK)
     public List<TransactionDto> getHistorySince(@PathVariable UUID accountId, @PathVariable Date date){
         try{
