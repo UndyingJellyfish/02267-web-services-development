@@ -14,6 +14,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
 
@@ -28,7 +29,7 @@ public class PaymentMQService extends RabbitMQBaseClass implements IPaymentServi
     public TransactionDto transfer(TransactionDto transactionDto) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException {
         ResponseObject response = send(QUEUE_PAYMENT_TRANSFER, transactionDto);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new RuntimeException(fromJson(response.getBody(), String.class));
+            throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
         }
         return fromJson(response.getBody(), TransactionDto.class);
     }
@@ -38,7 +39,7 @@ public class PaymentMQService extends RabbitMQBaseClass implements IPaymentServi
     public void refund(UUID transactionId) {
         ResponseObject response = send(QUEUE_PAYMENT_REFUND, transactionId);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new RuntimeException(fromJson(response.getBody(), String.class));
+            throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
         }
     }
 }
