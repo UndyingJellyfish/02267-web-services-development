@@ -1,10 +1,7 @@
-package com.example.webservices.tokens.services;
+package com.example.webservices.library;
 
 import com.example.webservices.library.dataTransferObjects.*;
-import com.example.webservices.library.exceptions.DuplicateEntryException;
-import com.example.webservices.library.exceptions.EntryNotFoundException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.junit.After;
+import com.example.webservices.library.services.AccountMQService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.amqp.core.DirectExchange;
@@ -13,10 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.messaging.Message;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.security.spec.ECField;
 import java.util.UUID;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;

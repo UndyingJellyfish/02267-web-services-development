@@ -1,10 +1,13 @@
-package com.example.webservices.payments.services;
+package com.example.webservices.library.services;
 
 import com.example.webservices.library.RabbitMQBaseClass;
 import com.example.webservices.library.dataTransferObjects.ResponseObject;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
+import com.example.webservices.library.exceptions.BankException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
-import com.example.webservices.library.interfaces.ITransactionService;
+import com.example.webservices.library.exceptions.InvalidTransferAmountException;
+import com.example.webservices.library.exceptions.TokenException;
+import com.example.webservices.library.interfaces.IPaymentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -12,44 +15,31 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import sun.security.util.PendingException;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
-public class TransactionMQService extends RabbitMQBaseClass implements ITransactionService {
+public class PaymentMQService extends RabbitMQBaseClass implements IPaymentService {
 
-    public TransactionMQService(RabbitTemplate rabbitTemplate, @Qualifier("transactions") DirectExchange exchange) {
+    public PaymentMQService(RabbitTemplate rabbitTemplate, @Qualifier("payments") DirectExchange exchange) {
         super(rabbitTemplate, exchange);
     }
 
     @Override
-    public List<TransactionDto> getTransactions(UUID id) {
-        return null;
-    }
-
-    @Override
-    public UUID refundTransaction(UUID tokenId) throws EntryNotFoundException {
-        //TODO: Fix
-        throw new PendingException();
-    }
-
-    @Override
-    public UUID addTransaction(TransactionDto transaction) {
-        ResponseObject response = send(QUEUE_TRANSACTION_ADD, transaction);
-        if(response.getStatusCode() != HttpStatus.OK){
-            throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
-        }
-        return fromJson(response.getBody(), UUID.class);
-    }
-
-    @Override
-    public TransactionDto getTransaction(UUID transactionId) {
-        ResponseObject response = send(QUEUE_TRANSACTION_GET, transactionId);
+    public TransactionDto transfer(TransactionDto transactionDto) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException {
+        ResponseObject response = send(QUEUE_PAYMENT_TRANSFER, transactionDto);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
         }
         return fromJson(response.getBody(), TransactionDto.class);
+    }
+
+
+    @Override
+    public void refund(UUID transactionId) {
+        ResponseObject response = send(QUEUE_PAYMENT_REFUND, transactionId);
+        if(response.getStatusCode() != HttpStatus.OK){
+            throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
+        }
     }
 }

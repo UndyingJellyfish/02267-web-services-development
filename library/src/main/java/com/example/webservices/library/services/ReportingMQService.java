@@ -1,4 +1,4 @@
-package com.example.webservices.application.reporting;
+package com.example.webservices.library.services;
 
 import com.example.webservices.library.RabbitMQBaseClass;
 import com.example.webservices.library.dataTransferObjects.ResponseObject;
