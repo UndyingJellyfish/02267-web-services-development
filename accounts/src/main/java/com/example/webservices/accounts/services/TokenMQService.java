@@ -40,7 +40,7 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
     }
 
     @Override
-    public List<TokenDto> GetTokens(UUID customer) throws EntryNotFoundException {
+    public List<TokenDto> GetTokens(UUID customerId) throws EntryNotFoundException {
         return null;
     }
 
