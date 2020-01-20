@@ -24,10 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -170,7 +167,7 @@ public class CustomerTokenSteps extends AbstractSteps {
             if(testContext().getResponse().statusCode() != HttpStatus.OK.value()){
                 fail();
             }
-            out = getBody(new TypeToken<List<UUID>>(){}.getType());
+            out = Arrays.asList(getBody(UUID[].class));
             assertEquals(arg0, out.size());
         }
     }

@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -155,9 +156,7 @@ public class PaymentServiceSteps extends AbstractSteps {
         dto2.setCustomerId(customerId);
         testContext().setPayload(dto2);
         executePost("/tokens");
-        tokenId = ((ArrayList<UUID>) getBody(new TypeToken<List<UUID>>() {
-        }.getType()))
-                .stream()
+        tokenId = Arrays.stream(getBody(UUID[].class))
                 .findFirst()
                 .orElseThrow(RuntimeException::new);
     }
@@ -187,9 +186,7 @@ public class PaymentServiceSteps extends AbstractSteps {
         dto2.setCustomerId(customerId);
         testContext().setPayload(dto2);
         executePost("/tokens");
-        tokenId = ((ArrayList<UUID>) getBody(new TypeToken<List<UUID>>() {
-        }.getType()))
-                .stream()
+        tokenId = Arrays.stream(getBody(UUID[].class))
                 .findFirst()
                 .orElseThrow(RuntimeException::new);
         try {
@@ -245,9 +242,7 @@ public class PaymentServiceSteps extends AbstractSteps {
         dto3.setAmount(1);
         testContext().setPayload(dto3);
         executePost("/tokens");
-        tokenId = ((ArrayList<UUID>) getBody(new TypeToken<List<UUID>>() {
-        }.getType()))
-                .stream()
+        tokenId = Arrays.stream(getBody(UUID[].class))
                 .findFirst()
                 .orElseThrow(RuntimeException::new);
 
