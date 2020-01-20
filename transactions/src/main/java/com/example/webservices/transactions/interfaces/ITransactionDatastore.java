@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ITransactionDatastore {
-    Transaction getTransactionByTokenId(UUID tokenId) throws EntryNotFoundException;
+    Transaction getTransaction(UUID transactionId) throws EntryNotFoundException;
     UUID addTransaction(Transaction transaction);
     List<Transaction> getTransactions(UUID accountId);
 }

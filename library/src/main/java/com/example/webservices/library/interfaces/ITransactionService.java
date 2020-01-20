@@ -11,5 +11,5 @@ public interface ITransactionService {
     List<TransactionDto> getTransactions(UUID id);
     UUID refundTransaction(UUID tokenId) throws EntryNotFoundException;
     UUID addTransaction(TransactionDto transaction);
-    TransactionDto getTransactionByTokenId(UUID tokenId) throws EntryNotFoundException;
+    TransactionDto getTransaction(UUID tokenId) throws EntryNotFoundException;
 }
