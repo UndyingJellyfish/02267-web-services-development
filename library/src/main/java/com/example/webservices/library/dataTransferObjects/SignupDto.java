@@ -2,6 +2,9 @@ package com.example.webservices.library.dataTransferObjects;
 
 import java.io.Serializable;
 
+/**
+ * contains the information required by services to sign a new user up for DTUPay
+ */
 public class SignupDto implements Serializable {
     private String name;
     private String identifier;

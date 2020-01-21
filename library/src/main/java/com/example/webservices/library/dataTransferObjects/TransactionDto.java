@@ -5,6 +5,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * provides a representation of a transaction object
+ */
 public class TransactionDto implements Serializable {
     private UUID transactionId;
 

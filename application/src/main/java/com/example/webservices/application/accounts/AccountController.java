@@ -26,7 +26,8 @@ public class AccountController {
 
     /**
      * @author s164434
-     * */
+     * @param newName {@inheritDoc}
+     */
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
     public void changeName(@RequestBody ChangeNameDto newName){
@@ -39,7 +40,9 @@ public class AccountController {
 
     /**
      * @author s164424
-     * */
+     * @param merchant {@inheritDoc}
+     * @return id of the newly signed up merchant
+     */
     @PostMapping("/merchant")
     @ResponseStatus(HttpStatus.OK)
     public UUID signupMerchant(@RequestBody SignupDto merchant){
@@ -54,7 +57,8 @@ public class AccountController {
 
     /**
      * @author s164407
-     * */
+     * @param accountId id of the account to fetch
+     */
     @GetMapping(value={"/{accountId}"})
     @ResponseStatus(HttpStatus.OK)
     public AccountDto getAccount(@PathVariable UUID accountId){
@@ -68,7 +72,9 @@ public class AccountController {
 
     /**
      * @author s164398
-     * */
+     * @param customer {@inheritDoc}
+     * @return id of the newly sign up customer
+     */
     @PostMapping("/customer")
     @ResponseStatus(HttpStatus.OK)
     public UUID signupCustomer(@RequestBody SignupDto customer){
@@ -84,7 +90,8 @@ public class AccountController {
 
     /**
      * @author s164410
-     * */
+     * @param accountId id of the account to delete
+     */
     @DeleteMapping(value={"/{accountId}"})
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable UUID accountId){
@@ -93,6 +100,5 @@ public class AccountController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
-
     }
 }

@@ -29,8 +29,7 @@ public class  AccountService implements IAccountService {
 
     /**
      * @author s164424
-     * @param changeNameDto contains the information required to change the name of a user
-     * @throws EntryNotFoundException
+     * {@inheritDoc}
      */
     @Override
     public void changeName(ChangeNameDto changeNameDto) throws EntryNotFoundException {
@@ -41,9 +40,7 @@ public class  AccountService implements IAccountService {
 
     /**
      * @author s164424
-     * @param account
-     * @return
-     * @throws DuplicateEntryException
+     * {@inheritDoc}
      */
     private AccountDto addAccount(Account account) throws DuplicateEntryException {
         account = this.accountDatastore.addAccount(account);
@@ -52,9 +49,7 @@ public class  AccountService implements IAccountService {
 
     /**
      * @author s164424
-     * @param signupDto contains the information required to sign up a new customer
-     * @return
-     * @throws DuplicateEntryException
+     * {@inheritDoc}
      */
     @Override
     public AccountDto addCustomer(SignupDto signupDto) throws DuplicateEntryException {
@@ -64,9 +59,7 @@ public class  AccountService implements IAccountService {
 
     /**
      * @author s164424
-     * @param signupDto contains the information required to sign up a new customer
-     * @return
-     * @throws DuplicateEntryException
+     * {@inheritDoc}
      */
     @Override
     public AccountDto addMerchant(SignupDto signupDto) throws DuplicateEntryException {
@@ -77,8 +70,7 @@ public class  AccountService implements IAccountService {
 
     /**
      * @author s164424
-     * @param accountId id of the account to delete
-     * @throws EntryNotFoundException
+     * {@inheritDoc}
      */
     public void delete(UUID accountId) throws EntryNotFoundException {
         this.accountDatastore.deleteAccount(accountId);
@@ -87,9 +79,7 @@ public class  AccountService implements IAccountService {
 
     /**
      * @author s164424
-     * @param customerId id of the customer to search for
-     * @return
-     * @throws EntryNotFoundException
+     * {@inheritDoc}
      */
     @Override
     public AccountDto getCustomer(UUID customerId) throws EntryNotFoundException {
@@ -98,9 +88,7 @@ public class  AccountService implements IAccountService {
 
     /**
      * @author s164424
-     * @param id id of the account to search for
-     * @return
-     * @throws EntryNotFoundException
+     * {@inheritDoc}
      */
     @Override
     public AccountDto getAccount(UUID id) throws EntryNotFoundException {
@@ -111,9 +99,7 @@ public class  AccountService implements IAccountService {
 
     /**
      * @author s164424
-     * @param merchantId id of the merchant to search for
-     * @return
-     * @throws EntryNotFoundException
+     * {@inheritDoc}
      */
     @Override
     public AccountDto getMerchant(UUID merchantId) throws EntryNotFoundException {

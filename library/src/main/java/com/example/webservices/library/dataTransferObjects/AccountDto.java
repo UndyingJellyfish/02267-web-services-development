@@ -3,7 +3,9 @@ package com.example.webservices.library.dataTransferObjects;
 import java.io.Serializable;
 import java.util.UUID;
 
-
+/**
+ * provides a representation of an account object
+ */
 public class AccountDto implements Serializable {
     private UUID accountId;
     private String name;

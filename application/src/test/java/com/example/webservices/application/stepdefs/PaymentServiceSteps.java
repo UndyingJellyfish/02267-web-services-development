@@ -247,6 +247,7 @@ public class PaymentServiceSteps extends AbstractSteps {
 
     /**
      * @author s164407
+     * @param arg0 the amount to assign in test case
      */
     @And("An invalid {int}")
     public void anInvalidAmount(int arg0) {

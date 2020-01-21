@@ -22,10 +22,12 @@ public class ReportingController {
 
     /**
      * @author s164434
-     * */
+     * @param accountId id of the account to search for
+     * @return transaction history of the account
+     */
     @GetMapping("/{accountId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<TransactionDto> getHistory(@PathVariable UUID accountId){
+    public List<TransactionDto> getHistory(@PathVariable UUID accountId) {
         try{
             return reportingService.getTransactionHistory(accountId);
         }catch(Exception e){
@@ -35,10 +37,13 @@ public class ReportingController {
 
     /**
      * @author s164395
-     * */
+     * @param accountId id of the account to search for
+     * @param date the earliest date for the transactions to find
+     * @return transaction history of the account
+     */
     @GetMapping("/{accountId}/{date}")
     @ResponseStatus(HttpStatus.OK)
-    public List<TransactionDto> getHistorySince(@PathVariable UUID accountId, @PathVariable Date date){
+    public List<TransactionDto> getHistorySince(@PathVariable UUID accountId, @PathVariable Date date) {
         try{
             return reportingService.getTransactionHistorySince(new RequestReportingHistoryDto(accountId, date));
         }catch(Exception e){

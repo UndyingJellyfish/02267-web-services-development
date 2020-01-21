@@ -43,7 +43,7 @@ public class AccountServiceTest {
 
     /**
      * @author s164410
-     * @throws EntryNotFoundException
+     * @throws EntryNotFoundException fails the test if the account could not be found
      */
     @Test
     public void changeName() throws EntryNotFoundException {
@@ -57,7 +57,7 @@ public class AccountServiceTest {
 
     /**
      * @author s164410
-     * @throws DuplicateEntryException
+     * @throws DuplicateEntryException fails the test if the account already exists
      */
     @Test
     public void addCustomer() throws DuplicateEntryException {
@@ -68,7 +68,7 @@ public class AccountServiceTest {
 
     /**
      * @author s164410
-     * @throws DuplicateEntryException
+     * @throws DuplicateEntryException fails the test if the account already exists
      */
     @Test
     public void addMerchant() throws DuplicateEntryException  {

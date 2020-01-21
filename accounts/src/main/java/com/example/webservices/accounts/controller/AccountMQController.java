@@ -31,14 +31,13 @@ public class AccountMQController extends RabbitHelper {
 
     /**
      * @author s164398
-     * @param jsonString
-     * @return
+     * @param changeNameDto {@inheritDoc}
+     * @return publishes a response for the requested name change
      */
     @RabbitListener(queues = QUEUE_ACCOUNT_CHANGENAME)
-    public ResponseObject changeName(ChangeNameDto jsonString) {
+    public ResponseObject changeName(ChangeNameDto changeNameDto) {
         try {
-            //ChangeNameDto changeNameDto = fromJson(jsonString, ChangeNameDto.class);
-            this.accountService.changeName(jsonString);
+            this.accountService.changeName(changeNameDto);
             return success();
 
         } catch (EntryNotFoundException e) {
@@ -49,8 +48,8 @@ public class AccountMQController extends RabbitHelper {
 
     /**
      * @author s164398
-     * @param accountId
-     * @return
+     * @param accountId id of the account to delete
+     * @return publishes a response for the requested account deletion
      */
     @RabbitListener(queues = QUEUE_ACCOUNT_DELETE)
     public ResponseObject deleteAccount(UUID accountId) {
@@ -66,32 +65,28 @@ public class AccountMQController extends RabbitHelper {
 
     /**
      * @author s164398
-     * @param accountId
-     * @return
+     * @param accountId id of the account to get
+     * @return publishes a response for the requested account
      */
     @RabbitListener(queues = QUEUE_ACCOUNT_GET)
     public ResponseObject getAccount(UUID accountId) {
         try {
             AccountDto account = this.accountService.getAccount(accountId);
-
             return success(account);
-
         } catch (EntryNotFoundException  e) {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-
     }
 
     /**
      * @author s164398
-     * @param jsonString
-     * @return
+     * @param signupDto {@inheritDoc}
+     * @return publishes a response for the newly signed up customer
      */
     @RabbitListener(queues = QUEUE_CUSTOMER_SIGNUP)
-    public ResponseObject customerSignup(SignupDto jsonString) {
+    public ResponseObject customerSignup(SignupDto signupDto) {
         try {
-            //SignupDto signupDto = fromJson(jsonString, SignupDto.class);
-            AccountDto account = this.accountService.addCustomer(jsonString);
+            AccountDto account = this.accountService.addCustomer(signupDto);
 
             return success(account);
 
@@ -103,21 +98,18 @@ public class AccountMQController extends RabbitHelper {
 
     /**
      * @author s164398
-     * @param jsonString
-     * @return
+     * @param signupDto {@inheritDoc}
+     * @return publishes a response for the newly signed up merchant
      */
     @RabbitListener(queues = QUEUE_MERCHANT_SIGNUP)
-    public ResponseObject merchantSignup(SignupDto jsonString) {
+    public ResponseObject merchantSignup(SignupDto signupDto) {
         try {
-            //SignupDto signupDto = fromJson(jsonString, SignupDto.class);
-            AccountDto account = this.accountService.addMerchant(jsonString);
+            AccountDto account = this.accountService.addMerchant(signupDto);
 
             return success(account);
 
         } catch (DuplicateEntryException e) {
             return failure(e.getMessage(), HttpStatus.CONFLICT);
         }
-
     }
-
 }

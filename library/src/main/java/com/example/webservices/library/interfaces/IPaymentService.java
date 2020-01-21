@@ -10,7 +10,7 @@ public interface IPaymentService {
      * @param transactionDto data object used to transfer money from one account to another using a token
      * @return gives the transfer details
      * @throws EntryNotFoundException thrown when either of the accounts (debtor or creditor) do not exist
-     * @throws TokenException thrown when the token specified in {@param transactionDto} is invalid
+     * @throws TokenException thrown when the token specified in parameters is invalid
      * @throws BankException thrown when the bank is unavailable for transfers at the current time
      * @throws InvalidTransferAmountException thrown when the amount of money specified is not allowed
      * @throws DuplicateEntryException thrown when the transaction already exists

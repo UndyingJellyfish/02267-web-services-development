@@ -13,7 +13,7 @@ public interface IAccountService {
     /**
      * @param signupDto contains the information required to sign up a new customer
      * @return the newly registered account as a customer
-     * @throws DuplicateEntryException
+     * @throws DuplicateEntryException thrown when the user cannot be created due to a duplicate
      */
     AccountDto addCustomer(SignupDto signupDto) throws DuplicateEntryException;
 

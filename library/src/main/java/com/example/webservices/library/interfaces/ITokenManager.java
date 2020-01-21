@@ -16,7 +16,7 @@ public interface ITokenManager {
     /**
      * @param customer which customer to give tokens
      * @param quantity amount of tokens to give
-     * @return a list of the token id's given to the {@param customer}
+     * @return a list of the token id's given to the customer
      * @throws TokenQuantityException thrown when the customer cannot request anymore tokens
      * @throws EntryNotFoundException thrown when the customer does not exist
      */

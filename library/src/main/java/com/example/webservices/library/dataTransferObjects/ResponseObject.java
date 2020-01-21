@@ -5,6 +5,9 @@ import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
 
+/**
+ * generic object to return data back to a user (i.e a wrapper for a HTTP body)
+ */
 public class ResponseObject implements Serializable {
 
     private HttpStatus statusCode;

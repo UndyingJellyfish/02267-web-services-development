@@ -3,6 +3,9 @@ package com.example.webservices.library.dataTransferObjects;
 import java.io.Serializable;
 import java.util.UUID;
 
+/**
+ * provides a representation of a token object
+ */
 public class TokenDto implements Serializable {
     private UUID tokenId;
     private boolean isUsed;

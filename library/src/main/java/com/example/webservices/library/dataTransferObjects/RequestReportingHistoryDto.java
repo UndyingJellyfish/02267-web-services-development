@@ -3,6 +3,9 @@ package com.example.webservices.library.dataTransferObjects;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * contains the information required by services to fetch a transaction history for a user
+ */
 public class RequestReportingHistoryDto {
     UUID accountId;
     Date startDate;

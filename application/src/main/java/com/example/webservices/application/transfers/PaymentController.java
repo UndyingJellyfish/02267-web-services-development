@@ -20,7 +20,8 @@ public class PaymentController {
 
     /**
      * @author s164410
-     * */
+     * @param transaction {@inheritDoc}
+     */
     @PostMapping("/transfer")
     @ResponseStatus(HttpStatus.OK)
     public void TransferMoney(@RequestBody TransactionDto transaction){
@@ -37,7 +38,8 @@ public class PaymentController {
 
     /**
      * @author s164395
-     * */
+     * @param transactionId the id of the transaction to refund
+     */
     @PostMapping("/refund")
     @ResponseStatus(HttpStatus.OK)
     public void RefundTransaction(@RequestBody UUID transactionId){

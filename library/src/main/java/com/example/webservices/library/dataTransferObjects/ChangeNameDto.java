@@ -3,6 +3,9 @@ package com.example.webservices.library.dataTransferObjects;
 import java.io.Serializable;
 import java.util.UUID;
 
+/**
+ * contains the information required by services to initialize a name change for a user
+ */
 public class ChangeNameDto implements Serializable {
 
     private ChangeNameDto(){}

@@ -27,8 +27,7 @@ public class TransactionMQService extends RabbitMQBaseClass implements ITransact
     /**
      * @author s164398
      * @param id the id of the account
-     * @implNote Should not be exposed
-     * @return
+     * @return returns null because it should not be public
      */
     @Override
     public List<TransactionDto> getTransactions(UUID id) {

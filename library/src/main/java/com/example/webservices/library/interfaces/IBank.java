@@ -6,11 +6,11 @@ import java.math.BigDecimal;
 
 public interface IBank {
     /**
-     * @param debtor account who owes money to the {@param creditor}
-     * @param creditor account who is owed money by the {@param debtor}
+     * @param debtor account who owes money to the creditor
+     * @param creditor account who is owed money by the debtor
      * @param amount amount of money owed
      * @param description message describing the money transfer
-     * @throws BankException
+     * @throws BankException when the transfer could not be processed
      */
     void transferMoney(AccountDto debtor, AccountDto creditor, BigDecimal amount, String description) throws BankException;
 
@@ -23,7 +23,7 @@ public interface IBank {
     String addAccount(AccountDto accountDto, BigDecimal startingBalance) throws BankException;
 
     /**
-     * @param account
+     * @param account account to retire
      * @throws BankException when no such account exists
      */
     void retireAccount(AccountDto account) throws BankException;

@@ -26,7 +26,7 @@ public class TokenController {
 
     /**
      * @author s164424
-     * */
+     */
     @PostMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<UUID> requestTokens(@RequestBody RequestTokenDto dto) {
@@ -45,7 +45,7 @@ public class TokenController {
 
     /**
      * @author s164407
-     * */
+     */
     @GetMapping("/{customerId}")
     @ResponseStatus(HttpStatus.OK)
     public int getActiveTokenCount(@PathVariable UUID customerId) {
