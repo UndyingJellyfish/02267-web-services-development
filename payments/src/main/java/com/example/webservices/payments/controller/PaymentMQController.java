@@ -10,6 +10,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class PaymentMQController extends RabbitHelper {
 
@@ -35,9 +37,9 @@ public class PaymentMQController extends RabbitHelper {
         }
     }
     @RabbitListener(queues = QUEUE_PAYMENT_REFUND)
-    public ResponseObject refund(TransactionDto transactionDto){
+    public ResponseObject refund(UUID transactionId){
         try {
-            this.paymentService.refund(transactionDto.getTransactionId());
+            this.paymentService.refund(transactionId);
             return success();
         } catch (EntryNotFoundException e) {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);

@@ -37,12 +37,12 @@ public class TransactionMQService extends RabbitMQBaseClass implements ITransact
 
     /**
      * @author s164398
-     * @param tokenId the id of the token to refund
+     * @param transactionId the id of the token to refund
      * @return The id of the new transaction that refunds
      */
     @Override
-    public UUID refundTransaction(UUID tokenId) {
-        ResponseObject response = send(QUEUE_TRANSACTION_REFUND, tokenId);
+    public UUID refundTransaction(UUID transactionId) {
+        ResponseObject response = send(QUEUE_TRANSACTION_REFUND, transactionId);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
         }

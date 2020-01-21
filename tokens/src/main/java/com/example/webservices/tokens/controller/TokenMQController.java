@@ -32,8 +32,8 @@ public class TokenMQController extends RabbitHelper {
             return failure(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (InvalidTokenException e) {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return failure(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e){
+            return error(e);
         }
     }
 
@@ -45,7 +45,7 @@ public class TokenMQController extends RabbitHelper {
         } catch (EntryNotFoundException e) {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
-            return failure(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return error(e);
         }
     }
 
@@ -57,7 +57,7 @@ public class TokenMQController extends RabbitHelper {
         }catch (InvalidTokenException e) {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e){
-            return failure(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return error(e);
         }
     }
 
@@ -70,10 +70,8 @@ public class TokenMQController extends RabbitHelper {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (TokenQuantityException e) {
             return failure(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (ResponseStatusException e){
-            return failure(e.getMessage(), e.getStatus());
         } catch (Exception e){
-            return failure(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return error(e);
         }
     }
     @RabbitListener(queues = QUEUE_TOKENS_REQUEST)
@@ -85,22 +83,29 @@ public class TokenMQController extends RabbitHelper {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (TokenQuantityException e) {
             return failure(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }catch (ResponseStatusException e){
-            return failure(e.getMessage(), e.getStatus());
         } catch (Exception e){
-            return failure(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return error(e);
         }
     }
     @RabbitListener(queues = QUEUE_TOKENS_RETIRE)
     public ResponseObject retireTokens(UUID accountId) {
+        try {
             this.tokenManager.retireAll(accountId);
             return success();
+        } catch (Exception e){
+            return error(e);
+        }
 
     }
     @RabbitListener(queues = QUEUE_TOKENS_ACTIVE)
     public ResponseObject getActiveTokens(UUID accountId) {
-        int tokens = this.tokenManager.GetActiveTokens(accountId);
-        return success(tokens);
+        try {
+            int tokens = this.tokenManager.GetActiveTokens(accountId);
+            return success(tokens);
+        } catch (Exception e){
+            return error(e);
+        }
+
 
     }
 }

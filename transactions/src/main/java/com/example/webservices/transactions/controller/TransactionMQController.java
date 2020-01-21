@@ -31,6 +31,8 @@ public class TransactionMQController extends RabbitHelper {
         }
         catch (DuplicateEntryException e){
             return failure(e.getMessage(), HttpStatus.CONFLICT);
+        } catch (Exception e){
+            return error(e);
         }
     }
 
@@ -43,6 +45,8 @@ public class TransactionMQController extends RabbitHelper {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (DuplicateEntryException e) {
             return failure(e.getMessage(), HttpStatus.CONFLICT);
+        } catch (Exception e){
+            return error(e);
         }
     }
 
@@ -51,9 +55,8 @@ public class TransactionMQController extends RabbitHelper {
         try{
             List<TransactionDto> result = this.transactionService.getTransactions(transactionId);
             return success(result);
-        }
-        catch (Exception e){
-            return failure(e.getMessage());
+        } catch (Exception e){
+            return error(e);
         }
     }
 }
