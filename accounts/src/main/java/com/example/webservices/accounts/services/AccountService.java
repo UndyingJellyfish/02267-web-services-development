@@ -27,6 +27,11 @@ public class  AccountService implements IAccountService {
         this.tokenManager = tokenManager;
     }
 
+    /**
+     * @author s164424
+     * @param changeNameDto contains the information required to change the name of a user
+     * @throws EntryNotFoundException
+     */
     @Override
     public void changeName(ChangeNameDto changeNameDto) throws EntryNotFoundException {
         Account account = this.accountDatastore.getAccount(changeNameDto.getAccountId());
@@ -34,17 +39,35 @@ public class  AccountService implements IAccountService {
         this.accountDatastore.saveAccount(account);
     }
 
+    /**
+     * @author s164424
+     * @param account
+     * @return
+     * @throws DuplicateEntryException
+     */
     private AccountDto addAccount(Account account) throws DuplicateEntryException {
         account = this.accountDatastore.addAccount(account);
         return new AccountDto(account.getAccountId(), account.getName(), account.getBankAccountId(), account.getIdentifier(), account.getType());
     }
 
+    /**
+     * @author s164424
+     * @param signupDto contains the information required to sign up a new customer
+     * @return
+     * @throws DuplicateEntryException
+     */
     @Override
     public AccountDto addCustomer(SignupDto signupDto) throws DuplicateEntryException {
         Account account = new Customer(signupDto.getName(), signupDto.getIdentifier(), signupDto.getBankAccountId());
         return addAccount(account);
     }
 
+    /**
+     * @author s164424
+     * @param signupDto contains the information required to sign up a new customer
+     * @return
+     * @throws DuplicateEntryException
+     */
     @Override
     public AccountDto addMerchant(SignupDto signupDto) throws DuplicateEntryException {
         Account account = new Merchant(signupDto.getName(), signupDto.getIdentifier(), signupDto.getBankAccountId());
@@ -52,16 +75,33 @@ public class  AccountService implements IAccountService {
     }
 
 
+    /**
+     * @author s164424
+     * @param accountId id of the account to delete
+     * @throws EntryNotFoundException
+     */
     public void delete(UUID accountId) throws EntryNotFoundException {
         this.accountDatastore.deleteAccount(accountId);
         this.tokenManager.retireAll(accountId);
     }
 
+    /**
+     * @author s164424
+     * @param customerId id of the customer to search for
+     * @return
+     * @throws EntryNotFoundException
+     */
     @Override
     public AccountDto getCustomer(UUID customerId) throws EntryNotFoundException {
         return getAccount(customerId);
     }
 
+    /**
+     * @author s164424
+     * @param id id of the account to search for
+     * @return
+     * @throws EntryNotFoundException
+     */
     @Override
     public AccountDto getAccount(UUID id) throws EntryNotFoundException {
         Account acc = accountDatastore.getAccount(id);
@@ -69,6 +109,12 @@ public class  AccountService implements IAccountService {
         return new AccountDto(acc.getAccountId(), acc.getName(),acc.getBankAccountId(), acc.getIdentifier(), type);
     }
 
+    /**
+     * @author s164424
+     * @param merchantId id of the merchant to search for
+     * @return
+     * @throws EntryNotFoundException
+     */
     @Override
     public AccountDto getMerchant(UUID merchantId) throws EntryNotFoundException {
         return getAccount(merchantId);

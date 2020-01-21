@@ -26,11 +26,17 @@ public class UserServiceSteps extends AbstractSteps {
     public void tearDown(){
     }
 
+
+    /**
+    @author s164410
+     */
     @Given("The name of a customer")
     public void theNameOfACustomer() {
         customerName = "Edvard";
     }
-
+    /**
+    @author s164410
+     */
     @When("The customer signs up")
     public void theCustomerSignsUp() {
         SignupDto dto = new SignupDto(customerName, "12345678", bankAccountId);
@@ -39,7 +45,9 @@ public class UserServiceSteps extends AbstractSteps {
         assertNotNull(testContext().getResponse());
         customerId = getBody(UUID.class);
     }
-
+    /**
+    @author s164410
+     */
     @Then("The customer should be signed up")
     public void theCustomerShouldBeSignedUp() {
         assertNotNull(customerId);
@@ -49,12 +57,16 @@ public class UserServiceSteps extends AbstractSteps {
         assertEquals(customer.getName(),customerName);
         assertEquals(customer.getBankAccountId(),bankAccountId);
     }
-
+    /**
+    @author s164410
+     */
     @Given("The name of a merchant")
     public void theNameOfAMerchant() {
         merchantName = "Khajit";
     }
-
+    /**
+    @author s164410
+     */
     @When("The merchant signs up")
     public void theMerchantSignsUp() {
         SignupDto dto = new SignupDto(merchantName, "1234", bankAccountId);
@@ -62,7 +74,9 @@ public class UserServiceSteps extends AbstractSteps {
         executePost("/account/merchant");
         merchantId = getBody(UUID.class);
     }
-
+    /**
+    @author s164410
+     */
     @Then("The merchant should be signed up")
     public void theMerchantShouldBeSignedUp() {
         assertNotNull(merchantId);
@@ -72,7 +86,9 @@ public class UserServiceSteps extends AbstractSteps {
         assertEquals(merchant.getName(),merchantName);
         assertEquals(merchant.getBankAccountId(),bankAccountId);
     }
-
+    /**
+    @author s164434
+     */
     @Given("An account")
     public void anAccount() {
         SignupDto dto = new SignupDto("oldname", "123", UUID.randomUUID().toString());
@@ -80,7 +96,9 @@ public class UserServiceSteps extends AbstractSteps {
         executePost("/account/customer");
         customerId = getBody(UUID.class);
     }
-
+    /**
+    @author s164434
+    */
     @When("The user requests a name change")
     public void theUserRequestsANameChange() {
         ChangeNameDto changeNameDto = new ChangeNameDto(customerId, "newName");
@@ -91,19 +109,26 @@ public class UserServiceSteps extends AbstractSteps {
         AccountDto  customer = getBody(AccountDto.class);
         customerName = customer.getName();
     }
-
+    /**
+    @author s164434
+    */
     @Then("The name should be changed")
     public void theNameShouldBeChanged() {
         assertEquals("newName",customerName);
     }
 
+    /**
+    @author s164434
+    */
     @When("The user requests to be deleted")
     public void theUserRequestsToBeDeleted() {
 
         executeDelete("/account/"+customerId.toString());
 
     }
-
+    /**
+    @author s164434
+    */
     @Then("The user should be deleted, and unused tokens should be removed")
     public void theUserShouldBeDeletedAndUnusedTokensShouldBeRemoved() {
         executeGet("/tokens/" + customerId);
@@ -111,7 +136,9 @@ public class UserServiceSteps extends AbstractSteps {
         executeGet("/account/" + customerId);
         assertEquals(0, tokens);
     }
-
+    /**
+    @author s164434
+    */
     @And("A bank account number")
     public void aBankAccountNumber() {
         bankAccountId = UUID.randomUUID().toString();

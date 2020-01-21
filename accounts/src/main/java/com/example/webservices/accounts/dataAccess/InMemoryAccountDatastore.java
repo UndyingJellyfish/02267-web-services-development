@@ -11,22 +11,44 @@ import java.util.*;
 public class InMemoryAccountDatastore implements IAccountDatastore {
     private List<Account> accounts = new ArrayList<>();
 
-
+    /**
+     * @author s164434
+     * @param customerId
+     * @return
+     * @throws EntryNotFoundException
+     */
     @Override
     public Customer getCustomer(UUID customerId) throws EntryNotFoundException {
         return (Customer)accounts.stream().filter(a -> a instanceof Customer && a.getAccountId().equals(customerId)).findFirst().orElseThrow(EntryNotFoundException::new);
     }
 
+    /**
+     * @author s164434
+     * @param merchantId
+     * @return
+     * @throws EntryNotFoundException
+     */
     @Override
     public Merchant getMerchant(UUID merchantId) throws EntryNotFoundException {
         return (Merchant) accounts.stream().filter(a -> a instanceof Merchant && a.getAccountId().equals(merchantId)).findFirst().orElseThrow(EntryNotFoundException::new);
     }
 
+    /**
+     * @author s164434
+     * @param accountId
+     * @return
+     * @throws EntryNotFoundException
+     */
     @Override
     public Account getAccount(UUID accountId) throws EntryNotFoundException {
         return accounts.stream().filter(a -> a.getAccountId().equals(accountId)).findFirst().orElseThrow(EntryNotFoundException::new);
     }
 
+    /**
+     * @author s164434
+     * @param accountId
+     * @throws EntryNotFoundException
+     */
     @Override
     public void deleteAccount(UUID accountId) throws EntryNotFoundException {
             Account acc = this.getAccount(accountId);
@@ -34,11 +56,23 @@ public class InMemoryAccountDatastore implements IAccountDatastore {
 
     }
 
+    /**
+     * @author s164434
+     * @param account
+     * @return
+     */
     @Override
     public Account saveAccount(Account account) {
         return account;
     }
 
+    /**
+     * @author s164434
+     * @param account
+     * @param <T>
+     * @return
+     * @throws DuplicateEntryException
+     */
     @Override
     public <T extends Account> T addAccount(T account) throws DuplicateEntryException {
         if(accounts.stream().anyMatch(a -> a.getAccountId().equals(account.getAccountId())

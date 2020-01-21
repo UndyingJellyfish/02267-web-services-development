@@ -29,6 +29,10 @@ public class AccountDatastoreTest {
     private Merchant merchant = new Merchant("name","123");
 
 
+    /**
+     * @author s164434
+     * @throws DuplicateEntryException
+     */
     @Before
     public void setup() throws DuplicateEntryException {
         this.store = jpaAccountDatastore;
@@ -36,6 +40,9 @@ public class AccountDatastoreTest {
         store.addAccount(merchant);
     }
 
+    /**
+     * @author s164434
+     */
     @Test
     public void getCustomer() {
         try {
@@ -46,6 +53,9 @@ public class AccountDatastoreTest {
         }
     }
 
+    /**
+     * @author s164434
+     */
     @Test
     public void getCustomerException() {
         try {
@@ -55,6 +65,9 @@ public class AccountDatastoreTest {
         }
     }
 
+    /**
+     * @author s164434
+     */
     @Test
     public void getMerchant() {
         try {
@@ -65,6 +78,9 @@ public class AccountDatastoreTest {
         }
     }
 
+    /**
+     * @author s164434
+     */
     @Test
     public void getMerchantException() {
         try {
@@ -74,6 +90,9 @@ public class AccountDatastoreTest {
         }
     }
 
+    /**
+     * @author s164424
+     */
     @Test
     public void getAccount() {
         try {
@@ -84,6 +103,9 @@ public class AccountDatastoreTest {
         }
     }
 
+    /**
+     * @author s164424
+     */
     @Test
     public void getAccountException() {
         try {
@@ -93,6 +115,10 @@ public class AccountDatastoreTest {
         }
     }
 
+    /**
+     * @author s164424
+     * @throws EntryNotFoundException
+     */
     @Test
     public void deleteAccount() throws EntryNotFoundException {
         Account acc = store.getAccount(customer.getAccountId());
@@ -106,6 +132,11 @@ public class AccountDatastoreTest {
 
     }
 
+    /**
+     * @author s164424
+     * @throws DuplicateEntryException
+     * @throws EntryNotFoundException
+     */
     @Test
     public void addAccount() throws DuplicateEntryException, EntryNotFoundException {
         Account acc = new Customer("new","321");

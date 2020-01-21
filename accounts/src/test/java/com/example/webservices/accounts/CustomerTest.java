@@ -8,6 +8,9 @@ import static org.junit.Assert.*;
 
 public class CustomerTest {
 
+    /**
+     * @author s164398
+     */
     @Test
     public void constructorWithName(){
         // Arrange
@@ -19,6 +22,9 @@ public class CustomerTest {
         Assert.assertEquals(name, cust.getName());
     }
 
+    /**
+     * @author s164398
+     */
     @Test
     public void constructorNullName(){
         // Arrange
@@ -34,6 +40,10 @@ public class CustomerTest {
             // Expected
         }
     }
+
+    /**
+     * @author s164398
+     */
     @Test
     public void constructorNullCpr(){
         // Arrange
@@ -50,6 +60,9 @@ public class CustomerTest {
         }
     }
 
+    /**
+     * @author s164398
+     */
     @Test
     public void constructorEmptyName(){
         // Arrange
@@ -65,6 +78,9 @@ public class CustomerTest {
         }
     }
 
+    /**
+     * @author s164398
+     */
     @Test
     public void constructorEmptyCpr(){
         // Arrange

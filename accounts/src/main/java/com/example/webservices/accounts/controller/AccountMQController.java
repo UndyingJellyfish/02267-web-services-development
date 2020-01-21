@@ -29,7 +29,11 @@ public class AccountMQController extends RabbitHelper {
         this.accountService = accountService;
     }
 
-
+    /**
+     * @author s164398
+     * @param jsonString
+     * @return
+     */
     @RabbitListener(queues = QUEUE_ACCOUNT_CHANGENAME)
     public ResponseObject changeName(ChangeNameDto jsonString) {
         try {
@@ -42,6 +46,12 @@ public class AccountMQController extends RabbitHelper {
         }
 
     }
+
+    /**
+     * @author s164398
+     * @param accountId
+     * @return
+     */
     @RabbitListener(queues = QUEUE_ACCOUNT_DELETE)
     public ResponseObject deleteAccount(UUID accountId) {
         try {
@@ -54,6 +64,11 @@ public class AccountMQController extends RabbitHelper {
 
     }
 
+    /**
+     * @author s164398
+     * @param accountId
+     * @return
+     */
     @RabbitListener(queues = QUEUE_ACCOUNT_GET)
     public ResponseObject getAccount(UUID accountId) {
         try {
@@ -67,6 +82,11 @@ public class AccountMQController extends RabbitHelper {
 
     }
 
+    /**
+     * @author s164398
+     * @param jsonString
+     * @return
+     */
     @RabbitListener(queues = QUEUE_CUSTOMER_SIGNUP)
     public ResponseObject customerSignup(SignupDto jsonString) {
         try {
@@ -80,6 +100,12 @@ public class AccountMQController extends RabbitHelper {
         }
 
     }
+
+    /**
+     * @author s164398
+     * @param jsonString
+     * @return
+     */
     @RabbitListener(queues = QUEUE_MERCHANT_SIGNUP)
     public ResponseObject merchantSignup(SignupDto jsonString) {
         try {
