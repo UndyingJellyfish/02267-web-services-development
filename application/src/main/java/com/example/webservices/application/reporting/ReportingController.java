@@ -20,6 +20,9 @@ public class ReportingController {
         this.reportingService = reportingService;
     }
 
+    /**
+     * @author s164434
+     * */
     @GetMapping("/{accountId}")
     @ResponseStatus(HttpStatus.OK)
     public List<TransactionDto> getHistory(@PathVariable UUID accountId){
@@ -30,6 +33,9 @@ public class ReportingController {
         }
     }
 
+    /**
+     * @author s164395
+     * */
     @GetMapping("/{accountId}/{date}")
     @ResponseStatus(HttpStatus.OK)
     public List<TransactionDto> getHistorySince(@PathVariable UUID accountId, @PathVariable Date date){

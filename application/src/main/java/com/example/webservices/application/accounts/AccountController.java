@@ -24,6 +24,9 @@ public class AccountController {
         this.accountService = accountService;
     }
 
+    /**
+     * @author s164434
+     * */
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
     public void changeName(@RequestBody ChangeNameDto newName){
@@ -34,6 +37,9 @@ public class AccountController {
         }
     }
 
+    /**
+     * @author s164424
+     * */
     @PostMapping("/merchant")
     @ResponseStatus(HttpStatus.OK)
     public UUID signupMerchant(@RequestBody SignupDto merchant){
@@ -46,6 +52,9 @@ public class AccountController {
         }
     }
 
+    /**
+     * @author s164407
+     * */
     @GetMapping(value={"/{accountId}"})
     @ResponseStatus(HttpStatus.OK)
     public AccountDto getAccount(@PathVariable UUID accountId){
@@ -57,6 +66,9 @@ public class AccountController {
 
     }
 
+    /**
+     * @author s164398
+     * */
     @PostMapping("/customer")
     @ResponseStatus(HttpStatus.OK)
     public UUID signupCustomer(@RequestBody SignupDto customer){
@@ -70,6 +82,9 @@ public class AccountController {
         }
     }
 
+    /**
+     * @author s164410
+     * */
     @DeleteMapping(value={"/{accountId}"})
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable UUID accountId){
