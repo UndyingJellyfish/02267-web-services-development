@@ -1,0 +1,85 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IAccountDatastore</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.webservices.accounts.interfaces</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IAccountDatastore (com.example.webservices.accounts.interfaces)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">IAccountDatastore$MockitoMock$1275213359</td>
+  </tr>
+  <tr>
+    <td class="name">IAccountDatastore$MockitoMock$1275213359$auxiliary$2PyvJ07e</td>
+  </tr>
+  <tr>
+    <td class="name">IAccountDatastore$MockitoMock$1275213359$auxiliary$lVrZq0Ey</td>
+  </tr>
+  <tr>
+    <td class="name">IAccountDatastore$MockitoMock$902229433</td>
+  </tr>
+  <tr>
+    <td class="name">IAccountDatastore$MockitoMock$902229433$auxiliary$CoZIlxEi</td>
+  </tr>
+  <tr>
+    <td class="name">IAccountDatastore$MockitoMock$902229433$auxiliary$tZcdA6Tp</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.webservices.accounts.interfaces;
+<i>2</i>&nbsp;import com.example.webservices.accounts.models.Account;
+<i>3</i>&nbsp;import com.example.webservices.accounts.models.Customer;
+<i>4</i>&nbsp;import com.example.webservices.accounts.models.Merchant;
+<i>5</i>&nbsp;import com.example.webservices.library.exceptions.DuplicateEntryException;
+<i>6</i>&nbsp;import com.example.webservices.library.exceptions.EntryNotFoundException;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import java.util.UUID;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;public interface IAccountDatastore {
+<i>11</i>&nbsp;    Customer getCustomer(UUID customerId) throws EntryNotFoundException;
+<i>12</i>&nbsp;    &lt;T extends Account&gt; T addAccount(T account) throws DuplicateEntryException;
+<i>13</i>&nbsp;    Merchant getMerchant(UUID merchantId) throws EntryNotFoundException;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    Account getAccount(UUID accountId) throws EntryNotFoundException;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    void deleteAccount(UUID accountId) throws EntryNotFoundException;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    Account saveAccount(Account account);
+<i>20</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>

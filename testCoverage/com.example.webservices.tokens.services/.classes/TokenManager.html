@@ -1,0 +1,157 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TokenManager</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.webservices.tokens.services</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TokenManager (com.example.webservices.tokens.services)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TokenManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (7/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95.5%
+  </span>
+  <span class="absValue">
+    (21/ 22)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.webservices.tokens.services;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.example.webservices.library.dataTransferObjects.AccountDto;
+<i>4</i>&nbsp;import com.example.webservices.library.dataTransferObjects.TokenDto;
+<i>5</i>&nbsp;import com.example.webservices.library.exceptions.*;
+<i>6</i>&nbsp;import com.example.webservices.library.interfaces.IAccountService;
+<i>7</i>&nbsp;import com.example.webservices.library.interfaces.ITokenManager;
+<i>8</i>&nbsp;import com.example.webservices.tokens.interfaces.ITokenDatastore;
+<i>9</i>&nbsp;import com.example.webservices.tokens.models.Token;
+<i>10</i>&nbsp;import org.springframework.stereotype.Service;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import java.util.List;
+<i>13</i>&nbsp;import java.util.UUID;
+<i>14</i>&nbsp;import java.util.stream.Collectors;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;@Service
+<i>17</i>&nbsp;public class TokenManager implements ITokenManager {
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    private ITokenDatastore datastore;
+<i>20</i>&nbsp;    private IAccountService accountService;
+<i>21</i>&nbsp;
+<b class="fc"><i>22</i>&nbsp;    public TokenManager(ITokenDatastore datastore, IAccountService accountService){</b>
+<b class="fc"><i>23</i>&nbsp;        this.datastore = datastore;</b>
+<b class="fc"><i>24</i>&nbsp;        this.accountService = accountService;</b>
+<b class="fc"><i>25</i>&nbsp;    }</b>
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    public List&lt;UUID&gt; RequestTokens(UUID customerId, int quantity) throws TokenQuantityException, EntryNotFoundException {
+<b class="fc"><i>28</i>&nbsp;        AccountDto customer = accountService.getCustomer(customerId);</b>
+<i>29</i>&nbsp;
+<b class="fc"><i>30</i>&nbsp;        if(quantity &gt; 5  || quantity &lt; 1){</b>
+<b class="fc"><i>31</i>&nbsp;            throw new TokenQuantityException(&quot;Quantity must be [1,5]&quot;);</b>
+<i>32</i>&nbsp;        }
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;        // Probably move check for any active tokens to other method.
+<b class="fc"><i>35</i>&nbsp;        if(datastore.getTokens(customer.getAccountId()).stream().filter(t -&gt; !t.isUsed()).count() &gt; 1){</b>
+<b class="fc"><i>36</i>&nbsp;            throw new TokenQuantityException();</b>
+<i>37</i>&nbsp;        }
+<i>38</i>&nbsp;
+<b class="fc"><i>39</i>&nbsp;        return this.datastore.generateAndAssignTokens(customer.getAccountId(), quantity).stream().map(Token::getTokenId).collect(Collectors.toList());</b>
+<i>40</i>&nbsp;    }
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    public List&lt;TokenDto&gt; GetTokens(UUID customerId) {
+<b class="fc"><i>43</i>&nbsp;        return this.datastore.getTokens(customerId).stream().map(t -&gt; new TokenDto(t.getTokenId(), t.isUsed())).collect(Collectors.toList());</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    public void UseToken(UUID tokenId) throws TokenException {
+<b class="fc"><i>47</i>&nbsp;        Token token = this.datastore.getToken(tokenId);</b>
+<b class="fc"><i>48</i>&nbsp;        if(token.isUsed()){</b>
+<b class="fc"><i>49</i>&nbsp;            throw new UsedTokenException();</b>
+<i>50</i>&nbsp;        }
+<b class="fc"><i>51</i>&nbsp;        this.datastore.useToken(token);</b>
+<b class="fc"><i>52</i>&nbsp;    }</b>
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    @Override
+<i>55</i>&nbsp;    public UUID RequestToken(UUID customerId) throws EntryNotFoundException, TokenQuantityException {
+<b class="fc"><i>56</i>&nbsp;        return RequestTokens(customerId, 1).get(0);</b>
+<i>57</i>&nbsp;    }
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    @Override
+<i>60</i>&nbsp;    public TokenDto GetToken(UUID tokenId) throws InvalidTokenException {
+<b class="fc"><i>61</i>&nbsp;        Token token = this.datastore.getToken(tokenId);</b>
+<b class="fc"><i>62</i>&nbsp;        return new TokenDto(token.getTokenId(), token.isUsed(), token.getCustomerId());</b>
+<i>63</i>&nbsp;    }
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    @Override
+<i>66</i>&nbsp;    public void retireAll(UUID customerId) {
+<b class="fc"><i>67</i>&nbsp;        this.datastore.getTokens(customerId).forEach(t -&gt; t.setUsed(true));</b>
+<b class="fc"><i>68</i>&nbsp;    }</b>
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    @Override
+<i>71</i>&nbsp;    public int GetActiveTokens(UUID customerId) {
+<b class="nc"><i>72</i>&nbsp;        return (int) this.GetTokens(customerId).stream().filter(t -&gt; !t.isUsed()).count();</b>
+<i>73</i>&nbsp;    }
+<i>74</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>

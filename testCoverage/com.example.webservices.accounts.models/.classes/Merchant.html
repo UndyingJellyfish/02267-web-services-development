@@ -1,0 +1,141 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Merchant</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.webservices.accounts.models</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Merchant (com.example.webservices.accounts.models)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Merchant</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93.3%
+  </span>
+  <span class="absValue">
+    (14/ 15)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Merchant$HibernateProxy$jzhXiAoM</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93.3%
+  </span>
+  <span class="absValue">
+    (14/ 15)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.webservices.accounts.models;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.example.webservices.library.dataTransferObjects.AccountType;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import javax.persistence.DiscriminatorValue;
+<i>6</i>&nbsp;import javax.persistence.Entity;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;@Entity
+<i>9</i>&nbsp;@DiscriminatorValue(&quot;Merchant&quot;)
+<i>10</i>&nbsp;public class Merchant extends Account {
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;    private String cvr;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    public Merchant() {
+<b class="fc"><i>15</i>&nbsp;        super();</b>
+<b class="fc"><i>16</i>&nbsp;    }</b>
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    public Merchant(String name, String cvr) {
+<b class="fc"><i>19</i>&nbsp;        this(name, cvr, null);</b>
+<b class="fc"><i>20</i>&nbsp;    }</b>
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    public Merchant(String name, String cvr, String bankAccountId) {
+<b class="fc"><i>23</i>&nbsp;        super(name);</b>
+<b class="fc"><i>24</i>&nbsp;        setCvr(cvr);</b>
+<b class="fc"><i>25</i>&nbsp;        setBankAccountId(bankAccountId);</b>
+<b class="fc"><i>26</i>&nbsp;    }</b>
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    public String getCvr() {
+<b class="fc"><i>29</i>&nbsp;        return cvr;</b>
+<i>30</i>&nbsp;    }
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    private void setCvr(String cvr) {
+<b class="fc"><i>33</i>&nbsp;        if (cvr == null || cvr.isEmpty()) {</b>
+<b class="nc"><i>34</i>&nbsp;            throw new IllegalArgumentException(&quot;provided cvr did not suffice cvr format &quot;);</b>
+<i>35</i>&nbsp;        }
+<b class="fc"><i>36</i>&nbsp;        this.cvr = cvr;</b>
+<b class="fc"><i>37</i>&nbsp;    }</b>
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    @Override
+<i>40</i>&nbsp;    public String getIdentifier() {
+<b class="fc"><i>41</i>&nbsp;        return this.getCvr();</b>
+<i>42</i>&nbsp;    }
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    @Override
+<i>45</i>&nbsp;    public AccountType getType() {
+<b class="fc"><i>46</i>&nbsp;        return AccountType.MERCHANT;</b>
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>

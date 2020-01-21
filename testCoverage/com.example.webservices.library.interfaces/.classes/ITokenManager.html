@@ -1,0 +1,124 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ITokenManager</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.webservices.library.interfaces</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ITokenManager (com.example.webservices.library.interfaces)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">ITokenManager$MockitoMock$1739350284</td>
+  </tr>
+  <tr>
+    <td class="name">ITokenManager$MockitoMock$1739350284$auxiliary$GkQJgcYf</td>
+  </tr>
+  <tr>
+    <td class="name">ITokenManager$MockitoMock$1739350284$auxiliary$iVgXZTwf</td>
+  </tr>
+  <tr>
+    <td class="name">ITokenManager$MockitoMock$1807578547</td>
+  </tr>
+  <tr>
+    <td class="name">ITokenManager$MockitoMock$1807578547$auxiliary$bO4lVSQI</td>
+  </tr>
+  <tr>
+    <td class="name">ITokenManager$MockitoMock$1807578547$auxiliary$PFelU9L9</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.webservices.library.interfaces;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.example.webservices.library.dataTransferObjects.TokenDto;
+<i>4</i>&nbsp;import com.example.webservices.library.exceptions.EntryNotFoundException;
+<i>5</i>&nbsp;import com.example.webservices.library.exceptions.InvalidTokenException;
+<i>6</i>&nbsp;import com.example.webservices.library.exceptions.TokenException;
+<i>7</i>&nbsp;import com.example.webservices.library.exceptions.TokenQuantityException;
+<i>8</i>&nbsp;import com.fasterxml.jackson.core.JsonProcessingException;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import java.util.Collection;
+<i>11</i>&nbsp;import java.util.List;
+<i>12</i>&nbsp;import java.util.UUID;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;public interface ITokenManager {
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    /**
+<i>17</i>&nbsp;     * @param customer which customer to give tokens
+<i>18</i>&nbsp;     * @param quantity amount of tokens to give
+<i>19</i>&nbsp;     * @return a list of the token id&#39;s given to the {@param customer}
+<i>20</i>&nbsp;     * @throws TokenQuantityException thrown when the customer cannot request anymore tokens
+<i>21</i>&nbsp;     * @throws EntryNotFoundException thrown when the customer does not exist
+<i>22</i>&nbsp;     */
+<i>23</i>&nbsp;    List&lt;UUID&gt; RequestTokens(UUID customer, int quantity) throws TokenQuantityException, EntryNotFoundException;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    /**
+<i>26</i>&nbsp;     * @param customerId which account to search for
+<i>27</i>&nbsp;     * @return list of all tokens owned by a customer
+<i>28</i>&nbsp;     * @throws EntryNotFoundException thrown when the customer does not exist
+<i>29</i>&nbsp;     */
+<i>30</i>&nbsp;    List&lt;TokenDto&gt; GetTokens(UUID customerId) throws EntryNotFoundException;
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    /**
+<i>33</i>&nbsp;     * @param tokenId id of the token to use
+<i>34</i>&nbsp;     * @throws TokenException when the token cannot be used, either because it is already spent or it does not exist
+<i>35</i>&nbsp;     */
+<i>36</i>&nbsp;    void UseToken(UUID tokenId) throws TokenException;
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    /**
+<i>39</i>&nbsp;     * @param customerId id of the customer to search for
+<i>40</i>&nbsp;     * @return a single new token given to the customer
+<i>41</i>&nbsp;     * @throws EntryNotFoundException thrown when the customer does not exist
+<i>42</i>&nbsp;     * @throws TokenQuantityException thrown when the customer cannot request anymore tokens
+<i>43</i>&nbsp;     */
+<i>44</i>&nbsp;    UUID RequestToken(UUID customerId) throws EntryNotFoundException, TokenQuantityException;
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    /**
+<i>47</i>&nbsp;     * @param tokenId id to search for
+<i>48</i>&nbsp;     * @return gets the token with the given id
+<i>49</i>&nbsp;     * @throws InvalidTokenException thrown when the token does not exist
+<i>50</i>&nbsp;     */
+<i>51</i>&nbsp;    TokenDto GetToken(UUID tokenId) throws InvalidTokenException;
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    /**
+<i>54</i>&nbsp;     * @param accountId account for whom to retire all tokens
+<i>55</i>&nbsp;     */
+<i>56</i>&nbsp;    void retireAll(UUID accountId);
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    int GetActiveTokens(UUID customerId);
+<i>59</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>

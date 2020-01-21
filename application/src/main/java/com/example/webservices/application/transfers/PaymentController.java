@@ -12,16 +12,15 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/payment")
 public class PaymentController {
-
     private final IPaymentService paymentService;
-
 
     public PaymentController(IPaymentService paymentService){
         this.paymentService = paymentService;
     }
 
-
-
+    /**
+     * @author s164410
+     * */
     @PostMapping("/transfer")
     @ResponseStatus(HttpStatus.OK)
     public void TransferMoney(@RequestBody TransactionDto transaction){
@@ -35,6 +34,10 @@ public class PaymentController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
+
+    /**
+     * @author s164395
+     * */
     @PostMapping("/refund")
     @ResponseStatus(HttpStatus.OK)
     public void RefundTransaction(@RequestBody UUID transactionId){
@@ -49,7 +52,4 @@ public class PaymentController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
-
-
-
 }

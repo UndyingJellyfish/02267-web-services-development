@@ -20,12 +20,13 @@ public class TokenController {
 
     private final ITokenManager tokenManager;
 
-
     public TokenController(ITokenManager tokenManager){
         this.tokenManager = tokenManager;
     }
 
-
+    /**
+     * @author s164424
+     * */
     @PostMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<UUID> requestTokens(@RequestBody RequestTokenDto dto) {
@@ -35,11 +36,16 @@ public class TokenController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
         }catch(TokenQuantityException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+        }  catch(ResponseStatusException e) {
+            throw e;
         } catch(Exception e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
         }
     }
 
+    /**
+     * @author s164407
+     * */
     @GetMapping("/{customerId}")
     @ResponseStatus(HttpStatus.OK)
     public int getActiveTokenCount(@PathVariable UUID customerId) {

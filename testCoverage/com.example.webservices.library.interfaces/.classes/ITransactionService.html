@@ -1,0 +1,104 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ITransactionService</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.webservices.library.interfaces</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ITransactionService (com.example.webservices.library.interfaces)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">ITransactionService$MockitoMock$1244153549</td>
+  </tr>
+  <tr>
+    <td class="name">ITransactionService$MockitoMock$1244153549$auxiliary$RPbLpIme</td>
+  </tr>
+  <tr>
+    <td class="name">ITransactionService$MockitoMock$1244153549$auxiliary$woaTsXGd</td>
+  </tr>
+  <tr>
+    <td class="name">ITransactionService$MockitoMock$1739075117</td>
+  </tr>
+  <tr>
+    <td class="name">ITransactionService$MockitoMock$1739075117$auxiliary$UbaHMZAN</td>
+  </tr>
+  <tr>
+    <td class="name">ITransactionService$MockitoMock$1739075117$auxiliary$UzFkWaLU</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.webservices.library.interfaces;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.example.webservices.library.dataTransferObjects.TransactionDto;
+<i>4</i>&nbsp;import com.example.webservices.library.exceptions.DuplicateEntryException;
+<i>5</i>&nbsp;import com.example.webservices.library.exceptions.EntryNotFoundException;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import java.util.List;
+<i>8</i>&nbsp;import java.util.UUID;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;public interface ITransactionService {
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;    /**
+<i>13</i>&nbsp;     * @param id the id of the account
+<i>14</i>&nbsp;     * @return yields the transactions stored associated to the account id given
+<i>15</i>&nbsp;     */
+<i>16</i>&nbsp;    List&lt;TransactionDto&gt; getTransactions(UUID id);
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    /**
+<i>19</i>&nbsp;     * @param tokenId the id of the token to refund
+<i>20</i>&nbsp;     * @return refunds the money transferred when that token was used and returns the ID of the new refund transaction
+<i>21</i>&nbsp;     * @throws EntryNotFoundException when no transaction or token is found
+<i>22</i>&nbsp;     * @throws DuplicateEntryException when the refund has already taken place
+<i>23</i>&nbsp;     */
+<i>24</i>&nbsp;    UUID refundTransaction(UUID tokenId) throws EntryNotFoundException, DuplicateEntryException;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    /**
+<i>27</i>&nbsp;     * @param transaction persists a new transaction
+<i>28</i>&nbsp;     * @return the id of the newly added transaction
+<i>29</i>&nbsp;     * @throws DuplicateEntryException thrown when the transaction already exists
+<i>30</i>&nbsp;     */
+<i>31</i>&nbsp;    UUID addTransaction(TransactionDto transaction) throws DuplicateEntryException;
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    /**
+<i>34</i>&nbsp;     * @param tokenId the token to search for
+<i>35</i>&nbsp;     * @return gets the transaction related to a token
+<i>36</i>&nbsp;     * @throws EntryNotFoundException thrown when the token has not been used or does not exist
+<i>37</i>&nbsp;     */
+<i>38</i>&nbsp;    TransactionDto getTransaction(UUID tokenId) throws EntryNotFoundException;
+<i>39</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>

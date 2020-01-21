@@ -1,0 +1,159 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: PaymentsApplication</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.webservices.payments</a> ]
+</div>
+
+<h1>Coverage Summary for Class: PaymentsApplication (com.example.webservices.payments)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PaymentsApplication</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 13)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.webservices.payments;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import dtu.ws.fastmoney.BankService;
+<i>4</i>&nbsp;import dtu.ws.fastmoney.BankServiceService;
+<i>5</i>&nbsp;import org.springframework.amqp.core.Binding;
+<i>6</i>&nbsp;import org.springframework.amqp.core.BindingBuilder;
+<i>7</i>&nbsp;import org.springframework.amqp.core.DirectExchange;
+<i>8</i>&nbsp;import org.springframework.amqp.core.Queue;
+<i>9</i>&nbsp;import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+<i>10</i>&nbsp;import org.springframework.amqp.rabbit.core.RabbitTemplate;
+<i>11</i>&nbsp;import org.springframework.beans.factory.annotation.Qualifier;
+<i>12</i>&nbsp;import org.springframework.boot.SpringApplication;
+<i>13</i>&nbsp;import org.springframework.boot.autoconfigure.SpringBootApplication;
+<i>14</i>&nbsp;import org.springframework.context.annotation.Bean;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;import static com.example.webservices.library.RabbitHelper.QUEUE_PAYMENT_REFUND;
+<i>17</i>&nbsp;import static com.example.webservices.library.RabbitHelper.QUEUE_PAYMENT_TRANSFER;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;@SpringBootApplication(scanBasePackages = &quot;com.example.webservices&quot;)
+<b class="nc"><i>20</i>&nbsp;public class PaymentsApplication {</b>
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    public static void main(String[] args) {
+<b class="nc"><i>23</i>&nbsp;        SpringApplication.run(PaymentsApplication.class, args);</b>
+<b class="nc"><i>24</i>&nbsp;    }</b>
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    @Bean
+<i>27</i>&nbsp;    public BankService getBankService(){
+<b class="nc"><i>28</i>&nbsp;        return new BankServiceService().getBankServicePort();</b>
+<i>29</i>&nbsp;    }
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    @Bean
+<i>32</i>&nbsp;    public Queue queueTransfer() {
+<b class="nc"><i>33</i>&nbsp;        return new Queue(QUEUE_PAYMENT_TRANSFER, true);</b>
+<i>34</i>&nbsp;    }
+<i>35</i>&nbsp;    @Bean
+<i>36</i>&nbsp;    public Queue queueRefund() {
+<b class="nc"><i>37</i>&nbsp;        return new Queue(QUEUE_PAYMENT_REFUND, true);</b>
+<i>38</i>&nbsp;    }
+<i>39</i>&nbsp;    @Bean
+<i>40</i>&nbsp;    @Qualifier(&quot;payments&quot;)
+<i>41</i>&nbsp;    public DirectExchange getPaymentsExchange(){
+<b class="nc"><i>42</i>&nbsp;        return new DirectExchange(&quot;payments&quot;);</b>
+<i>43</i>&nbsp;    }
+<i>44</i>&nbsp;    @Bean
+<i>45</i>&nbsp;    public Binding bindingTransfer(@Qualifier(&quot;payments&quot;) DirectExchange exchange, Queue queueTransfer) {
+<b class="nc"><i>46</i>&nbsp;        return BindingBuilder.bind(queueTransfer).to(exchange).with(queueTransfer.getName());</b>
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;    @Bean
+<i>49</i>&nbsp;    public Binding bindingRefund(@Qualifier(&quot;payments&quot;) DirectExchange exchange, Queue queueRefund) {
+<b class="nc"><i>50</i>&nbsp;        return BindingBuilder.bind(queueRefund).to(exchange).with(queueRefund.getName());</b>
+<i>51</i>&nbsp;    }
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    @Bean
+<i>54</i>&nbsp;    @Qualifier(&quot;accounts&quot;)
+<i>55</i>&nbsp;    public DirectExchange getAccountsExchange(){
+<b class="nc"><i>56</i>&nbsp;        return new DirectExchange(&quot;accounts&quot;);</b>
+<i>57</i>&nbsp;    }
+<i>58</i>&nbsp;    @Bean
+<i>59</i>&nbsp;    @Qualifier(&quot;tokens&quot;)
+<i>60</i>&nbsp;    public DirectExchange getTokensExchange(){
+<b class="nc"><i>61</i>&nbsp;        return new DirectExchange(&quot;tokens&quot;);</b>
+<i>62</i>&nbsp;    }
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;    @Bean
+<i>65</i>&nbsp;    @Qualifier(&quot;reporting&quot;)
+<i>66</i>&nbsp;    public DirectExchange getReportingExchange(){
+<b class="nc"><i>67</i>&nbsp;        return new DirectExchange(&quot;reporting&quot;);</b>
+<i>68</i>&nbsp;    }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    @Bean
+<i>71</i>&nbsp;    @Qualifier(&quot;transactions&quot;)
+<i>72</i>&nbsp;    public DirectExchange getTransactionsExchange(){
+<b class="nc"><i>73</i>&nbsp;        return new DirectExchange(&quot;transactions&quot;);</b>
+<i>74</i>&nbsp;    }
+<i>75</i>&nbsp;
+<i>76</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>

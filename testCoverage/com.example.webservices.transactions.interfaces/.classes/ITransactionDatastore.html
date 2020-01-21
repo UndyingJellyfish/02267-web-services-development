@@ -1,0 +1,80 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ITransactionDatastore</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.webservices.transactions.interfaces</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ITransactionDatastore (com.example.webservices.transactions.interfaces)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">ITransactionDatastore$MockitoMock$811109123</td>
+  </tr>
+  <tr>
+    <td class="name">ITransactionDatastore$MockitoMock$811109123$auxiliary$dpeZGsuU</td>
+  </tr>
+  <tr>
+    <td class="name">ITransactionDatastore$MockitoMock$811109123$auxiliary$yyzkoJoB</td>
+  </tr>
+  <tr>
+    <td class="name">ITransactionDatastore$MockitoMock$944523098</td>
+  </tr>
+  <tr>
+    <td class="name">ITransactionDatastore$MockitoMock$944523098$auxiliary$jO8Jjg8m</td>
+  </tr>
+  <tr>
+    <td class="name">ITransactionDatastore$MockitoMock$944523098$auxiliary$yr7rlveD</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.webservices.transactions.interfaces;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.example.webservices.library.exceptions.DuplicateEntryException;
+<i>4</i>&nbsp;import com.example.webservices.library.exceptions.EntryNotFoundException;
+<i>5</i>&nbsp;import com.example.webservices.transactions.models.Transaction;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import java.util.List;
+<i>8</i>&nbsp;import java.util.UUID;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;public interface ITransactionDatastore {
+<i>11</i>&nbsp;    Transaction getTransaction(UUID transactionId) throws EntryNotFoundException;
+<i>12</i>&nbsp;    UUID addTransaction(Transaction transaction) throws DuplicateEntryException;
+<i>13</i>&nbsp;    List&lt;Transaction&gt; getTransactions(UUID accountId);
+<i>14</i>&nbsp;    Transaction saveTransaction(Transaction transaction);
+<i>15</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>

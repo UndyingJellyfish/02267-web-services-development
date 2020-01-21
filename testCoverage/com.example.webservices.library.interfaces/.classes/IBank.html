@@ -1,0 +1,102 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IBank</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.webservices.library.interfaces</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IBank (com.example.webservices.library.interfaces)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">IBank$MockitoMock$198939116</td>
+  </tr>
+  <tr>
+    <td class="name">IBank$MockitoMock$198939116$auxiliary$KaukFske</td>
+  </tr>
+  <tr>
+    <td class="name">IBank$MockitoMock$198939116$auxiliary$rmBm8EyO</td>
+  </tr>
+  <tr>
+    <td class="name">IBank$MockitoMock$752223511</td>
+  </tr>
+  <tr>
+    <td class="name">IBank$MockitoMock$752223511$auxiliary$2e3ZvsQ4</td>
+  </tr>
+  <tr>
+    <td class="name">IBank$MockitoMock$752223511$auxiliary$dpE6Q2Oh</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.webservices.library.interfaces;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.example.webservices.library.dataTransferObjects.AccountDto;
+<i>4</i>&nbsp;import com.example.webservices.library.exceptions.BankException;
+<i>5</i>&nbsp;import java.math.BigDecimal;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;public interface IBank {
+<i>8</i>&nbsp;    /**
+<i>9</i>&nbsp;     * @param debtor account who owes money to the {@param creditor}
+<i>10</i>&nbsp;     * @param creditor account who is owed money by the {@param debtor}
+<i>11</i>&nbsp;     * @param amount amount of money owed
+<i>12</i>&nbsp;     * @param description message describing the money transfer
+<i>13</i>&nbsp;     * @throws BankException
+<i>14</i>&nbsp;     */
+<i>15</i>&nbsp;    void transferMoney(AccountDto debtor, AccountDto creditor, BigDecimal amount, String description) throws BankException;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    /**
+<i>18</i>&nbsp;     * @param accountDto the account creation information
+<i>19</i>&nbsp;     * @param startingBalance positive integer denoting the money the account has
+<i>20</i>&nbsp;     * @return creates a new account in the bank and returns the ID of that new user
+<i>21</i>&nbsp;     * @throws BankException when the balance is illegal or the CPR is duplicated
+<i>22</i>&nbsp;     */
+<i>23</i>&nbsp;    String addAccount(AccountDto accountDto, BigDecimal startingBalance) throws BankException;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    /**
+<i>26</i>&nbsp;     * @param account
+<i>27</i>&nbsp;     * @throws BankException when no such account exists
+<i>28</i>&nbsp;     */
+<i>29</i>&nbsp;    void retireAccount(AccountDto account) throws BankException;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    /**
+<i>32</i>&nbsp;     * @param account account to search for
+<i>33</i>&nbsp;     * @return the balance of the given account
+<i>34</i>&nbsp;     * @throws BankException when no such account exists
+<i>35</i>&nbsp;     */
+<i>36</i>&nbsp;    BigDecimal getBalance(AccountDto account) throws BankException;
+<i>37</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>

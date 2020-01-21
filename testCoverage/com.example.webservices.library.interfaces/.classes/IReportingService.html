@@ -1,0 +1,72 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IReportingService</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.webservices.library.interfaces</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IReportingService (com.example.webservices.library.interfaces)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">IReportingService</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.webservices.library.interfaces;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.example.webservices.library.dataTransferObjects.TransactionDto;
+<i>4</i>&nbsp;import com.example.webservices.library.dataTransferObjects.RequestReportingHistoryDto;
+<i>5</i>&nbsp;import com.example.webservices.library.exceptions.EntryNotFoundException;
+<i>6</i>&nbsp;import com.fasterxml.jackson.core.JsonProcessingException;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import java.util.List;
+<i>9</i>&nbsp;import java.util.UUID;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;public interface IReportingService {
+<i>12</i>&nbsp;    /**
+<i>13</i>&nbsp;     * @param id account of the user to search for
+<i>14</i>&nbsp;     * @return the full list of all transactions involving an account
+<i>15</i>&nbsp;     * @throws EntryNotFoundException thrown when the customer does not exist
+<i>16</i>&nbsp;     */
+<i>17</i>&nbsp;    List&lt;TransactionDto&gt; getTransactionHistory(UUID id) throws EntryNotFoundException;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    /**
+<i>20</i>&nbsp;     * @param dto data object containing the id of the user and the search date
+<i>21</i>&nbsp;     * @return a list of transactions for the account since the specified date
+<i>22</i>&nbsp;     * @throws EntryNotFoundException thrown when the customer does not exist
+<i>23</i>&nbsp;     */
+<i>24</i>&nbsp;    List&lt;TransactionDto&gt; getTransactionHistorySince(RequestReportingHistoryDto dto) throws EntryNotFoundException;
+<i>25</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>

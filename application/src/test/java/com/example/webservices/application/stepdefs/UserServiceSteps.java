@@ -22,11 +22,6 @@ public class UserServiceSteps extends AbstractSteps {
     private UUID merchantId;
     private String bankAccountId;
 
-    @After
-    public void tearDown(){
-    }
-
-
     /**
     @author s164410
      */
@@ -34,6 +29,7 @@ public class UserServiceSteps extends AbstractSteps {
     public void theNameOfACustomer() {
         customerName = "Edvard";
     }
+
     /**
     @author s164410
      */
@@ -45,6 +41,7 @@ public class UserServiceSteps extends AbstractSteps {
         assertNotNull(testContext().getResponse());
         customerId = getBody(UUID.class);
     }
+
     /**
     @author s164410
      */
@@ -57,6 +54,7 @@ public class UserServiceSteps extends AbstractSteps {
         assertEquals(customer.getName(),customerName);
         assertEquals(customer.getBankAccountId(),bankAccountId);
     }
+
     /**
     @author s164410
      */
@@ -64,6 +62,15 @@ public class UserServiceSteps extends AbstractSteps {
     public void theNameOfAMerchant() {
         merchantName = "Khajit";
     }
+
+    /**
+     @author s164410
+     */
+    @And("A bank account number")
+    public void aBankAccountNumber() {
+        bankAccountId = UUID.randomUUID().toString();
+    }
+
     /**
     @author s164410
      */
@@ -86,6 +93,7 @@ public class UserServiceSteps extends AbstractSteps {
         assertEquals(merchant.getName(),merchantName);
         assertEquals(merchant.getBankAccountId(),bankAccountId);
     }
+
     /**
     @author s164434
      */
@@ -96,6 +104,7 @@ public class UserServiceSteps extends AbstractSteps {
         executePost("/account/customer");
         customerId = getBody(UUID.class);
     }
+
     /**
     @author s164434
     */
@@ -109,6 +118,7 @@ public class UserServiceSteps extends AbstractSteps {
         AccountDto  customer = getBody(AccountDto.class);
         customerName = customer.getName();
     }
+
     /**
     @author s164434
     */
@@ -122,10 +132,9 @@ public class UserServiceSteps extends AbstractSteps {
     */
     @When("The user requests to be deleted")
     public void theUserRequestsToBeDeleted() {
-
         executeDelete("/account/"+customerId.toString());
-
     }
+
     /**
     @author s164434
     */
@@ -135,12 +144,5 @@ public class UserServiceSteps extends AbstractSteps {
         int tokens = getBody(int.class);
         executeGet("/account/" + customerId);
         assertEquals(0, tokens);
-    }
-    /**
-    @author s164434
-    */
-    @And("A bank account number")
-    public void aBankAccountNumber() {
-        bankAccountId = UUID.randomUUID().toString();
     }
 }

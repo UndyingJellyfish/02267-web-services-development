@@ -1,0 +1,73 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IPaymentService</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.webservices.library.interfaces</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IPaymentService (com.example.webservices.library.interfaces)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">IPaymentService</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.webservices.library.interfaces;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.example.webservices.library.dataTransferObjects.TransactionDto;
+<i>4</i>&nbsp;import com.example.webservices.library.exceptions.*;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import java.util.UUID;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;public interface IPaymentService {
+<i>9</i>&nbsp;    /**
+<i>10</i>&nbsp;     * @param transactionDto data object used to transfer money from one account to another using a token
+<i>11</i>&nbsp;     * @return gives the transfer details
+<i>12</i>&nbsp;     * @throws EntryNotFoundException thrown when either of the accounts (debtor or creditor) do not exist
+<i>13</i>&nbsp;     * @throws TokenException thrown when the token specified in {@param transactionDto} is invalid
+<i>14</i>&nbsp;     * @throws BankException thrown when the bank is unavailable for transfers at the current time
+<i>15</i>&nbsp;     * @throws InvalidTransferAmountException thrown when the amount of money specified is not allowed
+<i>16</i>&nbsp;     * @throws DuplicateEntryException thrown when the transaction already exists
+<i>17</i>&nbsp;     */
+<i>18</i>&nbsp;    TransactionDto transfer(TransactionDto transactionDto) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException, DuplicateEntryException;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    /**
+<i>21</i>&nbsp;     * @param transactionId the transaction to refund
+<i>22</i>&nbsp;     * @throws EntryNotFoundException thrown when the transaction does not exist
+<i>23</i>&nbsp;     * @throws DuplicateEntryException thrown when the transaction has already been refunded
+<i>24</i>&nbsp;     */
+<i>25</i>&nbsp;    void refund(UUID transactionId) throws EntryNotFoundException, DuplicateEntryException;
+<i>26</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>

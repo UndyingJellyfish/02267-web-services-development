@@ -1,0 +1,166 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TransactionService</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.webservices.transactions.services</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TransactionService (com.example.webservices.transactions.services)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TransactionService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (40/ 40)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.webservices.transactions.services;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.example.webservices.library.dataTransferObjects.TransactionDto;
+<i>4</i>&nbsp;import com.example.webservices.library.exceptions.DuplicateEntryException;
+<i>5</i>&nbsp;import com.example.webservices.library.exceptions.EntryNotFoundException;
+<i>6</i>&nbsp;import com.example.webservices.library.interfaces.ITransactionService;
+<i>7</i>&nbsp;import com.example.webservices.transactions.interfaces.ITransactionDatastore;
+<i>8</i>&nbsp;import com.example.webservices.transactions.models.Transaction;
+<i>9</i>&nbsp;import org.springframework.stereotype.Service;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import java.util.List;
+<i>12</i>&nbsp;import java.util.UUID;
+<i>13</i>&nbsp;import java.util.stream.Collectors;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;@Service
+<i>16</i>&nbsp;public class TransactionService implements ITransactionService {
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    private final ITransactionDatastore transactionDatastore;
+<i>20</i>&nbsp;
+<b class="fc"><i>21</i>&nbsp;    public TransactionService(ITransactionDatastore transactionDatastore) {</b>
+<b class="fc"><i>22</i>&nbsp;        this.transactionDatastore = transactionDatastore;</b>
+<b class="fc"><i>23</i>&nbsp;    }</b>
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    @Override
+<i>27</i>&nbsp;    public List&lt;TransactionDto&gt; getTransactions(UUID id) {
+<i>28</i>&nbsp;
+<b class="fc"><i>29</i>&nbsp;        return this.transactionDatastore.getTransactions(id)</b>
+<b class="fc"><i>30</i>&nbsp;                .stream()</b>
+<b class="fc"><i>31</i>&nbsp;                .map(t -&gt;</b>
+<b class="fc"><i>32</i>&nbsp;                        new TransactionDto(</b>
+<b class="fc"><i>33</i>&nbsp;                                t.getTransactionId(),</b>
+<b class="fc"><i>34</i>&nbsp;                                t.getTokenId(),</b>
+<b class="fc"><i>35</i>&nbsp;                                t.getCreditorId(),</b>
+<b class="fc"><i>36</i>&nbsp;                                t.getDebtorId(),</b>
+<b class="fc"><i>37</i>&nbsp;                                t.getAmount(),</b>
+<b class="fc"><i>38</i>&nbsp;                                t.getDescription(),</b>
+<b class="fc"><i>39</i>&nbsp;                                t.isRefund(),</b>
+<b class="fc"><i>40</i>&nbsp;                                t.getTransactionDate()</b>
+<i>41</i>&nbsp;                        )
+<i>42</i>&nbsp;                    )
+<b class="fc"><i>43</i>&nbsp;                .collect(Collectors.toList());</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    @Override
+<i>47</i>&nbsp;    public UUID addTransaction(TransactionDto dto) throws DuplicateEntryException {
+<b class="fc"><i>48</i>&nbsp;        Transaction transaction = new Transaction(</b>
+<b class="fc"><i>49</i>&nbsp;                dto.getCreditorId(),</b>
+<b class="fc"><i>50</i>&nbsp;                dto.getDebtorId(),</b>
+<b class="fc"><i>51</i>&nbsp;                dto.getAmount(),</b>
+<b class="fc"><i>52</i>&nbsp;                dto.getTokenId(),</b>
+<b class="fc"><i>53</i>&nbsp;                dto.getDescription(),</b>
+<b class="fc"><i>54</i>&nbsp;                dto.isRefund(),</b>
+<b class="fc"><i>55</i>&nbsp;                dto.getTransactionDate());</b>
+<i>56</i>&nbsp;
+<b class="fc"><i>57</i>&nbsp;        return transactionDatastore.addTransaction(transaction);</b>
+<i>58</i>&nbsp;    }
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;    @Override
+<i>61</i>&nbsp;    public UUID refundTransaction(UUID transactionId) throws EntryNotFoundException, DuplicateEntryException {
+<b class="fc"><i>62</i>&nbsp;        TransactionDto dto = getTransaction(transactionId);</b>
+<i>63</i>&nbsp;        // Swap debtor creditor
+<b class="fc"><i>64</i>&nbsp;        UUID temp = dto.getCreditorId();</b>
+<b class="fc"><i>65</i>&nbsp;        dto.setCreditorId(dto.getDebtorId());</b>
+<b class="fc"><i>66</i>&nbsp;        dto.setDebtorId(temp);</b>
+<b class="fc"><i>67</i>&nbsp;        return addTransaction(dto);</b>
+<i>68</i>&nbsp;    }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    @Override
+<i>71</i>&nbsp;    public TransactionDto getTransaction(UUID transactionId) throws EntryNotFoundException {
+<b class="fc"><i>72</i>&nbsp;        Transaction transaction = transactionDatastore.getTransaction(transactionId);</b>
+<b class="fc"><i>73</i>&nbsp;        return new TransactionDto(</b>
+<b class="fc"><i>74</i>&nbsp;                transaction.getTransactionId(),</b>
+<b class="fc"><i>75</i>&nbsp;                transaction.getTokenId(),</b>
+<b class="fc"><i>76</i>&nbsp;                transaction.getCreditorId(),</b>
+<b class="fc"><i>77</i>&nbsp;                transaction.getDebtorId(),</b>
+<b class="fc"><i>78</i>&nbsp;                transaction.getAmount(),</b>
+<b class="fc"><i>79</i>&nbsp;                transaction.getDescription(),</b>
+<b class="fc"><i>80</i>&nbsp;                transaction.isRefund(),</b>
+<b class="fc"><i>81</i>&nbsp;                transaction.getTransactionDate());</b>
+<i>82</i>&nbsp;    }
+<i>83</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>

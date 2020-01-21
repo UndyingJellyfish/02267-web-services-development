@@ -1,0 +1,142 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TransactionMQController</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.webservices.transactions.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TransactionMQController (com.example.webservices.transactions.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TransactionMQController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 17)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.webservices.transactions.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.example.webservices.library.RabbitHelper;
+<i>4</i>&nbsp;import com.example.webservices.library.dataTransferObjects.ResponseObject;
+<i>5</i>&nbsp;import com.example.webservices.library.dataTransferObjects.TransactionDto;
+<i>6</i>&nbsp;import com.example.webservices.library.exceptions.DuplicateEntryException;
+<i>7</i>&nbsp;import com.example.webservices.library.exceptions.EntryNotFoundException;
+<i>8</i>&nbsp;import com.example.webservices.library.interfaces.ITransactionService;
+<i>9</i>&nbsp;import org.springframework.amqp.rabbit.annotation.RabbitListener;
+<i>10</i>&nbsp;import org.springframework.http.HttpStatus;
+<i>11</i>&nbsp;import org.springframework.stereotype.Service;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;import java.util.List;
+<i>14</i>&nbsp;import java.util.UUID;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;@Service
+<i>17</i>&nbsp;public class TransactionMQController extends RabbitHelper {
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    private final ITransactionService transactionService;
+<i>20</i>&nbsp;
+<b class="nc"><i>21</i>&nbsp;    public TransactionMQController(ITransactionService transactionService){</b>
+<b class="nc"><i>22</i>&nbsp;        this.transactionService = transactionService;</b>
+<b class="nc"><i>23</i>&nbsp;    }</b>
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    @RabbitListener(queues = QUEUE_TRANSACTION_ADD)
+<i>26</i>&nbsp;    public ResponseObject addTransaction(TransactionDto transactionDto) {
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;        try{
+<b class="nc"><i>29</i>&nbsp;            UUID transactionId = this.transactionService.addTransaction(transactionDto);</b>
+<b class="nc"><i>30</i>&nbsp;            return success(transactionId);</b>
+<i>31</i>&nbsp;        }
+<b class="nc"><i>32</i>&nbsp;        catch (DuplicateEntryException e){</b>
+<b class="nc"><i>33</i>&nbsp;            return failure(e.getMessage(), HttpStatus.CONFLICT);</b>
+<i>34</i>&nbsp;        }
+<i>35</i>&nbsp;    }
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    @RabbitListener(queues = QUEUE_TRANSACTION_REFUND)
+<i>38</i>&nbsp;    public ResponseObject refund(UUID transactionId) {
+<i>39</i>&nbsp;        try{
+<b class="nc"><i>40</i>&nbsp;            UUID newTransaction = this.transactionService.refundTransaction(transactionId);</b>
+<b class="nc"><i>41</i>&nbsp;            return success(newTransaction);</b>
+<b class="nc"><i>42</i>&nbsp;        } catch (EntryNotFoundException e) {</b>
+<b class="nc"><i>43</i>&nbsp;            return failure(e.getMessage(), HttpStatus.NOT_FOUND);</b>
+<b class="nc"><i>44</i>&nbsp;        } catch (DuplicateEntryException e) {</b>
+<b class="nc"><i>45</i>&nbsp;            return failure(e.getMessage(), HttpStatus.CONFLICT);</b>
+<i>46</i>&nbsp;        }
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    @RabbitListener(queues = QUEUE_TRANSACTION_GET)
+<i>50</i>&nbsp;    public ResponseObject getTransaction(UUID transactionId) {
+<i>51</i>&nbsp;        try{
+<b class="nc"><i>52</i>&nbsp;            List&lt;TransactionDto&gt; result = this.transactionService.getTransactions(transactionId);</b>
+<b class="nc"><i>53</i>&nbsp;            return success(result);</b>
+<i>54</i>&nbsp;        }
+<b class="nc"><i>55</i>&nbsp;        catch (Exception e){</b>
+<b class="nc"><i>56</i>&nbsp;            return failure(e.getMessage());</b>
+<i>57</i>&nbsp;        }
+<i>58</i>&nbsp;    }
+<i>59</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>
