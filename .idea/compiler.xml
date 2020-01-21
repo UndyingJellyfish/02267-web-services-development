@@ -7,18 +7,18 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="webservices-tokens" />
-        <module name="webservices-application" />
-        <module name="accounts" />
-        <module name="tokens" />
-        <module name="payments" />
         <module name="webservices-accounts" />
+        <module name="accounts" />
+        <module name="webservices-application" />
+        <module name="payments" />
+        <module name="webservices-transactions" />
+        <module name="transactions" />
         <module name="library" />
-        <module name="project-src" />
         <module name="webservices-library" />
         <module name="webservices-payments" />
-        <module name="webservices-transactions" />
+        <module name="tokens" />
         <module name="application" />
-        <module name="transactions" />
+        <module name="project-src" />
       </profile>
     </annotationProcessing>
   </component>

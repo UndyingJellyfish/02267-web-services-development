@@ -11,14 +11,15 @@ public class Merchant extends Account {
 
     private String cvr;
 
-    public Merchant(){
+    public Merchant() {
         super();
     }
+
     public Merchant(String name, String cvr) {
         this(name, cvr, null);
     }
 
-    public Merchant(String name, String cvr, String bankAccountId){
+    public Merchant(String name, String cvr, String bankAccountId) {
         super(name);
         setCvr(cvr);
         setBankAccountId(bankAccountId);
@@ -29,18 +30,16 @@ public class Merchant extends Account {
     }
 
     private void setCvr(String cvr) {
-        // TODO: Enforce stricter cvr format
         if (cvr == null || cvr.isEmpty()) {
-        //if (cvr.length() == 8 ) {
             throw new IllegalArgumentException("provided cvr did not suffice cvr format ");
         }
         this.cvr = cvr;
     }
 
-     @Override
-     public String getIdentifier() {
-         return this.getCvr();
-     }
+    @Override
+    public String getIdentifier() {
+        return this.getCvr();
+    }
 
     @Override
     public AccountType getType() {

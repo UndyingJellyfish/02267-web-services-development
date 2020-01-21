@@ -1,4 +1,3 @@
-//TODO: fix this kthx plz
 package com.example.webservices.application.stepdefs;
 
 import com.example.webservices.application.stepdefs.json.Account;
@@ -37,6 +36,9 @@ public class TransactionHistorySteps extends AbstractSteps {
 
     private final String bankBaseRestUrl = "http://fastmoney-00.compute.dtu.dk";
 
+    /**
+     * @author s164410
+     */
     @After
     public void tearDown(){
         if(merchantBankId != null && !merchantBankId.equals("")){
@@ -47,6 +49,9 @@ public class TransactionHistorySteps extends AbstractSteps {
         }
     }
 
+    /**
+     * @author s164395
+     */
     private String putUserInBank(String first, String last, BigDecimal balance) {
         String id = null;
         try {
@@ -67,6 +72,9 @@ public class TransactionHistorySteps extends AbstractSteps {
         return id;
     }
 
+    /**
+     * @author s164395
+     */
     @Given("A Customer with a transaction history")
     public void aCustomerWithATransactionHistory() {
         merchantBankId = putUserInBank("Alice", "Alice", new BigDecimal("10000"));
@@ -112,6 +120,9 @@ public class TransactionHistorySteps extends AbstractSteps {
         this.transactions = Arrays.asList(getBody(TransactionDto[].class));
     }
 
+    /**
+     * @author s164410
+     */
     @Then("The Customer receives the transaction history")
     public void theCustomerReceivesTheTransactionHistory() {
         assertNotNull(transactions);
@@ -134,6 +145,9 @@ public class TransactionHistorySteps extends AbstractSteps {
         }
     }
 
+    /*
+    * @author s164395
+    */
     @Given("A Merchant with a transaction history")
     public void aMerchantWithATransactionHistory() {
         merchantBankId = putUserInBank("Alice", "Alice", new BigDecimal("10000"));
@@ -173,12 +187,18 @@ public class TransactionHistorySteps extends AbstractSteps {
         }
     }
 
+    /**
+     * @author s164410
+     */
     @When("The Merchant requests the transaction history")
     public void theMerchantRequestsTheTransactionHistory() {
         executeGet("/reporting/{accountId}", new HashMap<String, String>(){{put("accountId", merchantId.toString());}});
         this.transactions = Arrays.asList(getBody(TransactionDto[].class));
     }
 
+    /**
+     * @author s164395
+     */
     @Then("The Merchant receives the transaction history without customer names")
     public void theMerchantReceivesTheTransactionHistoryWithoutCustomerNames() {
         assertNotNull(transactions);

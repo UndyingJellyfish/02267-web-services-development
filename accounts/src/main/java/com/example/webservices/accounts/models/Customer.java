@@ -29,9 +29,7 @@ public class Customer extends Account {
     }
 
     private void setCpr(String cpr) {
-        // TODO: Enforce stricter cpr format
         if (cpr == null || cpr.isEmpty()) {
-        //if (cpr.length() == 10 || cpr.contains("-") && cpr.length() == 11) {
             throw new IllegalArgumentException("Provided cpr did not suffice cpr format ");
         }
 
