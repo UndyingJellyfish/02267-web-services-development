@@ -114,6 +114,9 @@ public class TransactionHistorySteps extends AbstractSteps {
         }
     }
 
+    /**
+     * @author s164395
+     */
     @When("The Customer requests the transaction history")
     public void theCustomerRequestsTheTransactionHistory() {
         executeGet("/reporting/{accountId}", new HashMap<String, String>(){{put("accountId", customerId.toString());}});
@@ -121,7 +124,7 @@ public class TransactionHistorySteps extends AbstractSteps {
     }
 
     /**
-     * @author s164410
+     * @author s164395
      */
     @Then("The Customer receives the transaction history")
     public void theCustomerReceivesTheTransactionHistory() {
@@ -146,7 +149,7 @@ public class TransactionHistorySteps extends AbstractSteps {
     }
 
     /*
-    * @author s164395
+    * @author s164410
     */
     @Given("A Merchant with a transaction history")
     public void aMerchantWithATransactionHistory() {
@@ -197,7 +200,7 @@ public class TransactionHistorySteps extends AbstractSteps {
     }
 
     /**
-     * @author s164395
+     * @author s164410
      */
     @Then("The Merchant receives the transaction history without customer names")
     public void theMerchantReceivesTheTransactionHistoryWithoutCustomerNames() {
