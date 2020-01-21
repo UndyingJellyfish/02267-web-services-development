@@ -40,7 +40,6 @@ public class AccountMQController extends RabbitHelper {
             //ChangeNameDto changeNameDto = fromJson(jsonString, ChangeNameDto.class);
             this.accountService.changeName(jsonString);
             return success();
-
         } catch (EntryNotFoundException e) {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
         }

@@ -7,7 +7,9 @@ import com.example.webservices.library.exceptions.*;
 import com.example.webservices.library.interfaces.ITokenManager;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;  
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +32,7 @@ public class TokenMQController extends RabbitHelper {
             return failure(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (InvalidTokenException e) {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (TokenException e) {
+        } catch (Exception e) {
             return failure(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -40,8 +42,10 @@ public class TokenMQController extends RabbitHelper {
         try {
             List<TokenDto> tokens = this.tokenManager.GetTokens(accountId);
             return success(tokens);
-        }catch (EntryNotFoundException e) {
+        } catch (EntryNotFoundException e) {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            return failure(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -52,6 +56,8 @@ public class TokenMQController extends RabbitHelper {
             return success(tokens);
         }catch (InvalidTokenException e) {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            return failure(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -64,6 +70,10 @@ public class TokenMQController extends RabbitHelper {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (TokenQuantityException e) {
             return failure(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (ResponseStatusException e){
+            return failure(e.getMessage(), e.getStatus());
+        } catch (Exception e){
+            return failure(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @RabbitListener(queues = QUEUE_TOKENS_REQUEST)
@@ -75,6 +85,10 @@ public class TokenMQController extends RabbitHelper {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (TokenQuantityException e) {
             return failure(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }catch (ResponseStatusException e){
+            return failure(e.getMessage(), e.getStatus());
+        } catch (Exception e){
+            return failure(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @RabbitListener(queues = QUEUE_TOKENS_RETIRE)
