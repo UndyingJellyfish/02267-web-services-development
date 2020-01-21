@@ -35,35 +35,17 @@ public class PaymentService implements IPaymentService {
         if(!isGreaterThanZero(amount)){
             throw new InvalidTransferAmountException();
         }
-        TokenDto token;
-        try {
-            token = tokenManager.GetToken(tokenId);
-        }
-        catch (ResponseStatusException e){
-            throw new InvalidTokenException();
-        }
-        AccountDto merchant;
-        AccountDto customer;
-        try {
-             merchant = accountService.getMerchant(merchantId);
-             customer = accountService.getCustomer(token.getCustomerId());
-        } catch (ResponseStatusException e){
-            throw new EntryNotFoundException();
-        }
-        try {
-            tokenManager.UseToken(tokenId);
-        } catch (ResponseStatusException e){
-            throw new UsedTokenException();
-        }
+        TokenDto token = tokenManager.GetToken(tokenId);
+
+        AccountDto merchant = accountService.getMerchant(merchantId);
+        AccountDto customer = accountService.getCustomer(token.getCustomerId());
+        tokenManager.UseToken(tokenId);
+
         bank.transferMoney(customer, merchant, amount, description);
 
         TransactionDto transaction = new TransactionDto(tokenId, merchant.getAccountId(), customer.getAccountId(), amount, description, isRefund, new Date());
 
-        try {
-            transactionService.addTransaction(transaction);
-        } catch (ResponseStatusException e){
-            throw new RuntimeException();
-        }
+        transactionService.addTransaction(transaction);
 
         return transaction;
     }
