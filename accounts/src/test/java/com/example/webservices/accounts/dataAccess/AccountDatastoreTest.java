@@ -31,13 +31,16 @@ public class AccountDatastoreTest {
 
     /**
      * @author s164434
-     * @throws DuplicateEntryException
      */
     @Before
-    public void setup() throws DuplicateEntryException {
+    public void setup() {
         this.store = jpaAccountDatastore;
-        store.addAccount(customer);
-        store.addAccount(merchant);
+        try {
+            store.addAccount(customer);
+            store.addAccount(merchant);
+        } catch (DuplicateEntryException e) {
+            fail(e.getMessage());
+        }
     }
 
     /**
@@ -117,38 +120,49 @@ public class AccountDatastoreTest {
 
     /**
      * @author s164424
-     * @throws EntryNotFoundException
      */
     @Test
-    public void deleteAccount() throws EntryNotFoundException {
-        Account acc = store.getAccount(customer.getAccountId());
+    public void deleteAccount() {
+        Account acc = null;
+        try {
+            acc = store.getAccount(customer.getAccountId());
+        } catch (EntryNotFoundException e) {
+            fail(e.getMessage());
+        }
         assertNotNull(acc);
-        store.deleteAccount(acc.getAccountId());
+        try {
+            store.deleteAccount(acc.getAccountId());
+        } catch (EntryNotFoundException e) {
+            fail(e.getMessage());
+        }
         try{
             store.getAccount(acc.getAccountId());
             fail();
-        }catch(EntryNotFoundException ignored){        }
-
-
+        }catch(EntryNotFoundException ignored){
+            // expected behaviour, it is deleted, cannot be fetched
+        }
     }
 
     /**
      * @author s164424
-     * @throws DuplicateEntryException
-     * @throws EntryNotFoundException
+     * @throws DuplicateEntryException when the account already exists
      */
     @Test
-    public void addAccount() throws DuplicateEntryException, EntryNotFoundException {
+    public void addAccount() throws DuplicateEntryException {
         Account acc = new Customer("new","321");
         try{
             store.getAccount(acc.getAccountId());
             fail();
-        }catch(EntryNotFoundException ignored){}
+        } catch(EntryNotFoundException ignored){}
 
         store.addAccount(acc);
 
-        Account acc2 = store.getAccount(acc.getAccountId());
+        Account acc2 = null;
+        try {
+            acc2 = store.getAccount(acc.getAccountId());
+        } catch (EntryNotFoundException e) {
+            fail(e.getMessage());
+        }
         assertEquals(acc,acc2);
-
     }
 }

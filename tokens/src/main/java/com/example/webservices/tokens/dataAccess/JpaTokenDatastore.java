@@ -42,8 +42,7 @@ public class JpaTokenDatastore implements ITokenDatastore {
     }
 
     @Override
-    public Token useToken(Token token) {
-        token.setUsed(true);
+    public Token saveToken(Token token) {
         return this.tokenRepository.save(token);
     }
 }

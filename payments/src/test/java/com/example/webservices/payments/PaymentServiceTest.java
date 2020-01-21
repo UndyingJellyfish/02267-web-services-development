@@ -108,7 +108,7 @@ public class PaymentServiceTest {
     @Test
     public void refundAmount() {
         try {
-            transactionService.refundTransaction(UUID.randomUUID());
+            paymentService.refund(UUID.randomUUID());
             verify(transactionService,times(1)).refundTransaction(any());
         } catch (EntryNotFoundException | DuplicateEntryException e) {
             fail();
@@ -119,7 +119,7 @@ public class PaymentServiceTest {
     public void refundAmountException() throws EntryNotFoundException, DuplicateEntryException {
         Mockito.doThrow(EntryNotFoundException.class).when(transactionService).refundTransaction(any());
         try {
-            transactionService.refundTransaction(UUID.randomUUID());
+            paymentService.refund(UUID.randomUUID());
             fail();
         } catch (EntryNotFoundException e) {
             verify(transactionService,times(1)).refundTransaction(any());

@@ -61,6 +61,9 @@ public abstract class RabbitHelper {
 
     /**
      * @author s164424
+     * @param <T> type of the response object
+     * @param response the response to package
+     * @return a generic response
      */
     protected <T> ResponseObject success(T response) {
         return new ResponseObject(HttpStatus.OK, toJson(response));
@@ -68,6 +71,7 @@ public abstract class RabbitHelper {
 
     /**
      * @author s164424
+     * @return a basic response object
      */
     protected ResponseObject success() {
         return success("success");
@@ -76,6 +80,8 @@ public abstract class RabbitHelper {
 
     /**
      * @author s164424
+     * @param e cause of the internal server error
+     * @return a response object with an error
      */
     protected ResponseObject error(Exception e) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -87,12 +93,18 @@ public abstract class RabbitHelper {
 
     /**
      * @author s164424
+     * @param <T> type of a generic response object
+     * @param response return body
+     * @param status status to wrap into the response
+     * @return a response object with an error
      */
     protected <T> ResponseObject failure(T response, HttpStatus status) {
         return new ResponseObject(status, toJson(response));
     }
     /**
      * @author s164424
+     * @param <T> type of a generic response object
+     * @param response a response object with an error
      */
     protected <T> ResponseObject failure(T response) {
         return failure(response, HttpStatus.BAD_REQUEST);

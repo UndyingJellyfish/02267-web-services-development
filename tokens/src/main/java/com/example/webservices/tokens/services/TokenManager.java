@@ -52,7 +52,8 @@ public class TokenManager implements ITokenManager {
         if(token.isUsed()){
             throw new UsedTokenException();
         }
-        this.datastore.useToken(token);
+        token.setUsed(true);
+        this.datastore.saveToken(token);
     }
 
     /** @author s164398*/
