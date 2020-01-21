@@ -7,6 +7,9 @@ import org.junit.Test;
 
 public class MerchantTest {
 
+    /**
+     * @author s164395
+     */
     @Test
     public void constructorWithName(){
         // Arrange
@@ -17,6 +20,9 @@ public class MerchantTest {
         Assert.assertEquals(name, merch.getName());
     }
 
+    /**
+     * @author s164395
+     */
     @Test
     public void constructorNullName(){
         // Arrange
@@ -31,6 +37,9 @@ public class MerchantTest {
         }
     }
 
+    /**
+     * @author s164395
+     */
     @Test
     public void constructorEmptyName(){
         // Arrange

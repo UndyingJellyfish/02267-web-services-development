@@ -31,6 +31,9 @@ public class AccountServiceTest {
     private SignupDto signupDto = new SignupDto("customer","123", "bankId");
 
 
+    /**
+     * @author s164410
+     */
     @Before
     public void setup(){
         this.tokenManager = mock(ITokenManager.class);
@@ -38,6 +41,10 @@ public class AccountServiceTest {
         this.service = new AccountService(store, tokenManager);
     }
 
+    /**
+     * @author s164410
+     * @throws EntryNotFoundException
+     */
     @Test
     public void changeName() throws EntryNotFoundException {
         String newName = "newName";
@@ -48,6 +55,10 @@ public class AccountServiceTest {
     }
 
 
+    /**
+     * @author s164410
+     * @throws DuplicateEntryException
+     */
     @Test
     public void addCustomer() throws DuplicateEntryException {
         when(store.addAccount(any())).thenReturn(customer);
@@ -55,6 +66,10 @@ public class AccountServiceTest {
         verify(store, times(1)).addAccount(argThat(acc -> acc.getIdentifier().equals(signupDto.getIdentifier())));
     }
 
+    /**
+     * @author s164410
+     * @throws DuplicateEntryException
+     */
     @Test
     public void addMerchant() throws DuplicateEntryException  {
         when(store.addAccount(any())).thenReturn(merchant);
@@ -63,6 +78,9 @@ public class AccountServiceTest {
 
     }
 
+    /**
+     * @author s164410
+     */
     @Test
     public void delete() {
         try {
@@ -74,6 +92,10 @@ public class AccountServiceTest {
         }
     }
 
+    /**
+     * @author s164410
+     * @throws EntryNotFoundException
+     */
     @Test
     public void getCustomer() throws EntryNotFoundException {
         when(store.getAccount(customerId)).thenReturn(customer);
@@ -83,6 +105,10 @@ public class AccountServiceTest {
     }
 
 
+    /**
+     * @author s164410
+     * @throws EntryNotFoundException
+     */
     @Test
     public void getMerchant() throws EntryNotFoundException {
         when(store.getAccount(merchantId)).thenReturn(merchant);
@@ -90,6 +116,9 @@ public class AccountServiceTest {
         assertEquals(merchantId, dto.getAccountId());
     }
 
+    /**
+     * @author s164410
+     */
     @Test
     public void getAccountException()  {
         try {
