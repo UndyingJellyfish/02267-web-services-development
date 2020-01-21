@@ -94,7 +94,7 @@ public class AccountServiceTest {
 
     /**
      * @author s164410
-     * @throws EntryNotFoundException
+     * @throws EntryNotFoundException thrown if the customer cannot be found, usually due to lack of setup
      */
     @Test
     public void getCustomer() throws EntryNotFoundException {
@@ -107,7 +107,7 @@ public class AccountServiceTest {
 
     /**
      * @author s164410
-     * @throws EntryNotFoundException
+     * @throws EntryNotFoundException thrown if the merchant cannot be found, usually due to lack of setup
      */
     @Test
     public void getMerchant() throws EntryNotFoundException {
@@ -127,6 +127,5 @@ public class AccountServiceTest {
             fail();
         } catch (EntryNotFoundException ignored) {
         }
-
     }
 }

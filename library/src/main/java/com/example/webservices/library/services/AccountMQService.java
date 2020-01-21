@@ -28,7 +28,7 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
     /**
      * @author s164410
      * @param signupDto contains the information required to sign up a new customer
-     * @return
+     * @return a representation of the newly signed up customer
      */
     @Override
     public AccountDto addCustomer(SignupDto signupDto) {
@@ -37,13 +37,12 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
             throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
         }
         return fromJson(response.getBody(), AccountDto.class);
-
     }
 
     /**
      * @author s164410
      * @param signupDto contains the information required to sign up a new customer
-     * @return
+     * @return a representation of the newly signed up merchant
      */
     @Override
     public AccountDto addMerchant(SignupDto signupDto) {
@@ -52,7 +51,6 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
             throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
         }
         return fromJson(response.getBody(), AccountDto.class);
-
     }
 
     /**
@@ -82,7 +80,7 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
     /**
      * @author s164410
      * @param customerId id of the customer to search for
-     * @return
+     * @return a representation of the fetched customer
      */
     @Override
     public AccountDto getCustomer(UUID customerId) {
@@ -92,7 +90,7 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
     /**
      * @author s164410
      * @param id id of the account to search for
-     * @return
+     * @return a representation of the fetched account
      */
     @Override
     public AccountDto getAccount(UUID id) {
@@ -101,13 +99,12 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
             throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
         }
         return fromJson(response.getBody(), AccountDto.class);
-
     }
 
     /**
      * @author s164410
      * @param merchantId id of the merchant to search for
-     * @return
+     * @return a representation of the fetched merchant
      */
     @Override
     public AccountDto getMerchant(UUID merchantId) {

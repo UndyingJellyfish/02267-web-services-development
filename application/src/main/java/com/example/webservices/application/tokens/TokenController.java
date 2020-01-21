@@ -26,6 +26,7 @@ public class TokenController {
 
     /**
      * @author s164424
+     * @param dto {@inheritDoc}
      */
     @PostMapping()
     @ResponseStatus(HttpStatus.OK)
@@ -41,12 +42,14 @@ public class TokenController {
 
     /**
      * @author s164407
+     * @param accountId id of the account
+     * @return the amount of active tokens the account has
      */
     @GetMapping("/{customerId}")
     @ResponseStatus(HttpStatus.OK)
-    public int getActiveTokenCount(@PathVariable UUID customerId) {
+    public int getActiveTokenCount(@PathVariable UUID accountId) {
         try {
-            return tokenManager.GetActiveTokens(customerId);
+            return tokenManager.GetActiveTokens(accountId);
         } catch (ResponseStatusException e){
             throw e;
         } catch (Exception e) {

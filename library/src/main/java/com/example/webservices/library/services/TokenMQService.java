@@ -50,10 +50,9 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
      * @author s164424
      * @param customerId which account to search for
      * @return List of TokenDto
-     * @throws EntryNotFoundException
      */
     @Override
-    public List<TokenDto> GetTokens(UUID customerId) throws EntryNotFoundException {
+    public List<TokenDto> GetTokens(UUID customerId) {
         ResponseObject response = send(QUEUE_TOKENS_GET, customerId);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
@@ -64,10 +63,9 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
     /**
      * @author s164424
      * @param tokenId id of the token to use
-     * @throws TokenException
      */
     @Override
-    public void UseToken(UUID tokenId) throws TokenException {
+    public void UseToken(UUID tokenId) {
         ResponseObject response = send(QUEUE_TOKEN_USE, tokenId);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
@@ -78,11 +76,9 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
      * @author s164424
      * @param customerId id of the customer to search for
      * @return tokenId
-     * @throws EntryNotFoundException
-     * @throws TokenQuantityException
      */
     @Override
-    public UUID RequestToken(UUID customerId) throws EntryNotFoundException, TokenQuantityException {
+    public UUID RequestToken(UUID customerId) {
         ResponseObject response = send(QUEUE_TOKEN_REQUEST, customerId);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new ResponseStatusException(response.getStatusCode(),fromJson(response.getBody(), String.class));
@@ -93,7 +89,7 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
     /**
      * @author s164424
      * @param tokenId id to search for
-     * @return
+     * @return a representation of the requested token
      */
     @Override
     public TokenDto GetToken(UUID tokenId) {
@@ -118,8 +114,8 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
 
     /**
      * @author s164434
-     * @param customerId
-     * @return
+     * @param customerId id of the customer for which to count active tokens
+     * @return the amount of tokens the customer has which are still active
      */
     @Override
     public int GetActiveTokens(UUID customerId) {

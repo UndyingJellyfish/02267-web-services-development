@@ -29,13 +29,9 @@ public class PaymentMQService extends RabbitMQBaseClass implements IPaymentServi
      * @author s164407
      * @param transactionDto data object used to transfer money from one account to another using a token
      * @return TransactionDto
-     * @throws EntryNotFoundException
-     * @throws TokenException
-     * @throws BankException
-     * @throws InvalidTransferAmountException
      */
     @Override
-    public TransactionDto transfer(TransactionDto transactionDto) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException {
+    public TransactionDto transfer(TransactionDto transactionDto) {
         ResponseObject response = send(QUEUE_PAYMENT_TRANSFER, transactionDto);
         if(response.getStatusCode() != HttpStatus.OK){
             throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));

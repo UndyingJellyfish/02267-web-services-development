@@ -61,6 +61,7 @@ public class AccountController {
     /**
      * @author s164407
      * @param accountId id of the account to fetch
+     * @return a representation of the account with the specified id
      */
     @GetMapping(value={"/{accountId}"})
     @ResponseStatus(HttpStatus.OK)

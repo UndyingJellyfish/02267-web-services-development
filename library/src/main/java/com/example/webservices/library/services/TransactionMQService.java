@@ -64,8 +64,8 @@ public class TransactionMQService extends RabbitMQBaseClass implements ITransact
 
     /**
      * @author s164407
-     * @param transactionId
-     * @return
+     * @param transactionId id of the transaction to fetch
+     * @return representation of the requested transaction
      */
     @Override
     public TransactionDto getTransaction(UUID transactionId) {
