@@ -13,7 +13,6 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication(scanBasePackages = "com.example.webservices")
 public class Application {
 
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
@@ -23,13 +22,12 @@ public class Application {
         return new RestTemplate();
     }
 
-
-
     @Bean
     @Qualifier("accounts")
     public DirectExchange getAccountsExchange(){
         return new DirectExchange("accounts");
     }
+
     @Bean
     @Qualifier("tokens")
     public DirectExchange getTokensExchange(){
@@ -41,15 +39,16 @@ public class Application {
     public DirectExchange getTransactionsExchange(){
         return new DirectExchange("transactions");
     }
+
     @Bean
     @Qualifier("reporting")
     public DirectExchange getReportingExchange(){
         return new DirectExchange("reporting");
     }
+
     @Bean
     @Qualifier("payments")
     public DirectExchange getPaymentsExchange(){
         return new DirectExchange("payments");
     }
-
 }
