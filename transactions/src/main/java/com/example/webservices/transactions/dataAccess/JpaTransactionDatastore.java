@@ -8,6 +8,7 @@ import com.example.webservices.transactions.models.Transaction;
 import java.util.List;
 import java.util.UUID;
 
+/** @author s164410*/
 public class JpaTransactionDatastore implements ITransactionDatastore {
     private TransactionRepository transactionRepository;
 

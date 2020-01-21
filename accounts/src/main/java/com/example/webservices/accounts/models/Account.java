@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
 
+/** @author s164398*/
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue("Account")

@@ -1,5 +1,7 @@
 package com.example.webservices.library.exceptions;
 
+/** @author s164434 */
+
 public class InvalidTransferAmountException extends Exception {
 
     public InvalidTransferAmountException(){

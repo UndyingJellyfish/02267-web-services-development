@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 /**
+ * @author s164407
  * contains the information required by services to initialize a name change for a user
  */
 public class ChangeNameDto implements Serializable {

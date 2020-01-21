@@ -2,6 +2,7 @@ package com.example.webservices.application.stepdefs.json;
 
 import java.math.BigDecimal;
 
+/** @author s164434 */
 public class Account{
     private BigDecimal balance;
     private User user;

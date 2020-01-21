@@ -23,6 +23,7 @@ import java.util.UUID;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 
+/** @author s164395 */
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -38,8 +39,6 @@ public class TokenDatastoreTest {
     public void Setup(){
         datastore = tokenDatastore;
     }
-
-
 
 
     @Test

@@ -21,6 +21,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.*;
 
+/** @author s164398 */
 public class CustomerTokenSteps extends AbstractSteps {
 
     private UUID customerId;

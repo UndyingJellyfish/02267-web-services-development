@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/** @author s164434 */
+
 public class InMemoryTokenDatastore implements ITokenDatastore {
     private List<Token> tokens = new ArrayList<>();
 

@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Bean;
 import static com.example.webservices.library.RabbitHelper.QUEUE_PAYMENT_REFUND;
 import static com.example.webservices.library.RabbitHelper.QUEUE_PAYMENT_TRANSFER;
 
+/** @author s164434*/
+
 @SpringBootApplication(scanBasePackages = "com.example.webservices")
 public class PaymentsApplication {
 

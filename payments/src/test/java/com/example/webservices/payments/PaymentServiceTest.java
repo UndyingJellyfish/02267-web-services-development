@@ -15,6 +15,7 @@ import java.util.UUID;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+/** @author s164395 */
 public class PaymentServiceTest {
 
     private IPaymentService paymentService;

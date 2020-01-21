@@ -1,5 +1,6 @@
 package com.example.webservices.application.stepdefs.json;
 
+/** @author s164424 */
 public class User{
     private String cprNumber;
     private String firstName;

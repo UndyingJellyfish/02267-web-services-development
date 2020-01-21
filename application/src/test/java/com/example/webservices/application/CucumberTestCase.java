@@ -10,4 +10,5 @@ import org.junit.runner.RunWith;
         plugin = {"pretty"}
 )
 public class CucumberTestCase {
+    // Required to run cucumber tests.
 }

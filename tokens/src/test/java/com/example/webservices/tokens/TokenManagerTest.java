@@ -36,6 +36,8 @@ public class TokenManagerTest {
 
     }
 
+    /** @author s164410 */
+
     @Before
     public void Setup() {
         UUID customerId = UUID.randomUUID();
@@ -53,6 +55,8 @@ public class TokenManagerTest {
             fail(e.getMessage());
         }
     }
+
+    /** @author s164410 */
 
     @Test
     public void RequestTokens(){
@@ -86,6 +90,9 @@ public class TokenManagerTest {
         }
     }
 
+
+    /** @author s164410 */
+
     @Test
     public void RequestNoTokens(){
         UUID customerId = customerDto.getAccountId();
@@ -111,6 +118,7 @@ public class TokenManagerTest {
 
     }
 
+    /** @author s164410 */
     @Test
     public void RequestTooManyTokens(){
         UUID customerId = customerDto.getAccountId();
@@ -125,6 +133,7 @@ public class TokenManagerTest {
         }
     }
 
+    /** @author s164410 */
     @Test
     public void RequestTokensWhenOverLimit(){
         UUID customerId = customerDto.getAccountId();
@@ -157,6 +166,7 @@ public class TokenManagerTest {
 
     }
 
+    /** @author s164395*/
     @Test
     public void UseExistingToken() {
         UUID customerId = customerDto.getAccountId();
@@ -187,6 +197,7 @@ public class TokenManagerTest {
 
     }
 
+    /** @author s164410 */
     @Test
     public void UseNotExistingToken() {
         UUID tokenId = UUID.randomUUID();
@@ -200,7 +211,7 @@ public class TokenManagerTest {
         }
     }
 
-
+    /** @author s164395*/
     @Test
     public void requestToken() {
         UUID customerId = customerDto.getAccountId();
@@ -232,6 +243,7 @@ public class TokenManagerTest {
         }
     }
 
+    /** @author s164395 */
     @Test
     public void getToken() {
         UUID customerId = customerDto.getAccountId();
@@ -259,6 +271,7 @@ public class TokenManagerTest {
 
     }
 
+    /** @author s164434*/
     @Test
     public void retireAll() {
 
@@ -275,6 +288,7 @@ public class TokenManagerTest {
 
     }
 
+    /** @author s164410*/
     @Test
     public void useUsedToken() {
 

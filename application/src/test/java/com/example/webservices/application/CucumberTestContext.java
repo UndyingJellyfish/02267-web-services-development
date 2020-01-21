@@ -9,7 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Singleton to manage objects and share their state between step definitions.
+ *  @author https://github.com/bcarun/cucumber-samples/blob/master/hello-springboot-cucumber/src/test/java/com/arun/cucumber/hello/bdd/CucumberTestContext.java
+ *  Singleton to manage objects and share their state between step definitions.
  */
 public enum CucumberTestContext {
     CONTEXT;

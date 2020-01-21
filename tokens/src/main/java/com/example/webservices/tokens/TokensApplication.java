@@ -22,6 +22,8 @@ import javax.sql.DataSource;
 import java.lang.reflect.Type;
 
 import static com.example.webservices.library.RabbitHelper.*;
+/** @author s164434 */
+
 @SpringBootApplication(scanBasePackages = "com.example.webservices")
 public class TokensApplication {
 
@@ -40,13 +42,6 @@ public class TokensApplication {
     public static void main(String[] args) {
         SpringApplication.run(TokensApplication.class, args);
     }
-
-   /*@Bean
-    public RabbitTemplate rabbitTemplate(ConnectionFactory factory){
-        RabbitTemplate template = new RabbitTemplate(factory);
-        template.setReplyTimeout(Long.MAX_VALUE);
-        return template;
-    }*/
 
     @Bean
     @Qualifier("tokens")

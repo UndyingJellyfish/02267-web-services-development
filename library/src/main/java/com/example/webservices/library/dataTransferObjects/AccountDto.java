@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 /**
+ * @author s164395
  * provides a representation of an account object
  */
 public class AccountDto implements Serializable {

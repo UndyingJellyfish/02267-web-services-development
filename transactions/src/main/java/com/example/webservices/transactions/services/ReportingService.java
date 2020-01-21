@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+/** @author s164424 */
 public class ReportingService implements IReportingService {
     private ITransactionService transactionService;
     private IAccountService accountService;

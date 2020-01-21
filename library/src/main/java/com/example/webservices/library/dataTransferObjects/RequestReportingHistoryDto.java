@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
+ * @author s164424
  * contains the information required by services to fetch a transaction history for a user
  */
 public class RequestReportingHistoryDto {

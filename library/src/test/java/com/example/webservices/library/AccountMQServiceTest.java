@@ -19,6 +19,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/** @author s164434 */
 public class AccountMQServiceTest {
 
     private final AccountMQService service;

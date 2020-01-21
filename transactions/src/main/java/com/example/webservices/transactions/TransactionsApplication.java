@@ -25,7 +25,7 @@ import java.lang.reflect.Type;
 
 import static com.example.webservices.library.RabbitHelper.*;
 
-
+/** @author s164434*/
 @SpringBootApplication(scanBasePackages = "com.example.webservices")
 public class TransactionsApplication {
 

@@ -23,6 +23,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+
+/** @author s164395 */
 public class ReportingServiceTest {
 
     private ReportingService reportingService;
