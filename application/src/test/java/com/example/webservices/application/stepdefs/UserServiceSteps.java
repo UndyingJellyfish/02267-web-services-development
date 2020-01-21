@@ -21,12 +21,7 @@ public class UserServiceSteps extends AbstractSteps {
     private String merchantName;
     private UUID merchantId;
     private String bankAccountId;
-
-    @After
-    public void tearDown(){
-    }
-
-
+    
     /**
     @author s164410
      */
@@ -67,7 +62,7 @@ public class UserServiceSteps extends AbstractSteps {
     public void theNameOfAMerchant() {
         merchantName = "Khajit";
     }
-    
+
     /**
      @author s164410
      */
