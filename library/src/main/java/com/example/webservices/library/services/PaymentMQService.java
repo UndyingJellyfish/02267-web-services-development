@@ -28,7 +28,7 @@ public class PaymentMQService extends RabbitMQBaseClass implements IPaymentServi
     /**
      * @author s164407
      * @param transactionDto data object used to transfer money from one account to another using a token
-     * @return
+     * @return TransactionDto
      * @throws EntryNotFoundException
      * @throws TokenException
      * @throws BankException
