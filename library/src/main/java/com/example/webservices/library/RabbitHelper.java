@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 
+
 public abstract class RabbitHelper {
 
     public static final String QUEUE_ACCOUNT_GET = "account.get";
@@ -30,8 +31,12 @@ public abstract class RabbitHelper {
     public static final String QUEUE_PAYMENT_TRANSFER = "payment.transfer";
     public static final String QUEUE_PAYMENT_REFUND = "payment.refund";
 
+
     protected ObjectMapper jackson = new ObjectMapper();
 
+    /**
+     * @author s164424
+     */
     protected  <T> T fromJson(String response, Class<T> type) {
         try{
             return jackson.readerFor(type).readValue(response);
@@ -41,6 +46,9 @@ public abstract class RabbitHelper {
         }
     }
 
+    /**
+     * @author s164424
+     */
     protected <T> String toJson(T message) {
         try{
             return jackson.writeValueAsString(message);
@@ -50,17 +58,29 @@ public abstract class RabbitHelper {
         }
     }
 
+    /**
+     * @author s164424
+     */
     protected <T> ResponseObject success(T response) {
         return new ResponseObject(HttpStatus.OK, toJson(response));
     }
 
+    /**
+     * @author s164424
+     */
     protected ResponseObject success() {
         return success("success");
     }
 
+    /**
+     * @author s164424
+     */
     protected <T> ResponseObject failure(T response, HttpStatus status) {
         return new ResponseObject(status, toJson(response));
     }
+    /**
+     * @author s164424
+     */
     protected <T> ResponseObject failure(T response) {
         return failure(response, HttpStatus.BAD_REQUEST);
     }
