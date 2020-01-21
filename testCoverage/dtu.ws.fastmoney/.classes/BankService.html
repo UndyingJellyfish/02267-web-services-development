@@ -1,0 +1,170 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: BankService</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">dtu.ws.fastmoney</a> ]
+</div>
+
+<h1>Coverage Summary for Class: BankService (dtu.ws.fastmoney)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">BankService</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;
+<i>2</i>&nbsp;package dtu.ws.fastmoney;
+<i>3</i>&nbsp;
+<i>4</i>&nbsp;import java.math.BigDecimal;
+<i>5</i>&nbsp;import java.util.List;
+<i>6</i>&nbsp;import javax.jws.WebMethod;
+<i>7</i>&nbsp;import javax.jws.WebParam;
+<i>8</i>&nbsp;import javax.jws.WebResult;
+<i>9</i>&nbsp;import javax.jws.WebService;
+<i>10</i>&nbsp;import javax.xml.bind.annotation.XmlSeeAlso;
+<i>11</i>&nbsp;import javax.xml.ws.RequestWrapper;
+<i>12</i>&nbsp;import javax.xml.ws.ResponseWrapper;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;@WebService(name = &quot;BankService&quot;, targetNamespace = &quot;http://fastmoney.ws.dtu/&quot;)
+<i>15</i>&nbsp;@XmlSeeAlso({
+<i>16</i>&nbsp;    ObjectFactory.class
+<i>17</i>&nbsp;})
+<i>18</i>&nbsp;public interface BankService {
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    /**
+<i>22</i>&nbsp;     * 
+<i>23</i>&nbsp;     * @param accountId id of the account
+<i>24</i>&nbsp;     * @return
+<i>25</i>&nbsp;     *     returns dtu.ws.fastmoney.Account
+<i>26</i>&nbsp;     * @throws BankServiceException_Exception Is thrown if an account could not be found
+<i>27</i>&nbsp;     */
+<i>28</i>&nbsp;    @WebMethod
+<i>29</i>&nbsp;    @WebResult(targetNamespace = &quot;&quot;)
+<i>30</i>&nbsp;    @RequestWrapper(localName = &quot;getAccount&quot;, targetNamespace = &quot;http://fastmoney.ws.dtu/&quot;, className = &quot;dtu.ws.fastmoney.GetAccount&quot;)
+<i>31</i>&nbsp;    @ResponseWrapper(localName = &quot;getAccountResponse&quot;, targetNamespace = &quot;http://fastmoney.ws.dtu/&quot;, className = &quot;dtu.ws.fastmoney.GetAccountResponse&quot;)
+<i>32</i>&nbsp;    public Account getAccount(
+<i>33</i>&nbsp;        @WebParam(name = &quot;account_id&quot;, targetNamespace = &quot;&quot;)
+<i>34</i>&nbsp;        String accountId)
+<i>35</i>&nbsp;        throws BankServiceException_Exception
+<i>36</i>&nbsp;    ;
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    /**
+<i>39</i>&nbsp;     * 
+<i>40</i>&nbsp;     * @param cpr identifying CPR of the account
+<i>41</i>&nbsp;     * @return
+<i>42</i>&nbsp;     *     returns dtu.ws.fastmoney.Account
+<i>43</i>&nbsp;     * @throws BankServiceException_Exception Is thrown if an account could not be found
+<i>44</i>&nbsp;     */
+<i>45</i>&nbsp;    @WebMethod
+<i>46</i>&nbsp;    @WebResult(targetNamespace = &quot;&quot;)
+<i>47</i>&nbsp;    @RequestWrapper(localName = &quot;getAccountByCprNumber&quot;, targetNamespace = &quot;http://fastmoney.ws.dtu/&quot;, className = &quot;dtu.ws.fastmoney.GetAccountByCprNumber&quot;)
+<i>48</i>&nbsp;    @ResponseWrapper(localName = &quot;getAccountByCprNumberResponse&quot;, targetNamespace = &quot;http://fastmoney.ws.dtu/&quot;, className = &quot;dtu.ws.fastmoney.GetAccountByCprNumberResponse&quot;)
+<i>49</i>&nbsp;    public Account getAccountByCprNumber(
+<i>50</i>&nbsp;        @WebParam(name = &quot;cpr&quot;, targetNamespace = &quot;&quot;)
+<i>51</i>&nbsp;        String cpr)
+<i>52</i>&nbsp;        throws BankServiceException_Exception
+<i>53</i>&nbsp;    ;
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;    /**
+<i>56</i>&nbsp;     *
+<i>57</i>&nbsp;     * @param user the user to create
+<i>58</i>&nbsp;     * @param balance balance accredited to the new user
+<i>59</i>&nbsp;     * @return
+<i>60</i>&nbsp;     *     returns java.lang.String
+<i>61</i>&nbsp;     * @throws BankServiceException_Exception Is thrown if the account could not be created
+<i>62</i>&nbsp;     */
+<i>63</i>&nbsp;    @WebMethod
+<i>64</i>&nbsp;    @WebResult(targetNamespace = &quot;&quot;)
+<i>65</i>&nbsp;    @RequestWrapper(localName = &quot;createAccountWithBalance&quot;, targetNamespace = &quot;http://fastmoney.ws.dtu/&quot;, className = &quot;dtu.ws.fastmoney.CreateAccountWithBalance&quot;)
+<i>66</i>&nbsp;    @ResponseWrapper(localName = &quot;createAccountWithBalanceResponse&quot;, targetNamespace = &quot;http://fastmoney.ws.dtu/&quot;, className = &quot;dtu.ws.fastmoney.CreateAccountWithBalanceResponse&quot;)
+<i>67</i>&nbsp;    public String createAccountWithBalance(
+<i>68</i>&nbsp;        @WebParam(name = &quot;user&quot;, targetNamespace = &quot;&quot;)
+<i>69</i>&nbsp;        User user,
+<i>70</i>&nbsp;        @WebParam(name = &quot;balance&quot;, targetNamespace = &quot;&quot;)
+<i>71</i>&nbsp;        BigDecimal balance)
+<i>72</i>&nbsp;        throws BankServiceException_Exception
+<i>73</i>&nbsp;    ;
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;    /**
+<i>76</i>&nbsp;     * 
+<i>77</i>&nbsp;     * @param accountId id of the account
+<i>78</i>&nbsp;     * @throws BankServiceException_Exception Is thrown if an account could not be found
+<i>79</i>&nbsp;     */
+<i>80</i>&nbsp;    @WebMethod
+<i>81</i>&nbsp;    @RequestWrapper(localName = &quot;retireAccount&quot;, targetNamespace = &quot;http://fastmoney.ws.dtu/&quot;, className = &quot;dtu.ws.fastmoney.RetireAccount&quot;)
+<i>82</i>&nbsp;    @ResponseWrapper(localName = &quot;retireAccountResponse&quot;, targetNamespace = &quot;http://fastmoney.ws.dtu/&quot;, className = &quot;dtu.ws.fastmoney.RetireAccountResponse&quot;)
+<i>83</i>&nbsp;    public void retireAccount(
+<i>84</i>&nbsp;        @WebParam(name = &quot;account_id&quot;, targetNamespace = &quot;&quot;)
+<i>85</i>&nbsp;        String accountId)
+<i>86</i>&nbsp;        throws BankServiceException_Exception
+<i>87</i>&nbsp;    ;
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;    /**
+<i>90</i>&nbsp;     * 
+<i>91</i>&nbsp;     * @return
+<i>92</i>&nbsp;     *     returns {@literal (java.util.List&lt;dtu.ws.fastmoney.AccountInfo&gt;)}
+<i>93</i>&nbsp;     */
+<i>94</i>&nbsp;    @WebMethod
+<i>95</i>&nbsp;    @WebResult(targetNamespace = &quot;&quot;)
+<i>96</i>&nbsp;    @RequestWrapper(localName = &quot;getAccounts&quot;, targetNamespace = &quot;http://fastmoney.ws.dtu/&quot;, className = &quot;dtu.ws.fastmoney.GetAccounts&quot;)
+<i>97</i>&nbsp;    @ResponseWrapper(localName = &quot;getAccountsResponse&quot;, targetNamespace = &quot;http://fastmoney.ws.dtu/&quot;, className = &quot;dtu.ws.fastmoney.GetAccountsResponse&quot;)
+<i>98</i>&nbsp;    public List&lt;AccountInfo&gt; getAccounts();
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;    /**
+<i>101</i>&nbsp;     * 
+<i>102</i>&nbsp;     * @param amount amount to transfer
+<i>103</i>&nbsp;     * @param creditor recipient of money
+<i>104</i>&nbsp;     * @param debtor sender of money
+<i>105</i>&nbsp;     * @param description the description to show in bank information
+<i>106</i>&nbsp;     * @throws BankServiceException_Exception Is thrown if the transfer could not be completed
+<i>107</i>&nbsp;     */
+<i>108</i>&nbsp;    @WebMethod
+<i>109</i>&nbsp;    @RequestWrapper(localName = &quot;transferMoneyFromTo&quot;, targetNamespace = &quot;http://fastmoney.ws.dtu/&quot;, className = &quot;dtu.ws.fastmoney.TransferMoneyFromTo&quot;)
+<i>110</i>&nbsp;    @ResponseWrapper(localName = &quot;transferMoneyFromToResponse&quot;, targetNamespace = &quot;http://fastmoney.ws.dtu/&quot;, className = &quot;dtu.ws.fastmoney.TransferMoneyFromToResponse&quot;)
+<i>111</i>&nbsp;    public void transferMoneyFromTo(
+<i>112</i>&nbsp;        @WebParam(name = &quot;debtor&quot;, targetNamespace = &quot;&quot;)
+<i>113</i>&nbsp;        String debtor,
+<i>114</i>&nbsp;        @WebParam(name = &quot;creditor&quot;, targetNamespace = &quot;&quot;)
+<i>115</i>&nbsp;        String creditor,
+<i>116</i>&nbsp;        @WebParam(name = &quot;amount&quot;, targetNamespace = &quot;&quot;)
+<i>117</i>&nbsp;        BigDecimal amount,
+<i>118</i>&nbsp;        @WebParam(name = &quot;description&quot;, targetNamespace = &quot;&quot;)
+<i>119</i>&nbsp;        String description)
+<i>120</i>&nbsp;        throws BankServiceException_Exception
+<i>121</i>&nbsp;    ;
+<i>122</i>&nbsp;
+<i>123</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>

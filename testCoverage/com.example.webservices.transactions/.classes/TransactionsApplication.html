@@ -1,0 +1,231 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TransactionsApplication</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.webservices.transactions</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TransactionsApplication (com.example.webservices.transactions)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TransactionsApplication</td>
+<td class="coverageStat">
+  <span class="percent">
+    94.7%
+  </span>
+  <span class="absValue">
+    (18/ 19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91.3%
+  </span>
+  <span class="absValue">
+    (21/ 23)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">TransactionsApplication$$EnhancerBySpringCGLIB$$286e2eca</td>
+  </tr>
+  <tr>
+    <td class="name">TransactionsApplication$$EnhancerBySpringCGLIB$$286e2eca$$FastClassBySpringCGLIB$$1fbafdd0</td>
+  </tr>
+  <tr>
+    <td class="name">TransactionsApplication$$EnhancerBySpringCGLIB$$89e7e7a2</td>
+  </tr>
+  <tr>
+    <td class="name">TransactionsApplication$$EnhancerBySpringCGLIB$$89e7e7a2$$FastClassBySpringCGLIB$$11aa5420</td>
+  </tr>
+  <tr>
+    <td class="name">TransactionsApplication$$EnhancerBySpringCGLIB$$d1eb6a9a</td>
+  </tr>
+  <tr>
+    <td class="name">TransactionsApplication$$EnhancerBySpringCGLIB$$d1eb6a9a$$FastClassBySpringCGLIB$$47755ea7</td>
+  </tr>
+  <tr>
+    <td class="name">TransactionsApplication$$FastClassBySpringCGLIB$$31e9738f</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    94.7%
+  </span>
+  <span class="absValue">
+    (18/ 19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91.3%
+  </span>
+  <span class="absValue">
+    (21/ 23)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.webservices.transactions;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.example.webservices.transactions.dataAccess.JpaTransactionDatastore;
+<i>4</i>&nbsp;import com.example.webservices.transactions.dataAccess.TransactionRepository;
+<i>5</i>&nbsp;import com.example.webservices.transactions.interfaces.ITransactionDatastore;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import org.springframework.amqp.core.Binding;
+<i>8</i>&nbsp;import org.springframework.amqp.core.BindingBuilder;
+<i>9</i>&nbsp;import org.springframework.amqp.core.DirectExchange;
+<i>10</i>&nbsp;import org.springframework.amqp.core.Queue;
+<i>11</i>&nbsp;import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+<i>12</i>&nbsp;import org.springframework.amqp.rabbit.core.RabbitTemplate;
+<i>13</i>&nbsp;import org.springframework.beans.factory.annotation.Qualifier;
+<i>14</i>&nbsp;import org.springframework.boot.SpringApplication;
+<i>15</i>&nbsp;import org.springframework.boot.autoconfigure.SpringBootApplication;
+<i>16</i>&nbsp;import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+<i>17</i>&nbsp;import org.springframework.boot.jdbc.DataSourceBuilder;
+<i>18</i>&nbsp;import org.springframework.context.annotation.Bean;
+<i>19</i>&nbsp;import org.springframework.context.annotation.Configuration;
+<i>20</i>&nbsp;import org.springframework.http.converter.json.GsonHttpMessageConverter;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;import javax.sql.DataSource;
+<i>24</i>&nbsp;import java.lang.reflect.Type;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;import static com.example.webservices.library.RabbitHelper.*;
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;@SpringBootApplication(scanBasePackages = &quot;com.example.webservices&quot;)
+<b class="fc"><i>30</i>&nbsp;public class TransactionsApplication {</b>
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    @Bean
+<i>33</i>&nbsp;    public ITransactionDatastore transactionDatastore(TransactionRepository transactionRepository){
+<b class="fc"><i>34</i>&nbsp;        return new JpaTransactionDatastore(transactionRepository);</b>
+<i>35</i>&nbsp;    }
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    @Bean
+<i>38</i>&nbsp;    public DataSource dataSource() {
+<b class="fc"><i>39</i>&nbsp;        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();</b>
+<b class="fc"><i>40</i>&nbsp;        dataSourceBuilder.driverClassName(&quot;org.sqlite.JDBC&quot;);</b>
+<b class="fc"><i>41</i>&nbsp;        dataSourceBuilder.url(&quot;jdbc:sqlite:transaction.db&quot;);</b>
+<b class="fc"><i>42</i>&nbsp;        return dataSourceBuilder.build();</b>
+<i>43</i>&nbsp;    }
+<i>44</i>&nbsp;    public static void main(String[] args) {
+<b class="nc"><i>45</i>&nbsp;        SpringApplication.run(TransactionsApplication.class, args);</b>
+<b class="nc"><i>46</i>&nbsp;    }</b>
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    @Bean
+<i>49</i>&nbsp;    public Queue queueAddTransaction(){
+<b class="fc"><i>50</i>&nbsp;        return new Queue(QUEUE_TRANSACTION_ADD, true);</b>
+<i>51</i>&nbsp;    }
+<i>52</i>&nbsp;    @Bean
+<i>53</i>&nbsp;    public Queue queueGetTransaction(){
+<b class="fc"><i>54</i>&nbsp;        return new Queue(QUEUE_TRANSACTION_GET, true);</b>
+<i>55</i>&nbsp;    }
+<i>56</i>&nbsp;    @Bean
+<i>57</i>&nbsp;    public Queue queueReporting(){
+<b class="fc"><i>58</i>&nbsp;        return new Queue(QUEUE_REPORTING_HISTORY, true);</b>
+<i>59</i>&nbsp;    }
+<i>60</i>&nbsp;    @Bean
+<i>61</i>&nbsp;    public Queue queueReportingSince(){
+<b class="fc"><i>62</i>&nbsp;    return new Queue(QUEUE_REPORTING_HISTORY_DATE, true);</b>
+<i>63</i>&nbsp;    }
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    @Bean
+<i>66</i>&nbsp;    public Queue queueRefund(){
+<b class="fc"><i>67</i>&nbsp;        return new Queue(QUEUE_TRANSACTION_REFUND, true);</b>
+<i>68</i>&nbsp;    }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    @Bean
+<i>71</i>&nbsp;    public Binding bindingRefund(@Qualifier(&quot;transactions&quot;) DirectExchange exchange, Queue queueRefund) {
+<b class="fc"><i>72</i>&nbsp;        return BindingBuilder.bind(queueRefund).to(exchange).with(queueRefund.getName());</b>
+<i>73</i>&nbsp;    }
+<i>74</i>&nbsp;    @Bean
+<i>75</i>&nbsp;    public Binding bindingHistorySince(@Qualifier(&quot;reporting&quot;) DirectExchange exchange, Queue queueReportingSince) {
+<b class="fc"><i>76</i>&nbsp;        return BindingBuilder.bind(queueReportingSince).to(exchange).with(queueReportingSince.getName());</b>
+<i>77</i>&nbsp;    }
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;    @Bean
+<i>80</i>&nbsp;    public Binding bindingGet(@Qualifier(&quot;transactions&quot;) DirectExchange exchange, Queue queueAddTransaction) {
+<b class="fc"><i>81</i>&nbsp;        return BindingBuilder.bind(queueAddTransaction).to(exchange).with(queueAddTransaction.getName());</b>
+<i>82</i>&nbsp;    }
+<i>83</i>&nbsp;    @Bean
+<i>84</i>&nbsp;    public Binding bindingAdd(@Qualifier(&quot;transactions&quot;) DirectExchange exchange, Queue queueGetTransaction) {
+<b class="fc"><i>85</i>&nbsp;        return BindingBuilder.bind(queueGetTransaction).to(exchange).with(queueGetTransaction.getName());</b>
+<i>86</i>&nbsp;    }
+<i>87</i>&nbsp;    @Bean
+<i>88</i>&nbsp;    public Binding bindingReporting(@Qualifier(&quot;reporting&quot;) DirectExchange exchange, Queue queueReporting) {
+<b class="fc"><i>89</i>&nbsp;        return BindingBuilder.bind(queueReporting).to(exchange).with(queueReporting.getName());</b>
+<i>90</i>&nbsp;    }
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;
+<i>93</i>&nbsp;    @Bean
+<i>94</i>&nbsp;    @Qualifier(&quot;tokens&quot;)
+<i>95</i>&nbsp;    public DirectExchange tokensExchange() {
+<b class="fc"><i>96</i>&nbsp;        return new DirectExchange(&quot;tokens&quot;);</b>
+<i>97</i>&nbsp;    }
+<i>98</i>&nbsp;    @Bean
+<i>99</i>&nbsp;    @Qualifier(&quot;accounts&quot;)
+<i>100</i>&nbsp;    public DirectExchange exchange() {
+<b class="fc"><i>101</i>&nbsp;        return new DirectExchange(&quot;accounts&quot;);</b>
+<i>102</i>&nbsp;    }
+<i>103</i>&nbsp;    @Bean
+<i>104</i>&nbsp;    @Qualifier(&quot;payments&quot;)
+<i>105</i>&nbsp;    public DirectExchange paymentsExchange() {
+<b class="fc"><i>106</i>&nbsp;        return new DirectExchange(&quot;payments&quot;);</b>
+<i>107</i>&nbsp;    }
+<i>108</i>&nbsp;    @Bean
+<i>109</i>&nbsp;    @Qualifier(&quot;reporting&quot;)
+<i>110</i>&nbsp;    public DirectExchange reportingExchange() {
+<b class="fc"><i>111</i>&nbsp;        return new DirectExchange(&quot;reporting&quot;);</b>
+<i>112</i>&nbsp;    }
+<i>113</i>&nbsp;    @Bean
+<i>114</i>&nbsp;    @Qualifier(&quot;transactions&quot;)
+<i>115</i>&nbsp;    public DirectExchange transactionsExchange() {
+<b class="fc"><i>116</i>&nbsp;        return new DirectExchange(&quot;transactions&quot;);</b>
+<i>117</i>&nbsp;    }
+<i>118</i>&nbsp;
+<i>119</i>&nbsp;
+<i>120</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>

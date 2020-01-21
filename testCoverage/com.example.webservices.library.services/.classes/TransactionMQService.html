@@ -1,0 +1,162 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TransactionMQService</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.webservices.library.services</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TransactionMQService (com.example.webservices.library.services)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TransactionMQService</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 15)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.webservices.library.services;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.example.webservices.library.RabbitMQBaseClass;
+<i>4</i>&nbsp;import com.example.webservices.library.dataTransferObjects.ResponseObject;
+<i>5</i>&nbsp;import com.example.webservices.library.dataTransferObjects.TransactionDto;
+<i>6</i>&nbsp;import com.example.webservices.library.exceptions.EntryNotFoundException;
+<i>7</i>&nbsp;import com.example.webservices.library.interfaces.ITransactionService;
+<i>8</i>&nbsp;import com.fasterxml.jackson.core.JsonProcessingException;
+<i>9</i>&nbsp;import org.springframework.amqp.core.DirectExchange;
+<i>10</i>&nbsp;import org.springframework.amqp.rabbit.core.RabbitTemplate;
+<i>11</i>&nbsp;import org.springframework.beans.factory.annotation.Qualifier;
+<i>12</i>&nbsp;import org.springframework.http.HttpStatus;
+<i>13</i>&nbsp;import org.springframework.stereotype.Service;
+<i>14</i>&nbsp;import org.springframework.web.server.ResponseStatusException;
+<i>15</i>&nbsp;import sun.security.util.PendingException;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;import java.util.List;
+<i>18</i>&nbsp;import java.util.UUID;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;@Service
+<i>21</i>&nbsp;public class TransactionMQService extends RabbitMQBaseClass implements ITransactionService {
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    public TransactionMQService(RabbitTemplate rabbitTemplate, @Qualifier(&quot;transactions&quot;) DirectExchange exchange) {
+<b class="nc"><i>24</i>&nbsp;        super(rabbitTemplate, exchange);</b>
+<b class="nc"><i>25</i>&nbsp;    }</b>
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    /**
+<i>28</i>&nbsp;     * @author s164398
+<i>29</i>&nbsp;     * @param id the id of the account
+<i>30</i>&nbsp;     * @implNote Should not be exposed
+<i>31</i>&nbsp;     * @return
+<i>32</i>&nbsp;     */
+<i>33</i>&nbsp;    @Override
+<i>34</i>&nbsp;    public List&lt;TransactionDto&gt; getTransactions(UUID id) {
+<b class="nc"><i>35</i>&nbsp;        return null;</b>
+<i>36</i>&nbsp;    }
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    /**
+<i>39</i>&nbsp;     * @author s164398
+<i>40</i>&nbsp;     * @param tokenId the id of the token to refund
+<i>41</i>&nbsp;     * @return The id of the new transaction that refunds
+<i>42</i>&nbsp;     */
+<i>43</i>&nbsp;    @Override
+<i>44</i>&nbsp;    public UUID refundTransaction(UUID tokenId) {
+<b class="nc"><i>45</i>&nbsp;        ResponseObject response = send(QUEUE_TRANSACTION_REFUND, tokenId);</b>
+<b class="nc"><i>46</i>&nbsp;        if(response.getStatusCode() != HttpStatus.OK){</b>
+<b class="nc"><i>47</i>&nbsp;            throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));</b>
+<i>48</i>&nbsp;        }
+<b class="nc"><i>49</i>&nbsp;        return fromJson(response.getBody(), UUID.class);</b>
+<i>50</i>&nbsp;    }
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    /**
+<i>53</i>&nbsp;     * @author s164398
+<i>54</i>&nbsp;     * @param transaction persists a new transaction
+<i>55</i>&nbsp;     * @return The id of the new transaction
+<i>56</i>&nbsp;     */
+<i>57</i>&nbsp;    @Override
+<i>58</i>&nbsp;    public UUID addTransaction(TransactionDto transaction) {
+<b class="nc"><i>59</i>&nbsp;        ResponseObject response = send(QUEUE_TRANSACTION_ADD, transaction);</b>
+<b class="nc"><i>60</i>&nbsp;        if(response.getStatusCode() != HttpStatus.OK){</b>
+<b class="nc"><i>61</i>&nbsp;            throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));</b>
+<i>62</i>&nbsp;        }
+<b class="nc"><i>63</i>&nbsp;        return fromJson(response.getBody(), UUID.class);</b>
+<i>64</i>&nbsp;    }
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    /**
+<i>67</i>&nbsp;     * @author s164407
+<i>68</i>&nbsp;     * @param transactionId
+<i>69</i>&nbsp;     * @return
+<i>70</i>&nbsp;     */
+<i>71</i>&nbsp;    @Override
+<i>72</i>&nbsp;    public TransactionDto getTransaction(UUID transactionId) {
+<b class="nc"><i>73</i>&nbsp;        ResponseObject response = send(QUEUE_TRANSACTION_GET, transactionId);</b>
+<b class="nc"><i>74</i>&nbsp;        if(response.getStatusCode() != HttpStatus.OK){</b>
+<b class="nc"><i>75</i>&nbsp;            throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));</b>
+<i>76</i>&nbsp;        }
+<b class="nc"><i>77</i>&nbsp;        return fromJson(response.getBody(), TransactionDto.class);</b>
+<i>78</i>&nbsp;    }
+<i>79</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>

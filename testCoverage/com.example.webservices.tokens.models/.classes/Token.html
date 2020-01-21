@@ -1,0 +1,131 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Token</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.webservices.tokens.models</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Token (com.example.webservices.tokens.models)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Token</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (6/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    71.4%
+  </span>
+  <span class="absValue">
+    (10/ 14)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.webservices.tokens.models;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;
+<i>4</i>&nbsp;import javax.persistence.Entity;
+<i>5</i>&nbsp;import javax.persistence.Id;
+<i>6</i>&nbsp;import java.util.Date;
+<i>7</i>&nbsp;import java.util.Objects;
+<i>8</i>&nbsp;import java.util.UUID;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;@Entity
+<i>11</i>&nbsp;public class Token {
+<i>12</i>&nbsp;    @Id
+<i>13</i>&nbsp;    private UUID tokenId;
+<i>14</i>&nbsp;    private boolean used;
+<b class="fc"><i>15</i>&nbsp;    private Date useDate = null;</b>
+<i>16</i>&nbsp;    private UUID customer;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    @Override
+<i>19</i>&nbsp;    public boolean equals(Object obj) {
+<b class="nc"><i>20</i>&nbsp;        if (!(obj instanceof Token)) {</b>
+<b class="nc"><i>21</i>&nbsp;            return super.equals(obj);</b>
+<i>22</i>&nbsp;        }
+<b class="nc"><i>23</i>&nbsp;        return Objects.equals(((Token) obj).tokenId, tokenId);</b>
+<i>24</i>&nbsp;    }
+<i>25</i>&nbsp;
+<b class="nc"><i>26</i>&nbsp;    public Token() {}</b>
+<i>27</i>&nbsp;
+<b class="fc"><i>28</i>&nbsp;    public Token(UUID customer){</b>
+<b class="fc"><i>29</i>&nbsp;        this.customer = customer;</b>
+<b class="fc"><i>30</i>&nbsp;        this.tokenId = UUID.randomUUID();</b>
+<b class="fc"><i>31</i>&nbsp;    }</b>
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    public UUID getTokenId() {
+<b class="fc"><i>34</i>&nbsp;        return tokenId;</b>
+<i>35</i>&nbsp;    }
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    public boolean isUsed() {
+<b class="fc"><i>38</i>&nbsp;        return used;</b>
+<i>39</i>&nbsp;    }
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    public void setUsed(boolean used) {
+<b class="fc"><i>42</i>&nbsp;        this.used = used;</b>
+<b class="fc"><i>43</i>&nbsp;    }</b>
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    public UUID getCustomerId() {
+<b class="fc"><i>46</i>&nbsp;        return customer;</b>
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>

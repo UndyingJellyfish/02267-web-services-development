@@ -1,0 +1,125 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IAccountService</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.webservices.library.interfaces</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IAccountService (com.example.webservices.library.interfaces)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">IAccountService$MockitoMock$1329390524</td>
+  </tr>
+  <tr>
+    <td class="name">IAccountService$MockitoMock$1329390524$auxiliary$KLKSYdcb</td>
+  </tr>
+  <tr>
+    <td class="name">IAccountService$MockitoMock$1329390524$auxiliary$VL0UWq8T</td>
+  </tr>
+  <tr>
+    <td class="name">IAccountService$MockitoMock$1919677861</td>
+  </tr>
+  <tr>
+    <td class="name">IAccountService$MockitoMock$1919677861$auxiliary$ei6Xw9h3</td>
+  </tr>
+  <tr>
+    <td class="name">IAccountService$MockitoMock$1919677861$auxiliary$oM07cO9U</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.webservices.library.interfaces;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.example.webservices.library.dataTransferObjects.AccountDto;
+<i>4</i>&nbsp;import com.example.webservices.library.dataTransferObjects.ChangeNameDto;
+<i>5</i>&nbsp;import com.example.webservices.library.dataTransferObjects.SignupDto;
+<i>6</i>&nbsp;import com.example.webservices.library.exceptions.DuplicateEntryException;
+<i>7</i>&nbsp;import com.example.webservices.library.exceptions.EntryNotFoundException;
+<i>8</i>&nbsp;import com.fasterxml.jackson.core.JsonProcessingException;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import java.util.UUID;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;public interface IAccountService {
+<i>13</i>&nbsp;    /**
+<i>14</i>&nbsp;     * @param signupDto contains the information required to sign up a new customer
+<i>15</i>&nbsp;     * @return the newly registered account as a customer
+<i>16</i>&nbsp;     * @throws DuplicateEntryException
+<i>17</i>&nbsp;     */
+<i>18</i>&nbsp;    AccountDto addCustomer(SignupDto signupDto) throws DuplicateEntryException;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    /**
+<i>21</i>&nbsp;     * @param signupDto contains the information required to sign up a new customer
+<i>22</i>&nbsp;     * @return the newly registered account as a merchant
+<i>23</i>&nbsp;     * @throws DuplicateEntryException thrown when the user cannot be created due to a duplicate
+<i>24</i>&nbsp;     */
+<i>25</i>&nbsp;    AccountDto addMerchant(SignupDto signupDto) throws DuplicateEntryException;
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    /**
+<i>28</i>&nbsp;     * @param changeNameDto contains the information required to change the name of a user
+<i>29</i>&nbsp;     * @throws EntryNotFoundException thrown when the specified account does not exist
+<i>30</i>&nbsp;     */
+<i>31</i>&nbsp;    void changeName(ChangeNameDto changeNameDto) throws EntryNotFoundException;
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    /**
+<i>34</i>&nbsp;     * @param accountId id of the account to delete
+<i>35</i>&nbsp;     * @throws EntryNotFoundException thrown when the specified account does not exist
+<i>36</i>&nbsp;     */
+<i>37</i>&nbsp;    void delete(UUID accountId) throws EntryNotFoundException;
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    /**
+<i>40</i>&nbsp;     * @param customerId id of the customer to search for
+<i>41</i>&nbsp;     * @return gets the requested account as a customer
+<i>42</i>&nbsp;     * @throws EntryNotFoundException thrown when the specified account does not exist
+<i>43</i>&nbsp;     */
+<i>44</i>&nbsp;    AccountDto getCustomer(UUID customerId) throws EntryNotFoundException;
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    /**
+<i>47</i>&nbsp;     * @param id id of the account to search for
+<i>48</i>&nbsp;     * @return gets the requested account
+<i>49</i>&nbsp;     * @throws EntryNotFoundException thrown when the specified account does not exist
+<i>50</i>&nbsp;     */
+<i>51</i>&nbsp;    AccountDto getAccount(UUID id) throws EntryNotFoundException;
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    /**
+<i>54</i>&nbsp;     * @param merchantId id of the merchant to search for
+<i>55</i>&nbsp;     * @return gets the requested account as a merchant
+<i>56</i>&nbsp;     * @throws EntryNotFoundException thrown when the specified account does not exist
+<i>57</i>&nbsp;     */
+<i>58</i>&nbsp;    AccountDto getMerchant(UUID merchantId) throws EntryNotFoundException;
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>

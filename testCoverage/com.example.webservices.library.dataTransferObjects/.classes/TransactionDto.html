@@ -1,0 +1,192 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TransactionDto</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.webservices.library.dataTransferObjects</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TransactionDto (com.example.webservices.library.dataTransferObjects)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TransactionDto</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    57.1%
+  </span>
+  <span class="absValue">
+    (12/ 21)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    58.5%
+  </span>
+  <span class="absValue">
+    (24/ 41)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.webservices.library.dataTransferObjects;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.io.Serializable;
+<i>4</i>&nbsp;import java.math.BigDecimal;
+<i>5</i>&nbsp;import java.util.Date;
+<i>6</i>&nbsp;import java.util.UUID;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;public class TransactionDto implements Serializable {
+<i>9</i>&nbsp;    private UUID transactionId;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;    private UUID tokenId;
+<i>12</i>&nbsp;    private UUID creditorId;
+<i>13</i>&nbsp;    private UUID debtorId;
+<i>14</i>&nbsp;    private BigDecimal amount;
+<i>15</i>&nbsp;    private String description;
+<i>16</i>&nbsp;    private boolean isRefund;
+<i>17</i>&nbsp;    private Date transactionDate;
+<i>18</i>&nbsp;
+<b class="nc"><i>19</i>&nbsp;    private TransactionDto(){}</b>
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    public TransactionDto(UUID tokenId, UUID creditorId, UUID debtorId, BigDecimal amount, String description, Date transactionDate) {
+<b class="nc"><i>23</i>&nbsp;        this(null, tokenId, creditorId, debtorId,amount,description,false,transactionDate);</b>
+<b class="nc"><i>24</i>&nbsp;    }</b>
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    public TransactionDto(UUID tokenId, UUID creditorId, UUID debtorId, BigDecimal amount, String description, boolean isRefund, Date transactionDate) {
+<b class="fc"><i>27</i>&nbsp;        this(null, tokenId, creditorId, debtorId,amount,description,isRefund,transactionDate);</b>
+<b class="fc"><i>28</i>&nbsp;    }</b>
+<i>29</i>&nbsp;
+<b class="fc"><i>30</i>&nbsp;    public TransactionDto(UUID transactionId, UUID tokenId, UUID creditorId, UUID debtorId, BigDecimal amount, String description, boolean isRefund, Date transactionDate) {</b>
+<b class="fc"><i>31</i>&nbsp;        this.transactionId = transactionId;</b>
+<b class="fc"><i>32</i>&nbsp;        this.tokenId = tokenId;</b>
+<b class="fc"><i>33</i>&nbsp;        this.creditorId = creditorId;</b>
+<b class="fc"><i>34</i>&nbsp;        this.debtorId = debtorId;</b>
+<b class="fc"><i>35</i>&nbsp;        this.amount = amount;</b>
+<b class="fc"><i>36</i>&nbsp;        this.description = description;</b>
+<b class="fc"><i>37</i>&nbsp;        this.isRefund = isRefund;</b>
+<b class="fc"><i>38</i>&nbsp;        this.transactionDate = transactionDate;</b>
+<b class="fc"><i>39</i>&nbsp;    }</b>
+<i>40</i>&nbsp;
+<b class="nc"><i>41</i>&nbsp;    private TransactionDto(UUID uuid) {</b>
+<b class="nc"><i>42</i>&nbsp;        transactionId = uuid;</b>
+<b class="nc"><i>43</i>&nbsp;    }</b>
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    public static TransactionDto Create() {
+<b class="nc"><i>46</i>&nbsp;        return new TransactionDto(UUID.randomUUID());</b>
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    public UUID getTokenId() {
+<b class="fc"><i>51</i>&nbsp;        return tokenId;</b>
+<i>52</i>&nbsp;    }
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    public void setTokenId(UUID tokenId) {
+<b class="nc"><i>55</i>&nbsp;        this.tokenId = tokenId;</b>
+<b class="nc"><i>56</i>&nbsp;    }</b>
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    public UUID getCreditorId() {
+<b class="fc"><i>59</i>&nbsp;        return creditorId;</b>
+<i>60</i>&nbsp;    }
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    public void setCreditorId(UUID creditorId) {
+<b class="fc"><i>63</i>&nbsp;        this.creditorId = creditorId;</b>
+<b class="fc"><i>64</i>&nbsp;    }</b>
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    public BigDecimal getAmount() {
+<b class="fc"><i>67</i>&nbsp;        return amount;</b>
+<i>68</i>&nbsp;    }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    public void setAmount(BigDecimal amount) {
+<b class="nc"><i>71</i>&nbsp;        this.amount = amount;</b>
+<b class="nc"><i>72</i>&nbsp;    }</b>
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;    public String getDescription() {
+<b class="fc"><i>75</i>&nbsp;        return description;</b>
+<i>76</i>&nbsp;    }
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;    public void setDescription(String description) {
+<b class="nc"><i>79</i>&nbsp;        this.description = description;</b>
+<b class="nc"><i>80</i>&nbsp;    }</b>
+<i>81</i>&nbsp;
+<i>82</i>&nbsp;    public void setDebtorId(UUID debtorId) {
+<b class="fc"><i>83</i>&nbsp;        this.debtorId = debtorId;</b>
+<b class="fc"><i>84</i>&nbsp;    }</b>
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;    public UUID getDebtorId() {
+<b class="fc"><i>87</i>&nbsp;        return debtorId;</b>
+<i>88</i>&nbsp;    }
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;    public UUID getTransactionId() {
+<b class="fc"><i>91</i>&nbsp;        return transactionId;</b>
+<i>92</i>&nbsp;    }
+<i>93</i>&nbsp;
+<i>94</i>&nbsp;    public boolean isRefund() {
+<b class="fc"><i>95</i>&nbsp;        return isRefund;</b>
+<i>96</i>&nbsp;    }
+<i>97</i>&nbsp;
+<i>98</i>&nbsp;    public void setRefund(boolean refund) {
+<b class="nc"><i>99</i>&nbsp;        isRefund = refund;</b>
+<b class="nc"><i>100</i>&nbsp;    }</b>
+<i>101</i>&nbsp;
+<i>102</i>&nbsp;    public Date getTransactionDate() {
+<b class="fc"><i>103</i>&nbsp;        return transactionDate;</b>
+<i>104</i>&nbsp;    }
+<i>105</i>&nbsp;
+<i>106</i>&nbsp;    public void setTransactionDate(Date transactionDate) {
+<b class="nc"><i>107</i>&nbsp;        this.transactionDate = transactionDate;</b>
+<b class="nc"><i>108</i>&nbsp;    }</b>
+<i>109</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>

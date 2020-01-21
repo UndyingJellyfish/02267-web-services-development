@@ -1,0 +1,285 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TransferMoneyFromTo</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">dtu.ws.fastmoney</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TransferMoneyFromTo (dtu.ws.fastmoney)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TransferMoneyFromTo</td>
+<td class="coverageStat">
+  <span class="percent">
+    11.1%
+  </span>
+  <span class="absValue">
+    (1/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    7.7%
+  </span>
+  <span class="absValue">
+    (1/ 13)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">TransferMoneyFromTo$JaxbAccessorF_amount</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/ 5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">TransferMoneyFromTo$JaxbAccessorF_creditor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/ 5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">TransferMoneyFromTo$JaxbAccessorF_debtor</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/ 5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">TransferMoneyFromTo$JaxbAccessorF_description</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/ 5)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    61.9%
+  </span>
+  <span class="absValue">
+    (13/ 21)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    63.6%
+  </span>
+  <span class="absValue">
+    (21/ 33)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;
+<i>2</i>&nbsp;package dtu.ws.fastmoney;
+<i>3</i>&nbsp;
+<i>4</i>&nbsp;import java.math.BigDecimal;
+<i>5</i>&nbsp;import javax.xml.bind.annotation.XmlAccessType;
+<i>6</i>&nbsp;import javax.xml.bind.annotation.XmlAccessorType;
+<i>7</i>&nbsp;import javax.xml.bind.annotation.XmlType;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;@XmlAccessorType(XmlAccessType.FIELD)
+<i>10</i>&nbsp;@XmlType(name = &quot;transferMoneyFromTo&quot;, propOrder = {
+<i>11</i>&nbsp;    &quot;debtor&quot;,
+<i>12</i>&nbsp;    &quot;creditor&quot;,
+<i>13</i>&nbsp;    &quot;amount&quot;,
+<i>14</i>&nbsp;    &quot;description&quot;
+<i>15</i>&nbsp;})
+<b class="fc"><i>16</i>&nbsp;public class TransferMoneyFromTo {</b>
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    protected String debtor;
+<i>19</i>&nbsp;    protected String creditor;
+<i>20</i>&nbsp;    protected BigDecimal amount;
+<i>21</i>&nbsp;    protected String description;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    /**
+<i>24</i>&nbsp;     * Gets the value of the debtor property.
+<i>25</i>&nbsp;     * 
+<i>26</i>&nbsp;     * @return
+<i>27</i>&nbsp;     *     possible object is
+<i>28</i>&nbsp;     *     {@link String }
+<i>29</i>&nbsp;     *     
+<i>30</i>&nbsp;     */
+<i>31</i>&nbsp;    public String getDebtor() {
+<b class="nc"><i>32</i>&nbsp;        return debtor;</b>
+<i>33</i>&nbsp;    }
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    /**
+<i>36</i>&nbsp;     * Sets the value of the debtor property.
+<b class="fc"><i>37</i>&nbsp;     * </b>
+<b class="fc"><i>38</i>&nbsp;     * @param value</b>
+<i>39</i>&nbsp;     *     allowed object is
+<i>40</i>&nbsp;     *     {@link String }
+<b class="fc"><i>41</i>&nbsp;     *     </b>
+<i>42</i>&nbsp;     */
+<i>43</i>&nbsp;    public void setDebtor(String value) {
+<b class="nc"><i>44</i>&nbsp;        this.debtor = value;</b>
+<b class="pc"><i>45</i>&nbsp;    }</b>
+<b class="fc"><i>46</i>&nbsp;</b>
+<i>47</i>&nbsp;    /**
+<i>48</i>&nbsp;     * Gets the value of the creditor property.
+<i>49</i>&nbsp;     * 
+<i>50</i>&nbsp;     * @return
+<i>51</i>&nbsp;     *     possible object is
+<i>52</i>&nbsp;     *     {@link String }
+<i>53</i>&nbsp;     *     
+<i>54</i>&nbsp;     */
+<i>55</i>&nbsp;    public String getCreditor() {
+<b class="nc"><i>56</i>&nbsp;        return creditor;</b>
+<i>57</i>&nbsp;    }
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    /**
+<i>60</i>&nbsp;     * Sets the value of the creditor property.
+<i>61</i>&nbsp;     * 
+<i>62</i>&nbsp;     * @param value
+<i>63</i>&nbsp;     *     allowed object is
+<i>64</i>&nbsp;     *     {@link String }
+<i>65</i>&nbsp;     *     
+<i>66</i>&nbsp;     */
+<i>67</i>&nbsp;    public void setCreditor(String value) {
+<b class="nc"><i>68</i>&nbsp;        this.creditor = value;</b>
+<b class="nc"><i>69</i>&nbsp;    }</b>
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;    /**
+<i>72</i>&nbsp;     * Gets the value of the amount property.
+<i>73</i>&nbsp;     * 
+<i>74</i>&nbsp;     * @return
+<i>75</i>&nbsp;     *     possible object is
+<i>76</i>&nbsp;     *     {@link BigDecimal }
+<i>77</i>&nbsp;     *     
+<i>78</i>&nbsp;     */
+<i>79</i>&nbsp;    public BigDecimal getAmount() {
+<b class="nc"><i>80</i>&nbsp;        return amount;</b>
+<i>81</i>&nbsp;    }
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;    /**
+<i>84</i>&nbsp;     * Sets the value of the amount property.
+<i>85</i>&nbsp;     * 
+<i>86</i>&nbsp;     * @param value
+<i>87</i>&nbsp;     *     allowed object is
+<i>88</i>&nbsp;     *     {@link BigDecimal }
+<i>89</i>&nbsp;     *     
+<i>90</i>&nbsp;     */
+<i>91</i>&nbsp;    public void setAmount(BigDecimal value) {
+<b class="nc"><i>92</i>&nbsp;        this.amount = value;</b>
+<b class="nc"><i>93</i>&nbsp;    }</b>
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;    /**
+<i>96</i>&nbsp;     * Gets the value of the description property.
+<i>97</i>&nbsp;     * 
+<i>98</i>&nbsp;     * @return
+<i>99</i>&nbsp;     *     possible object is
+<i>100</i>&nbsp;     *     {@link String }
+<i>101</i>&nbsp;     *     
+<i>102</i>&nbsp;     */
+<i>103</i>&nbsp;    public String getDescription() {
+<b class="nc"><i>104</i>&nbsp;        return description;</b>
+<i>105</i>&nbsp;    }
+<i>106</i>&nbsp;
+<i>107</i>&nbsp;    /**
+<i>108</i>&nbsp;     * Sets the value of the description property.
+<i>109</i>&nbsp;     * 
+<i>110</i>&nbsp;     * @param value
+<i>111</i>&nbsp;     *     allowed object is
+<i>112</i>&nbsp;     *     {@link String }
+<i>113</i>&nbsp;     *     
+<i>114</i>&nbsp;     */
+<i>115</i>&nbsp;    public void setDescription(String value) {
+<b class="nc"><i>116</i>&nbsp;        this.description = value;</b>
+<b class="nc"><i>117</i>&nbsp;    }</b>
+<i>118</i>&nbsp;
+<i>119</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,200 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: JpaAccountDatastore</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.webservices.accounts.dataAccess</a> ]
+</div>
+
+<h1>Coverage Summary for Class: JpaAccountDatastore (com.example.webservices.accounts.dataAccess)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">JpaAccountDatastore</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88.9%
+  </span>
+  <span class="absValue">
+    (8/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (15/ 18)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.webservices.accounts.dataAccess;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.example.webservices.accounts.interfaces.IAccountDatastore;
+<i>4</i>&nbsp;import com.example.webservices.accounts.models.Account;
+<i>5</i>&nbsp;import com.example.webservices.accounts.models.Customer;
+<i>6</i>&nbsp;import com.example.webservices.accounts.models.Merchant;
+<i>7</i>&nbsp;import com.example.webservices.library.exceptions.DuplicateEntryException;
+<i>8</i>&nbsp;import com.example.webservices.library.exceptions.EntryNotFoundException;
+<i>9</i>&nbsp;import org.springframework.stereotype.Service;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import java.util.UUID;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;public class JpaAccountDatastore implements IAccountDatastore {
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    private final AccountRepository&lt;Account&gt; accountRepository;
+<i>16</i>&nbsp;    private final AccountRepository&lt;Customer&gt; customerRepository;
+<i>17</i>&nbsp;    private final AccountRepository&lt;Merchant&gt; merchantRepository;
+<i>18</i>&nbsp;
+<b class="fc"><i>19</i>&nbsp;    public JpaAccountDatastore(AccountRepository&lt;Account&gt; accountRepository, AccountRepository&lt;Customer&gt; customerRepository, AccountRepository&lt;Merchant&gt; merchantRepository) {</b>
+<b class="fc"><i>20</i>&nbsp;        this.accountRepository = accountRepository;</b>
+<b class="fc"><i>21</i>&nbsp;        this.customerRepository = customerRepository;</b>
+<b class="fc"><i>22</i>&nbsp;        this.merchantRepository = merchantRepository;</b>
+<b class="fc"><i>23</i>&nbsp;    }</b>
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    /**
+<i>26</i>&nbsp;     * @author s164407
+<i>27</i>&nbsp;     * @param repository
+<i>28</i>&nbsp;     * @param id
+<i>29</i>&nbsp;     * @param &lt;T&gt;
+<i>30</i>&nbsp;     * @return
+<i>31</i>&nbsp;     * @throws EntryNotFoundException
+<i>32</i>&nbsp;     */
+<i>33</i>&nbsp;    private &lt;T extends Account&gt; T getAccount(AccountRepository&lt;T&gt; repository, UUID id) throws EntryNotFoundException {
+<b class="fc"><i>34</i>&nbsp;        return repository.findById(id).orElseThrow(EntryNotFoundException::new);</b>
+<i>35</i>&nbsp;    }
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    /**
+<i>38</i>&nbsp;     * @author s164407
+<i>39</i>&nbsp;     * @param id
+<i>40</i>&nbsp;     * @return
+<i>41</i>&nbsp;     */
+<i>42</i>&nbsp;    private boolean exists(UUID id) {
+<b class="fc"><i>43</i>&nbsp;        return accountRepository.findById(id).isPresent();</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    /**
+<i>47</i>&nbsp;     * @author s164407
+<i>48</i>&nbsp;     * @param customerId
+<i>49</i>&nbsp;     * @return
+<i>50</i>&nbsp;     * @throws EntryNotFoundException
+<i>51</i>&nbsp;     */
+<i>52</i>&nbsp;    @Override
+<i>53</i>&nbsp;    public Customer getCustomer(UUID customerId) throws EntryNotFoundException {
+<b class="fc"><i>54</i>&nbsp;        return getAccount(customerRepository, customerId);</b>
+<i>55</i>&nbsp;    }
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;    /**
+<i>58</i>&nbsp;     * @author s164407
+<i>59</i>&nbsp;     * @param account
+<i>60</i>&nbsp;     * @param &lt;T&gt;
+<i>61</i>&nbsp;     * @return
+<i>62</i>&nbsp;     * @throws DuplicateEntryException
+<i>63</i>&nbsp;     */
+<i>64</i>&nbsp;    @Override
+<i>65</i>&nbsp;    public &lt;T extends Account&gt; T addAccount(T account) throws DuplicateEntryException {
+<b class="fc"><i>66</i>&nbsp;        if (exists(account.getAccountId())) {</b>
+<b class="nc"><i>67</i>&nbsp;            throw new DuplicateEntryException();</b>
+<i>68</i>&nbsp;        }
+<i>69</i>&nbsp;
+<b class="fc"><i>70</i>&nbsp;        return accountRepository.save(account);</b>
+<i>71</i>&nbsp;    }
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;    /**
+<i>74</i>&nbsp;     * @author s164407
+<i>75</i>&nbsp;     * @param merchantId
+<i>76</i>&nbsp;     * @return
+<i>77</i>&nbsp;     * @throws EntryNotFoundException
+<i>78</i>&nbsp;     */
+<i>79</i>&nbsp;    @Override
+<i>80</i>&nbsp;    public Merchant getMerchant(UUID merchantId) throws EntryNotFoundException {
+<b class="fc"><i>81</i>&nbsp;        return getAccount(merchantRepository, merchantId);</b>
+<i>82</i>&nbsp;    }
+<i>83</i>&nbsp;
+<i>84</i>&nbsp;    /**
+<i>85</i>&nbsp;     * @author s164407
+<i>86</i>&nbsp;     * @param accountId
+<i>87</i>&nbsp;     * @return
+<i>88</i>&nbsp;     * @throws EntryNotFoundException
+<i>89</i>&nbsp;     */
+<i>90</i>&nbsp;    @Override
+<i>91</i>&nbsp;    public Account getAccount(UUID accountId) throws EntryNotFoundException {
+<b class="fc"><i>92</i>&nbsp;        return getAccount(accountRepository, accountId);</b>
+<i>93</i>&nbsp;    }
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;    /**
+<i>96</i>&nbsp;     * @author s164407
+<i>97</i>&nbsp;     * @param accountId
+<i>98</i>&nbsp;     * @throws EntryNotFoundException
+<i>99</i>&nbsp;     */
+<i>100</i>&nbsp;    @Override
+<i>101</i>&nbsp;    public void deleteAccount(UUID accountId) throws EntryNotFoundException {
+<b class="fc"><i>102</i>&nbsp;        if(!exists(accountId)){</b>
+<b class="nc"><i>103</i>&nbsp;            throw new EntryNotFoundException();</b>
+<i>104</i>&nbsp;        }
+<b class="fc"><i>105</i>&nbsp;        accountRepository.deleteById(accountId);</b>
+<b class="fc"><i>106</i>&nbsp;    }</b>
+<i>107</i>&nbsp;
+<i>108</i>&nbsp;    /**
+<i>109</i>&nbsp;     * @author s164407
+<i>110</i>&nbsp;     * @param account
+<i>111</i>&nbsp;     * @return
+<i>112</i>&nbsp;     */
+<i>113</i>&nbsp;    @Override
+<i>114</i>&nbsp;    public Account saveAccount(Account account) {
+<b class="nc"><i>115</i>&nbsp;        return accountRepository.save(account);</b>
+<i>116</i>&nbsp;    }
+<i>117</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>

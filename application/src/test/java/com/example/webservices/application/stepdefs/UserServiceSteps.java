@@ -21,7 +21,7 @@ public class UserServiceSteps extends AbstractSteps {
     private String merchantName;
     private UUID merchantId;
     private String bankAccountId;
-    
+
     /**
     @author s164410
      */

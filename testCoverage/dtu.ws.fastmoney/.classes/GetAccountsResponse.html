@@ -1,0 +1,158 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GetAccountsResponse</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">dtu.ws.fastmoney</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GetAccountsResponse (dtu.ws.fastmoney)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GetAccountsResponse</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GetAccountsResponse$JaxbAccessorF__return</td>
+<td class="coverageStat">
+  <span class="percent">
+    33.3%
+  </span>
+  <span class="absValue">
+    (1/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    40%
+  </span>
+  <span class="absValue">
+    (2/ 5)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    20%
+  </span>
+  <span class="absValue">
+    (1/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    22.2%
+  </span>
+  <span class="absValue">
+    (2/ 9)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;
+<i>2</i>&nbsp;package dtu.ws.fastmoney;
+<i>3</i>&nbsp;
+<i>4</i>&nbsp;import java.util.ArrayList;
+<i>5</i>&nbsp;import java.util.List;
+<i>6</i>&nbsp;import javax.xml.bind.annotation.XmlAccessType;
+<i>7</i>&nbsp;import javax.xml.bind.annotation.XmlAccessorType;
+<i>8</i>&nbsp;import javax.xml.bind.annotation.XmlElement;
+<i>9</i>&nbsp;import javax.xml.bind.annotation.XmlType;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;@XmlAccessorType(XmlAccessType.FIELD)
+<i>12</i>&nbsp;@XmlType(name = &quot;getAccountsResponse&quot;, propOrder = {
+<i>13</i>&nbsp;    &quot;_return&quot;
+<i>14</i>&nbsp;})
+<b class="nc"><i>15</i>&nbsp;public class GetAccountsResponse {</b>
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    @XmlElement(name = &quot;return&quot;)
+<i>18</i>&nbsp;    protected List&lt;AccountInfo&gt; _return;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    /**
+<i>21</i>&nbsp;     * Gets the value of the return property.
+<i>22</i>&nbsp;     * 
+<i>23</i>&nbsp;     * &lt;p&gt;
+<i>24</i>&nbsp;     * This accessor method returns a reference to the live list,
+<i>25</i>&nbsp;     * not a snapshot. Therefore any modification you make to the
+<i>26</i>&nbsp;     * returned list will be present inside the JAXB object.
+<i>27</i>&nbsp;     * This is why there is not a &lt;CODE&gt;set&lt;/CODE&gt; method for the return property.
+<i>28</i>&nbsp;     * 
+<i>29</i>&nbsp;     * &lt;p&gt;
+<i>30</i>&nbsp;     * For example, to add a new item, do as follows:
+<i>31</i>&nbsp;     * &lt;pre&gt;
+<i>32</i>&nbsp;     *    getReturn().add(newItem);
+<i>33</i>&nbsp;     * &lt;/pre&gt;
+<i>34</i>&nbsp;     * 
+<i>35</i>&nbsp;     * 
+<i>36</i>&nbsp;     * &lt;p&gt;
+<b class="fc"><i>37</i>&nbsp;     * Objects of the following type(s) are allowed in the list</b>
+<b class="fc"><i>38</i>&nbsp;     * {@link AccountInfo }</b>
+<i>39</i>&nbsp;     * 
+<i>40</i>&nbsp;     * @return List of accounts in response
+<b class="nc"><i>41</i>&nbsp;     */</b>
+<i>42</i>&nbsp;    public List&lt;AccountInfo&gt; getReturn() {
+<b class="nc"><i>43</i>&nbsp;        if (_return == null) {</b>
+<b class="nc"><i>44</i>&nbsp;            _return = new ArrayList&lt;AccountInfo&gt;();</b>
+<b class="nc"><i>45</i>&nbsp;        }</b>
+<b class="nc"><i>46</i>&nbsp;        return this._return;</b>
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-01-21 11:29</div>
+</div>
+</body>
+</html>
