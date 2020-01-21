@@ -35,7 +35,12 @@ public class AbstractSteps {
         return CONTEXT;
     }
 
-    /** @author s164410 */
+    /**
+     * @author s164410
+     * @param <T> type
+     * @param type class of the object to instantiate
+     * @return maps from a http response to an object of the type T
+     * */
     protected <T> T getBody(Class<T> type){
         try {
 
