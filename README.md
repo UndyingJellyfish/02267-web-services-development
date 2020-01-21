@@ -1,7 +1,7 @@
 # Fastmoney 06
 
 ## Build status
-[![Build Status](http://dtu.ws.fastmoney-06.compute.dtu.dk:8282/buildStatus/icon?job=DTUPay%2Fmaster)](http://dtu.ws.fastmoney-06.compute.dtu.dk:8282/job/DTUPay/job/master/)
+[![Build Status](http://fastmoney-06.compute.dtu.dk:8282/buildStatus/icon?job=DTUPay%2Fmaster)](http://fastmoney-06.compute.dtu.dk:8282/job/DTUPay/job/master/)
 
 ## Table of contents
 1. [Build Status](#build-status)
