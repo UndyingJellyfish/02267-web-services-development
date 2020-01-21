@@ -25,6 +25,15 @@ public class PaymentMQService extends RabbitMQBaseClass implements IPaymentServi
         super(rabbitTemplate, exchange);
     }
 
+    /**
+     * @author s164407
+     * @param transactionDto data object used to transfer money from one account to another using a token
+     * @return
+     * @throws EntryNotFoundException
+     * @throws TokenException
+     * @throws BankException
+     * @throws InvalidTransferAmountException
+     */
     @Override
     public TransactionDto transfer(TransactionDto transactionDto) throws EntryNotFoundException, TokenException, BankException, InvalidTransferAmountException {
         ResponseObject response = send(QUEUE_PAYMENT_TRANSFER, transactionDto);
@@ -35,6 +44,10 @@ public class PaymentMQService extends RabbitMQBaseClass implements IPaymentServi
     }
 
 
+    /**
+     * @author s164407
+     * @param transactionId the transaction to refund
+     */
     @Override
     public void refund(UUID transactionId) {
         ResponseObject response = send(QUEUE_PAYMENT_REFUND, transactionId);

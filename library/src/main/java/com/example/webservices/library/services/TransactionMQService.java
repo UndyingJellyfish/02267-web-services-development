@@ -24,11 +24,22 @@ public class TransactionMQService extends RabbitMQBaseClass implements ITransact
         super(rabbitTemplate, exchange);
     }
 
+    /**
+     * @author s164398
+     * @param id the id of the account
+     * @implNote Should not be exposed
+     * @return
+     */
     @Override
     public List<TransactionDto> getTransactions(UUID id) {
         return null;
     }
 
+    /**
+     * @author s164398
+     * @param tokenId the id of the token to refund
+     * @return The id of the new transaction that refunds
+     */
     @Override
     public UUID refundTransaction(UUID tokenId) {
         ResponseObject response = send(QUEUE_TRANSACTION_REFUND, tokenId);
@@ -38,6 +49,11 @@ public class TransactionMQService extends RabbitMQBaseClass implements ITransact
         return fromJson(response.getBody(), UUID.class);
     }
 
+    /**
+     * @author s164398
+     * @param transaction persists a new transaction
+     * @return The id of the new transaction
+     */
     @Override
     public UUID addTransaction(TransactionDto transaction) {
         ResponseObject response = send(QUEUE_TRANSACTION_ADD, transaction);
@@ -47,6 +63,11 @@ public class TransactionMQService extends RabbitMQBaseClass implements ITransact
         return fromJson(response.getBody(), UUID.class);
     }
 
+    /**
+     * @author s164407
+     * @param transactionId
+     * @return
+     */
     @Override
     public TransactionDto getTransaction(UUID transactionId) {
         ResponseObject response = send(QUEUE_TRANSACTION_GET, transactionId);

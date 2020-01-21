@@ -24,6 +24,11 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
         super(rabbitTemplate, exchange);
     }
 
+    /**
+     * @author s164410
+     * @param signupDto contains the information required to sign up a new customer
+     * @return
+     */
     @Override
     public AccountDto addCustomer(SignupDto signupDto) {
         ResponseObject response = send(QUEUE_CUSTOMER_SIGNUP, signupDto);
@@ -34,6 +39,11 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
 
     }
 
+    /**
+     * @author s164410
+     * @param signupDto contains the information required to sign up a new customer
+     * @return
+     */
     @Override
     public AccountDto addMerchant(SignupDto signupDto) {
         ResponseObject response = send(QUEUE_MERCHANT_SIGNUP, signupDto);
@@ -44,6 +54,10 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
 
     }
 
+    /**
+     * @author s164410
+     * @param changeNameDto contains the information required to change the name of a user
+     */
     @Override
     public void changeName(ChangeNameDto changeNameDto) {
         ResponseObject response = send(QUEUE_ACCOUNT_CHANGENAME, changeNameDto);
@@ -52,6 +66,10 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
         }
     }
 
+    /**
+     * @author s164410
+     * @param accountId id of the account to delete
+     */
     @Override
     public void delete(UUID accountId) {
         ResponseObject response = send(QUEUE_ACCOUNT_DELETE, accountId);
@@ -60,11 +78,21 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
         }
     }
 
+    /**
+     * @author s164410
+     * @param customerId id of the customer to search for
+     * @return
+     */
     @Override
     public AccountDto getCustomer(UUID customerId) {
         return getAccount(customerId);
     }
 
+    /**
+     * @author s164410
+     * @param id id of the account to search for
+     * @return
+     */
     @Override
     public AccountDto getAccount(UUID id) {
         ResponseObject response = send(QUEUE_ACCOUNT_GET, id);
@@ -75,6 +103,11 @@ public class AccountMQService extends RabbitMQBaseClass implements IAccountServi
 
     }
 
+    /**
+     * @author s164410
+     * @param merchantId id of the merchant to search for
+     * @return
+     */
     @Override
     public AccountDto getMerchant(UUID merchantId) {
         return getAccount(merchantId);

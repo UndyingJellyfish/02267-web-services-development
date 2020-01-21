@@ -28,6 +28,12 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
         super(rabbitTemplate, exchange);
     }
 
+    /**
+     * @author s164424
+     * @param customer which customer to give tokens
+     * @param quantity amount of tokens to give
+     * @return List of tokenId
+     */
     @Override
     public List<UUID> RequestTokens(UUID customer, int quantity) {
         RequestTokenDto dto = new RequestTokenDto();
@@ -40,6 +46,12 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
         return Arrays.asList(fromJson(response.getBody(), UUID[].class));
     }
 
+    /**
+     * @author s164424
+     * @param customerId which account to search for
+     * @return List of TokenDto
+     * @throws EntryNotFoundException
+     */
     @Override
     public List<TokenDto> GetTokens(UUID customerId) throws EntryNotFoundException {
         ResponseObject response = send(QUEUE_TOKENS_GET, customerId);
@@ -49,6 +61,11 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
         return Arrays.asList(fromJson(response.getBody(), TokenDto[].class));
     }
 
+    /**
+     * @author s164424
+     * @param tokenId id of the token to use
+     * @throws TokenException
+     */
     @Override
     public void UseToken(UUID tokenId) throws TokenException {
         ResponseObject response = send(QUEUE_TOKEN_USE, tokenId);
@@ -57,6 +74,13 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
         }
     }
 
+    /**
+     * @author s164424
+     * @param customerId id of the customer to search for
+     * @return tokenId
+     * @throws EntryNotFoundException
+     * @throws TokenQuantityException
+     */
     @Override
     public UUID RequestToken(UUID customerId) throws EntryNotFoundException, TokenQuantityException {
         ResponseObject response = send(QUEUE_TOKEN_REQUEST, customerId);
@@ -66,6 +90,11 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
         return fromJson(response.getBody(), UUID.class);
     }
 
+    /**
+     * @author s164424
+     * @param tokenId id to search for
+     * @return
+     */
     @Override
     public TokenDto GetToken(UUID tokenId) {
         ResponseObject response = send(QUEUE_TOKEN_GET, tokenId);
@@ -75,6 +104,10 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
         return fromJson(response.getBody(),TokenDto.class);
     }
 
+    /**
+     * @author s164434
+     * @param accountId account for whom to retire all tokens
+     */
     @Override
     public void retireAll(UUID accountId) {
         ResponseObject response = send(QUEUE_TOKENS_RETIRE, accountId);
@@ -83,6 +116,11 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
         }
     }
 
+    /**
+     * @author s164434
+     * @param customerId
+     * @return
+     */
     @Override
     public int GetActiveTokens(UUID customerId) {
         ResponseObject response = send(QUEUE_TOKENS_ACTIVE, customerId);
