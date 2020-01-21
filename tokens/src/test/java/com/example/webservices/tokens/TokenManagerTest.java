@@ -10,7 +10,6 @@ import com.example.webservices.library.interfaces.ITokenManager;
 import com.example.webservices.tokens.interfaces.ITokenDatastore;
 import com.example.webservices.tokens.models.Token;
 import com.example.webservices.tokens.services.TokenManager;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -179,7 +178,7 @@ public class TokenManagerTest {
                     .thenReturn(tokens);
             List<TokenDto> afterTokens = tokenManager.GetTokens(customerId);
             assertEquals(1, afterTokens.size());
-            verify(tokenDatastore, times(1)).useToken(
+            verify(tokenDatastore, times(1)).saveToken(
                     argThat(t -> t.getTokenId().equals(tokens.get(0).getTokenId())));
         } catch (EntryNotFoundException | TokenQuantityException e) {
             fail(e.getMessage());
