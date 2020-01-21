@@ -19,11 +19,6 @@ public class SpringBootTestCase {
     @MockBean
     public IBank bank;
 
-
-
     @Before
-    public void SpringTest(){
-        
-    }
-
+    public void SpringTest(){}
 }

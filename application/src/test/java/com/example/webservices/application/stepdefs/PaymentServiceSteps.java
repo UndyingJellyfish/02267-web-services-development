@@ -31,6 +31,9 @@ public class PaymentServiceSteps extends AbstractSteps {
 
     private final String bankBaseRestUrl = "http://fastmoney-00.compute.dtu.dk";
 
+    /**
+     * @author s164434
+     */
     @After
     public void tearDown() {
         if(merchantBankId != null && !merchantBankId.equals("")){
@@ -41,7 +44,9 @@ public class PaymentServiceSteps extends AbstractSteps {
         }
     }
 
-
+    /**
+     * @author s164424
+     */
     @When("The merchant initiates the transaction")
     public void theMerchantInitiatesTheTransaction() {
 
@@ -54,22 +59,22 @@ public class PaymentServiceSteps extends AbstractSteps {
             dto.setDescription(description);
             testContext().setPayload(dto);
             executePost("/payment/transfer");
-            //transactionDto = transactionService.getTransaction(transactionDto.getTransactionId());
-
         } catch (Exception e) {
             fail(e.getMessage());
         }
     }
 
+    /**
+     * @author s164434
+     */
     @Then("The transaction should go through")
     public void theTransactionShouldGoThrough() {
         assertEquals(HttpStatus.OK.value(), testContext().getResponse().getStatusCode());
-       /* assertEquals(customerId, transactionDto.getDebtorId());
-        assertEquals(merchantId, transactionDto.getCreditorId());
-        assertEquals(amount, transactionDto.getAmount());*/
     }
 
-
+    /**
+     * @author s164407
+     */
     @When("The merchant initiates the invalid transaction")
     public void theMerchantInitiatesTheInvalidTransaction() {
         String invalidDesc = "12312oi3j4to3j4gp24ijgip24utgi24noi4untg";
@@ -80,36 +85,19 @@ public class PaymentServiceSteps extends AbstractSteps {
         dto.setDescription(invalidDesc);
         testContext().setPayload(dto);
         executePost("/payment/transfer");
-
-
     }
 
+    /**
+     * @author s164407
+     */
     @Then("The transaction should fail")
     public void theTransactionShouldFail() {
         assertEquals(HttpStatus.NOT_FOUND.value(), testContext().getResponse().statusCode());
     }
 
-/*    private String createBankAccountCustomer(SignupDto signupDto){
-        Account account = new Customer(signupDto.getName(), signupDto.getCpr(), signupDto.getBankAccountId());
-        try {
-            return this.bank.addAccount(account);
-        } catch (BankServiceException_Exception | ClassNotFoundException e) {
-            fail();
-        }
-        return "";
-    }
-
-    private String createBankAccountMerchant(SignupDto signupDto){
-        Account account = new Merchant(signupDto.getName(), signupDto.getCpr(), signupDto.getBankAccountId());
-        try {
-            return this.bank.addAccount(account);
-        } catch (BankServiceException_Exception | ClassNotFoundException e) {
-            fail();
-        }
-        return "";
-    }*/
-
-
+    /**
+     * @author s164424
+     */
     @Given("A merchant")
     public void aMerchant() {
         merchantBankId = "";
@@ -139,7 +127,9 @@ public class PaymentServiceSteps extends AbstractSteps {
     }
 
 
-
+    /**
+     * @author s164424
+     */
     @And("A valid token")
     public void aValidToken() {
 
@@ -178,16 +168,25 @@ public class PaymentServiceSteps extends AbstractSteps {
                 .orElseThrow(RuntimeException::new);
     }
 
+    /**
+     * @author s164424
+     */
     @And("A positive amount")
     public void aPositiveAmount() {
         amount = new BigDecimal("100");
     }
 
+    /**
+     * @author s164424
+     */
     @And("A token that doesn't exist")
     public void aTokenThatDoesnTExist() {
         tokenId = UUID.randomUUID();
     }
 
+    /**
+     * @author s164434
+     */
     @And("A token that has already been used")
     public void aTokenThatHasAlreadyBeenUsed() {
         customerBankId = "";
@@ -237,22 +236,34 @@ public class PaymentServiceSteps extends AbstractSteps {
 
     }
 
+    /**
+     * @author s164434
+     */
     @Then("The transaction should fail and inform that the token is used")
     public void theTransactionShouldFailAndInformThatTheTokenIsUsed() {
 
         assertEquals(HttpStatus.BAD_REQUEST.value(), testContext().getResponse().statusCode());
     }
 
+    /**
+     * @author s164407
+     */
     @And("An invalid {int}")
     public void anInvalidAmount(int arg0) {
         amount = new BigDecimal(arg0);
     }
 
+    /**
+     * @author s164407
+     */
     @Then("The transaction should fail and inform that the amount is invalid")
     public void theTransactionShouldFailAndInformThatTheAmountIsInvalid() {
         assertEquals(HttpStatus.BAD_REQUEST.value(), testContext().getResponse().statusCode());
     }
 
+    /**
+     * @author s164434
+     */
     @Given("A transaction")
     public void aTransaction() {
 
@@ -296,6 +307,9 @@ public class PaymentServiceSteps extends AbstractSteps {
         }
     }
 
+    /**
+     * @author s164395
+     */
     @When("The customer asks for a refund")
     public void theCustomerAsksForRefund() {
         try {
@@ -310,8 +324,11 @@ public class PaymentServiceSteps extends AbstractSteps {
         }
     }
 
+    /**
+     * @author s164395
+     */
     @Then("The transaction should be refunded")
     public void theTransactionShouldBeRefunded() {
-
+        // empty because it's unverifiable in this scope
     }
 }
