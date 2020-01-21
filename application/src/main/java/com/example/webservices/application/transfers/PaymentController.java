@@ -27,9 +27,7 @@ public class PaymentController {
     public void TransferMoney(@RequestBody TransactionDto transaction){
         try {
             paymentService.transfer(transaction);
-        } catch (TokenException | IllegalArgumentException | EntryNotFoundException | BankException | InvalidTransferAmountException | DuplicateEntryException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }catch (ResponseStatusException e){
+        } catch (ResponseStatusException e){
             throw e;
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
@@ -45,8 +43,6 @@ public class PaymentController {
     public void RefundTransaction(@RequestBody UUID transactionId){
         try {
             paymentService.refund(transactionId);
-        } catch (EntryNotFoundException | DuplicateEntryException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (ResponseStatusException e){
             throw e;
         }

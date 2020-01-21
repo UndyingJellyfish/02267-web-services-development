@@ -29,6 +29,8 @@ public class ReportingMQController extends RabbitHelper {
             return success(transactionDtos);
         } catch (EntryNotFoundException e) {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            return error(e);
         }
     }
 
@@ -39,6 +41,8 @@ public class ReportingMQController extends RabbitHelper {
             return success(transactionDtos);
         } catch (EntryNotFoundException e) {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            return error(e);
         }
     }
 }

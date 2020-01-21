@@ -25,7 +25,7 @@ public class ReportingMQService extends RabbitMQBaseClass implements IReportingS
     /**
      * @author s164395
      * @param id account of the user to search for
-     * @return
+     * @return List of TransactionDto
      * @throws EntryNotFoundException
      */
     @Override

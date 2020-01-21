@@ -10,10 +10,7 @@ import com.example.webservices.library.dataTransferObjects.*;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -39,9 +36,10 @@ public class AccountMQController extends RabbitHelper {
         try {
             this.accountService.changeName(changeNameDto);
             return success();
-
         } catch (EntryNotFoundException e) {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            return error(e);
         }
 
     }
@@ -56,11 +54,11 @@ public class AccountMQController extends RabbitHelper {
         try {
             this.accountService.delete(accountId);
             return success();
-
         } catch (EntryNotFoundException e) {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            return error(e);
         }
-
     }
 
     /**
@@ -75,6 +73,8 @@ public class AccountMQController extends RabbitHelper {
             return success(account);
         } catch (EntryNotFoundException  e) {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            return error(e);
         }
     }
 
@@ -87,11 +87,11 @@ public class AccountMQController extends RabbitHelper {
     public ResponseObject customerSignup(SignupDto signupDto) {
         try {
             AccountDto account = this.accountService.addCustomer(signupDto);
-
             return success(account);
-
         } catch (DuplicateEntryException e) {
             return failure(e.getMessage(), HttpStatus.CONFLICT);
+        } catch (Exception e){
+            return error(e);
         }
 
     }
@@ -105,11 +105,11 @@ public class AccountMQController extends RabbitHelper {
     public ResponseObject merchantSignup(SignupDto signupDto) {
         try {
             AccountDto account = this.accountService.addMerchant(signupDto);
-
             return success(account);
-
         } catch (DuplicateEntryException e) {
             return failure(e.getMessage(), HttpStatus.CONFLICT);
+        } catch (Exception e){
+            return error(e);
         }
     }
 }

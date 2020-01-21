@@ -4,6 +4,7 @@ import com.example.webservices.library.dataTransferObjects.ResponseObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 
 public abstract class RabbitHelper {
@@ -70,6 +71,18 @@ public abstract class RabbitHelper {
      */
     protected ResponseObject success() {
         return success("success");
+    }
+
+
+    /**
+     * @author s164424
+     */
+    protected ResponseObject error(Exception e) {
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        if(e instanceof ResponseStatusException){
+            status = ((ResponseStatusException) e).getStatus();
+        }
+        return new ResponseObject(status, toJson(e.getMessage()));
     }
 
     /**

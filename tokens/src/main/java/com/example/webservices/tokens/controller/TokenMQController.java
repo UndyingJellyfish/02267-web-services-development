@@ -7,7 +7,9 @@ import com.example.webservices.library.exceptions.*;
 import com.example.webservices.library.interfaces.ITokenManager;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;  
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -30,8 +32,8 @@ public class TokenMQController extends RabbitHelper {
             return failure(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (InvalidTokenException e) {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (TokenException e) {
-            return failure(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e){
+            return error(e);
         }
     }
 
@@ -40,8 +42,10 @@ public class TokenMQController extends RabbitHelper {
         try {
             List<TokenDto> tokens = this.tokenManager.GetTokens(accountId);
             return success(tokens);
-        }catch (EntryNotFoundException e) {
+        } catch (EntryNotFoundException e) {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            return error(e);
         }
     }
 
@@ -52,6 +56,8 @@ public class TokenMQController extends RabbitHelper {
             return success(tokens);
         }catch (InvalidTokenException e) {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e){
+            return error(e);
         }
     }
 
@@ -64,6 +70,8 @@ public class TokenMQController extends RabbitHelper {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (TokenQuantityException e) {
             return failure(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e){
+            return error(e);
         }
     }
     @RabbitListener(queues = QUEUE_TOKENS_REQUEST)
@@ -75,18 +83,29 @@ public class TokenMQController extends RabbitHelper {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (TokenQuantityException e) {
             return failure(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e){
+            return error(e);
         }
     }
     @RabbitListener(queues = QUEUE_TOKENS_RETIRE)
     public ResponseObject retireTokens(UUID accountId) {
+        try {
             this.tokenManager.retireAll(accountId);
             return success();
+        } catch (Exception e){
+            return error(e);
+        }
 
     }
     @RabbitListener(queues = QUEUE_TOKENS_ACTIVE)
     public ResponseObject getActiveTokens(UUID accountId) {
-        int tokens = this.tokenManager.GetActiveTokens(accountId);
-        return success(tokens);
+        try {
+            int tokens = this.tokenManager.GetActiveTokens(accountId);
+            return success(tokens);
+        } catch (Exception e){
+            return error(e);
+        }
+
 
     }
 }

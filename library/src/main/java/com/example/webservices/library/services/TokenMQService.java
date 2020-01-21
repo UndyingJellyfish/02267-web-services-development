@@ -112,7 +112,7 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
     public void retireAll(UUID accountId) {
         ResponseObject response = send(QUEUE_TOKENS_RETIRE, accountId);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new RuntimeException(fromJson(response.getBody(), String.class));
+            throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
         }
     }
 
@@ -125,7 +125,7 @@ public class TokenMQService extends RabbitMQBaseClass implements ITokenManager {
     public int GetActiveTokens(UUID customerId) {
         ResponseObject response = send(QUEUE_TOKENS_ACTIVE, customerId);
         if(response.getStatusCode() != HttpStatus.OK){
-            throw new RuntimeException(fromJson(response.getBody(), String.class));
+            throw new ResponseStatusException(response.getStatusCode(), fromJson(response.getBody(), String.class));
         }
         return fromJson(response.getBody(), int.class);
     }
