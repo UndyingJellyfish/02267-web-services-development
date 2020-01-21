@@ -2,6 +2,7 @@ package com.example.webservices.application.reporting;
 import com.example.webservices.library.dataTransferObjects.TransactionDto;
 import com.example.webservices.library.dataTransferObjects.RequestReportingHistoryDto;
 import com.example.webservices.library.interfaces.IReportingService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,18 +26,23 @@ public class ReportingController {
     public List<TransactionDto> getHistory(@PathVariable UUID accountId){
         try{
             return reportingService.getTransactionHistory(accountId);
-        }catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (ResponseStatusException e){
+            throw e;
+        } catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
     @GetMapping("/{accountId}/{date}")
     @ResponseStatus(HttpStatus.OK)
-    public List<TransactionDto> getHistorySince(@PathVariable UUID accountId, @PathVariable Date date){
+    public List<TransactionDto> getHistorySince(@PathVariable UUID accountId, @PathVariable
+    @DateTimeFormat(pattern = "yyyy-MM-dd") Date date){
         try{
             return reportingService.getTransactionHistorySince(new RequestReportingHistoryDto(accountId, date));
-        }catch(Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (ResponseStatusException e){
+            throw e;
+        } catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 }
