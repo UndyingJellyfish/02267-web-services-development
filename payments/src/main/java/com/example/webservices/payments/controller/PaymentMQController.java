@@ -21,22 +21,17 @@ public class PaymentMQController extends RabbitHelper {
 
     @RabbitListener(queues = QUEUE_PAYMENT_TRANSFER)
     public ResponseObject transfer(TransactionDto jsonString){
-
         try {
-            //TransactionDto transactionDto = fromJson(jsonString, TransactionDto.class);
             TransactionDto result = this.paymentService.transfer(jsonString);
             return success(result);
         } catch (EntryNotFoundException | InvalidTokenException e) {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-        catch ( DuplicateEntryException e) {
+        } catch ( DuplicateEntryException e) {
             return failure(e.getMessage(), HttpStatus.CONFLICT);
-        }
-        catch (TokenException | InvalidTransferAmountException e) {
+        } catch (TokenException | InvalidTransferAmountException e) {
             return failure(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-        catch (Exception e) {
-            return failure(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e){
+            return error(e);
         }
     }
     @RabbitListener(queues = QUEUE_PAYMENT_REFUND)
@@ -46,9 +41,10 @@ public class PaymentMQController extends RabbitHelper {
             return success();
         } catch (EntryNotFoundException e) {
             return failure(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-        catch (DuplicateEntryException e) {
+        } catch (DuplicateEntryException e) {
             return failure(e.getMessage(), HttpStatus.CONFLICT);
+        } catch (Exception e){
+            return error(e);
         }
     }
 }
