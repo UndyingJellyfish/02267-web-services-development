@@ -22,6 +22,12 @@ public class ReportingMQService extends RabbitMQBaseClass implements IReportingS
         super(rabbitTemplate, exchange);
     }
 
+    /**
+     * @author s164395
+     * @param id account of the user to search for
+     * @return
+     * @throws EntryNotFoundException
+     */
     @Override
     public List<TransactionDto> getTransactionHistory(UUID id) throws EntryNotFoundException {
         ResponseObject response = send(QUEUE_REPORTING_HISTORY, id);
@@ -32,6 +38,12 @@ public class ReportingMQService extends RabbitMQBaseClass implements IReportingS
         return Arrays.asList(fromJson(response.getBody(), TransactionDto[].class));
     }
 
+    /**
+     * @author s164395
+     * @param dto data object containing the id of the user and the search date
+     * @return
+     * @throws EntryNotFoundException
+     */
     @Override
     public List<TransactionDto> getTransactionHistorySince(RequestReportingHistoryDto dto) throws EntryNotFoundException {
         ResponseObject response = send(QUEUE_REPORTING_HISTORY_DATE, dto);

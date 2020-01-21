@@ -8,6 +8,9 @@ import org.hibernate.dialect.function.SQLFunctionTemplate;
 import org.hibernate.dialect.function.VarArgsSQLFunction;
 import org.hibernate.type.StringType;
 
+/**
+ * @see "https://stackoverflow.com/questions/24232892/spring-boot-and-sqlite?fbclid=IwAR2VzAs9WF5HGSv-tob3wkmJxVUw-J2dNhp-nPDzvxV8BZvrKceCGJIM53E"
+ */
 public class SQLiteDialect extends Dialect {
     public SQLiteDialect() {
         registerColumnType(Types.BIT, "integer");

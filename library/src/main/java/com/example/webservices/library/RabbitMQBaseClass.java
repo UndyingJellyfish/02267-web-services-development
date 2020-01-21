@@ -25,20 +25,20 @@ public abstract class RabbitMQBaseClass extends RabbitHelper {
         this.exchange = exchange;
     }
 
-
-
-    /*private <T2> send(String queue, T message){
-        return (String)rabbitTemplate.convertSendAndReceive(exchange.getName(), queue, message);
-    }*/
+    /**
+     * @author s164424
+     */
     protected <T> ResponseObject send(String queue, T message){
         return send(queue, message, ResponseObject.class);
     }
+    /**
+     * @author s164424
+     */
     protected <T, T2> T2 send(String queue, T message, Class<T2> type){
         return (T2) rabbitTemplate.convertSendAndReceive(exchange.getName(),
                 queue,
                 MessageBuilder.withPayload(message).build()
                 );
-        //return fromJson(send(queue, toJson(message)), type);
     }
 
 }
