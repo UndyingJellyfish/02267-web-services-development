@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+/**
+ * {@inheritDoc}
+ * */
 public class JpaAccountDatastore implements IAccountDatastore {
 
     private final AccountRepository<Account> accountRepository;
@@ -24,11 +27,6 @@ public class JpaAccountDatastore implements IAccountDatastore {
 
     /**
      * @author s164407
-     * @param repository
-     * @param id
-     * @param <T>
-     * @return
-     * @throws EntryNotFoundException
      */
     private <T extends Account> T getAccount(AccountRepository<T> repository, UUID id) throws EntryNotFoundException {
         return repository.findById(id).orElseThrow(EntryNotFoundException::new);
@@ -36,8 +34,6 @@ public class JpaAccountDatastore implements IAccountDatastore {
 
     /**
      * @author s164407
-     * @param id
-     * @return
      */
     private boolean exists(UUID id) {
         return accountRepository.findById(id).isPresent();
@@ -45,9 +41,6 @@ public class JpaAccountDatastore implements IAccountDatastore {
 
     /**
      * @author s164407
-     * @param customerId
-     * @return
-     * @throws EntryNotFoundException
      */
     @Override
     public Customer getCustomer(UUID customerId) throws EntryNotFoundException {
@@ -56,10 +49,6 @@ public class JpaAccountDatastore implements IAccountDatastore {
 
     /**
      * @author s164407
-     * @param account
-     * @param <T>
-     * @return
-     * @throws DuplicateEntryException
      */
     @Override
     public <T extends Account> T addAccount(T account) throws DuplicateEntryException {
@@ -72,9 +61,6 @@ public class JpaAccountDatastore implements IAccountDatastore {
 
     /**
      * @author s164407
-     * @param merchantId
-     * @return
-     * @throws EntryNotFoundException
      */
     @Override
     public Merchant getMerchant(UUID merchantId) throws EntryNotFoundException {
@@ -83,9 +69,6 @@ public class JpaAccountDatastore implements IAccountDatastore {
 
     /**
      * @author s164407
-     * @param accountId
-     * @return
-     * @throws EntryNotFoundException
      */
     @Override
     public Account getAccount(UUID accountId) throws EntryNotFoundException {
@@ -94,8 +77,6 @@ public class JpaAccountDatastore implements IAccountDatastore {
 
     /**
      * @author s164407
-     * @param accountId
-     * @throws EntryNotFoundException
      */
     @Override
     public void deleteAccount(UUID accountId) throws EntryNotFoundException {
@@ -107,8 +88,6 @@ public class JpaAccountDatastore implements IAccountDatastore {
 
     /**
      * @author s164407
-     * @param account
-     * @return
      */
     @Override
     public Account saveAccount(Account account) {

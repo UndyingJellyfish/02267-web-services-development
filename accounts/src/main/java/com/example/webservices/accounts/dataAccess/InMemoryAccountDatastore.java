@@ -7,15 +7,14 @@ import com.example.webservices.accounts.models.*;
 
 import java.util.*;
 
-//@Service
+/**
+ * {@inheritDoc}
+ * */
 public class InMemoryAccountDatastore implements IAccountDatastore {
     private List<Account> accounts = new ArrayList<>();
 
     /**
      * @author s164434
-     * @param customerId
-     * @return
-     * @throws EntryNotFoundException
      */
     @Override
     public Customer getCustomer(UUID customerId) throws EntryNotFoundException {
@@ -24,9 +23,6 @@ public class InMemoryAccountDatastore implements IAccountDatastore {
 
     /**
      * @author s164434
-     * @param merchantId
-     * @return
-     * @throws EntryNotFoundException
      */
     @Override
     public Merchant getMerchant(UUID merchantId) throws EntryNotFoundException {
@@ -35,9 +31,6 @@ public class InMemoryAccountDatastore implements IAccountDatastore {
 
     /**
      * @author s164434
-     * @param accountId
-     * @return
-     * @throws EntryNotFoundException
      */
     @Override
     public Account getAccount(UUID accountId) throws EntryNotFoundException {
@@ -46,8 +39,6 @@ public class InMemoryAccountDatastore implements IAccountDatastore {
 
     /**
      * @author s164434
-     * @param accountId
-     * @throws EntryNotFoundException
      */
     @Override
     public void deleteAccount(UUID accountId) throws EntryNotFoundException {
@@ -58,8 +49,6 @@ public class InMemoryAccountDatastore implements IAccountDatastore {
 
     /**
      * @author s164434
-     * @param account
-     * @return
      */
     @Override
     public Account saveAccount(Account account) {
@@ -68,10 +57,6 @@ public class InMemoryAccountDatastore implements IAccountDatastore {
 
     /**
      * @author s164434
-     * @param account
-     * @param <T>
-     * @return
-     * @throws DuplicateEntryException
      */
     @Override
     public <T extends Account> T addAccount(T account) throws DuplicateEntryException {
@@ -83,6 +68,4 @@ public class InMemoryAccountDatastore implements IAccountDatastore {
         accounts.add(account);
         return account;
     }
-
-
 }
