@@ -32,11 +32,7 @@ public class TokenController {
     public List<UUID> requestTokens(@RequestBody RequestTokenDto dto) {
         try {
             return tokenManager.RequestTokens(dto.getCustomerId(),dto.getAmount());
-        } catch (EntryNotFoundException e ) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
-        }catch(TokenQuantityException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
-        }  catch(ResponseStatusException e) {
+        } catch(ResponseStatusException e) {
             throw e;
         } catch(Exception e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
@@ -51,8 +47,10 @@ public class TokenController {
     public int getActiveTokenCount(@PathVariable UUID customerId) {
         try {
             return tokenManager.GetActiveTokens(customerId);
+        } catch (ResponseStatusException e){
+            throw e;
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 }

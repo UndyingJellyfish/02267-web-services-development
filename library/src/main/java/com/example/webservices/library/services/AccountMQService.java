@@ -8,6 +8,7 @@ import com.example.webservices.library.dataTransferObjects.SignupDto;
 import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
+import org.apache.tomcat.util.http.parser.HttpParser;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;

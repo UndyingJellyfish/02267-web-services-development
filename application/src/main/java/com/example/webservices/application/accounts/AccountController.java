@@ -7,6 +7,7 @@ import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
 import com.example.webservices.library.interfaces.IAccountService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.cucumber.java.an.E;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,8 +33,10 @@ public class AccountController {
     public void changeName(@RequestBody ChangeNameDto newName){
         try {
             accountService.changeName(newName);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (ResponseStatusException e) {
+            throw e;
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
@@ -46,7 +49,7 @@ public class AccountController {
         try {
             return accountService.addMerchant(merchant).getAccountId();
         } catch (ResponseStatusException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+            throw e;
         } catch (Exception e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
@@ -60,8 +63,11 @@ public class AccountController {
     public AccountDto getAccount(@PathVariable UUID accountId){
         try {
             return accountService.getAccount(accountId);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (ResponseStatusException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
 
     }
@@ -76,7 +82,7 @@ public class AccountController {
             AccountDto dto = accountService.addCustomer(customer);
             return dto.getAccountId();
         } catch (ResponseStatusException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+            throw e;
         } catch (Exception e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
@@ -90,8 +96,11 @@ public class AccountController {
     public void delete(@PathVariable UUID accountId){
         try {
             accountService.delete(accountId);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }catch (ResponseStatusException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
 
     }
