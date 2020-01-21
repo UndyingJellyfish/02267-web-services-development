@@ -45,7 +45,7 @@ public class TokenController {
      * @param accountId id of the account
      * @return the amount of active tokens the account has
      */
-    @GetMapping("/{customerId}")
+    @GetMapping("/{accountId}")
     @ResponseStatus(HttpStatus.OK)
     public int getActiveTokenCount(@PathVariable UUID accountId) {
         try {
