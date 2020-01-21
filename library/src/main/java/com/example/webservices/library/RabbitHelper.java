@@ -37,6 +37,10 @@ public abstract class RabbitHelper {
 
     /**
      * @author s164424
+     * @param response A json response
+     * @param type The type to deserialize to
+     * @param <T> The type to deserialize to
+     * @return The deserialized response
      */
     protected  <T> T fromJson(String response, Class<T> type) {
         try{
@@ -49,6 +53,9 @@ public abstract class RabbitHelper {
 
     /**
      * @author s164424
+     * @param message A message to be serialized to json
+     * @param <T> The type of the message
+     * @return The message deserialized to a json string
      */
     protected <T> String toJson(T message) {
         try{
@@ -105,6 +112,7 @@ public abstract class RabbitHelper {
      * @author s164424
      * @param <T> type of a generic response object
      * @param response a response object with an error
+     * @return The response object with http status 400
      */
     protected <T> ResponseObject failure(T response) {
         return failure(response, HttpStatus.BAD_REQUEST);
