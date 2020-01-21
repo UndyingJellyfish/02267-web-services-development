@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
+ * @author s164395
  * provides a representation of a transaction object
  */
 public class TransactionDto implements Serializable {

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+/** @author s164434 */
 @Service
 public class TransactionMQController extends RabbitHelper {
 

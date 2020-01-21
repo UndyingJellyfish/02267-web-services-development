@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
+/** @author s164410 */
 @SpringBootApplication(scanBasePackages = "com.example.webservices")
 public class Application {
 

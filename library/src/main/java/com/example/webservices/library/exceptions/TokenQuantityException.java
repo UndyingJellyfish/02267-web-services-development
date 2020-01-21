@@ -1,5 +1,7 @@
 package com.example.webservices.library.exceptions;
 
+/** @author s164398 */
+
 public class TokenQuantityException extends TokenException {
     private static String defaultErrorString = "Too many active tokens.";
 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/** @author s164410 */
 @Service
 public class InMemoryTransactionDatastore implements ITransactionDatastore {
 

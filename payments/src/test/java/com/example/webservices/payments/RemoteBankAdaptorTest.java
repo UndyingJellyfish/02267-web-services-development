@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.fail;
 
+/** @author s164407*/
 
 public class RemoteBankAdaptorTest {
 

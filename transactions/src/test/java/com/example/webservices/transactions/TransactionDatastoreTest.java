@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.*;
 
+/** @author s164410 */
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -66,11 +67,6 @@ public class TransactionDatastoreTest {
 
     }
 
-
-    //@Test
-    //public void addTransaction() {
-    //    //Tested in setup and getTransaction
-    //}
 
     @Test
     public void getTransactions() {

@@ -11,6 +11,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name="PayTransaction")
+/** @author s164398*/
 public class Transaction {
     @Id
     private UUID transactionId;

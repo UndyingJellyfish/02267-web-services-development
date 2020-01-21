@@ -10,5 +10,5 @@ public interface ITokenDatastore {
     List<Token> getTokens(UUID customerId);
     List<Token> generateAndAssignTokens(UUID customerId, int quantity);
     Token getToken(UUID tokenId) throws InvalidTokenException;
-    Token useToken(Token token);
+    Token saveToken(Token token);
 }

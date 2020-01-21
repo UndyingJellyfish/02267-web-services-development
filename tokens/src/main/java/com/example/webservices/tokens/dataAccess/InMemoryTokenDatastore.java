@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/** @author s164434 */
+
 public class InMemoryTokenDatastore implements ITokenDatastore {
     private List<Token> tokens = new ArrayList<>();
 
@@ -46,8 +48,7 @@ public class InMemoryTokenDatastore implements ITokenDatastore {
     }
 
     @Override
-    public Token useToken(Token token) {
-        token.setUsed(true);
+    public Token saveToken(Token token) {
         return token;
     }
 

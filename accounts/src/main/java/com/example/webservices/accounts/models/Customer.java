@@ -5,6 +5,7 @@ import com.example.webservices.library.dataTransferObjects.AccountType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+/** @author  s164434*/
 @Entity
 @DiscriminatorValue("Customer")
 public class Customer extends Account {

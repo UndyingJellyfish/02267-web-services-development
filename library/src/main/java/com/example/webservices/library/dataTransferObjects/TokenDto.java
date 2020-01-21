@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 /**
+ * @author s164424
  * provides a representation of a token object
  */
 public class TokenDto implements Serializable {

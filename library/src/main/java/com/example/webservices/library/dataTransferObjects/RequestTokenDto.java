@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 /**
+ * @author s164424
  * contains the information required by services request new tokens for a user
  */
 public class RequestTokenDto implements Serializable {

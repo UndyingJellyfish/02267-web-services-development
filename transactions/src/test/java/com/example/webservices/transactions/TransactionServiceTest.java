@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.*;
 
-
+/** @author 164410 */
 public class TransactionServiceTest {
 
     private TransactionService transactionService;

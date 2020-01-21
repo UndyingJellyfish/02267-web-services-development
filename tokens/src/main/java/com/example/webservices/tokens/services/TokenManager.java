@@ -24,6 +24,8 @@ public class TokenManager implements ITokenManager {
         this.accountService = accountService;
     }
 
+    /** @author s164434*/
+
     public List<UUID> RequestTokens(UUID customerId, int quantity) throws TokenQuantityException, EntryNotFoundException {
         AccountDto customer = accountService.getCustomer(customerId);
 
@@ -39,34 +41,41 @@ public class TokenManager implements ITokenManager {
         return this.datastore.generateAndAssignTokens(customer.getAccountId(), quantity).stream().map(Token::getTokenId).collect(Collectors.toList());
     }
 
+    /** @author s164407 */
     public List<TokenDto> GetTokens(UUID customerId) {
         return this.datastore.getTokens(customerId).stream().map(t -> new TokenDto(t.getTokenId(), t.isUsed())).collect(Collectors.toList());
     }
 
+    /** @author s164424 */
     public void UseToken(UUID tokenId) throws TokenException {
         Token token = this.datastore.getToken(tokenId);
         if(token.isUsed()){
             throw new UsedTokenException();
         }
-        this.datastore.useToken(token);
+        token.setUsed(true);
+        this.datastore.saveToken(token);
     }
 
+    /** @author s164398*/
     @Override
     public UUID RequestToken(UUID customerId) throws EntryNotFoundException, TokenQuantityException {
         return RequestTokens(customerId, 1).get(0);
     }
 
+    /** @author s164398*/
     @Override
     public TokenDto GetToken(UUID tokenId) throws InvalidTokenException {
         Token token = this.datastore.getToken(tokenId);
         return new TokenDto(token.getTokenId(), token.isUsed(), token.getCustomerId());
     }
 
+    /** @author s164410 */
     @Override
     public void retireAll(UUID customerId) {
         this.datastore.getTokens(customerId).forEach(t -> t.setUsed(true));
     }
 
+    /** @author s164407 */
     @Override
     public int GetActiveTokens(UUID customerId) {
         return (int) this.GetTokens(customerId).stream().filter(t -> !t.isUsed()).count();

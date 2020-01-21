@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+/** @author s164407 */
+
 @Service
 public class RemoteBankAdaptor implements IBank {
 

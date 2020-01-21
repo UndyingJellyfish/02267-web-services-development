@@ -9,12 +9,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 
-//@RunWith(SpringRunner.class)
-//@WebMvcTest(controllers = PaymentController.class)
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration( classes = Application.class, loader = SpringBootContextLoader.class)
 public class SpringBootTestCase {
+
+    // Required to run spring for tests.
 
     @MockBean
     public IBank bank;
