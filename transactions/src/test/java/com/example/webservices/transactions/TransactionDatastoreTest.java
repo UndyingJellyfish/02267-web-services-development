@@ -2,6 +2,7 @@ package com.example.webservices.transactions;
 
 import com.example.webservices.library.exceptions.DuplicateEntryException;
 import com.example.webservices.library.exceptions.EntryNotFoundException;
+import com.example.webservices.library.interfaces.ITransactionService;
 import com.example.webservices.transactions.dataAccess.JpaTransactionDatastore;
 import com.example.webservices.transactions.interfaces.ITransactionDatastore;
 import com.example.webservices.transactions.models.Transaction;
@@ -25,14 +26,14 @@ import static org.junit.Assert.*;
 public class TransactionDatastoreTest {
 
     @Autowired
-    private JpaTransactionDatastore tokenDatastore;
+    private ITransactionDatastore transactionDatastore;
 
     private ITransactionDatastore store;
     private Transaction transaction;
 
     @Before
     public void setup(){
-        this.store = tokenDatastore;
+        this.store = transactionDatastore;
         this.transaction = new Transaction(UUID.randomUUID(), UUID.randomUUID(), new BigDecimal(10), UUID.randomUUID(), "description");
         try {
             this.store.addTransaction(transaction);
