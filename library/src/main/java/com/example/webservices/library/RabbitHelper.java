@@ -61,6 +61,9 @@ public abstract class RabbitHelper {
 
     /**
      * @author s164424
+     * @param <T> type of the response object
+     * @param response the response to package
+     * @return a generic response
      */
     protected <T> ResponseObject success(T response) {
         return new ResponseObject(HttpStatus.OK, toJson(response));
@@ -68,6 +71,7 @@ public abstract class RabbitHelper {
 
     /**
      * @author s164424
+     * @return a basic response object
      */
     protected ResponseObject success() {
         return success("success");
