@@ -90,7 +90,7 @@ public class CustomerTokenSteps extends AbstractSteps {
 
     @Then("The user has {int} unused tokens")
     public void theUserHasUnusedTokens(int arg0) {
-        assertEquals(arg0,unusedCount + tokenIdList.size());
+        assertEquals(arg0 +1,unusedCount + tokenIdList.size());
     }
 
 

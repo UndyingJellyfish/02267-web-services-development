@@ -9,16 +9,16 @@
         <module name="webservices-tokens" />
         <module name="webservices-accounts" />
         <module name="accounts" />
+        <module name="tokens" />
         <module name="webservices-application" />
         <module name="payments" />
-        <module name="webservices-transactions" />
-        <module name="transactions" />
+        <module name="project-src" />
         <module name="library" />
         <module name="webservices-library" />
         <module name="webservices-payments" />
-        <module name="tokens" />
+        <module name="webservices-transactions" />
         <module name="application" />
-        <module name="project-src" />
+        <module name="transactions" />
       </profile>
     </annotationProcessing>
   </component>
